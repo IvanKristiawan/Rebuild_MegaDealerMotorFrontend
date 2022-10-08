@@ -13,7 +13,8 @@ import {
   Typography,
   Divider,
   Pagination,
-  Button
+  Button,
+  ButtonGroup
 } from "@mui/material";
 import { ShowTableTipe } from "../../../../components/ShowTable";
 import {
@@ -26,6 +27,8 @@ import { tempUrl } from "../../../../contexts/ContextProvider";
 import { useStateContext } from "../../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilTipe = () => {
@@ -42,6 +45,7 @@ const TampilTipe = () => {
   const [merk, setMerk] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [tipesForDoc, setTipesForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -86,6 +90,7 @@ const TampilTipe = () => {
 
   useEffect(() => {
     getUsers();
+    getTipesForDoc();
     id && getUserById();
   }, [id]);
 
@@ -96,6 +101,16 @@ const TampilTipe = () => {
       token: user.token
     });
     setUser(response.data);
+    setLoading(false);
+  };
+
+  const getTipesForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/tipesForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setTipesForDoc(response.data);
     setLoading(false);
   };
 
@@ -166,6 +181,18 @@ const TampilTipe = () => {
     doc.save(`daftarTipe.pdf`);
   };
 
+  const downloadExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(tipesForDoc);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Tipe`);
+    // Buffer
+    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    // Binary String
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    // Download
+    XLSX.writeFile(workBook, `daftarTipe.xlsx`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -176,15 +203,15 @@ const TampilTipe = () => {
       <Typography variant="h4" sx={subTitleText}>
         Tipe/Merk
       </Typography>
-      <Box sx={buttonModifierContainer}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<PrintIcon />}
-          onClick={() => downloadPdf()}
-        >
-          Cetak
-        </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+            CETAK
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            EXCEL
+          </Button>
+        </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
@@ -351,4 +378,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };

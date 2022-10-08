@@ -30,6 +30,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const DaftarUser = () => {
@@ -45,6 +47,7 @@ const DaftarUser = () => {
   const [noTerakhir, setNoTerakhir] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [usersForDoc, setUsersForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -97,6 +100,7 @@ const DaftarUser = () => {
 
   useEffect(() => {
     getUsers();
+    getUsersForDoc();
     id && getUserById();
   }, [id]);
 
@@ -108,6 +112,17 @@ const DaftarUser = () => {
       token: user.token
     });
     setUser(response.data);
+    setLoading(false);
+  };
+
+  const getUsersForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/users/usersForDoc`, {
+      tipeAdmin: user.tipeUser,
+      id: user._id,
+      token: user.token
+    });
+    setUsersForDoc(response.data);
     setLoading(false);
   };
 
@@ -178,6 +193,18 @@ const DaftarUser = () => {
     doc.save(`daftarUser.pdf`);
   };
 
+  const downloadExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(usersForDoc);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, `User`);
+    // Buffer
+    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    // Binary String
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    // Download
+    XLSX.writeFile(workBook, `daftarUser.xlsx`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -188,15 +215,15 @@ const DaftarUser = () => {
       <Typography variant="h4" sx={subTitleText}>
         Daftar User
       </Typography>
-      <Box sx={buttonModifierContainer}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<PrintIcon />}
-          onClick={() => downloadPdf()}
-        >
-          Cetak
-        </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+            CETAK
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            EXCEL
+          </Button>
+        </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
         <Button
@@ -403,4 +430,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };

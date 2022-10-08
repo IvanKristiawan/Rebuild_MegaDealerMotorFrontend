@@ -13,7 +13,8 @@ import {
   Typography,
   Divider,
   Pagination,
-  Button
+  Button,
+  ButtonGroup
 } from "@mui/material";
 import { ShowTableSurveyor } from "../../../components/ShowTable";
 import {
@@ -26,6 +27,8 @@ import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilSurveyor = () => {
@@ -40,6 +43,7 @@ const TampilSurveyor = () => {
   const [teleponSurveyor, setTeleponSurveyor] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [surveyorsForDoc, setSurveyorsForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -80,6 +84,7 @@ const TampilSurveyor = () => {
 
   useEffect(() => {
     getUsers();
+    getSurveyorsForDoc();
     id && getUserById();
   }, [id]);
 
@@ -90,6 +95,16 @@ const TampilSurveyor = () => {
       token: user.token
     });
     setUser(response.data);
+    setLoading(false);
+  };
+
+  const getSurveyorsForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/surveyorsForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setSurveyorsForDoc(response.data);
     setLoading(false);
   };
 
@@ -156,6 +171,18 @@ const TampilSurveyor = () => {
     doc.save(`daftarSurveyor.pdf`);
   };
 
+  const downloadExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(surveyorsForDoc);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Surveyor`);
+    // Buffer
+    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    // Binary String
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    // Download
+    XLSX.writeFile(workBook, `daftarSurveyor.xlsx`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -166,15 +193,15 @@ const TampilSurveyor = () => {
       <Typography variant="h4" sx={subTitleText}>
         Surveyor
       </Typography>
-      <Box sx={buttonModifierContainer}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<PrintIcon />}
-          onClick={() => downloadPdf()}
-        >
-          Cetak
-        </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+            CETAK
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            EXCEL
+          </Button>
+        </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
@@ -324,4 +351,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };

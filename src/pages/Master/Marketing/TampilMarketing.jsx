@@ -13,7 +13,8 @@ import {
   Typography,
   Divider,
   Pagination,
-  Button
+  Button,
+  ButtonGroup
 } from "@mui/material";
 import { ShowTableMarketing } from "../../../components/ShowTable";
 import {
@@ -26,6 +27,8 @@ import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilMarketing = () => {
@@ -39,6 +42,7 @@ const TampilMarketing = () => {
   const [teleponMarketing, setTeleponMarketing] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [marketingsForDoc, setMarketingsForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -77,6 +81,7 @@ const TampilMarketing = () => {
 
   useEffect(() => {
     getUsers();
+    getMarketingsForDoc();
     id && getUserById();
   }, [id]);
 
@@ -87,6 +92,16 @@ const TampilMarketing = () => {
       token: user.token
     });
     setUser(response.data);
+    setLoading(false);
+  };
+
+  const getMarketingsForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/marketingsForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setMarketingsForDoc(response.data);
     setLoading(false);
   };
 
@@ -151,6 +166,18 @@ const TampilMarketing = () => {
     doc.save(`daftarMarketing.pdf`);
   };
 
+  const downloadExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(marketingsForDoc);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Marketing`);
+    // Buffer
+    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    // Binary String
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    // Download
+    XLSX.writeFile(workBook, `daftarMarketing.xlsx`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -161,15 +188,15 @@ const TampilMarketing = () => {
       <Typography variant="h4" sx={subTitleText}>
         Marketing
       </Typography>
-      <Box sx={buttonModifierContainer}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<PrintIcon />}
-          onClick={() => downloadPdf()}
-        >
-          Cetak
-        </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+            CETAK
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            EXCEL
+          </Button>
+        </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
@@ -309,4 +336,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };

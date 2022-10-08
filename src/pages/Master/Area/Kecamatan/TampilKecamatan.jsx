@@ -13,7 +13,8 @@ import {
   Typography,
   Divider,
   Pagination,
-  Button
+  Button,
+  ButtonGroup
 } from "@mui/material";
 import { ShowTableKecamatan } from "../../../../components/ShowTable";
 import {
@@ -26,6 +27,8 @@ import { tempUrl } from "../../../../contexts/ContextProvider";
 import { useStateContext } from "../../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilKecamatan = () => {
@@ -40,6 +43,7 @@ const TampilKecamatan = () => {
   const [namaKecamatan, setNamaKecamatan] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [kecamatansForDoc, setKecamatansForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -80,6 +84,7 @@ const TampilKecamatan = () => {
 
   useEffect(() => {
     getUsers();
+    getKecamatansForDoc();
     id && getUserById();
   }, [id]);
 
@@ -90,6 +95,16 @@ const TampilKecamatan = () => {
       token: user.token
     });
     setUser(response.data);
+    setLoading(false);
+  };
+
+  const getKecamatansForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/kecamatansForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setKecamatansForDoc(response.data);
     setLoading(false);
   };
 
@@ -156,6 +171,18 @@ const TampilKecamatan = () => {
     doc.save(`daftarKecamatan.pdf`);
   };
 
+  const downloadExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(kecamatansForDoc);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Kecamatan`);
+    // Buffer
+    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    // Binary String
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    // Download
+    XLSX.writeFile(workBook, `daftarKecamatan.xlsx`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -166,15 +193,15 @@ const TampilKecamatan = () => {
       <Typography variant="h4" sx={subTitleText}>
         Kecamatan
       </Typography>
-      <Box sx={buttonModifierContainer}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<PrintIcon />}
-          onClick={() => downloadPdf()}
-        >
-          Cetak
-        </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+            CETAK
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            EXCEL
+          </Button>
+        </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
@@ -329,4 +356,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };

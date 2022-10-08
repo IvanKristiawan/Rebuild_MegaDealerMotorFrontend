@@ -14,7 +14,7 @@ import {
   Divider,
   Pagination,
   Button,
-  Paper
+  ButtonGroup
 } from "@mui/material";
 import { ShowTableDealer } from "../../../components/ShowTable";
 import {
@@ -27,6 +27,8 @@ import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilDealer = () => {
@@ -42,6 +44,7 @@ const TampilDealer = () => {
   const [PICDealer, setPICDealer] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [dealersForDoc, setDealersForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -84,6 +87,7 @@ const TampilDealer = () => {
 
   useEffect(() => {
     getUsers();
+    getDealersForDoc();
     id && getUserById();
   }, [id]);
 
@@ -94,6 +98,16 @@ const TampilDealer = () => {
       token: user.token
     });
     setUser(response.data);
+    setLoading(false);
+  };
+
+  const getDealersForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/dealersForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setDealersForDoc(response.data);
     setLoading(false);
   };
 
@@ -162,6 +176,18 @@ const TampilDealer = () => {
     doc.save(`daftarDealer.pdf`);
   };
 
+  const downloadExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(dealersForDoc);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Dealer`);
+    // Buffer
+    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    // Binary String
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    // Download
+    XLSX.writeFile(workBook, `daftarDealer.xlsx`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -172,15 +198,15 @@ const TampilDealer = () => {
       <Typography variant="h4" sx={subTitleText}>
         Dealer
       </Typography>
-      <Box sx={buttonModifierContainer}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<PrintIcon />}
-          onClick={() => downloadPdf()}
-        >
-          Cetak
-        </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+            CETAK
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            EXCEL
+          </Button>
+        </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
@@ -337,4 +363,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };

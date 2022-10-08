@@ -111,7 +111,7 @@ const App = () => {
 
   const contentWrapper = {
     minHeight: "100vh",
-    minWidth: open ? "80vw" : "90vw"
+    width: open ? "80vw" : "100vw"
   };
 
   useEffect(() => {
@@ -142,7 +142,7 @@ const App = () => {
             <Sidebar
               backgroundColor={Colors.blue50}
               defaultCollapsed
-              collapsedWidth={screenSize >= 650 ? "80px" : "0px"}
+              collapsedWidth="0px"
             >
               <Menu>
                 <SubMenu label="Master" icon={<ClassIcon name="master-icon" />}>

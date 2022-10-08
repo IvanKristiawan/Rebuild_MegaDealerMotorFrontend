@@ -13,7 +13,8 @@ import {
   Typography,
   Divider,
   Pagination,
-  Button
+  Button,
+  ButtonGroup
 } from "@mui/material";
 import { ShowTableWilayah } from "../../../../components/ShowTable";
 import {
@@ -26,6 +27,8 @@ import { tempUrl } from "../../../../contexts/ContextProvider";
 import { useStateContext } from "../../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilWilayah = () => {
@@ -38,6 +41,7 @@ const TampilWilayah = () => {
   const [namaWilayah, setNamaWilayah] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [wilayahsForDoc, setWilayahsForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -74,6 +78,7 @@ const TampilWilayah = () => {
 
   useEffect(() => {
     getUsers();
+    getWilayahsForDoc();
     id && getUserById();
   }, [id]);
 
@@ -84,6 +89,16 @@ const TampilWilayah = () => {
       token: user.token
     });
     setUser(response.data);
+    setLoading(false);
+  };
+
+  const getWilayahsForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/wilayahsForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setWilayahsForDoc(response.data);
     setLoading(false);
   };
 
@@ -146,6 +161,18 @@ const TampilWilayah = () => {
     doc.save(`daftarWilayah.pdf`);
   };
 
+  const downloadExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(wilayahsForDoc);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Wilayah`);
+    // Buffer
+    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    // Binary String
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    // Download
+    XLSX.writeFile(workBook, `daftarWilayah.xlsx`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -156,15 +183,15 @@ const TampilWilayah = () => {
       <Typography variant="h4" sx={subTitleText}>
         Wilayah
       </Typography>
-      <Box sx={buttonModifierContainer}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<PrintIcon />}
-          onClick={() => downloadPdf()}
-        >
-          Cetak
-        </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+            CETAK
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            EXCEL
+          </Button>
+        </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
@@ -283,12 +310,9 @@ const spacingTop = {
   mt: 4
 };
 
-const secondWrapper = {
-  marginLeft: {
-    md: 4
-  },
-  marginTop: {
-    md: 0,
-    xs: 4
-  }
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };

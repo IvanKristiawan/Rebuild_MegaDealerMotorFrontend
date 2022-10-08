@@ -13,7 +13,8 @@ import {
   Typography,
   Divider,
   Pagination,
-  Button
+  Button,
+  ButtonGroup
 } from "@mui/material";
 import {
   SearchBar,
@@ -25,6 +26,8 @@ import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import DownloadIcon from "@mui/icons-material/Download";
 import html2canvas from "html2canvas";
 import PrintIcon from "@mui/icons-material/Print";
 
@@ -53,6 +56,7 @@ const TampilRegister = () => {
   const [tlpRefRegister, setTlpRefRegister] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [registersForDoc, setRegistersForDoc] = useState([]);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -99,6 +103,7 @@ const TampilRegister = () => {
 
   useEffect(() => {
     getUsers();
+    getRegistersForDoc();
     id && getUserById();
   }, [id]);
 
@@ -109,6 +114,16 @@ const TampilRegister = () => {
       token: user.token
     });
     setUser(response.data);
+    setLoading(false);
+  };
+
+  const getRegistersForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/registersForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setRegistersForDoc(response.data);
     setLoading(false);
   };
 
@@ -170,7 +185,7 @@ const TampilRegister = () => {
     }
   };
 
-  const generatePDF = () => {
+  const downloadPdf = () => {
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
@@ -197,6 +212,18 @@ const TampilRegister = () => {
     );
   };
 
+  const downloadExcel = () => {
+    const workSheet = XLSX.utils.json_to_sheet(registersForDoc);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Register`);
+    // Buffer
+    let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    // Binary String
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    // Download
+    XLSX.writeFile(workBook, `daftarRegister.xlsx`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -207,15 +234,15 @@ const TampilRegister = () => {
       <Typography variant="h4" sx={subTitleText}>
         Register Penjualan
       </Typography>
-      <Box sx={buttonModifierContainer}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<PrintIcon />}
-          onClick={() => generatePDF()}
-        >
-          Cetak
-        </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+            CETAK
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            EXCEL
+          </Button>
+        </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
@@ -670,4 +697,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };
