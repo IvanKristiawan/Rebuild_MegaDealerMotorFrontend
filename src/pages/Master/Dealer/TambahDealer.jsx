@@ -11,9 +11,11 @@ import {
   Button,
   Divider,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import { Colors } from "../../../constants/styles";
 
 const TambahDealer = () => {
   const { user } = useContext(AuthContext);
@@ -83,73 +85,81 @@ const TambahDealer = () => {
         Tambah Dealer
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            id="outlined-basic"
-            label="Kode Dealer"
-            variant="outlined"
-            value={kodeDealer}
-            InputProps={{
-              readOnly: true
-            }}
-          />
-          <TextField
-            error={error && namaDealer.length === 0 && true}
-            helperText={
-              error && namaDealer.length === 0 && "Nama Dealer harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama Dealer"
-            variant="outlined"
-            value={namaDealer}
-            sx={spacingTop}
-            onChange={(e) => setNamaDealer(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Alamat"
-            variant="outlined"
-            value={alamatDealer}
-            sx={spacingTop}
-            onChange={(e) => setAlamatDealer(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Kode Dealer</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeDealer}
+              InputProps={{
+                readOnly: true
+              }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Nama Dealer</Typography>
+            <TextField
+              size="small"
+              error={error && namaDealer.length === 0 && true}
+              helperText={
+                error && namaDealer.length === 0 && "Nama Dealer harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaDealer}
+              onChange={(e) => setNamaDealer(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Alamat</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={alamatDealer}
+              onChange={(e) => setAlamatDealer(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Telepon</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={teleponDealer}
+              onChange={(e) => setTeleponDealer(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>PIC</Typography>
+            <TextField
+              size="small"
+              error={error && PICDealer.length === 0 && true}
+              helperText={
+                error && PICDealer.length === 0 && "PIC Dealer harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={PICDealer}
+              onChange={(e) => setPICDealer(e.target.value.toUpperCase())}
+            />
+          </Box>
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
-          <TextField
-            id="outlined-basic"
-            label="Telepon"
+        <Box sx={spacingTop}>
+          <Button
             variant="outlined"
-            value={teleponDealer}
-            onChange={(e) => setTeleponDealer(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && PICDealer.length === 0 && true}
-            helperText={
-              error && PICDealer.length === 0 && "PIC Dealer harus diisi!"
-            }
-            id="outlined-basic"
-            label="PIC"
-            variant="outlined"
-            value={PICDealer}
-            sx={spacingTop}
-            onChange={(e) => setPICDealer(e.target.value.toUpperCase())}
-          />
+            color="secondary"
+            onClick={() => navigate("/dealer")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={saveUser}
+          >
+            Simpan
+          </Button>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/dealer")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button variant="contained" startIcon={<SaveIcon />} onClick={saveUser}>
-          Simpan
-        </Button>
-      </Box>
+      </Paper>
       <Divider sx={spacingTop} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -200,4 +210,26 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

@@ -199,63 +199,63 @@ const TampilTipe = () => {
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
+          <Typography sx={labelInput}>Kode</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Kode"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={kodeTipe}
           />
+          <Typography sx={[labelInput, spacingTop]}>Nama Tipe</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Nama Tipe"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={namaTipe}
           />
+          <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="No. Rangka"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={noRangka}
           />
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
+        <Box sx={[showDataWrapper, secondWrapper]}>
+          <Typography sx={labelInput}>No. Mesin</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="No. Mesin"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={noMesin}
           />
+          <Typography sx={[labelInput, spacingTop]}>Isi</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Isi"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={isi}
           />
+          <Typography sx={[labelInput, spacingTop]}>Merk</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Merk"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
@@ -307,7 +307,10 @@ const dividerStyle = {
 const showDataContainer = {
   mt: 4,
   display: "flex",
-  flexWrap: "wrap"
+  flexDirection: {
+    xs: "column",
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -317,11 +320,6 @@ const showDataWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const searchBarContainer = {
@@ -334,4 +332,23 @@ const tableContainer = {
   pt: 4,
   display: "flex",
   justifyContent: "center"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

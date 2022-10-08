@@ -12,9 +12,11 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Autocomplete
+  Autocomplete,
+  Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { Colors } from "../../../constants/styles";
 
 const UbahSurveyor = () => {
   const { user } = useContext(AuthContext);
@@ -92,86 +94,95 @@ const UbahSurveyor = () => {
         Ubah Surveyor
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            error={error && kodeSurveyor.length === 0 && true}
-            helperText={
-              error && kodeSurveyor.length === 0 && "Kode harus diisi!"
-            }
-            id="outlined-basic"
-            label="Kode"
-            variant="outlined"
-            value={kodeSurveyor}
-            InputProps={{
-              readOnly: true
-            }}
-            onChange={(e) => setKodeSurveyor(e.target.value)}
-          />
-          <TextField
-            error={error && namaSurveyor.length === 0 && true}
-            helperText={
-              error && namaSurveyor.length === 0 && "Nama Surveyor harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama Surveyor"
-            variant="outlined"
-            sx={spacingTop}
-            value={namaSurveyor}
-            onChange={(e) => setNamaSurveyor(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Kode Surveyor</Typography>
+            <TextField
+              size="small"
+              error={error && kodeSurveyor.length === 0 && true}
+              helperText={
+                error && kodeSurveyor.length === 0 && "Kode harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeSurveyor}
+              InputProps={{
+                readOnly: true
+              }}
+              onChange={(e) => setKodeSurveyor(e.target.value)}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Nama Surveyor</Typography>
+            <TextField
+              size="small"
+              error={error && namaSurveyor.length === 0 && true}
+              helperText={
+                error &&
+                namaSurveyor.length === 0 &&
+                "Nama Surveyor harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaSurveyor}
+              onChange={(e) => setNamaSurveyor(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Telepon</Typography>
+            <TextField
+              size="small"
+              error={error && teleponSurveyor.length === 0 && true}
+              helperText={
+                error &&
+                teleponSurveyor.length === 0 &&
+                "Telepon Surveyor harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={teleponSurveyor}
+              onChange={(e) => setTeleponSurveyor(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Jenis Surveyor
+            </Typography>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={jenisSurveyorOption}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && jenisSurveyor.length === 0 && true}
+                  helperText={
+                    error && jenisSurveyor.length === 0 && "Jenis harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => setJenisSurveyor(value)}
+              value={{ label: jenisSurveyor }}
+            />
+          </Box>
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
-          <TextField
-            error={error && teleponSurveyor.length === 0 && true}
-            helperText={
-              error &&
-              teleponSurveyor.length === 0 &&
-              "Telepon Surveyor harus diisi!"
-            }
-            id="outlined-basic"
-            label="Telepon Surveyor"
+        <Box sx={spacingTop}>
+          <Button
             variant="outlined"
-            value={teleponSurveyor}
-            onChange={(e) => setTeleponSurveyor(e.target.value.toUpperCase())}
-          />
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={jenisSurveyorOption}
-            renderInput={(params) => (
-              <TextField
-                error={error && jenisSurveyor.length === 0 && true}
-                helperText={
-                  error && jenisSurveyor.length === 0 && "Jenis harus diisi!"
-                }
-                {...params}
-                label="Jenis Surveyor"
-              />
-            )}
-            sx={spacingTop}
-            onInputChange={(e, value) => setJenisSurveyor(value)}
-            value={{ label: jenisSurveyor }}
-          />
+            color="secondary"
+            onClick={() => navigate("/surveyor")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={updateUser}
+          >
+            Ubah
+          </Button>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/surveyor")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<EditIcon />}
-          onClick={updateUser}
-        >
-          Ubah
-        </Button>
-      </Box>
+      </Paper>
       <Divider sx={dividerStyle} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -222,4 +233,26 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

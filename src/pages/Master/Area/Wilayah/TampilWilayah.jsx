@@ -179,21 +179,21 @@ const TampilWilayah = () => {
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
+          <Typography sx={labelInput}>Kode</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Kode"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={kodeWilayah}
           />
+          <Typography sx={[labelInput, spacingTop]}>Nama Wilayah</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Nama Wilayah"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
@@ -272,4 +272,23 @@ const tableContainer = {
   pt: 4,
   display: "flex",
   justifyContent: "center"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

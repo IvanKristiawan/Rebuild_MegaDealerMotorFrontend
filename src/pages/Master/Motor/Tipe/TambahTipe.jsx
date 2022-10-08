@@ -11,9 +11,11 @@ import {
   Button,
   Divider,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import { Colors } from "../../../../constants/styles";
 
 const TambahTipe = () => {
   const { user } = useContext(AuthContext);
@@ -72,79 +74,87 @@ const TambahTipe = () => {
         Tambah Tipe
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            error={error && kodeTipe.length === 0 && true}
-            helperText={error && kodeTipe.length === 0 && "Kode harus diisi!"}
-            id="outlined-basic"
-            label="Kode"
-            variant="outlined"
-            value={kodeTipe}
-            onChange={(e) => setKodeTipe(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && namaTipe.length === 0 && true}
-            helperText={
-              error && namaTipe.length === 0 && "Nama Tipe harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama Tipe"
-            variant="outlined"
-            sx={spacingTop}
-            value={namaTipe}
-            onChange={(e) => setNamaTipe(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="No. Rangka"
-            variant="outlined"
-            sx={spacingTop}
-            value={noRangka}
-            onChange={(e) => setNoRangka(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Kode</Typography>
+            <TextField
+              size="small"
+              error={error && kodeTipe.length === 0 && true}
+              helperText={error && kodeTipe.length === 0 && "Kode harus diisi!"}
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeTipe}
+              onChange={(e) => setKodeTipe(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Nama Tipe</Typography>
+            <TextField
+              size="small"
+              error={error && namaTipe.length === 0 && true}
+              helperText={
+                error && namaTipe.length === 0 && "Nama Tipe harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaTipe}
+              onChange={(e) => setNamaTipe(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={noRangka}
+              onChange={(e) => setNoRangka(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>No. Mesin</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={noMesin}
+              onChange={(e) => setNoMesin(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Isi</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={isi}
+              onChange={(e) => setIsi(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Merk</Typography>
+            <TextField
+              size="small"
+              error={error && merk.length === 0 && true}
+              helperText={error && merk.length === 0 && "Merk harus diisi!"}
+              id="outlined-basic"
+              variant="outlined"
+              value={merk}
+              onChange={(e) => setMerk(e.target.value.toUpperCase())}
+            />
+          </Box>
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
-          <TextField
-            id="outlined-basic"
-            label="No. Mesin"
+        <Box sx={spacingTop}>
+          <Button
             variant="outlined"
-            value={noMesin}
-            onChange={(e) => setNoMesin(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Isi"
-            variant="outlined"
-            sx={spacingTop}
-            value={isi}
-            onChange={(e) => setIsi(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && merk.length === 0 && true}
-            helperText={error && merk.length === 0 && "Merk harus diisi!"}
-            id="outlined-basic"
-            label="Merk"
-            variant="outlined"
-            sx={spacingTop}
-            value={merk}
-            onChange={(e) => setMerk(e.target.value.toUpperCase())}
-          />
+            color="secondary"
+            onClick={() => navigate("/tipe")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={saveUser}
+          >
+            Simpan
+          </Button>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/tipe")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button variant="contained" startIcon={<SaveIcon />} onClick={saveUser}>
-          Simpan
-        </Button>
-      </Box>
+      </Paper>
       <Divider sx={spacingTop} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -195,4 +205,26 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

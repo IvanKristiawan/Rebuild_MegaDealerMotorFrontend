@@ -169,33 +169,34 @@ const TampilBeli = () => {
             />
           </FormGroup>
         </Box>
+        <Divider sx={{ marginBottom: 2 }} />
         <Box sx={textFieldContainer}>
           <Box sx={textFieldWrapper}>
+            <Typography sx={labelInput}>Nomor</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Nomor"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={noBeli}
             />
+            <Typography sx={[labelInput, spacingTop]}>Jenis Motor</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Jenis Motor"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={jenisBeli.toLocaleString()}
             />
+            <Typography sx={[labelInput, spacingTop]}>Kode Supplier</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Kode Supplier"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
@@ -203,65 +204,67 @@ const TampilBeli = () => {
                 .filter((supplier) => supplier.kodeSupplier === kodeSupplier)
                 .map((sup) => ` ${sup.namaSupplier}`)}`}
             />
+            <Typography sx={[labelInput, spacingTop]}>Jumlah</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Jumlah"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={jumlahBeli.toLocaleString()}
             />
             {isPpnBeli && (
-              <TextField
-                id="outlined-basic"
-                label="PPN"
-                variant="filled"
-                sx={textFieldStyle}
-                InputProps={{
-                  readOnly: true
-                }}
-                value={ppnBeli.toLocaleString()}
-              />
+              <>
+                <Typography sx={[labelInput, spacingTop]}>PPN</Typography>
+                <TextField
+                  size="small"
+                  id="outlined-basic"
+                  variant="filled"
+                  InputProps={{
+                    readOnly: true
+                  }}
+                  value={ppnBeli.toLocaleString()}
+                />
+              </>
             )}
           </Box>
-          <Box sx={[textFieldWrapper, { marginLeft: 4 }]}>
+          <Box sx={[textFieldWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Potongan</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Potongan"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={potongan.toLocaleString()}
             />
+            <Typography sx={[labelInput, spacingTop]}>Lama</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Lama"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={`${lama.toLocaleString()} hari`}
             />
+            <Typography sx={[labelInput, spacingTop]}>Tanggal</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Tanggal"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={tanggalBeli}
             />
+            <Typography sx={[labelInput, spacingTop]}>Jatuh Tempo</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Jatuh Tempo"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
@@ -329,13 +332,27 @@ const textFieldWrapper = {
   }
 };
 
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
-};
-
 const tableContainer = {
   pt: 4,
   display: "flex",
   justifyContent: "center"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

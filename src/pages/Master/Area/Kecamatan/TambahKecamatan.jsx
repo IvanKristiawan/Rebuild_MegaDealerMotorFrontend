@@ -12,9 +12,11 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Autocomplete
+  Autocomplete,
+  Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import { Colors } from "../../../../constants/styles";
 
 const TambahKecamatan = () => {
   const { user } = useContext(AuthContext);
@@ -86,58 +88,68 @@ const TambahKecamatan = () => {
         Tambah Kecamatan
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={wilayahOptions}
-            renderInput={(params) => (
-              <TextField
-                error={error && kodeWilayah.length === 0 && true}
-                helperText={
-                  error &&
-                  kodeWilayah.length === 0 &&
-                  "Kode Wilayah harus diisi!"
-                }
-                {...params}
-                label="Kode Wilayah"
-              />
-            )}
-            onInputChange={(e, value) => {
-              setKodeWilayah(value.split(" ", 1)[0]);
-              setNamaWilayah(value.split("- ")[1]);
-            }}
-          />
-          <TextField
-            error={error && namaKecamatan.length === 0 && true}
-            helperText={
-              error &&
-              namaKecamatan.length === 0 &&
-              "Nama Kecamatan harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama Kecamatan"
-            variant="outlined"
-            value={namaKecamatan}
-            sx={spacingTop}
-            onChange={(e) => setNamaKecamatan(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Kode Wilayah</Typography>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={wilayahOptions}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && kodeWilayah.length === 0 && true}
+                  helperText={
+                    error &&
+                    kodeWilayah.length === 0 &&
+                    "Kode Wilayah harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => {
+                setKodeWilayah(value.split(" ", 1)[0]);
+                setNamaWilayah(value.split("- ")[1]);
+              }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Nama Kecamatan
+            </Typography>
+            <TextField
+              size="small"
+              error={error && namaKecamatan.length === 0 && true}
+              helperText={
+                error &&
+                namaKecamatan.length === 0 &&
+                "Nama Kecamatan harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaKecamatan}
+              onChange={(e) => setNamaKecamatan(e.target.value.toUpperCase())}
+            />
+          </Box>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/kecamatan")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button variant="contained" startIcon={<SaveIcon />} onClick={saveUser}>
-          Simpan
-        </Button>
-      </Box>
+        <Box sx={spacingTop}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => navigate("/kecamatan")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={saveUser}
+          >
+            Simpan
+          </Button>
+        </Box>
+      </Paper>
       <Divider sx={spacingTop} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -188,4 +200,16 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
 };

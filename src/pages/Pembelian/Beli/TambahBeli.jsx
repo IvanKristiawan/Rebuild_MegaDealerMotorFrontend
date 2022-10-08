@@ -12,9 +12,11 @@ import {
   Divider,
   Autocomplete,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import { Colors } from "../../../constants/styles";
 
 const TambahBeli = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -113,6 +115,51 @@ const TambahBeli = () => {
     }
   };
 
+  const lamaFunction = (e, value) => {
+    var tempShit1 = tanggalBeli.toString().split("-", 1)[0];
+    var tempShit2 = tanggalBeli.toString().split("-")[1];
+    var tempShit3 = tanggalBeli.toString().split("-")[2];
+    var combineShit = `${tempShit3}-${tempShit2}-${tempShit1}`;
+    var someDate = new Date(combineShit);
+    var numberOfDaysToAdd =
+      e.target.value !== "" ? parseInt(e.target.value) : 0;
+    var result = someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
+    var finalize = new Date(result);
+    var now_final =
+      finalize.getDate().toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      }) +
+      "-" +
+      (finalize.getMonth() + 1).toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      }) +
+      "-" +
+      finalize.getFullYear();
+    setJatuhTempo(now_final);
+    setLama(e.target.value.toUpperCase());
+  };
+
+  const jatuhTempoFunction = (e) => {
+    var tempTanggalBeli1 = tanggalBeli.toString().split("-", 1)[0];
+    var tempTanggalBeli2 = tanggalBeli.toString().split("-")[1];
+    var tempTanggalBeli3 = tanggalBeli.toString().split("-")[2];
+    var combineTanggalBeli = `${tempTanggalBeli3}-${tempTanggalBeli2}-${tempTanggalBeli1}`;
+    var tempTanggalBeli = new Date(combineTanggalBeli);
+    var tempJatuhTempo1 = e.target.value.toString().split("-", 1)[0];
+    var tempJatuhTempo2 = e.target.value.toString().split("-")[1];
+    var tempJatuhTempo3 = e.target.value.toString().split("-")[2];
+    var combineJatuhTempo = `${tempJatuhTempo3}-${tempJatuhTempo2}-${tempJatuhTempo1}`;
+    var tempJatuhTempo = new Date(combineJatuhTempo);
+
+    const diffTime = Math.abs(tempJatuhTempo - tempTanggalBeli);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    setLama(diffDays);
+    setJatuhTempo(e.target.value.toUpperCase());
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -124,167 +171,129 @@ const TambahBeli = () => {
         Tambah Beli
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={textFieldContainer}>
-        <Box sx={textFieldWrapper}>
-          <TextField
-            id="outlined-basic"
-            label="Kode Beli"
-            variant="outlined"
-            value={kodeBeli}
-            disabled
-          />
-          <TextField
-            error={error && tanggalBeli.length === 0 && true}
-            helperText={
-              error && tanggalBeli.length === 0 && "Tanggal harus diisi!"
-            }
-            id="outlined-basic"
-            label="Tanggal (hari-bulan-tahun)"
-            variant="outlined"
-            sx={textFieldStyle}
-            value={tanggalBeli}
-            onChange={(e) => setTanggalBeli(e.target.value.toUpperCase())}
-          />
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={supplierOptions}
-            renderInput={(params) => (
-              <TextField
-                error={error && kodeSupplier.length === 0 && true}
-                helperText={
-                  error &&
-                  kodeSupplier.length === 0 &&
-                  "Kode Supplier harus diisi!"
-                }
-                {...params}
-                label="Kode Supplier"
-              />
-            )}
-            onInputChange={(e, value) =>
-              setKodeSupplier(value.split(" ", 1)[0])
-            }
-            sx={textFieldStyle}
-          />
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={jenisBeliOption}
-            renderInput={(params) => (
-              <TextField
-                error={error && jenisBeli.length === 0 && true}
-                helperText={
-                  error && jenisBeli.length === 0 && "Jenis Motor harus diisi!"
-                }
-                {...params}
-                label="Jenis Motor"
-              />
-            )}
-            onInputChange={(e, value) => setJenisBeli(value)}
-            sx={textFieldStyle}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Jumlah"
-            variant="outlined"
-            sx={textFieldStyle}
-            value={jumlahBeli}
-            disabled
-            onChange={(e) => setJumlahBeli(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={textFieldContainer}>
+          <Box sx={textFieldWrapper}>
+            <Typography sx={labelInput}>Kode Beli</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeBeli}
+              disabled
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Tanggal (hari-bulan-tahun)
+            </Typography>
+            <TextField
+              error={error && tanggalBeli.length === 0 && true}
+              helperText={
+                error && tanggalBeli.length === 0 && "Tanggal harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={tanggalBeli}
+              onChange={(e) => setTanggalBeli(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Kode Supplier</Typography>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={supplierOptions}
+              renderInput={(params) => (
+                <TextField
+                  error={error && kodeSupplier.length === 0 && true}
+                  helperText={
+                    error &&
+                    kodeSupplier.length === 0 &&
+                    "Kode Supplier harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) =>
+                setKodeSupplier(value.split(" ", 1)[0])
+              }
+            />
+            <Typography sx={[labelInput, spacingTop]}>Jenis Motor</Typography>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={jenisBeliOption}
+              renderInput={(params) => (
+                <TextField
+                  error={error && jenisBeli.length === 0 && true}
+                  helperText={
+                    error &&
+                    jenisBeli.length === 0 &&
+                    "Jenis Motor harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => setJenisBeli(value)}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Jumlah</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              value={jumlahBeli}
+              disabled
+              onChange={(e) => setJumlahBeli(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[textFieldWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>PPN</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              value={ppnBeli}
+              disabled
+              onChange={(e) => setPpnBeli(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Potongan</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              value={potongan}
+              disabled
+              onChange={(e) => setPotongan(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Lama (Hari)</Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              value={lama}
+              onChange={(e, value) => lamaFunction(e, value)}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Jatuh Tempo (hari-bulan-tahun)
+            </Typography>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              value={jatuhTempo}
+              onChange={(e) => jatuhTempoFunction(e)}
+            />
+          </Box>
         </Box>
-        <Box sx={[textFieldWrapper, { marginLeft: 4 }]}>
-          <TextField
-            id="outlined-basic"
-            label="PPN"
+        <Box sx={textFieldStyle}>
+          <Button
             variant="outlined"
-            value={ppnBeli}
-            disabled
-            onChange={(e) => setPpnBeli(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Potongan"
-            variant="outlined"
-            sx={textFieldStyle}
-            value={potongan}
-            disabled
-            onChange={(e) => setPotongan(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Lama (Hari)"
-            variant="outlined"
-            sx={textFieldStyle}
-            value={lama}
-            onChange={(e, value) => {
-              var tempShit1 = tanggalBeli.toString().split("-", 1)[0];
-              var tempShit2 = tanggalBeli.toString().split("-")[1];
-              var tempShit3 = tanggalBeli.toString().split("-")[2];
-              var combineShit = `${tempShit3}-${tempShit2}-${tempShit1}`;
-              var someDate = new Date(combineShit);
-              var numberOfDaysToAdd =
-                e.target.value !== "" ? parseInt(e.target.value) : 0;
-              var result = someDate.setDate(
-                someDate.getDate() + numberOfDaysToAdd
-              );
-              var finalize = new Date(result);
-              var now_final =
-                finalize.getDate().toLocaleString("en-US", {
-                  minimumIntegerDigits: 2,
-                  useGrouping: false
-                }) +
-                "-" +
-                (finalize.getMonth() + 1).toLocaleString("en-US", {
-                  minimumIntegerDigits: 2,
-                  useGrouping: false
-                }) +
-                "-" +
-                finalize.getFullYear();
-              setJatuhTempo(now_final);
-              setLama(e.target.value.toUpperCase());
-            }}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Jatuh Tempo (hari-bulan-tahun)"
-            variant="outlined"
-            sx={textFieldStyle}
-            value={jatuhTempo}
-            onChange={(e) => {
-              var tempTanggalBeli1 = tanggalBeli.toString().split("-", 1)[0];
-              var tempTanggalBeli2 = tanggalBeli.toString().split("-")[1];
-              var tempTanggalBeli3 = tanggalBeli.toString().split("-")[2];
-              var combineTanggalBeli = `${tempTanggalBeli3}-${tempTanggalBeli2}-${tempTanggalBeli1}`;
-              var tempTanggalBeli = new Date(combineTanggalBeli);
-              var tempJatuhTempo1 = e.target.value.toString().split("-", 1)[0];
-              var tempJatuhTempo2 = e.target.value.toString().split("-")[1];
-              var tempJatuhTempo3 = e.target.value.toString().split("-")[2];
-              var combineJatuhTempo = `${tempJatuhTempo3}-${tempJatuhTempo2}-${tempJatuhTempo1}`;
-              var tempJatuhTempo = new Date(combineJatuhTempo);
-
-              const diffTime = Math.abs(tempJatuhTempo - tempTanggalBeli);
-              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-              setLama(diffDays);
-              setJatuhTempo(e.target.value.toUpperCase());
-            }}
-          />
+            color="secondary"
+            onClick={() => navigate("/daftarBeli")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={saveUser}
+          >
+            Simpan
+          </Button>
         </Box>
-      </Box>
-      <Box sx={textFieldStyle}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/daftarBeli")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button variant="contained" startIcon={<SaveIcon />} onClick={saveUser}>
-          Simpan
-        </Button>
-      </Box>
+      </Paper>
       <Divider sx={dividerStyle} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -335,4 +344,30 @@ const textFieldStyle = {
 
 const alertBox = {
   width: "100%"
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

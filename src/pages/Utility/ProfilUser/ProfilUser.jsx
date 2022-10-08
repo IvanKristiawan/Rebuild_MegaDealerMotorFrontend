@@ -38,53 +38,49 @@ const ProfilUser = () => {
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
+          <Typography sx={labelInput}>Username</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Username"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={user.username}
           />
+          <Typography sx={[labelInput, spacingTop]}>Tipe User</Typography>
           <TextField
             id="outlined-basic"
-            label="Tipe User"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={user.tipeUser}
           />
+          <Typography sx={[labelInput, spacingTop]}>Periode</Typography>
           <TextField
             id="outlined-basic"
-            label="Periode"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={user.periode}
           />
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
+        <Box sx={[showDataWrapper, secondWrapper]}>
+          <Typography sx={labelInput}>Kode Kwitansi</Typography>
           <TextField
             id="outlined-basic"
-            label="Kode Kwitansi"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={user.kodeKwitansi}
           />
+          <Typography sx={[labelInput, spacingTop]}>No Terakhir</Typography>
           <TextField
             id="outlined-basic"
-            label="No Terakhir"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
@@ -120,7 +116,10 @@ const dividerStyle = {
 const showDataContainer = {
   mt: 4,
   display: "flex",
-  flexWrap: "wrap"
+  flexDirection: {
+    xs: "column",
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -135,4 +134,23 @@ const showDataWrapper = {
 const textFieldStyle = {
   display: "flex",
   mt: 4
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

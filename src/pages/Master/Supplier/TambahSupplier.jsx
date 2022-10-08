@@ -11,9 +11,11 @@ import {
   Button,
   Divider,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import { Colors } from "../../../constants/styles";
 
 const TambahSupplier = () => {
   const { user } = useContext(AuthContext);
@@ -87,89 +89,101 @@ const TambahSupplier = () => {
         Tambah Supplier
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            id="outlined-basic"
-            label="Kode Supplier"
-            variant="outlined"
-            value={kodeSupplier}
-            InputProps={{
-              readOnly: true
-            }}
-          />
-          <TextField
-            error={error && namaSupplier.length === 0 && true}
-            helperText={
-              error && namaSupplier.length === 0 && "Nama Supplier harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama Supplier"
-            variant="outlined"
-            value={namaSupplier}
-            sx={spacingTop}
-            onChange={(e) => setNamaSupplier(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Alamat Supplier"
-            variant="outlined"
-            value={alamatSupplier}
-            sx={spacingTop}
-            onChange={(e) => setAlamatSupplier(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Kota Supplier"
-            variant="outlined"
-            value={kotaSupplier}
-            sx={spacingTop}
-            onChange={(e) => setKotaSupplier(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Kode Supplier</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeSupplier}
+              InputProps={{
+                readOnly: true
+              }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Nama Supplier</Typography>
+            <TextField
+              size="small"
+              error={error && namaSupplier.length === 0 && true}
+              helperText={
+                error &&
+                namaSupplier.length === 0 &&
+                "Nama Supplier harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaSupplier}
+              onChange={(e) => setNamaSupplier(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Alamat Supplier
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={alamatSupplier}
+              onChange={(e) => setAlamatSupplier(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Kota Supplier</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={kotaSupplier}
+              onChange={(e) => setKotaSupplier(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Telepon</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={teleponSupplier}
+              onChange={(e) => setTeleponSupplier(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>PIC</Typography>
+            <TextField
+              size="small"
+              error={error && picSupplier.length === 0 && true}
+              helperText={
+                error && picSupplier.length === 0 && "PIC Supplier harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={picSupplier}
+              onChange={(e) => setPicSupplier(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>NPWP</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={npwpSupplier}
+              onChange={(e) => setNpwpSupplier(e.target.value.toUpperCase())}
+            />
+          </Box>
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
-          <TextField
-            id="outlined-basic"
-            label="Telepon Supplier"
+        <Box sx={spacingTop}>
+          <Button
             variant="outlined"
-            value={teleponSupplier}
-            onChange={(e) => setTeleponSupplier(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && picSupplier.length === 0 && true}
-            helperText={
-              error && picSupplier.length === 0 && "PIC Supplier harus diisi!"
-            }
-            id="outlined-basic"
-            label="PIC Supplier"
-            variant="outlined"
-            value={picSupplier}
-            sx={spacingTop}
-            onChange={(e) => setPicSupplier(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="NPWP Supplier"
-            variant="outlined"
-            value={npwpSupplier}
-            sx={spacingTop}
-            onChange={(e) => setNpwpSupplier(e.target.value.toUpperCase())}
-          />
+            color="secondary"
+            onClick={() => navigate("/supplier")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={saveUser}
+          >
+            Simpan
+          </Button>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/supplier")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button variant="contained" startIcon={<SaveIcon />} onClick={saveUser}>
-          Simpan
-        </Button>
-      </Box>
+      </Paper>
       <Divider sx={spacingTop} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -220,4 +234,26 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

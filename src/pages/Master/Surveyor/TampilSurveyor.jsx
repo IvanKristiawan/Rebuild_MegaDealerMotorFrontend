@@ -189,43 +189,43 @@ const TampilSurveyor = () => {
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
+          <Typography sx={labelInput}>Kode</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Kode"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={kodeSurveyor}
           />
+          <Typography sx={[labelInput, spacingTop]}>Nama Surveyor</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Nama Surveyor"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={namaSurveyor}
           />
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
+        <Box sx={[showDataWrapper, secondWrapper]}>
+          <Typography sx={labelInput}>Telepon</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Telepon Surveyor"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={teleponSurveyor}
           />
+          <Typography sx={[labelInput, spacingTop]}>Jenis Surveyor</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Jenis Surveyor"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
@@ -280,7 +280,10 @@ const dividerStyle = {
 const showDataContainer = {
   mt: 4,
   display: "flex",
-  flexWrap: "wrap"
+  flexDirection: {
+    xs: "column",
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -290,11 +293,6 @@ const showDataWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const searchBarContainer = {
@@ -307,4 +305,23 @@ const tableContainer = {
   pt: 4,
   display: "flex",
   justifyContent: "center"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

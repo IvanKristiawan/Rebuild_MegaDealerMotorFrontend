@@ -11,9 +11,11 @@ import {
   Button,
   Divider,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { Colors } from "../../../constants/styles";
 
 const UbahRegister = () => {
   const { user } = useContext(AuthContext);
@@ -128,181 +130,208 @@ const UbahRegister = () => {
         Ubah Register
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            id="outlined-basic"
-            label="Kode Register"
-            variant="outlined"
-            value={kodeRegister}
-            InputProps={{
-              readOnly: true
-            }}
-          />
-          <TextField
-            error={error && namaRegister.length === 0 && true}
-            helperText={
-              error && namaRegister.length === 0 && "Nama harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama"
-            variant="outlined"
-            value={namaRegister}
-            sx={spacingTop}
-            onChange={(e) => setNamaRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && almRegister.length === 0 && true}
-            helperText={
-              error && almRegister.length === 0 && "Alamat harus diisi!"
-            }
-            id="outlined-basic"
-            label="Alamat"
-            variant="outlined"
-            value={almRegister}
-            sx={spacingTop}
-            onChange={(e) => setAlmRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && tlpRegister.length === 0 && true}
-            helperText={
-              error && tlpRegister.length === 0 && "Telepon harus diisi!"
-            }
-            id="outlined-basic"
-            label="Telepon"
-            variant="outlined"
-            value={tlpRegister}
-            sx={spacingTop}
-            onChange={(e) => setTlpRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && noKtpRegister.length === 0 && true}
-            helperText={
-              error && noKtpRegister.length === 0 && "No. KTP harus diisi!"
-            }
-            id="outlined-basic"
-            label="No. KTP"
-            variant="outlined"
-            value={noKtpRegister}
-            sx={spacingTop}
-            onChange={(e) => setNoKtpRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && almKtpRegister.length === 0 && true}
-            helperText={
-              error && almKtpRegister.length === 0 && "Alamat KTP harus diisi!"
-            }
-            id="outlined-basic"
-            label="Alamat KTP"
-            variant="outlined"
-            value={almKtpRegister}
-            sx={spacingTop}
-            onChange={(e) => setAlmKtpRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && noKKRegister.length === 0 && true}
-            helperText={
-              error && noKKRegister.length === 0 && "No. KK harus diisi!"
-            }
-            id="outlined-basic"
-            label="No. KK"
-            variant="outlined"
-            value={noKKRegister}
-            sx={spacingTop}
-            onChange={(e) => setNoKKRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Nama Penjamin"
-            variant="outlined"
-            value={namaPjmRegister}
-            sx={spacingTop}
-            onChange={(e) => setNamaPjmRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Alamat Penjamin"
-            variant="outlined"
-            value={almPjmRegister}
-            sx={spacingTop}
-            onChange={(e) => setAlmPjmRegister(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Kode Register</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeRegister}
+              InputProps={{
+                readOnly: true
+              }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Nama Register</Typography>
+            <TextField
+              size="small"
+              error={error && namaRegister.length === 0 && true}
+              helperText={
+                error && namaRegister.length === 0 && "Nama harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaRegister}
+              onChange={(e) => setNamaRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Alamat Register
+            </Typography>
+            <TextField
+              size="small"
+              error={error && almRegister.length === 0 && true}
+              helperText={
+                error && almRegister.length === 0 && "Alamat harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={almRegister}
+              onChange={(e) => setAlmRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Telepon Register
+            </Typography>
+            <TextField
+              size="small"
+              error={error && tlpRegister.length === 0 && true}
+              helperText={
+                error && tlpRegister.length === 0 && "Telepon harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={tlpRegister}
+              onChange={(e) => setTlpRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>No. KTP</Typography>
+            <TextField
+              size="small"
+              error={error && noKtpRegister.length === 0 && true}
+              helperText={
+                error && noKtpRegister.length === 0 && "No. KTP harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={noKtpRegister}
+              onChange={(e) => setNoKtpRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Alamat KTP</Typography>
+            <TextField
+              size="small"
+              error={error && almKtpRegister.length === 0 && true}
+              helperText={
+                error &&
+                almKtpRegister.length === 0 &&
+                "Alamat KTP harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={almKtpRegister}
+              onChange={(e) => setAlmKtpRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>No. KK</Typography>
+            <TextField
+              size="small"
+              error={error && noKKRegister.length === 0 && true}
+              helperText={
+                error && noKKRegister.length === 0 && "No. KK harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={noKKRegister}
+              onChange={(e) => setNoKKRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Nama Penjamin</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={namaPjmRegister}
+              onChange={(e) => setNamaPjmRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Alamat Penjamin
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={almPjmRegister}
+              onChange={(e) => setAlmPjmRegister(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Telepon Penjamin</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              onChange={(e) => setTlpPjmRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Hubungan Penjamin
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={hubunganRegister}
+              onChange={(e) =>
+                setHubunganRegister(e.target.value.toUpperCase())
+              }
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              No. KTP Penjamin
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={noKtpPjmRegister}
+              onChange={(e) =>
+                setNoKtpPjmRegister(e.target.value.toUpperCase())
+              }
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Pekerjaan Penjamin
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={pkjRegister}
+              onChange={(e) => setPkjRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Nama Referensi
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={namaRefRegister}
+              onChange={(e) => setNamaRefRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Alamat Referensi
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={almRefRegister}
+              onChange={(e) => setAlmRefRegister(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Telepon Referensi
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={tlpRefRegister}
+              onChange={(e) => setTlpRefRegister(e.target.value.toUpperCase())}
+            />
+          </Box>
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
-          <TextField
-            id="outlined-basic"
-            label="Telepon Penjamin"
+        <Box sx={spacingTop}>
+          <Button
             variant="outlined"
-            value={tlpPjmRegister}
-            onChange={(e) => setTlpPjmRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Hubungan Penjamin"
-            variant="outlined"
-            value={hubunganRegister}
-            sx={spacingTop}
-            onChange={(e) => setHubunganRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="No. KTP Penjamin"
-            variant="outlined"
-            value={noKtpPjmRegister}
-            sx={spacingTop}
-            onChange={(e) => setNoKtpPjmRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Pekerjaan Penjamin"
-            variant="outlined"
-            value={pkjRegister}
-            sx={spacingTop}
-            onChange={(e) => setPkjRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Nama Referensi"
-            variant="outlined"
-            value={namaRefRegister}
-            sx={spacingTop}
-            onChange={(e) => setNamaRefRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Alamat Referensi"
-            variant="outlined"
-            value={almRefRegister}
-            sx={spacingTop}
-            onChange={(e) => setAlmRefRegister(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Telepon Referensi"
-            variant="outlined"
-            value={tlpRefRegister}
-            sx={spacingTop}
-            onChange={(e) => setTlpRefRegister(e.target.value.toUpperCase())}
-          />
+            color="secondary"
+            onClick={() => navigate("/register")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={updateUser}
+          >
+            Ubah
+          </Button>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/register")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<EditIcon />}
-          onClick={updateUser}
-        >
-          Ubah
-        </Button>
-      </Box>
+      </Paper>
       <Divider sx={dividerStyle} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -353,4 +382,26 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

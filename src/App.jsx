@@ -1,5 +1,5 @@
 import "./styles.css";
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 import { Header } from "./components";
@@ -30,6 +30,7 @@ import ElevatorIcon from "@mui/icons-material/Elevator";
 import { Divider, Box, Typography, CssBaseline } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
+import { useStateContext } from "./contexts/ContextProvider";
 import {
   Login,
   TampilTipe,
@@ -79,8 +80,10 @@ import {
 } from "./pages/index";
 
 const App = () => {
+  const { screenSize, setScreenSize } = useStateContext();
   const { collapseSidebar } = useProSidebar();
   const { user } = useContext(AuthContext);
+  const [open, setOpen] = useState(true);
 
   const USERRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
@@ -101,6 +104,34 @@ const App = () => {
     return <Navigate to="/unauthorized" />;
   };
 
+  const openMenuFunction = () => {
+    setOpen(!open);
+    collapseSidebar();
+  };
+
+  const contentWrapper = {
+    minHeight: "100vh",
+    minWidth: open ? "80vw" : "90vw"
+  };
+
+  useEffect(() => {
+    const handleResize = () => setScreenSize(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (screenSize >= 900) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  }, [screenSize]);
+
   return (
     <Box>
       <BrowserRouter>
@@ -108,7 +139,11 @@ const App = () => {
         <Header />
         <div style={container}>
           {user && (
-            <Sidebar backgroundColor={Colors.blue50}>
+            <Sidebar
+              backgroundColor={Colors.blue50}
+              defaultCollapsed
+              collapsedWidth={screenSize >= 650 ? "80px" : "0px"}
+            >
               <Menu>
                 <SubMenu label="Master" icon={<ClassIcon name="master-icon" />}>
                   <SubMenu label="Motor" icon={<MopedIcon name="motor-icon" />}>
@@ -261,7 +296,7 @@ const App = () => {
           <main>
             {user && (
               <MenuIcon
-                onClick={() => collapseSidebar()}
+                onClick={() => openMenuFunction()}
                 sx={sidebarIcon}
                 fontSize="large"
               />
@@ -761,11 +796,6 @@ const sidebarIcon = {
   marginLeft: 1,
   marginTop: 1,
   cursor: "pointer"
-};
-
-const contentWrapper = {
-  minHeight: "100vh",
-  minWidth: "80vw"
 };
 
 const linkText = {

@@ -11,9 +11,11 @@ import {
   Button,
   Divider,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import { Colors } from "../../../constants/styles";
 
 const TambahCabang = () => {
   const { user } = useContext(AuthContext);
@@ -83,73 +85,81 @@ const TambahCabang = () => {
         Tambah Cabang
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            id="outlined-basic"
-            label="Kode Cabang"
-            variant="outlined"
-            value={kodeCabang}
-            InputProps={{
-              readOnly: true
-            }}
-          />
-          <TextField
-            error={error && namaCabang.length === 0 && true}
-            helperText={
-              error && namaCabang.length === 0 && "Nama Cabang harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama Cabang"
-            variant="outlined"
-            value={namaCabang}
-            sx={spacingTop}
-            onChange={(e) => setNamaCabang(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Alamat"
-            variant="outlined"
-            value={alamatCabang}
-            sx={spacingTop}
-            onChange={(e) => setAlamatCabang(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Kode Cabang</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeCabang}
+              InputProps={{
+                readOnly: true
+              }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Nama Cabang</Typography>
+            <TextField
+              size="small"
+              error={error && namaCabang.length === 0 && true}
+              helperText={
+                error && namaCabang.length === 0 && "Nama Cabang harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaCabang}
+              onChange={(e) => setNamaCabang(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Alamat</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={alamatCabang}
+              onChange={(e) => setAlamatCabang(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Telepon</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={teleponCabang}
+              onChange={(e) => setTeleponCabang(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Isi</Typography>
+            <TextField
+              size="small"
+              error={error && picCabang.length === 0 && true}
+              helperText={
+                error && picCabang.length === 0 && "PIC Cabang harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={picCabang}
+              onChange={(e) => setPicCabang(e.target.value.toUpperCase())}
+            />
+          </Box>
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
-          <TextField
-            id="outlined-basic"
-            label="Telepon"
+        <Box sx={spacingTop}>
+          <Button
             variant="outlined"
-            value={teleponCabang}
-            onChange={(e) => setTeleponCabang(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && picCabang.length === 0 && true}
-            helperText={
-              error && picCabang.length === 0 && "PIC Cabang harus diisi!"
-            }
-            id="outlined-basic"
-            label="PIC"
-            variant="outlined"
-            value={picCabang}
-            sx={spacingTop}
-            onChange={(e) => setPicCabang(e.target.value.toUpperCase())}
-          />
+            color="secondary"
+            onClick={() => navigate("/cabang")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={saveUser}
+          >
+            Simpan
+          </Button>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/cabang")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button variant="contained" startIcon={<SaveIcon />} onClick={saveUser}>
-          Simpan
-        </Button>
-      </Box>
+      </Paper>
       <Divider sx={spacingTop} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -200,4 +210,26 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

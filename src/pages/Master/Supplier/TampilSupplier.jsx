@@ -204,73 +204,73 @@ const TampilSupplier = () => {
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
+          <Typography sx={labelInput}>Kode</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Kode"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={kodeSupplier}
           />
+          <Typography sx={[labelInput, spacingTop]}>Nama Supplier</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Nama Supplier"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={namaSupplier}
           />
+          <Typography sx={[labelInput, spacingTop]}>Alamat</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Alamat Supplier"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={alamatSupplier}
           />
+          <Typography sx={[labelInput, spacingTop]}>Kota</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Kota Supplier"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={kotaSupplier}
           />
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
+        <Box sx={[showDataWrapper, secondWrapper]}>
+          <Typography sx={labelInput}>Telepon</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Telepon Supplier"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={teleponSupplier}
           />
+          <Typography sx={[labelInput, spacingTop]}>PIC</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="PIC Supplier"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={picSupplier}
           />
+          <Typography sx={[labelInput, spacingTop]}>NPWP</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="NPWP Supplier"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
@@ -325,7 +325,10 @@ const dividerStyle = {
 const showDataContainer = {
   mt: 4,
   display: "flex",
-  flexWrap: "wrap"
+  flexDirection: {
+    xs: "column",
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -352,4 +355,23 @@ const tableContainer = {
   pt: 4,
   display: "flex",
   justifyContent: "center"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

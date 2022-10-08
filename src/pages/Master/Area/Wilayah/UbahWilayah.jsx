@@ -11,9 +11,11 @@ import {
   Button,
   Divider,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { Colors } from "../../../../constants/styles";
 
 const UbahWilayah = () => {
   const { user } = useContext(AuthContext);
@@ -79,53 +81,56 @@ const UbahWilayah = () => {
         Ubah Wilayah
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            error={error && kodeWilayah.length === 0 && true}
-            helperText={
-              error && kodeWilayah.length === 0 && "Kode harus diisi!"
-            }
-            id="outlined-basic"
-            label="Kode"
-            variant="outlined"
-            value={kodeWilayah}
-            InputProps={{
-              readOnly: true
-            }}
-            onChange={(e) => setKodeWilayah(e.target.value)}
-          />
-          <TextField
-            error={error && namaWilayah.length === 0 && true}
-            helperText={
-              error && namaWilayah.length === 0 && "Nama Wilayah harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama Wilayah"
-            variant="outlined"
-            sx={spacingTop}
-            value={namaWilayah}
-            onChange={(e) => setNamaWilayah(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Kode Wilayah</Typography>
+            <TextField
+              size="small"
+              error={error && kodeWilayah.length === 0 && true}
+              helperText={
+                error && kodeWilayah.length === 0 && "Kode harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeWilayah}
+              InputProps={{
+                readOnly: true
+              }}
+              onChange={(e) => setKodeWilayah(e.target.value)}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Nama Wilayah</Typography>
+            <TextField
+              size="small"
+              error={error && namaWilayah.length === 0 && true}
+              helperText={
+                error && namaWilayah.length === 0 && "Nama Wilayah harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaWilayah}
+              onChange={(e) => setNamaWilayah(e.target.value.toUpperCase())}
+            />
+          </Box>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/wilayah")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<EditIcon />}
-          onClick={updateUser}
-        >
-          Ubah
-        </Button>
-      </Box>
+        <Box sx={spacingTop}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => navigate("/wilayah")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={updateUser}
+          >
+            Ubah
+          </Button>
+        </Box>
+      </Paper>
       <Divider sx={dividerStyle} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -176,4 +181,16 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
 };

@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { namaSoftware, namaProgram } from "../constants/GeneralSetting";
+import { useStateContext } from "../contexts/ContextProvider";
 
 const Header = () => {
+  const { screenSize } = useStateContext();
   const { user, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -19,6 +21,20 @@ const Header = () => {
 
   const loginButtonHandler = () => {
     navigate("/login");
+  };
+
+  const container = {
+    height: screenSize >= 650 ? "65px" : "120px",
+    backgroundColor: "black"
+  };
+
+  const contained = {
+    display: "flex",
+    justifyContent: "space-around",
+    flexDirection: screenSize >= 650 ? "row" : "column",
+    paddingLeft: "50px",
+    paddingRight: "50px",
+    paddingTop: "10px"
   };
 
   return (
@@ -62,19 +78,6 @@ const Header = () => {
 
 export default Header;
 
-const container = {
-  height: "65px",
-  backgroundColor: "black"
-};
-
-const contained = {
-  display: "flex",
-  justifyContent: "space-around",
-  paddingLeft: "50px",
-  paddingRight: "50px",
-  paddingTop: "10px"
-};
-
 const titleStyle = {
   color: "white",
   textDecoration: "none",
@@ -101,10 +104,22 @@ const buttonUser = {
 };
 
 const containerAvatar = {
-  ml: "auto",
+  ml: {
+    md: "auto",
+    sm: null
+  },
+  mt: {
+    md: "0",
+    xs: "10px"
+  },
   p: 1,
   borderRadius: "16px",
-  backgroundColor: "primary.light"
+  backgroundColor: "primary.light",
+  display: {
+    md: null,
+    sm: "flex"
+  },
+  justifyContent: "center"
 };
 
 const avatarIcon = {

@@ -189,43 +189,43 @@ const TampilKecamatan = () => {
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
+          <Typography sx={labelInput}>Kode Kecamatan</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Kode Kecamatan"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={kodeKecamatan}
           />
+          <Typography sx={[labelInput, spacingTop]}>Nama Kecamatan</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Nama Kecamatan"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={namaKecamatan}
           />
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
+        <Box sx={[showDataWrapper, secondWrapper]}>
+          <Typography sx={labelInput}>Kode Wilayah</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Kode Wilayah"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
             value={kodeWilayah}
           />
+          <Typography sx={[labelInput, spacingTop]}>Nama Wilayah</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
-            label="Nama Wilayah"
             variant="filled"
-            sx={textFieldStyle}
             InputProps={{
               readOnly: true
             }}
@@ -280,7 +280,10 @@ const dividerStyle = {
 const showDataContainer = {
   mt: 4,
   display: "flex",
-  flexWrap: "wrap"
+  flexDirection: {
+    xs: "column",
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -307,4 +310,23 @@ const tableContainer = {
   pt: 4,
   display: "flex",
   justifyContent: "center"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

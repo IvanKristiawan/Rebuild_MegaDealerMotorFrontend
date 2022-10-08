@@ -11,9 +11,11 @@ import {
   Button,
   Divider,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { Colors } from "../../../constants/styles";
 
 const UbahUser = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -101,93 +103,103 @@ const UbahUser = () => {
         Ubah User
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            error={error && username.length === 0 && true}
-            helperText={
-              error && username.length === 0 && "Username harus diisi!"
-            }
-            id="outlined-basic"
-            label="Username"
-            variant="outlined"
-            value={username}
-            onChange={(e) => setUsername(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && tipeUser.length === 0 && true}
-            helperText={
-              error && tipeUser.length === 0 && "Tipe User harus diisi!"
-            }
-            id="outlined-basic"
-            label="Tipe User"
-            variant="outlined"
-            sx={spacingTop}
-            value={tipeUser}
-            onChange={(e) => setTipeUser(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && periode.length === 0 && true}
-            helperText={error && periode.length === 0 && "Periode harus diisi!"}
-            id="outlined-basic"
-            label="Periode"
-            variant="outlined"
-            sx={spacingTop}
-            value={periode}
-            onChange={(e) => setPeriode(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Username</Typography>
+            <TextField
+              size="small"
+              error={error && username.length === 0 && true}
+              helperText={
+                error && username.length === 0 && "Username harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={username}
+              onChange={(e) => setUsername(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Tipe User</Typography>
+            <TextField
+              size="small"
+              error={error && tipeUser.length === 0 && true}
+              helperText={
+                error && tipeUser.length === 0 && "Tipe User harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={tipeUser}
+              onChange={(e) => setTipeUser(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Periode</Typography>
+            <TextField
+              size="small"
+              error={error && periode.length === 0 && true}
+              helperText={
+                error && periode.length === 0 && "Periode harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={periode}
+              onChange={(e) => setPeriode(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Kode Kwitansi</Typography>
+            <TextField
+              size="small"
+              error={error && kodeKwitansi.length === 0 && true}
+              helperText={
+                error &&
+                kodeKwitansi.length === 0 &&
+                "Kode Kwitansi harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeKwitansi}
+              onChange={(e) => setKodeKwitansi(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>No Terakhir</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={noTerakhir}
+              onChange={(e) => setNoTerakhir(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Password (baru)
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Typography>
+              *Kosongkan jika tidak ingin mengganti password
+            </Typography>
+          </Box>
         </Box>
-        <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
-          <TextField
-            error={error && kodeKwitansi.length === 0 && true}
-            helperText={
-              error && kodeKwitansi.length === 0 && "Kode Kwitansi harus diisi!"
-            }
-            id="outlined-basic"
-            label="Kode Kwitansi"
+        <Box sx={spacingTop}>
+          <Button
             variant="outlined"
-            value={kodeKwitansi}
-            onChange={(e) => setKodeKwitansi(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="No Terakhir"
-            variant="outlined"
-            sx={spacingTop}
-            value={noTerakhir}
-            onChange={(e) => setNoTerakhir(e.target.value.toUpperCase())}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Password (baru)"
-            variant="outlined"
-            type="password"
-            sx={spacingTop}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Typography>
-            *Kosongkan jika tidak ingin mengganti password
-          </Typography>
+            color="secondary"
+            onClick={() => navigate("/daftarUser")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={updateUser}
+          >
+            Ubah
+          </Button>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/daftarUser")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<EditIcon />}
-          onClick={updateUser}
-        >
-          Ubah
-        </Button>
-      </Box>
+      </Paper>
       <Divider sx={dividerStyle} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -238,4 +250,26 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

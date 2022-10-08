@@ -11,9 +11,11 @@ import {
   Button,
   Divider,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { Colors } from "../../../../constants/styles";
 
 const UbahWarna = () => {
   const { user } = useContext(AuthContext);
@@ -77,39 +79,41 @@ const UbahWarna = () => {
         Ubah Warna
       </Typography>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <TextField
-            error={error && namaWarna.length === 0 && true}
-            helperText={
-              error && namaWarna.length === 0 && "Nama Warna harus diisi!"
-            }
-            id="outlined-basic"
-            label="Nama Warna"
-            variant="outlined"
-            sx={spacingTop}
-            value={namaWarna}
-            onChange={(e) => setNamaWarna(e.target.value.toUpperCase())}
-          />
+      <Paper sx={contentContainer} elevation={12}>
+        <Box sx={showDataContainer}>
+          <Box sx={showDataWrapper}>
+            <Typography sx={labelInput}>Nama Warna</Typography>
+            <TextField
+              size="small"
+              error={error && namaWarna.length === 0 && true}
+              helperText={
+                error && namaWarna.length === 0 && "Nama Warna harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={namaWarna}
+              onChange={(e) => setNamaWarna(e.target.value.toUpperCase())}
+            />
+          </Box>
         </Box>
-      </Box>
-      <Box sx={spacingTop}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/warna")}
-          sx={{ marginRight: 2 }}
-        >
-          {"< Kembali"}
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<EditIcon />}
-          onClick={updateUser}
-        >
-          Ubah
-        </Button>
-      </Box>
+        <Box sx={spacingTop}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => navigate("/warna")}
+            sx={{ marginRight: 2 }}
+          >
+            {"< Kembali"}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={updateUser}
+          >
+            Ubah
+          </Button>
+        </Box>
+      </Paper>
       <Divider sx={dividerStyle} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -160,4 +164,16 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const contentContainer = {
+  p: 3,
+  pt: 1,
+  mt: 2,
+  backgroundColor: Colors.grey100
 };

@@ -164,143 +164,143 @@ const TampilABeli = () => {
         <Divider sx={dividerStyle} />
         <Box sx={textFieldContainer}>
           <Box sx={textFieldWrapper}>
+            <Typography sx={labelInput}>No Beli</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="No Beli"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={noBeli}
             />
+            <Typography sx={[labelInput, spacingTop]}>Kode Tipe</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Kode Tipe"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={kodeTipe}
             />
+            <Typography sx={[labelInput, spacingTop]}>Tahun</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Tahun"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={tahun}
             />
+            <Typography sx={[labelInput, spacingTop]}>Nama Warna</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Nama Warna"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={namaWarna}
             />
+            <Typography sx={[labelInput, spacingTop]}>No Rangka</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="No Rangka"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={noRangka}
             />
+            <Typography sx={[labelInput, spacingTop]}>No Mesin</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="No Mesin"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={noMesin}
             />
+            <Typography sx={[labelInput, spacingTop]}>Nopol</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Nopol"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={nopol}
             />
           </Box>
-          <Box sx={[textFieldWrapper, { marginLeft: 4 }]}>
+          <Box sx={[textFieldWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Nama Stnk</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Nama Stnk"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={namaStnk}
             />
+            <Typography sx={[labelInput, spacingTop]}>Tanggal Stnk</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Tanggal Stnk"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={tglStnk}
             />
+            <Typography sx={[labelInput, spacingTop]}>Jenis</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Jenis"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={jenisABeli}
             />
+            <Typography sx={[labelInput, spacingTop]}>Harga Satuan</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Harga Satuan"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={hargaSatuan.toLocaleString()}
             />
+            <Typography sx={[labelInput, spacingTop]}>PPN</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="PPN"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={ppnABeli.toLocaleString()}
             />
+            <Typography sx={[labelInput, spacingTop]}>Tanggal Jual</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="Tanggal Jual"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
               value={tanggalJual}
             />
+            <Typography sx={[labelInput, spacingTop]}>No. Jual</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
-              label="No. Jual"
               variant="filled"
-              sx={textFieldStyle}
               InputProps={{
                 readOnly: true
               }}
@@ -354,4 +354,23 @@ const textFieldWrapper = {
 const textFieldStyle = {
   display: "flex",
   mt: 4
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

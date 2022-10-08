@@ -232,173 +232,201 @@ const TampilRegister = () => {
           <Divider sx={dividerStyle} />
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
+              <Typography sx={labelInput}>No</Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="No"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={noRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>Tanggal</Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Tanggal"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={tanggalRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Nama Register
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Nama Register"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={namaRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Alamat Register
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Alamat Register"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={almRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Telepon Register
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Telepon Register"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={tlpRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                No. KTP Register
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="No. KTP Register"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={noKtpRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Alamat KTP Register
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Alamat KTP Register"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={almKtpRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                No. KK Register
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="No. KK Register"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={noKKRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Nama Penjamin
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Nama Penjamin"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={namaPjmRegister}
               />
             </Box>
-            <Box sx={[showDataWrapper, { marginLeft: 4 }]}>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Alamat Penjamin</Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Alamat Penjamin"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={almPjmRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Telepon Penjamin
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Telepon Penjamin"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={tlpPjmRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Hubungan Penjamin
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Hubungan Penjamin"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={hubunganRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                No. KTP Penjamin
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="No. KTP Penjamin"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={noKtpPjmRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Pekerjaan Penjamin
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Pekerjaan Penjamin"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={pkjRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Nama Referensi
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Nama Referensi"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={namaRefRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Alamat Referensi
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Alamat Referensi"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
                 value={almRefRegister}
               />
+              <Typography sx={[labelInput, spacingTop]}>
+                Telepon Referensi
+              </Typography>
               <TextField
+                size="small"
                 id="outlined-basic"
-                label="Telepon Referensi"
                 variant="filled"
-                sx={textFieldStyle}
                 InputProps={{
                   readOnly: true
                 }}
@@ -579,7 +607,10 @@ const dividerStyle = {
 const showDataContainer = {
   mt: 4,
   display: "flex",
-  flexWrap: "wrap"
+  flexDirection: {
+    xs: "column",
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -620,4 +651,23 @@ const thTable = {
   padding: "8px",
   backgroundColor: "gray",
   color: "white"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };
