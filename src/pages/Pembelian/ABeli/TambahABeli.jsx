@@ -134,7 +134,7 @@ const TambahABeli = () => {
     });
     // Get Supplier
     const getSupplier = await axios.post(`${tempUrl}/suppliersByKode`, {
-      kodeSupplier,
+      kodeSupplier: kodeSupplier.split(" ", 1)[0],
       id: user._id,
       token: user.token
     });
@@ -150,10 +150,6 @@ const TambahABeli = () => {
         kodeTipe.length === 0 ||
         tahun.length === 0 ||
         namaWarna.length === 0 ||
-        noRangka.length === 0 ||
-        noRangka2.length === 0 ||
-        noMesin.length === 0 ||
-        noMesin2.length === 0 ||
         hargaSatuan.length === 0
       ) {
         setError(true);
@@ -163,13 +159,6 @@ const TambahABeli = () => {
           setLoading(true);
           // Get Beli
           const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
-            id: user._id,
-            token: user.token
-          });
-          // Update Beli
-          await axios.post(`${tempUrl}/updateBeli/${id}`, {
-            jumlahBeli:
-              parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
             id: user._id,
             token: user.token
           });
@@ -187,6 +176,13 @@ const TambahABeli = () => {
             tglStnk,
             jenisBeli: jenisABeli,
             hargaSatuan,
+            id: user._id,
+            token: user.token
+          });
+          // Update Beli
+          await axios.post(`${tempUrl}/updateBeli/${id}`, {
+            jumlahBeli:
+              parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
             id: user._id,
             token: user.token
           });
@@ -221,10 +217,6 @@ const TambahABeli = () => {
         kodeTipe.length === 0 ||
         tahun.length === 0 ||
         namaWarna.length === 0 ||
-        noRangka.length === 0 ||
-        noRangka2.length === 0 ||
-        noMesin.length === 0 ||
-        noMesin2.length === 0 ||
         nopol.length === 0 ||
         namaStnk.length === 0 ||
         tglStnk.length === 0 ||
@@ -237,13 +229,6 @@ const TambahABeli = () => {
           setLoading(true);
           // Get Beli
           const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
-            id: user._id,
-            token: user.token
-          });
-          // Update Beli
-          await axios.post(`${tempUrl}/updateBeli/${id}`, {
-            jumlahBeli:
-              parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
             id: user._id,
             token: user.token
           });
@@ -261,6 +246,13 @@ const TambahABeli = () => {
             tglStnk: combineTanggalBeli,
             jenisBeli: jenisABeli,
             hargaSatuan,
+            id: user._id,
+            token: user.token
+          });
+          // Update Beli
+          await axios.post(`${tempUrl}/updateBeli/${id}`, {
+            jumlahBeli:
+              parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
             id: user._id,
             token: user.token
           });
@@ -324,7 +316,7 @@ const TambahABeli = () => {
               )}
               onInputChange={(e, value) => {
                 if (value) {
-                  getTipe(`${value.split(" ", 1)[0]} ${value.split(" ")[1]}`);
+                  getTipe(`${value.split(" ", 1)[0]}`);
                 } else {
                   setNoRangka("");
                   setNoMesin("");
@@ -367,10 +359,6 @@ const TambahABeli = () => {
             <Box sx={{ display: "flex" }}>
               <TextField
                 size="small"
-                error={error && noRangka.length === 0 && true}
-                helperText={
-                  error && noRangka.length === 0 && "No. Rangka harus diisi!"
-                }
                 id="outlined-basic"
                 label="No Rangka"
                 variant="outlined"
@@ -383,10 +371,6 @@ const TambahABeli = () => {
               />
               <TextField
                 size="small"
-                error={error && noRangka2.length === 0 && true}
-                helperText={
-                  error && noRangka2.length === 0 && "(Tambahan) harus diisi!"
-                }
                 id="outlined-basic"
                 label="(Tambahan)"
                 variant="outlined"
@@ -398,10 +382,6 @@ const TambahABeli = () => {
             <Box sx={{ display: "flex" }}>
               <TextField
                 size="small"
-                error={error && noMesin.length === 0 && true}
-                helperText={
-                  error && noMesin.length === 0 && "No. Mesin harus diisi!"
-                }
                 id="outlined-basic"
                 label="No Mesin"
                 variant="outlined"
@@ -414,10 +394,6 @@ const TambahABeli = () => {
               />
               <TextField
                 size="small"
-                error={error && noMesin2.length === 0 && true}
-                helperText={
-                  error && noMesin2.length === 0 && "(Tambahan) harus diisi!"
-                }
                 id="outlined-basic"
                 label="(Tambahan)"
                 variant="outlined"
@@ -518,6 +494,7 @@ const TambahABeli = () => {
                   ` : Rp ${parseInt(hargaSatuan).toLocaleString()}`}
               </Typography>
               <TextField
+                type="number"
                 error={error && hargaSatuan.length === 0 && true}
                 helperText={
                   error &&
