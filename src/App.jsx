@@ -29,7 +29,7 @@ import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ElevatorIcon from "@mui/icons-material/Elevator";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import { Divider, Box, Typography, CssBaseline } from "@mui/material";
+import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
 import { useStateContext } from "./contexts/ContextProvider";
@@ -305,11 +305,13 @@ const App = () => {
           )}
           <main>
             {user && (
-              <MenuIcon
-                onClick={() => openMenuFunction()}
-                sx={sidebarIcon}
-                fontSize="large"
-              />
+              <Tooltip title="Menu">
+                <MenuIcon
+                  onClick={() => openMenuFunction()}
+                  sx={sidebarIcon}
+                  fontSize="large"
+                />
+              </Tooltip>
             )}
             <Box sx={contentWrapper}>
               <Routes>
