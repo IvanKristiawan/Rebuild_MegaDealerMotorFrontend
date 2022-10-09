@@ -14,15 +14,15 @@ import {
   Divider,
   Pagination,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel
 } from "@mui/material";
 import { ShowTableDaftarStok } from "../../../components/ShowTable";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
+import { SearchBar, Loader, usePagination } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
@@ -49,6 +49,9 @@ const TampilDaftarStok = () => {
   const [tglStnk, setTglStnk] = useState("");
   const [jenisBeli, setJenisBeli] = useState("");
   const [hargaSatuan, setHargaSatuan] = useState("");
+  const [tanggalJual, setTanggalJual] = useState("");
+  const [noJual, setNoJual] = useState("");
+  const [value, setValue] = useState("semua");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
   const [daftarStoksForDoc, setDaftarStoksForDoc] = useState([]);
@@ -64,7 +67,9 @@ const TampilDaftarStok = () => {
     { title: "No Mesin", field: "noMesin" },
     { title: "Nama Stnk", field: "namaStnk" },
     { title: "Tgl Stnk", field: "tglStnk" },
-    { title: "Harga", field: "hargaSatuan" }
+    { title: "Harga", field: "hargaSatuan" },
+    { title: "Tanggal Jual", field: "tanggalJual" },
+    { title: "No Jual", field: "noJual" }
   ];
 
   const [loading, setLoading] = useState(false);
@@ -100,28 +105,69 @@ const TampilDaftarStok = () => {
     _DATA.jump(p);
   };
 
+  const handleChangeLaporan = (event) => {
+    setValue(event.target.value);
+  };
+
   useEffect(() => {
     getUsers();
     getDaftarStoksForDoc();
     id && getUserById();
-  }, [id]);
+  }, [id, value]);
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/daftarStoks`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    let response;
+    switch (value) {
+      case "terjual":
+        response = await axios.post(`${tempUrl}/daftarStoksTerjual`, {
+          id: user._id,
+          token: user.token
+        });
+        setUser(response.data);
+        break;
+      case "belum":
+        response = await axios.post(`${tempUrl}/daftarStoksBelumTerjual`, {
+          id: user._id,
+          token: user.token
+        });
+        setUser(response.data);
+        break;
+      default:
+        response = await axios.post(`${tempUrl}/daftarStoks`, {
+          id: user._id,
+          token: user.token
+        });
+        setUser(response.data);
+    }
     setLoading(false);
   };
 
   const getDaftarStoksForDoc = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/daftarStoksForDoc`, {
-      id: user._id,
-      token: user.token
-    });
+    let response;
+    switch (value) {
+      case "terjual":
+        response = await axios.post(`${tempUrl}/daftarStoksTerjualForDoc`, {
+          id: user._id,
+          token: user.token
+        });
+        break;
+      case "belum":
+        response = await axios.post(
+          `${tempUrl}/daftarStoksBelumTerjualForDoc`,
+          {
+            id: user._id,
+            token: user.token
+          }
+        );
+        break;
+      default:
+        response = await axios.post(`${tempUrl}/daftarStoksForDoc`, {
+          id: user._id,
+          token: user.token
+        });
+    }
     setDaftarStoksForDoc(response.data);
     setLoading(false);
   };
@@ -144,6 +190,8 @@ const TampilDaftarStok = () => {
       setTglStnk(response.data.tglStnk);
       setJenisBeli(response.data.jenisBeli);
       setHargaSatuan(response.data.hargaSatuan);
+      setTanggalJual(response.data.tanggalJual);
+      setNoJual(response.data.noJual);
     }
   };
 
@@ -158,7 +206,7 @@ const TampilDaftarStok = () => {
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Daftar Daftar Stok`, 90, 30);
+    doc.text(`Daftar Stok`, 90, 30);
     doc.setFontSize(10);
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
@@ -193,6 +241,10 @@ const TampilDaftarStok = () => {
     XLSX.writeFile(workBook, `daftarStok.xlsx`);
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <Box sx={container}>
       <Typography color="#757575">Stok</Typography>
@@ -210,6 +262,30 @@ const TampilDaftarStok = () => {
         </ButtonGroup>
       </Box>
       <Divider sx={dividerStyle} />
+      <FormControl sx={{ marginTop: 1 }}>
+        <FormLabel id="demo-controlled-radio-buttons-group">Laporan</FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-controlled-radio-buttons-group"
+          name="controlled-radio-buttons-group"
+          defaultValue="semua"
+          value={value}
+          onChange={handleChangeLaporan}
+        >
+          <FormControlLabel
+            value="terjual"
+            control={<Radio />}
+            label="Terjual"
+          />
+          <FormControlLabel
+            value="belum"
+            control={<Radio />}
+            label="Belum Terjual"
+          />
+          <FormControlLabel value="semua" control={<Radio />} label="Semua" />
+        </RadioGroup>
+      </FormControl>
+      <Divider sx={{ marginTop: 1 }} />
       {noBeli.length !== 0 && (
         <>
           <Box sx={showDataContainer}>

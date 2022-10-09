@@ -238,6 +238,19 @@ const App = () => {
                 </SubMenu>
                 <Divider />
                 <SubMenu
+                  label="Pembelian"
+                  icon={<AddShoppingCartIcon name="pembelian-icon" />}
+                >
+                  <Link to="/daftarBeli" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<ShoppingBagIcon name="beli-icon" />}>
+                        Beli
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                </SubMenu>
+                <Divider />
+                <SubMenu
                   label="Penjualan"
                   icon={<CurrencyExchangeIcon name="penjualan-icon" />}
                 >
@@ -253,13 +266,15 @@ const App = () => {
                 </SubMenu>
                 <Divider />
                 <SubMenu
-                  label="Pembelian"
-                  icon={<AddShoppingCartIcon name="pembelian-icon" />}
+                  label="Laporan"
+                  icon={<InventoryIcon name="utility-icon" />}
                 >
-                  <Link to="/daftarBeli" style={linkText}>
+                  <Link to="/daftarStok" style={linkText}>
                     <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<ShoppingBagIcon name="beli-icon" />}>
-                        Beli
+                      <MenuItem
+                        icon={<FormatListNumberedIcon name="profil-icon" />}
+                      >
+                        Daftar Stok
                       </MenuItem>
                     </Box>
                   </Link>
@@ -280,21 +295,6 @@ const App = () => {
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<ElevatorIcon name="daftar-icon" />}>
                         Daftar User
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                </SubMenu>
-                <Divider />
-                <SubMenu
-                  label="Stok"
-                  icon={<InventoryIcon name="utility-icon" />}
-                >
-                  <Link to="/daftarStok" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<FormatListNumberedIcon name="profil-icon" />}
-                      >
-                        Daftar Stok
                       </MenuItem>
                     </Box>
                   </Link>

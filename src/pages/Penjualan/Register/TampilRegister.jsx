@@ -30,6 +30,7 @@ import * as XLSX from "xlsx";
 import DownloadIcon from "@mui/icons-material/Download";
 import html2canvas from "html2canvas";
 import PrintIcon from "@mui/icons-material/Print";
+import { Colors } from "../../../constants/styles";
 
 const TampilRegister = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -200,7 +201,7 @@ const TampilRegister = () => {
         pdf.text(`${lokasiPerusahaan}`, 15, 15);
         pdf.setFontSize(16);
         pdf.text(`Daftar Register Penjualan`, 80, 30);
-        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 10, 40, 190, 90);
+        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 10, 40, 190, 170);
         pdf.setFontSize(10);
         pdf.text(
           `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
@@ -467,7 +468,7 @@ const TampilRegister = () => {
       <Box sx={searchBarContainer}>
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
-      <Box sx={tableContainer}>
+      <Box sx={[tableContainer]}>
         <table id="content">
           <tr>
             <th style={thTable}>No</th>
@@ -649,11 +650,6 @@ const showDataWrapper = {
   }
 };
 
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
-};
-
 const searchBarContainer = {
   pt: 6,
   display: "flex",
@@ -676,7 +672,7 @@ const thTable = {
   border: "1px solid #dddddd",
   textAlign: "left",
   padding: "8px",
-  backgroundColor: "gray",
+  backgroundColor: Colors.blue700,
   color: "white"
 };
 
