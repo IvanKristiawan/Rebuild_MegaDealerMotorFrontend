@@ -176,6 +176,7 @@ const UbahBeli = () => {
           <Box sx={textFieldWrapper}>
             <Typography sx={labelInput}>Kode Beli</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={kodeBeli}
@@ -185,6 +186,7 @@ const UbahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Jenis Motor</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={jenisBeli}
@@ -194,6 +196,7 @@ const UbahBeli = () => {
               Tanggal (hari-bulan-tahun)
             </Typography>
             <TextField
+              size="small"
               error={error && tanggalBeli.length === 0 && true}
               helperText={
                 error && tanggalBeli.length === 0 && "Tanggal harus diisi!"
@@ -205,11 +208,13 @@ const UbahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Kode Supplier</Typography>
             <Autocomplete
+              size="small"
               disablePortal
               id="combo-box-demo"
               options={supplierOptions}
               renderInput={(params) => (
                 <TextField
+                  size="small"
                   error={error && kodeSupplier.length === 0 && true}
                   helperText={
                     error &&
@@ -226,6 +231,7 @@ const UbahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Lama (Hari)</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={lama}
@@ -235,6 +241,7 @@ const UbahBeli = () => {
               Jatuh Tempo (hari-bulan-tahun)
             </Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={jatuhTempo}
@@ -250,6 +257,7 @@ const UbahBeli = () => {
                   ` : Rp ${parseInt(jumlahBeli).toLocaleString()}`}
               </Typography>
               <TextField
+                size="small"
                 error={error && jumlahBeli.length === 0 && true}
                 helperText={
                   error && jumlahBeli.length === 0 && "Jumlah harus diisi!"
@@ -269,6 +277,7 @@ const UbahBeli = () => {
                   ` : Rp ${parseInt(potongan).toLocaleString()}`}
               </Typography>
               <TextField
+                size="small"
                 error={error && potongan.length === 0 && true}
                 helperText={
                   error && potongan.length === 0 && "Potongan harus diisi!"
@@ -291,6 +300,7 @@ const UbahBeli = () => {
                     ` : Rp ${parseInt(ppnBeli).toLocaleString()}`}
                 </Typography>
                 <TextField
+                  size="small"
                   error={error && ppnBeli.length === 0 && true}
                   helperText={
                     error && ppnBeli.length === 0 && "PPN harus diisi!"

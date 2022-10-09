@@ -195,21 +195,25 @@ const TampilWarna = () => {
         />
       </Box>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <Typography sx={labelInput}>Nama Warna</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={namaWarna}
-          />
-        </Box>
-      </Box>
-      <Divider sx={dividerStyle} />
+      {namaWarna.length !== 0 && (
+        <>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <Typography sx={labelInput}>Nama Warna</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaWarna}
+              />
+            </Box>
+          </Box>
+          <Divider sx={dividerStyle} />
+        </>
+      )}
       <Box sx={searchBarContainer}>
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>

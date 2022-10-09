@@ -209,43 +209,49 @@ const TampilMarketing = () => {
         />
       </Box>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <Typography sx={labelInput}>Kode</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={kodeMarketing}
-          />
-          <Typography sx={[labelInput, spacingTop]}>Nama Marketing</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={namaMarketing}
-          />
-        </Box>
-        <Box sx={[showDataWrapper, secondWrapper]}>
-          <Typography sx={labelInput}>Telepon</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={teleponMarketing}
-          />
-        </Box>
-      </Box>
-      <Divider sx={dividerStyle} />
+      {kodeMarketing.length !== 0 && (
+        <>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <Typography sx={labelInput}>Kode</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={kodeMarketing}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Nama Marketing
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaMarketing}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Telepon</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={teleponMarketing}
+              />
+            </Box>
+          </Box>
+          <Divider sx={dividerStyle} />
+        </>
+      )}
       <Box sx={searchBarContainer}>
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>

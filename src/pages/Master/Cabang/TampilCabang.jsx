@@ -219,63 +219,67 @@ const TampilCabang = () => {
         />
       </Box>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <Typography sx={labelInput}>Kode</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={kodeCabang}
-          />
-          <Typography sx={[labelInput, spacingTop]}>Nama Cabang</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={namaCabang}
-          />
-          <Typography sx={[labelInput, spacingTop]}>Alamat</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={alamatCabang}
-          />
-        </Box>
-        <Box sx={[showDataWrapper, secondWrapper]}>
-          <Typography sx={labelInput}>Telepon</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={teleponCabang}
-          />
-          <Typography sx={[labelInput, spacingTop]}>PIC</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={picCabang}
-          />
-        </Box>
-      </Box>
-      <Divider sx={dividerStyle} />
+      {kodeCabang.length !== 0 && (
+        <>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <Typography sx={labelInput}>Kode</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={kodeCabang}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Nama Cabang</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaCabang}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Alamat</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={alamatCabang}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Telepon</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={teleponCabang}
+              />
+              <Typography sx={[labelInput, spacingTop]}>PIC</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={picCabang}
+              />
+            </Box>
+          </Box>
+          <Divider sx={dividerStyle} />
+        </>
+      )}
       <Box sx={searchBarContainer}>
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>

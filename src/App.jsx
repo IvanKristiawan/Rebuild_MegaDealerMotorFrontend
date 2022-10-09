@@ -27,6 +27,8 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ElevatorIcon from "@mui/icons-material/Elevator";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { Divider, Box, Typography, CssBaseline } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -76,7 +78,8 @@ import {
   TampilBeli,
   UbahBeli,
   TampilABeli,
-  TambahABeli
+  TambahABeli,
+  TampilDaftarStok
 } from "./pages/index";
 
 const App = () => {
@@ -124,14 +127,6 @@ const App = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    if (screenSize >= 900) {
-      setOpen(false);
-    } else {
-      setOpen(true);
-    }
-  }, [screenSize]);
-
   return (
     <Box>
       <BrowserRouter>
@@ -141,7 +136,7 @@ const App = () => {
           {user && (
             <Sidebar
               backgroundColor={Colors.blue50}
-              defaultCollapsed
+              defaultCollapsed={screenSize >= 650 ? false : true}
               collapsedWidth="0px"
             >
               <Menu>
@@ -285,6 +280,21 @@ const App = () => {
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<ElevatorIcon name="daftar-icon" />}>
                         Daftar User
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                </SubMenu>
+                <Divider />
+                <SubMenu
+                  label="Stok"
+                  icon={<InventoryIcon name="utility-icon" />}
+                >
+                  <Link to="/daftarStok" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<FormatListNumberedIcon name="profil-icon" />}
+                      >
+                        Daftar Stok
                       </MenuItem>
                     </Box>
                   </Link>
@@ -684,6 +694,23 @@ const App = () => {
                   element={
                     <USERRoute>
                       <TampilABeli />
+                    </USERRoute>
+                  }
+                />
+                {/* Daftar Stok */}
+                <Route
+                  path="/daftarStok"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarStok />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarStok/:id"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarStok />
                     </USERRoute>
                   }
                 />

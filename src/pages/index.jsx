@@ -59,6 +59,9 @@ export { default as TampilDaftarBeli } from "./Pembelian/Beli/TampilDaftarBeli";
 export { default as TambahBeli } from "./Pembelian/Beli/TambahBeli";
 export { default as TampilBeli } from "./Pembelian/Beli/TampilBeli";
 export { default as UbahBeli } from "./Pembelian/Beli/UbahBeli";
+// STOK
+// Daftar Stok Page
+export { default as TampilDaftarStok } from "./Stok/DaftarStok/TampilDaftarStok";
 // A Beli Page
 export { default as TampilABeli } from "./Pembelian/ABeli/TampilABeli";
 export { default as TambahABeli } from "./Pembelian/ABeli/TambahABeli";

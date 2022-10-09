@@ -22,6 +22,7 @@ const TampilABeli = () => {
   const { user, dispatch } = useContext(AuthContext);
   const { id, idABeli } = useParams();
   const navigate = useNavigate();
+  const [idStok, setIdStok] = useState("");
   const [noBeli, setNoBeli] = useState("");
   const [kodeTipe, setKodeTipe] = useState("");
   const [tahun, setTahun] = useState("");
@@ -57,6 +58,7 @@ const TampilABeli = () => {
         id: user._id,
         token: user.token
       });
+      setIdStok(response.data.idStok);
       setNoBeli(response.data.noBeli);
       setKodeTipe(response.data.kodeTipe);
       setTahun(response.data.tahun);
@@ -90,6 +92,11 @@ const TampilABeli = () => {
       });
       // Delete A Beli
       await axios.post(`${tempUrl}/deleteABeli/${idABeli}`, {
+        id: user._id,
+        token: user.token
+      });
+      // Delete Daftar Stok
+      await axios.post(`${tempUrl}/deleteDaftarStok/${idStok}`, {
         id: user._id,
         token: user.token
       });

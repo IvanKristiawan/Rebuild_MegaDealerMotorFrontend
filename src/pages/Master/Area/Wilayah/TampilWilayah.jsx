@@ -204,31 +204,37 @@ const TampilWilayah = () => {
         />
       </Box>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <Typography sx={labelInput}>Kode</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={kodeWilayah}
-          />
-          <Typography sx={[labelInput, spacingTop]}>Nama Wilayah</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={namaWilayah}
-          />
-        </Box>
-      </Box>
-      <Divider sx={dividerStyle} />
+      {kodeWilayah.length !== 0 && (
+        <>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <Typography sx={labelInput}>Kode</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={kodeWilayah}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Nama Wilayah
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaWilayah}
+              />
+            </Box>
+          </Box>
+          <Divider sx={dividerStyle} />
+        </>
+      )}
       <Box sx={searchBarContainer}>
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>

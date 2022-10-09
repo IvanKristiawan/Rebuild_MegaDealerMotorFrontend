@@ -1143,3 +1143,113 @@ export function ShowTableBeli({ id, currentPosts, nomorNota }) {
     </TableContainer>
   );
 }
+
+export function ShowTableDaftarStok({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Beli
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tanggal Beli
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Supplier
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Merk
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              tipe
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Rangka
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Mesin
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nopol
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Nama Stnk</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Jenis</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.supplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.merk.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/daftarStok/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.noBeli}
+                </TableCell>
+                <TableCell>{user.tanggalBeli}</TableCell>
+                <TableCell>{user.supplier}</TableCell>
+                <TableCell>{user.merk}</TableCell>
+                <TableCell>{user.tipe}</TableCell>
+                <TableCell>{user.noRangka}</TableCell>
+                <TableCell>{user.noMesin}</TableCell>
+                <TableCell>{user.nopol}</TableCell>
+                <TableCell>{user.namaStnk}</TableCell>
+                <TableCell>{user.jenisBeli}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}

@@ -224,73 +224,77 @@ const TampilTipe = () => {
         />
       </Box>
       <Divider sx={dividerStyle} />
-      <Box sx={showDataContainer}>
-        <Box sx={showDataWrapper}>
-          <Typography sx={labelInput}>Kode</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={kodeTipe}
-          />
-          <Typography sx={[labelInput, spacingTop]}>Nama Tipe</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={namaTipe}
-          />
-          <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={noRangka}
-          />
-        </Box>
-        <Box sx={[showDataWrapper, secondWrapper]}>
-          <Typography sx={labelInput}>No. Mesin</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={noMesin}
-          />
-          <Typography sx={[labelInput, spacingTop]}>Isi</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={isi}
-          />
-          <Typography sx={[labelInput, spacingTop]}>Merk</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={merk}
-          />
-        </Box>
-      </Box>
-      <Divider sx={dividerStyle} />
+      {kodeTipe.length !== 0 && (
+        <>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <Typography sx={labelInput}>Kode</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={kodeTipe}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Nama Tipe</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaTipe}
+              />
+              <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={noRangka}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>No. Mesin</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={noMesin}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Isi</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={isi}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Merk</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={merk}
+              />
+            </Box>
+          </Box>
+          <Divider sx={dividerStyle} />
+        </>
+      )}
       <Box sx={searchBarContainer}>
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>

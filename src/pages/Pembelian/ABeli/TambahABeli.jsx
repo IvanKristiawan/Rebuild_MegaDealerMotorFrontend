@@ -36,6 +36,8 @@ const TambahABeli = () => {
   const [jenisABeli, setJenisABeli] = useState("");
   const [hargaSatuan, setHargaSatuan] = useState("");
   const [ppnABeli, setPpnABeli] = useState("");
+  const [tanggalBeli, setTanggalBeli] = useState("");
+  const [kodeSupplier, setKodeSupplier] = useState("");
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const [tipes, setTipes] = useState([]);
@@ -81,8 +83,8 @@ const TambahABeli = () => {
       id: user._id,
       token: user.token
     });
-    setNoRangka(response.data[0].noRangka);
-    setNoMesin(response.data[0].noMesin);
+    setNoRangka(response.data.noRangka);
+    setNoMesin(response.data.noMesin);
     setKodeTipe(idTipe);
   };
 
@@ -93,6 +95,8 @@ const TambahABeli = () => {
       token: user.token
     });
     setJenisABeli(response.data.jenisBeli);
+    setTanggalBeli(response.data.tanggalBeli);
+    setKodeSupplier(response.data.kodeSupplier);
     setLoading(false);
   };
 
@@ -118,7 +122,25 @@ const TambahABeli = () => {
 
   const saveUser = async (e) => {
     e.preventDefault();
+    // Set Tgl Stnk
+    var tempTanggalStnk1 = tglStnk.toString().split("-", 1)[0];
+    var tempTanggalStnk2 = tglStnk.toString().split("-")[1];
+    var tempTanggalStnk3 = tglStnk.toString().split("-")[2];
+    var combineTanggalBeli = `${tempTanggalStnk3}-${tempTanggalStnk2}-${tempTanggalStnk1}`;
+    // Get Beli
     const response = await axios.post(`${tempUrl}/belis/${id}`, {
+      id: user._id,
+      token: user.token
+    });
+    // Get Supplier
+    const getSupplier = await axios.post(`${tempUrl}/suppliersByKode`, {
+      kodeSupplier,
+      id: user._id,
+      token: user.token
+    });
+    // Get Tipe/Merk
+    const getTipe = await axios.post(`${tempUrl}/tipesByKode`, {
+      kodeTipe,
       id: user._id,
       token: user.token
     });
@@ -151,8 +173,26 @@ const TambahABeli = () => {
             id: user._id,
             token: user.token
           });
+          // Save Daftar Stok
+          const tempDaftarStok = await axios.post(`${tempUrl}/saveDaftarStok`, {
+            noBeli: belis.noBeli,
+            tanggalBeli,
+            supplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
+            merk: getTipe.data.merk,
+            tipe: `${getTipe.data.kodeTipe} - ${getTipe.data.namaTipe}`,
+            noRangka: `${noRangka}${noRangka2}`,
+            noMesin: `${noMesin}${noMesin2}`,
+            nopol,
+            namaStnk,
+            tglStnk,
+            jenisBeli: jenisABeli,
+            hargaSatuan,
+            id: user._id,
+            token: user.token
+          });
           // Save A Beli
           await axios.post(`${tempUrl}/saveABeli`, {
+            idStok: tempDaftarStok.data._id,
             noBeli: belis.noBeli,
             kodeTipe,
             tahun,
@@ -165,6 +205,8 @@ const TambahABeli = () => {
             jenisABeli,
             hargaSatuan,
             ppnABeli,
+            tanggalBeli,
+            kodeSupplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
             id: user._id,
             token: user.token
           });
@@ -205,8 +247,26 @@ const TambahABeli = () => {
             id: user._id,
             token: user.token
           });
+          // Save Daftar Stok
+          const tempDaftarStok = await axios.post(`${tempUrl}/saveDaftarStok`, {
+            noBeli: belis.noBeli,
+            tanggalBeli,
+            supplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
+            merk: getTipe.data.merk,
+            tipe: `${getTipe.data.kodeTipe} - ${getTipe.data.namaTipe}`,
+            noRangka: `${noRangka}${noRangka2}`,
+            noMesin: `${noMesin}${noMesin2}`,
+            nopol,
+            namaStnk,
+            tglStnk: combineTanggalBeli,
+            jenisBeli: jenisABeli,
+            hargaSatuan,
+            id: user._id,
+            token: user.token
+          });
           // Save A Beli
           await axios.post(`${tempUrl}/saveABeli`, {
+            idStok: tempDaftarStok.data._id,
             noBeli: belis.noBeli,
             kodeTipe,
             tahun,
@@ -215,10 +275,11 @@ const TambahABeli = () => {
             noMesin: `${noMesin}${noMesin2}`,
             nopol,
             namaStnk,
-            tglStnk,
+            tglStnk: combineTanggalBeli,
             jenisABeli,
             hargaSatuan,
             ppnABeli,
+            kodeSupplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
             id: user._id,
             token: user.token
           });
@@ -391,18 +452,19 @@ const TambahABeli = () => {
                   onChange={(e) => setNopol(e.target.value.toUpperCase())}
                 />
                 <Typography sx={[labelInput, spacingTop]}>
-                  Tanggal Stnk (hari-bulan-tahun)
+                  Tanggal Stnk
                 </Typography>
-                <TextField
-                  size="small"
+                <input
+                  type="date"
+                  id="start"
+                  name="trip-start"
                   error={error && tglStnk.length === 0 && true}
                   helperText={
                     error && tglStnk.length === 0 && "Tanggal Stnk harus diisi!"
                   }
-                  id="outlined-basic"
-                  variant="outlined"
                   value={tglStnk}
-                  onChange={(e) => setTglStnk(e.target.value.toUpperCase())}
+                  onChange={(e) => setTglStnk(e.target.value)}
+                  style={inputDateStyle}
                 />
                 <Typography sx={[labelInput, spacingTop]}>Nama Stnk</Typography>
                 <TextField
@@ -428,9 +490,7 @@ const TambahABeli = () => {
                   disabled
                   onChange={(e) => setNopol(e.target.value.toUpperCase())}
                 />
-                <Typography sx={[spacingTop]}>
-                  Tanggal Stnk (hari-bulan-tahun)
-                </Typography>
+                <Typography sx={[spacingTop]}>Tanggal Stnk</Typography>
                 <TextField
                   size="small"
                   id="outlined-basic"
@@ -605,4 +665,13 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const inputDateStyle = {
+  height: "40px",
+  border: "1px solid gray",
+  borderColor: Colors.grey400,
+  borderRadius: "5px",
+  paddingLeft: 8,
+  backgroundColor: Colors.grey100
 };

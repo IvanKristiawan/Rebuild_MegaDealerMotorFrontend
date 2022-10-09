@@ -176,6 +176,7 @@ const TambahBeli = () => {
           <Box sx={textFieldWrapper}>
             <Typography sx={labelInput}>Kode Beli</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={kodeBeli}
@@ -185,6 +186,7 @@ const TambahBeli = () => {
               Tanggal (hari-bulan-tahun)
             </Typography>
             <TextField
+              size="small"
               error={error && tanggalBeli.length === 0 && true}
               helperText={
                 error && tanggalBeli.length === 0 && "Tanggal harus diisi!"
@@ -196,11 +198,13 @@ const TambahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Kode Supplier</Typography>
             <Autocomplete
+              size="small"
               disablePortal
               id="combo-box-demo"
               options={supplierOptions}
               renderInput={(params) => (
                 <TextField
+                  size="small"
                   error={error && kodeSupplier.length === 0 && true}
                   helperText={
                     error &&
@@ -216,11 +220,13 @@ const TambahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Jenis Motor</Typography>
             <Autocomplete
+              size="small"
               disablePortal
               id="combo-box-demo"
               options={jenisBeliOption}
               renderInput={(params) => (
                 <TextField
+                  size="small"
                   error={error && jenisBeli.length === 0 && true}
                   helperText={
                     error &&
@@ -234,6 +240,7 @@ const TambahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Jumlah</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={jumlahBeli}
@@ -244,6 +251,7 @@ const TambahBeli = () => {
           <Box sx={[textFieldWrapper, secondWrapper]}>
             <Typography sx={labelInput}>PPN</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={ppnBeli}
@@ -252,6 +260,7 @@ const TambahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Potongan</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={potongan}
@@ -260,6 +269,7 @@ const TambahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Lama (Hari)</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={lama}
@@ -269,6 +279,7 @@ const TambahBeli = () => {
               Jatuh Tempo (hari-bulan-tahun)
             </Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={jatuhTempo}

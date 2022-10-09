@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../../../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
-} from "../../../../constants/GeneralSetting";
+} from "../../../constants/GeneralSetting";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
@@ -16,41 +16,55 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableKecamatan } from "../../../../components/ShowTable";
+import { ShowTableDaftarStok } from "../../../components/ShowTable";
 import {
   SearchBar,
   Loader,
   usePagination,
   ButtonModifier
-} from "../../../../components";
-import { tempUrl } from "../../../../contexts/ContextProvider";
-import { useStateContext } from "../../../../contexts/ContextProvider";
+} from "../../../components";
+import { tempUrl } from "../../../contexts/ContextProvider";
+import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
-const TampilKecamatan = () => {
+const TampilDaftarStok = () => {
   const { user, dispatch } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
-  const [kodeWilayah, setKodeWilayah] = useState("");
-  const [namaWilayah, setNamaWilayah] = useState("");
-  const [kodeKecamatan, setKodeKecamatan] = useState("");
-  const [namaKecamatan, setNamaKecamatan] = useState("");
+  const [noBeli, setNoBeli] = useState("");
+  const [tanggalBeli, setTanggalBeli] = useState("");
+  const [supplier, setSupplier] = useState("");
+  const [merk, setMerk] = useState("");
+  const [tipe, setTipe] = useState("");
+  const [noRangka, setNoRangka] = useState("");
+  const [noMesin, setNoMesin] = useState("");
+  const [nopol, setNopol] = useState("");
+  const [namaStnk, setNamaStnk] = useState("");
+  const [tglStnk, setTglStnk] = useState("");
+  const [jenisBeli, setJenisBeli] = useState("");
+  const [hargaSatuan, setHargaSatuan] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [kecamatansForDoc, setKecamatansForDoc] = useState([]);
+  const [daftarStoksForDoc, setDaftarStoksForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode Wilayah", field: "kodeWilayah" },
-    { title: "Nama Wilayah", field: "namaWilayah" },
-    { title: "Kode Kecamatan", field: "kodeKecamatan" },
-    { title: "Nama Kecamatan", field: "namaKecamatan" }
+    { title: "No Beli", field: "noBeli" },
+    { title: "Tanggal", field: "tanggalBeli" },
+    { title: "Supplier", field: "supplier" },
+    { title: "merk", field: "merk" },
+    { title: "Tipe", field: "tipe" },
+    { title: "No Rangka", field: "noRangka" },
+    { title: "No Mesin", field: "noMesin" },
+    { title: "Nama Stnk", field: "namaStnk" },
+    { title: "Tgl Stnk", field: "tglStnk" },
+    { title: "Harga", field: "hargaSatuan" }
   ];
 
   const [loading, setLoading] = useState(false);
@@ -64,10 +78,14 @@ const TampilKecamatan = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeWilayah.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.kodeKecamatan.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.namaKecamatan.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.namaWilayah.toUpperCase().includes(searchTerm.toUpperCase())
+      val.supplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.merk.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -84,13 +102,13 @@ const TampilKecamatan = () => {
 
   useEffect(() => {
     getUsers();
-    getKecamatansForDoc();
+    getDaftarStoksForDoc();
     id && getUserById();
   }, [id]);
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kecamatans`, {
+    const response = await axios.post(`${tempUrl}/daftarStoks`, {
       id: user._id,
       token: user.token
     });
@@ -98,45 +116,34 @@ const TampilKecamatan = () => {
     setLoading(false);
   };
 
-  const getKecamatansForDoc = async () => {
+  const getDaftarStoksForDoc = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kecamatansForDoc`, {
+    const response = await axios.post(`${tempUrl}/daftarStoksForDoc`, {
       id: user._id,
       token: user.token
     });
-    setKecamatansForDoc(response.data);
+    setDaftarStoksForDoc(response.data);
     setLoading(false);
   };
 
   const getUserById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/kecamatans/${id}`, {
+      const response = await axios.post(`${tempUrl}/daftarStoks/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeWilayah(response.data.kodeWilayah);
-      setNamaWilayah(response.data.namaWilayah);
-      setKodeKecamatan(response.data.kodeKecamatan);
-      setNamaKecamatan(response.data.namaKecamatan);
-    }
-  };
-
-  const deleteUser = async (id) => {
-    try {
-      setLoading(true);
-      await axios.post(`${tempUrl}/deleteKecamatan/${id}`, {
-        id: user._id,
-        token: user.token
-      });
-      getUsers();
-      setKodeWilayah("");
-      setNamaWilayah("");
-      setKodeKecamatan("");
-      setNamaKecamatan("");
-      setLoading(false);
-      navigate("/kecamatan");
-    } catch (error) {
-      console.log(error);
+      setNoBeli(response.data.noBeli);
+      setTanggalBeli(response.data.tanggalBeli);
+      setSupplier(response.data.supplier);
+      setMerk(response.data.merk);
+      setTipe(response.data.tipe);
+      setNoRangka(response.data.noRangka);
+      setNoMesin(response.data.noMesin);
+      setNopol(response.data.nopol);
+      setNamaStnk(response.data.namaStnk);
+      setTglStnk(response.data.tglStnk);
+      setJenisBeli(response.data.jenisBeli);
+      setHargaSatuan(response.data.hargaSatuan);
     }
   };
 
@@ -151,15 +158,18 @@ const TampilKecamatan = () => {
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Daftar Kecamatan`, 90, 30);
+    doc.text(`Daftar Daftar Stok`, 90, 30);
     doc.setFontSize(10);
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
       280
     );
-    doc.setFontSize(12);
+    doc.setFontSize(4);
     doc.autoTable({
+      styles: {
+        fontSize: 8
+      },
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
       body: users,
@@ -168,30 +178,26 @@ const TampilKecamatan = () => {
         color: [0, 0, 0]
       }
     });
-    doc.save(`daftarKecamatan.pdf`);
+    doc.save(`daftarStok.pdf`);
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(kecamatansForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(daftarStoksForDoc);
     const workBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, `Kecamatan`);
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Daftar Stok`);
     // Buffer
     let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
     // Binary String
     XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
     // Download
-    XLSX.writeFile(workBook, `daftarKecamatan.xlsx`);
+    XLSX.writeFile(workBook, `daftarStok.xlsx`);
   };
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <Box sx={container}>
-      <Typography color="#757575">Master</Typography>
+      <Typography color="#757575">Stok</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Kecamatan
+        Daftar Stok
       </Typography>
       <Box sx={downloadButtons}>
         <ButtonGroup variant="outlined" color="secondary">
@@ -203,22 +209,12 @@ const TampilKecamatan = () => {
           </Button>
         </ButtonGroup>
       </Box>
-      <Box sx={buttonModifierContainer}>
-        <ButtonModifier
-          id={id}
-          kode={kodeWilayah}
-          addLink={`/kecamatan/tambahKecamatan`}
-          editLink={`/kecamatan/${id}/edit`}
-          deleteUser={deleteUser}
-          nameUser={kodeKecamatan}
-        />
-      </Box>
       <Divider sx={dividerStyle} />
-      {kodeKecamatan.length !== 0 && (
+      {noBeli.length !== 0 && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
-              <Typography sx={labelInput}>Kode Kecamatan</Typography>
+              <Typography sx={labelInput}>No. Beli</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -226,10 +222,10 @@ const TampilKecamatan = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={kodeKecamatan}
+                value={noBeli}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Nama Kecamatan
+                Tanggal Beli
               </Typography>
               <TextField
                 size="small"
@@ -238,11 +234,51 @@ const TampilKecamatan = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={namaKecamatan}
+                value={tanggalBeli}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Supplier</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={supplier}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Merk</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={merk}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Tipe</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={tipe}
+              />
+              <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={noRangka}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
-              <Typography sx={labelInput}>Kode Wilayah</Typography>
+              <Typography sx={labelInput}>No. Mesin</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -250,10 +286,30 @@ const TampilKecamatan = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={kodeWilayah}
+                value={noMesin}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Nopol</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={nopol}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Nama Stnk</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaStnk}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Nama Wilayah
+                Tanggal Stnk
               </Typography>
               <TextField
                 size="small"
@@ -262,7 +318,29 @@ const TampilKecamatan = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={namaWilayah}
+                value={tglStnk}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Jenis Beli</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={jenisBeli}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Harga Satuan
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={hargaSatuan.toLocaleString()}
               />
             </Box>
           </Box>
@@ -273,7 +351,7 @@ const TampilKecamatan = () => {
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
       <Box sx={tableContainer}>
-        <ShowTableKecamatan
+        <ShowTableDaftarStok
           currentPosts={currentPosts}
           searchTerm={searchTerm}
         />
@@ -291,7 +369,7 @@ const TampilKecamatan = () => {
   );
 };
 
-export default TampilKecamatan;
+export default TampilDaftarStok;
 
 const container = {
   p: 4
@@ -328,11 +406,6 @@ const showDataWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const searchBarContainer = {
