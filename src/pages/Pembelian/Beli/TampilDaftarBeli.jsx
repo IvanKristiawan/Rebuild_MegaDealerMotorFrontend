@@ -17,7 +17,6 @@ const TampilDaftarBeli = () => {
   const { screenSize } = useStateContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
   const kode = null;
 
   const [loading, setLoading] = useState(false);
@@ -51,19 +50,8 @@ const TampilDaftarBeli = () => {
   };
 
   useEffect(() => {
-    getSupplier();
     getUsers();
   }, []);
-
-  const getSupplier = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/supplierMainInfo`, {
-      id: user._id,
-      token: user.token
-    });
-    setSuppliers(response.data);
-    setLoading(false);
-  };
 
   const getUsers = async () => {
     setLoading(true);
@@ -102,7 +90,6 @@ const TampilDaftarBeli = () => {
         <ShowTableDaftarBeli
           currentPosts={currentPosts}
           searchTerm={searchTerm}
-          suppliers={suppliers}
         />
       </Box>
       <Box sx={tableContainer}>

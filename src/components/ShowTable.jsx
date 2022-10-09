@@ -888,7 +888,7 @@ export function ShowTableSupplier({ currentPosts, searchTerm }) {
   );
 }
 
-export function ShowTableDaftarBeli({ currentPosts, searchTerm, suppliers }) {
+export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
   let navigate = useNavigate();
   const classes = useStyles();
   return (
@@ -996,14 +996,7 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm, suppliers }) {
                 <TableCell component="th" scope="row">
                   {user.noBeli}
                 </TableCell>
-                <TableCell>
-                  {user.kodeSupplier} -
-                  {suppliers
-                    .filter(
-                      (supplier) => supplier.kodeSupplier === user.kodeSupplier
-                    )
-                    .map((sup) => ` ${sup.namaSupplier}`)}
-                </TableCell>
+                <TableCell>{user.kodeSupplier}</TableCell>
                 <TableCell>{user.jumlahBeli.toLocaleString()}</TableCell>
                 <TableCell>{user.ppnBeli.toLocaleString()}</TableCell>
                 <TableCell>{user.potongan.toLocaleString()}</TableCell>

@@ -224,9 +224,7 @@ const UbahBeli = () => {
                   {...params}
                 />
               )}
-              onInputChange={(e, value) =>
-                setKodeSupplier(value.split(" ", 1)[0])
-              }
+              onInputChange={(e, value) => setKodeSupplier(value)}
               value={{ label: kodeSupplier }}
             />
             <Typography sx={[labelInput, spacingTop]}>Lama (Hari)</Typography>

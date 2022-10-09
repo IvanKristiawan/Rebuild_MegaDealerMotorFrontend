@@ -214,9 +214,7 @@ const TambahBeli = () => {
                   {...params}
                 />
               )}
-              onInputChange={(e, value) =>
-                setKodeSupplier(value.split(" ", 1)[0])
-              }
+              onInputChange={(e, value) => setKodeSupplier(value)}
             />
             <Typography sx={[labelInput, spacingTop]}>Jenis Motor</Typography>
             <Autocomplete
