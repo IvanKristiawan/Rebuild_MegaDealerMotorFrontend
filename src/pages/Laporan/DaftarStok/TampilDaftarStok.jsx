@@ -78,7 +78,8 @@ const TampilDaftarStok = () => {
 
   const columnsRekap = [
     { title: "Tipe", field: "_id" },
-    { title: "Total", field: "total" }
+    { title: "Total", field: "total" },
+    { title: "Harga", field: `harga` }
   ];
 
   var groupBy = function (xs, key) {
