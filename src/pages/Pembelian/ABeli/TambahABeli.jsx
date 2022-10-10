@@ -169,6 +169,7 @@ const TambahABeli = () => {
             supplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
             merk: getTipe.data.merk,
             tipe: `${getTipe.data.kodeTipe} - ${getTipe.data.namaTipe}`,
+            namaTipe: getTipe.data.namaTipe,
             noRangka: `${noRangka}${noRangka2}`,
             noMesin: `${noMesin}${noMesin2}`,
             nopol,
@@ -176,6 +177,7 @@ const TambahABeli = () => {
             tglStnk,
             jenisBeli: jenisABeli,
             hargaSatuan,
+            hargaTable: `Rp ${parseInt(hargaSatuan).toLocaleString()}`,
             id: user._id,
             token: user.token
           });
@@ -239,6 +241,7 @@ const TambahABeli = () => {
             supplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
             merk: getTipe.data.merk,
             tipe: `${getTipe.data.kodeTipe} - ${getTipe.data.namaTipe}`,
+            namaTipe: getTipe.data.namaTipe,
             noRangka: `${noRangka}${noRangka2}`,
             noMesin: `${noMesin}${noMesin2}`,
             nopol,
@@ -246,6 +249,7 @@ const TambahABeli = () => {
             tglStnk: combineTanggalBeli,
             jenisBeli: jenisABeli,
             hargaSatuan,
+            hargaTable: `Rp ${parseInt(hargaSatuan).toLocaleString()}`,
             id: user._id,
             token: user.token
           });

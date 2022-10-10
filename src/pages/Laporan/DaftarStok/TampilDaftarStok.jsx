@@ -25,11 +25,13 @@ import { ShowTableDaftarStok } from "../../../components/ShowTable";
 import { SearchBar, Loader, usePagination } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 const TampilDaftarStok = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -51,26 +53,40 @@ const TampilDaftarStok = () => {
   const [hargaSatuan, setHargaSatuan] = useState("");
   const [tanggalJual, setTanggalJual] = useState("");
   const [noJual, setNoJual] = useState("");
+  const [daftarStoksLength, setDaftarStoksLength] = useState("");
   const [value, setValue] = useState("semua");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [stoksForTable, setStoksForTable] = useState([]);
   const [daftarStoksForDoc, setDaftarStoksForDoc] = useState([]);
+  const [rekapStoks, setRekapStoks] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
     { title: "No Beli", field: "noBeli" },
     { title: "Tanggal", field: "tanggalBeli" },
     { title: "Supplier", field: "supplier" },
-    { title: "merk", field: "merk" },
     { title: "Tipe", field: "tipe" },
     { title: "No Rangka", field: "noRangka" },
     { title: "No Mesin", field: "noMesin" },
     { title: "Nama Stnk", field: "namaStnk" },
     { title: "Tgl Stnk", field: "tglStnk" },
-    { title: "Harga", field: "hargaSatuan" },
+    { title: "Harga", field: "hargaTable" },
     { title: "Tanggal Jual", field: "tanggalJual" },
     { title: "No Jual", field: "noJual" }
   ];
+
+  const columnsRekap = [
+    { title: "Tipe", field: "_id" },
+    { title: "Total", field: "total" }
+  ];
+
+  var groupBy = function (xs, key) {
+    return xs.reduce(function (rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  };
 
   const [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
@@ -111,9 +127,22 @@ const TampilDaftarStok = () => {
 
   useEffect(() => {
     getUsers();
+    getRekapStoks();
+    getDaftarStoksLength();
     getDaftarStoksForDoc();
     id && getUserById();
   }, [id, value]);
+
+  const getRekapStoks = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/daftarStoksRekap`, {
+      id: user._id,
+      token: user.token
+    });
+    // setRekapStoks(response.data);
+    setRekapStoks(groupBy(response.data, "merk"));
+    setLoading(false);
+  };
 
   const getUsers = async () => {
     setLoading(true);
@@ -125,6 +154,7 @@ const TampilDaftarStok = () => {
           token: user.token
         });
         setUser(response.data);
+        setStoksForTable(groupBy(response.data, "merk"));
         break;
       case "belum":
         response = await axios.post(`${tempUrl}/daftarStoksBelumTerjual`, {
@@ -132,6 +162,7 @@ const TampilDaftarStok = () => {
           token: user.token
         });
         setUser(response.data);
+        setStoksForTable(groupBy(response.data, "merk"));
         break;
       default:
         response = await axios.post(`${tempUrl}/daftarStoks`, {
@@ -139,7 +170,18 @@ const TampilDaftarStok = () => {
           token: user.token
         });
         setUser(response.data);
+        setStoksForTable(groupBy(response.data, "merk"));
     }
+    setLoading(false);
+  };
+
+  const getDaftarStoksLength = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/daftarStoksLength`, {
+      id: user._id,
+      token: user.token
+    });
+    setDaftarStoksLength(response.data);
     setLoading(false);
   };
 
@@ -196,6 +238,10 @@ const TampilDaftarStok = () => {
   };
 
   const downloadPdf = () => {
+    let tempTotal = 0;
+    let tempSubTotal = 0;
+    let tempSubGroupHeight = 35;
+    let tempHeight = 35;
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
@@ -213,20 +259,121 @@ const TampilDaftarStok = () => {
       15,
       280
     );
-    doc.setFontSize(4);
-    doc.autoTable({
-      styles: {
-        fontSize: 8
-      },
-      margin: { top: 45 },
-      columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
-      headStyles: {
-        fillColor: [117, 117, 117],
-        color: [0, 0, 0]
-      }
-    });
+    for (var i = 0; i < Object.keys(stoksForTable).length; i++) {
+      doc.setFontSize(10);
+      doc.text(
+        `Merk : ${Object.values(stoksForTable)[i][0].merk}`,
+        15,
+        tempSubGroupHeight + 5
+      );
+      doc.autoTable({
+        styles: {
+          fontSize: 8
+        },
+        margin: { top: 43 },
+        columns: columns.map((col) => ({ ...col, dataKey: col.field })),
+        body: Object.values(stoksForTable)[i],
+        headStyles: {
+          fillColor: [117, 117, 117],
+          color: [0, 0, 0]
+        },
+        didDrawPage: (d) => {
+          tempSubGroupHeight = d.cursor.y;
+          tempHeight = d.cursor.y;
+        }
+      });
+      Object.values(stoksForTable)[i].map((val) => {
+        tempSubTotal += val.hargaSatuan;
+        tempTotal += val.hargaSatuan;
+      });
+      doc.setFontSize(8);
+      doc.text(
+        `Sub Total : ${
+          Object.values(stoksForTable)[i].length
+        } | Rp ${tempSubTotal.toLocaleString()}`,
+        140,
+        tempHeight + 2
+      );
+      tempSubTotal = 0;
+    }
+    doc.setFontSize(10);
+    doc.text(
+      `Total : ${daftarStoksLength} | Rp ${tempTotal.toLocaleString()}`,
+      140,
+      tempHeight + 8
+    );
     doc.save(`daftarStok.pdf`);
+  };
+
+  const downloadRekap = () => {
+    let tempTotal = 0;
+    let tempSubTotal = 0;
+    let tempSubGroupHeight = 35;
+    let tempHeight = 35;
+    let tempCount = 0;
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
+    doc.text(`${lokasiPerusahaan}`, 15, 15);
+    doc.setFontSize(16);
+    doc.text(`Rekap Stok`, 90, 30);
+    doc.setFontSize(10);
+    doc.text(
+      `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
+      15,
+      280
+    );
+    for (var i = 0; i < Object.keys(rekapStoks).length; i++) {
+      doc.setFontSize(10);
+      doc.text(
+        `Merk : ${Object.values(rekapStoks)[i][0].merk}`,
+        15,
+        tempSubGroupHeight + 5
+      );
+      doc.autoTable({
+        styles: {
+          fontSize: 8
+        },
+        margin: { top: 43 },
+        columns: columnsRekap.map((col) => ({ ...col, dataKey: col.field })),
+        body: Object.values(rekapStoks)[i],
+        headStyles: {
+          fillColor: [117, 117, 117],
+          color: [0, 0, 0]
+        },
+        didDrawPage: (d) => {
+          tempSubGroupHeight = d.cursor.y;
+          tempHeight = d.cursor.y;
+        }
+      });
+      Object.values(rekapStoks)[i].map((val) => {
+        tempSubTotal += val.harga;
+        tempTotal += val.harga;
+      });
+      for (let j = 0; j < Object.values(rekapStoks)[i].length; j++) {
+        tempCount += Object.values(rekapStoks)[i][j].total;
+      }
+      doc.setFontSize(8);
+      doc.text(
+        `Sub Total : ${tempCount} | Rp ${tempSubTotal.toLocaleString()}`,
+        140,
+        tempHeight + 2
+      );
+      tempSubTotal = 0;
+      tempCount = 0;
+    }
+    doc.setFontSize(10);
+    doc.text(
+      `Total : ${daftarStoksLength} | Rp ${tempTotal.toLocaleString()}`,
+      140,
+      tempHeight + 8
+    );
+    doc.save(`rekapStok.pdf`);
   };
 
   const downloadExcel = () => {
@@ -253,8 +400,14 @@ const TampilDaftarStok = () => {
       </Typography>
       <Box sx={downloadButtons}>
         <ButtonGroup variant="outlined" color="secondary">
+          <Button
+            startIcon={<FormatListBulletedIcon />}
+            onClick={() => downloadRekap()}
+          >
+            REKAP
+          </Button>
           <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
-            CETAK
+            RINCI
           </Button>
           <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
             EXCEL
@@ -432,6 +585,64 @@ const TampilDaftarStok = () => {
           searchTerm={searchTerm}
         />
       </Box>
+      {/* <Box sx={[tableContainer]}>
+        <table id="content">
+          <tr>
+            <th style={thTable}>No. Beli</th>
+            <th style={thTable}>Tanggal Beli</th>
+            <th style={thTable}>Supplier</th>
+            <th style={thTable}>Merk</th>
+            <th style={thTable}>Tipe</th>
+            <th style={thTable}>No. Rangka</th>
+            <th style={thTable}>No. Mesin</th>
+            <th style={thTable}>Nopol</th>
+            <th style={thTable}>Nama Stnk</th>
+            <th style={thTable}>Jenis</th>
+          </tr>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.supplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.merk.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <>
+                <tr
+                  style={{
+                    cursor: "pointer",
+                    height: "100px",
+                    backgroundColor: index % 2 === 0 && "#dddddd"
+                  }}
+                  onClick={() => {
+                    navigate(`/daftarStok/${user._id}`);
+                  }}
+                >
+                  <td style={tdTable}>{user.noBeli}</td>
+                  <td style={tdTable}>{user.tanggalBeli}</td>
+                  <td style={tdTable}>{user.supplier}</td>
+                  <td style={tdTable}>{user.merk}</td>
+                  <td style={tdTable}>{user.tipe}</td>
+                  <td style={tdTable}>{user.noRangka}</td>
+                  <td style={tdTable}>{user.noMesin}</td>
+                  <td style={tdTable}>{user.nopol}</td>
+                  <td style={tdTable}>{user.namaStnk}</td>
+                  <td style={tdTable}>{user.jenisBeli}</td>
+                </tr>
+              </>
+            ))}
+        </table>
+      </Box> */}
       <Box sx={tableContainer}>
         <Pagination
           count={count}
@@ -453,13 +664,6 @@ const container = {
 
 const subTitleText = {
   fontWeight: "900"
-};
-
-const buttonModifierContainer = {
-  mt: 4,
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "center"
 };
 
 const dividerStyle = {
@@ -520,4 +724,18 @@ const downloadButtons = {
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center"
+};
+
+const tdTable = {
+  border: "1px solid #dddddd",
+  textAlign: "left",
+  padding: "8px"
+};
+
+const thTable = {
+  border: "1px solid #dddddd",
+  textAlign: "left",
+  padding: "8px",
+  backgroundColor: Colors.blue700,
+  color: "white"
 };
