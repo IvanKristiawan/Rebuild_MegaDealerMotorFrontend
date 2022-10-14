@@ -17,6 +17,7 @@ const TampilDaftarBeli = () => {
   const { screenSize } = useStateContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const kode = null;
 
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,11 @@ const TampilDaftarBeli = () => {
       val.tanggalBeli.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.kodeSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jumlahBeli.toString().includes(searchTerm) ||
-      val.ppnBeli.toString().toUpperCase().includes(searchTerm.toUpperCase())
+      val.ppnBeli.toString().toUpperCase().includes(searchTerm.toUpperCase()) ||
+      suppliers
+        .filter((supplier) => supplier.kodeSupplier === val.kodeSupplier)
+        .map((sup) => sup.namaSupplier)
+        .includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -50,8 +55,19 @@ const TampilDaftarBeli = () => {
   };
 
   useEffect(() => {
+    getSupplier();
     getUsers();
   }, []);
+
+  const getSupplier = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/supplierMainInfo`, {
+      id: user._id,
+      token: user.token
+    });
+    setSuppliers(response.data);
+    setLoading(false);
+  };
 
   const getUsers = async () => {
     setLoading(true);
@@ -90,6 +106,7 @@ const TampilDaftarBeli = () => {
         <ShowTableDaftarBeli
           currentPosts={currentPosts}
           searchTerm={searchTerm}
+          suppliers={suppliers}
         />
       </Box>
       <Box sx={tableContainer}>

@@ -888,7 +888,7 @@ export function ShowTableSupplier({ currentPosts, searchTerm }) {
   );
 }
 
-export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
+export function ShowTableDaftarBeli({ currentPosts, searchTerm, suppliers }) {
   let navigate = useNavigate();
   const classes = useStyles();
   return (
@@ -957,9 +957,6 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
                 val.tanggalBeli
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.kodeSupplier
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
                 val.jumlahBeli.toString().includes(searchTerm) ||
                 val.ppnBeli
                   .toString()
@@ -976,7 +973,15 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
                 val.jenisBeli
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.jatuhTempo.toUpperCase().includes(searchTerm.toUpperCase())
+                val.jatuhTempo
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                suppliers
+                  .filter(
+                    (supplier) => supplier.kodeSupplier === val.kodeSupplier
+                  )
+                  .map((sup) => sup.namaSupplier)
+                  .includes(searchTerm.toUpperCase())
               ) {
                 return val;
               }
@@ -996,7 +1001,14 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
                 <TableCell component="th" scope="row">
                   {user.noBeli}
                 </TableCell>
-                <TableCell>{user.kodeSupplier}</TableCell>
+                <TableCell>
+                  {user.kodeSupplier} -
+                  {suppliers
+                    .filter(
+                      (supplier) => supplier.kodeSupplier === user.kodeSupplier
+                    )
+                    .map((sup) => ` ${sup.namaSupplier}`)}
+                </TableCell>
                 <TableCell>{user.jumlahBeli.toLocaleString()}</TableCell>
                 <TableCell>{user.ppnBeli.toLocaleString()}</TableCell>
                 <TableCell>{user.potongan.toLocaleString()}</TableCell>
@@ -1137,7 +1149,12 @@ export function ShowTableBeli({ id, currentPosts, nomorNota }) {
   );
 }
 
-export function ShowTableDaftarStok({ currentPosts, searchTerm }) {
+export function ShowTableDaftarStok({
+  currentPosts,
+  searchTerm,
+  suppliers,
+  tipes
+}) {
   let navigate = useNavigate();
   const classes = useStyles();
   return (
@@ -1173,7 +1190,7 @@ export function ShowTableDaftarStok({ currentPosts, searchTerm }) {
               sx={{ fontWeight: "bold" }}
               className={classes.tableRightBorder}
             >
-              tipe
+              Tipe
             </TableCell>
             <TableCell
               sx={{ fontWeight: "bold" }}
@@ -1205,12 +1222,21 @@ export function ShowTableDaftarStok({ currentPosts, searchTerm }) {
               } else if (
                 val.supplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.merk.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase())
+                val.jenisBeli
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                suppliers
+                  .filter((supplier) => supplier.kodeSupplier === val.supplier)
+                  .map((sup) => sup.namaSupplier)
+                  .includes(searchTerm.toUpperCase()) ||
+                tipes
+                  .filter((tipe) => tipe.kodeTipe === val.tipe)
+                  .map((sup) => sup.namaTipe)
+                  .includes(searchTerm.toUpperCase())
               ) {
                 return val;
               }
@@ -1231,9 +1257,21 @@ export function ShowTableDaftarStok({ currentPosts, searchTerm }) {
                   {user.noBeli}
                 </TableCell>
                 <TableCell>{user.tanggalBeli}</TableCell>
-                <TableCell>{user.supplier}</TableCell>
+                <TableCell>
+                  {user.supplier} -
+                  {suppliers
+                    .filter(
+                      (supplier) => supplier.kodeSupplier === user.supplier
+                    )
+                    .map((sup) => ` ${sup.namaSupplier}`)}
+                </TableCell>
                 <TableCell>{user.merk}</TableCell>
-                <TableCell>{user.tipe}</TableCell>
+                <TableCell>
+                  {user.tipe} -
+                  {tipes
+                    .filter((tipe) => tipe.kodeTipe === user.tipe)
+                    .map((sup) => ` ${sup.namaTipe}`)}
+                </TableCell>
                 <TableCell>{user.noRangka}</TableCell>
                 <TableCell>{user.noMesin}</TableCell>
                 <TableCell>{user.nopol}</TableCell>

@@ -25,7 +25,6 @@ import { ShowTableDaftarStok } from "../../../components/ShowTable";
 import { SearchBar, Loader, usePagination } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { Colors } from "../../../constants/styles";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -60,7 +59,8 @@ const TampilDaftarStok = () => {
   const [stoksForTable, setStoksForTable] = useState([]);
   const [daftarStoksForDoc, setDaftarStoksForDoc] = useState([]);
   const [rekapStoks, setRekapStoks] = useState([]);
-  const navigate = useNavigate();
+  const [suppliers, setSuppliers] = useState([]);
+  const [tipes, setTipes] = useState([]);
 
   const columns = [
     { title: "No Beli", field: "noBeli" },
@@ -102,12 +102,19 @@ const TampilDaftarStok = () => {
     } else if (
       val.supplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.merk.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase())
+      val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      suppliers
+        .filter((supplier) => supplier.kodeSupplier === val.supplier)
+        .map((sup) => sup.namaSupplier)
+        .includes(searchTerm.toUpperCase()) ||
+      tipes
+        .filter((tipe) => tipe.kodeTipe === val.tipe)
+        .map((sup) => sup.namaTipe)
+        .includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -127,12 +134,34 @@ const TampilDaftarStok = () => {
   };
 
   useEffect(() => {
+    getTipe();
+    getSupplier();
     getUsers();
     getRekapStoks();
     getDaftarStoksLength();
     getDaftarStoksForDoc();
     id && getUserById();
   }, [id, value]);
+
+  const getTipe = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/tipesMainInfo`, {
+      id: user._id,
+      token: user.token
+    });
+    setTipes(response.data);
+    setLoading(false);
+  };
+
+  const getSupplier = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/supplierMainInfo`, {
+      id: user._id,
+      token: user.token
+    });
+    setSuppliers(response.data);
+    setLoading(false);
+  };
 
   const getRekapStoks = async () => {
     setLoading(true);
@@ -474,7 +503,10 @@ const TampilDaftarStok = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={supplier}
+                value={`${supplier} - ${suppliers
+                  .filter((supplier1) => supplier1.kodeSupplier === supplier)
+                  .map((sup) => ` ${sup.namaSupplier}`)}
+                `}
               />
               <Typography sx={[labelInput, spacingTop]}>Merk</Typography>
               <TextField
@@ -494,7 +526,10 @@ const TampilDaftarStok = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={tipe}
+                value={`${tipe} - ${tipes
+                  .filter((tipe1) => tipe1.kodeTipe === tipe)
+                  .map((sup) => ` ${sup.namaTipe}`)}
+                `}
               />
               <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
               <TextField
@@ -584,66 +619,10 @@ const TampilDaftarStok = () => {
         <ShowTableDaftarStok
           currentPosts={currentPosts}
           searchTerm={searchTerm}
+          suppliers={suppliers}
+          tipes={tipes}
         />
       </Box>
-      {/* <Box sx={[tableContainer]}>
-        <table id="content">
-          <tr>
-            <th style={thTable}>No. Beli</th>
-            <th style={thTable}>Tanggal Beli</th>
-            <th style={thTable}>Supplier</th>
-            <th style={thTable}>Merk</th>
-            <th style={thTable}>Tipe</th>
-            <th style={thTable}>No. Rangka</th>
-            <th style={thTable}>No. Mesin</th>
-            <th style={thTable}>Nopol</th>
-            <th style={thTable}>Nama Stnk</th>
-            <th style={thTable}>Jenis</th>
-          </tr>
-          {currentPosts
-            .filter((val) => {
-              if (searchTerm === "") {
-                return val;
-              } else if (
-                val.supplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.merk.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase())
-              ) {
-                return val;
-              }
-            })
-            .map((user, index) => (
-              <>
-                <tr
-                  style={{
-                    cursor: "pointer",
-                    height: "100px",
-                    backgroundColor: index % 2 === 0 && "#dddddd"
-                  }}
-                  onClick={() => {
-                    navigate(`/daftarStok/${user._id}`);
-                  }}
-                >
-                  <td style={tdTable}>{user.noBeli}</td>
-                  <td style={tdTable}>{user.tanggalBeli}</td>
-                  <td style={tdTable}>{user.supplier}</td>
-                  <td style={tdTable}>{user.merk}</td>
-                  <td style={tdTable}>{user.tipe}</td>
-                  <td style={tdTable}>{user.noRangka}</td>
-                  <td style={tdTable}>{user.noMesin}</td>
-                  <td style={tdTable}>{user.nopol}</td>
-                  <td style={tdTable}>{user.namaStnk}</td>
-                  <td style={tdTable}>{user.jenisBeli}</td>
-                </tr>
-              </>
-            ))}
-        </table>
-      </Box> */}
       <Box sx={tableContainer}>
         <Pagination
           count={count}
@@ -725,18 +704,4 @@ const downloadButtons = {
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center"
-};
-
-const tdTable = {
-  border: "1px solid #dddddd",
-  textAlign: "left",
-  padding: "8px"
-};
-
-const thTable = {
-  border: "1px solid #dddddd",
-  textAlign: "left",
-  padding: "8px",
-  backgroundColor: Colors.blue700,
-  color: "white"
 };

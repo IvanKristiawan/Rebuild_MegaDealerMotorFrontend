@@ -97,7 +97,7 @@ const UbahBeli = () => {
         setLoading(true);
         await axios.post(`${tempUrl}/updateBeli/${id}`, {
           tanggalBeli,
-          kodeSupplier,
+          kodeSupplier: kodeSupplier.split(" ", 1)[0],
           jumlahBeli,
           potongan,
           lama,
