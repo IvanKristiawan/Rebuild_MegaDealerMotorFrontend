@@ -25,6 +25,10 @@ export { default as UbahDealer } from "./Master/Dealer/UbahDealer";
 export { default as TampilMarketing } from "./Master/Marketing/TampilMarketing";
 export { default as TambahMarketing } from "./Master/Marketing/TambahMarketing";
 export { default as UbahMarketing } from "./Master/Marketing/UbahMarketing";
+// Pekerjaan Page
+export { default as TampilPekerjaan } from "./Master/Pekerjaan/TampilPekerjaan";
+export { default as TambahPekerjaan } from "./Master/Pekerjaan/TambahPekerjaan";
+export { default as UbahPekerjaan } from "./Master/Pekerjaan/UbahPekerjaan";
 // Surveyor Page
 export { default as TampilSurveyor } from "./Master/Surveyor/TampilSurveyor";
 export { default as TambahSurveyor } from "./Master/Surveyor/TambahSurveyor";

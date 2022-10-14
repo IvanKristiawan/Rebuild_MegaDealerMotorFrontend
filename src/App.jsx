@@ -28,6 +28,7 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import ElevatorIcon from "@mui/icons-material/Elevator";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import EngineeringIcon from "@mui/icons-material/Engineering";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
@@ -53,6 +54,9 @@ import {
   TampilMarketing,
   TambahMarketing,
   UbahMarketing,
+  TampilPekerjaan,
+  TambahPekerjaan,
+  UbahPekerjaan,
   TampilSurveyor,
   TambahSurveyor,
   UbahSurveyor,
@@ -204,6 +208,15 @@ const App = () => {
                         icon={<AddBusinessIcon name="marketing-icon" />}
                       >
                         Marketing
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/pekerjaan" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<EngineeringIcon name="pekerjaan-icon" />}
+                      >
+                        Pekerjaan
                       </MenuItem>
                     </Box>
                   </Link>
@@ -513,6 +526,39 @@ const App = () => {
                   element={
                     <USERRoute>
                       <UbahMarketing />
+                    </USERRoute>
+                  }
+                />
+                {/* Pekerjaan */}
+                <Route
+                  path="/pekerjaan"
+                  element={
+                    <USERRoute>
+                      <TampilPekerjaan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/pekerjaan/:id"
+                  element={
+                    <USERRoute>
+                      <TampilPekerjaan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/pekerjaan/tambahPekerjaan"
+                  element={
+                    <USERRoute>
+                      <TambahPekerjaan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/pekerjaan/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahPekerjaan />
                     </USERRoute>
                   }
                 />

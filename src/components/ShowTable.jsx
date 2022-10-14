@@ -463,6 +463,68 @@ export function ShowTableMarketing({ currentPosts, searchTerm }) {
   );
 }
 
+export function ShowTablePekerjaan({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kode
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama Marketing
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.kodePekerjaan
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.namaPekerjaan
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/pekerjaan/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.kodePekerjaan}
+                </TableCell>
+                <TableCell>{user.namaPekerjaan}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
 export function ShowTableSurveyor({ currentPosts, searchTerm }) {
   let navigate = useNavigate();
   const classes = useStyles();

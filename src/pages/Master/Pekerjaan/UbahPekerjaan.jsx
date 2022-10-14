@@ -15,12 +15,11 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
-const UbahMarketing = () => {
+const UbahPekerjaan = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const [kodeMarketing, setKodeMarketing] = useState("");
-  const [namaMarketing, setNamaMarketing] = useState("");
-  const [teleponMarketing, setTeleponMarketing] = useState("");
+  const [kodePekerjaan, setKodePekerjaan] = useState("");
+  const [namaPekerjaan, setNamaPekerjaan] = useState("");
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -39,32 +38,30 @@ const UbahMarketing = () => {
 
   const getUserById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/marketings/${id}`, {
+    const response = await axios.post(`${tempUrl}/pekerjaans/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeMarketing(response.data.kodeMarketing);
-    setNamaMarketing(response.data.namaMarketing);
-    setTeleponMarketing(response.data.teleponMarketing);
+    setKodePekerjaan(response.data.kodePekerjaan);
+    setNamaPekerjaan(response.data.namaPekerjaan);
     setLoading(false);
   };
 
   const updateUser = async (e) => {
     e.preventDefault();
-    if (namaMarketing.length === 0 || teleponMarketing.length === 0) {
+    if (kodePekerjaan.length === 0 || namaPekerjaan.length === 0) {
       setError(true);
       setOpen(!open);
     } else {
       try {
         setLoading(true);
-        await axios.post(`${tempUrl}/updateMarketing/${id}`, {
-          namaMarketing,
-          teleponMarketing,
+        await axios.post(`${tempUrl}/updatePekerjaan/${id}`, {
+          namaPekerjaan,
           id: user._id,
           token: user.token
         });
         setLoading(false);
-        navigate(`/marketing/${id}`);
+        navigate(`/pekerjaan/${id}`);
       } catch (error) {
         console.log(error);
       }
@@ -79,48 +76,38 @@ const UbahMarketing = () => {
     <Box sx={container}>
       <Typography color="#757575">Master</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Ubah Marketing
+        Ubah Pekerjaan
       </Typography>
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
           <TextField
-            error={error && kodeMarketing.length === 0 && true}
+            error={error && kodePekerjaan.length === 0 && true}
             helperText={
-              error && kodeMarketing.length === 0 && "Kode harus diisi!"
+              error && kodePekerjaan.length === 0 && "Kode harus diisi!"
             }
             id="outlined-basic"
             label="Kode"
             variant="outlined"
-            value={kodeMarketing}
+            value={kodePekerjaan}
             InputProps={{
               readOnly: true
             }}
-            onChange={(e) => setKodeMarketing(e.target.value.toUpperCase())}
+            onChange={(e) => setKodePekerjaan(e.target.value.toUpperCase())}
           />
           <TextField
-            error={error && namaMarketing.length === 0 && true}
+            error={error && namaPekerjaan.length === 0 && true}
             helperText={
-              error && namaMarketing.length === 0 && "Nama harus diisi!"
+              error &&
+              namaPekerjaan.length === 0 &&
+              "Nama Pekerjaan harus diisi!"
             }
             id="outlined-basic"
-            label="Nama"
+            label="Nama Pekerjaan"
             variant="outlined"
-            value={namaMarketing}
+            value={namaPekerjaan}
             sx={spacingTop}
-            onChange={(e) => setNamaMarketing(e.target.value.toUpperCase())}
-          />
-          <TextField
-            error={error && teleponMarketing.length === 0 && true}
-            helperText={
-              error && teleponMarketing.length === 0 && "Telepon harus diisi!"
-            }
-            id="outlined-basic"
-            label="Telepon"
-            variant="outlined"
-            value={teleponMarketing}
-            sx={spacingTop}
-            onChange={(e) => setTeleponMarketing(e.target.value.toUpperCase())}
+            onChange={(e) => setNamaPekerjaan(e.target.value.toUpperCase())}
           />
         </Box>
       </Box>
@@ -128,7 +115,7 @@ const UbahMarketing = () => {
         <Button
           variant="outlined"
           color="secondary"
-          onClick={() => navigate("/marketing")}
+          onClick={() => navigate("/pekerjaan")}
           sx={{ marginRight: 2 }}
         >
           {"< Kembali"}
@@ -153,7 +140,7 @@ const UbahMarketing = () => {
   );
 };
 
-export default UbahMarketing;
+export default UbahPekerjaan;
 
 const container = {
   p: 4
