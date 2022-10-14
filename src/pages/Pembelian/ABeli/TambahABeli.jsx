@@ -32,7 +32,7 @@ const TambahABeli = () => {
   const [noMesin2, setNoMesin2] = useState("");
   const [nopol, setNopol] = useState("");
   const [namaStnk, setNamaStnk] = useState("");
-  const [tglStnk, setTglStnk] = useState("");
+  const [tglStnk, setTglStnk] = useState();
   const [jenisABeli, setJenisABeli] = useState("");
   const [hargaSatuan, setHargaSatuan] = useState("");
   const [ppnABeli, setPpnABeli] = useState("");
@@ -123,10 +123,12 @@ const TambahABeli = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     // Set Tgl Stnk
-    var tempTanggalStnk1 = tglStnk.toString().split("-", 1)[0];
-    var tempTanggalStnk2 = tglStnk.toString().split("-")[1];
-    var tempTanggalStnk3 = tglStnk.toString().split("-")[2];
-    var combineTanggalBeli = `${tempTanggalStnk3}-${tempTanggalStnk2}-${tempTanggalStnk1}`;
+    if (tglStnk !== undefined) {
+      var tempTanggalStnk1 = tglStnk.toString().split("-", 1)[0];
+      var tempTanggalStnk2 = tglStnk.toString().split("-")[1];
+      var tempTanggalStnk3 = tglStnk.toString().split("-")[2];
+      var combineTanggalBeli = `${tempTanggalStnk3}-${tempTanggalStnk2}-${tempTanggalStnk1}`;
+    }
     // Get Beli
     const response = await axios.post(`${tempUrl}/belis/${id}`, {
       id: user._id,
@@ -434,17 +436,19 @@ const TambahABeli = () => {
                 <Typography sx={[labelInput, spacingTop]}>
                   Tanggal Stnk
                 </Typography>
-                <input
+                <TextField
+                  size="small"
                   type="date"
                   id="start"
                   name="trip-start"
-                  error={error && tglStnk.length === 0 && true}
+                  error={error && tglStnk === undefined && true}
                   helperText={
-                    error && tglStnk.length === 0 && "Tanggal Stnk harus diisi!"
+                    error &&
+                    tglStnk === undefined &&
+                    "Tanggal Stnk harus diisi!"
                   }
                   value={tglStnk}
                   onChange={(e) => setTglStnk(e.target.value)}
-                  style={inputDateStyle}
                 />
                 <Typography sx={[labelInput, spacingTop]}>Nama Stnk</Typography>
                 <TextField

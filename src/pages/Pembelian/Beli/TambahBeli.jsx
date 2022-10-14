@@ -89,7 +89,13 @@ const TambahBeli = () => {
   const saveUser = async (e) => {
     e.preventDefault();
 
-    if (tanggalBeli.length === 0 || kodeSupplier.length === 0) {
+    if (
+      tanggalBeli.length === 0 ||
+      kodeSupplier.length === 0 ||
+      jenisBeli.length === 0 ||
+      lama.length === 0 ||
+      jatuhTempo.length === 0
+    ) {
       setError(true);
       setOpen(!open);
     } else {
@@ -267,6 +273,8 @@ const TambahBeli = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Lama (Hari)</Typography>
             <TextField
+              error={error && lama.length === 0 && true}
+              helperText={error && lama.length === 0 && "Lama harus diisi!"}
               size="small"
               id="outlined-basic"
               variant="outlined"
@@ -277,6 +285,10 @@ const TambahBeli = () => {
               Jatuh Tempo (hari-bulan-tahun)
             </Typography>
             <TextField
+              error={error && jatuhTempo.length === 0 && true}
+              helperText={
+                error && jatuhTempo.length === 0 && "Jatuh Tempo harus diisi!"
+              }
               size="small"
               id="outlined-basic"
               variant="outlined"

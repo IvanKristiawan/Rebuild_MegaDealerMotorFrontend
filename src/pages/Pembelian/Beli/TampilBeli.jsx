@@ -92,6 +92,10 @@ const TampilBeli = () => {
       setLoading(true);
       for (let aBeli of aBelis) {
         if (aBeli.noBeli === noBeli) {
+          await axios.post(`${tempUrl}/deleteDaftarStok/${aBeli.idStok}`, {
+            id: user._id,
+            token: user.token
+          });
           await axios.post(`${tempUrl}/deleteABeli/${aBeli._id}`, {
             id: user._id,
             token: user.token
