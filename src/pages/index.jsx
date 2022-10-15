@@ -57,6 +57,10 @@ export { default as UbahSupplier } from "./Master/Supplier/UbahSupplier";
 export { default as TampilRegister } from "./Penjualan/Register/TampilRegister";
 export { default as TambahRegister } from "./Penjualan/Register/TambahRegister";
 export { default as UbahRegister } from "./Penjualan/Register/UbahRegister";
+// Jual Page
+export { default as TampilJual } from "./Penjualan/Jual/TampilJual";
+export { default as TambahJual } from "./Penjualan/Jual/TambahJual";
+// export { default as UbahRegister } from "./Penjualan/Register/UbahRegister";
 // PEMBELIAN
 // Beli Page
 export { default as TampilDaftarBeli } from "./Pembelian/Beli/TampilDaftarBeli";

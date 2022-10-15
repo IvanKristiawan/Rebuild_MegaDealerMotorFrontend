@@ -30,6 +30,7 @@ import ElevatorIcon from "@mui/icons-material/Elevator";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import SellIcon from "@mui/icons-material/Sell";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -74,6 +75,8 @@ import {
   TampilRegister,
   TambahRegister,
   UbahRegister,
+  TampilJual,
+  TambahJual,
   TampilSupplier,
   TambahSupplier,
   UbahSupplier,
@@ -273,6 +276,13 @@ const App = () => {
                         icon={<AppRegistrationIcon name="register-icon" />}
                       >
                         Register
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/jual" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<SellIcon name="register-icon" />}>
+                        Jual
                       </MenuItem>
                     </Box>
                   </Link>
@@ -846,6 +856,39 @@ const App = () => {
                     </USERRoute>
                   }
                 />
+                {/* Jual */}
+                <Route
+                  path="/jual"
+                  element={
+                    <USERRoute>
+                      <TampilJual />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jual/:id"
+                  element={
+                    <USERRoute>
+                      <TampilJual />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jual/tambahJual"
+                  element={
+                    <USERRoute>
+                      <TambahJual />
+                    </USERRoute>
+                  }
+                />
+                {/* <Route
+                  path="/register/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahRegister />
+                    </USERRoute>
+                  }
+                /> */}
                 <Route path="*" element={<p>Halaman tidak ditemukan!</p>} />
               </Routes>
             </Box>
