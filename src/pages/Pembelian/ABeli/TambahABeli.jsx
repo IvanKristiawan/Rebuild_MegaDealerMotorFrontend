@@ -168,13 +168,15 @@ const TambahABeli = () => {
           const tempDaftarStok = await axios.post(`${tempUrl}/saveDaftarStok`, {
             noBeli: belis.noBeli,
             tanggalBeli,
-            supplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
+            supplier: `${getSupplier.data.kodeSupplier}`,
             merk: getTipe.data.merk,
-            tipe: `${getTipe.data.kodeTipe} - ${getTipe.data.namaTipe}`,
+            tipe: `${getTipe.data.kodeTipe}`,
             namaTipe: getTipe.data.namaTipe,
             noRangka: `${noRangka}${noRangka2}`,
             noMesin: `${noMesin}${noMesin2}`,
             nopol,
+            tahun,
+            namaWarna,
             namaStnk,
             tglStnk,
             jenisBeli: jenisABeli,
@@ -206,7 +208,7 @@ const TambahABeli = () => {
             hargaSatuan,
             ppnABeli,
             tanggalBeli,
-            kodeSupplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
+            kodeSupplier: `${getSupplier.data.kodeSupplier}`,
             id: user._id,
             token: user.token
           });
@@ -240,13 +242,15 @@ const TambahABeli = () => {
           const tempDaftarStok = await axios.post(`${tempUrl}/saveDaftarStok`, {
             noBeli: belis.noBeli,
             tanggalBeli,
-            supplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
+            supplier: `${getSupplier.data.kodeSupplier}`,
             merk: getTipe.data.merk,
-            tipe: `${getTipe.data.kodeTipe} - ${getTipe.data.namaTipe}`,
+            tipe: `${getTipe.data.kodeTipe}`,
             namaTipe: getTipe.data.namaTipe,
             noRangka: `${noRangka}${noRangka2}`,
             noMesin: `${noMesin}${noMesin2}`,
             nopol,
+            tahun,
+            namaWarna,
             namaStnk,
             tglStnk: combineTanggalBeli,
             jenisBeli: jenisABeli,
@@ -277,7 +281,7 @@ const TambahABeli = () => {
             jenisABeli,
             hargaSatuan,
             ppnABeli,
-            kodeSupplier: `${getSupplier.data.kodeSupplier} - ${getSupplier.data.namaSupplier}`,
+            kodeSupplier: `${getSupplier.data.kodeSupplier}`,
             id: user._id,
             token: user.token
           });
@@ -515,7 +519,7 @@ const TambahABeli = () => {
                 sx={hargaTextField}
                 value={hargaSatuan}
                 onChange={(e) => {
-                  setHargaSatuan(e.target.value.toUpperCase());
+                  setHargaSatuan(e.target.value);
                   setPpnABeli(e.target.value * PPN);
                 }}
               />

@@ -52,6 +52,8 @@ const TampilDaftarStok = () => {
   const [hargaSatuan, setHargaSatuan] = useState("");
   const [tanggalJual, setTanggalJual] = useState("");
   const [noJual, setNoJual] = useState("");
+  const [namaWarna, setNamaWarna] = useState("");
+  const [tahun, setTahun] = useState("");
   const [daftarStoksLength, setDaftarStoksLength] = useState("");
   const [value, setValue] = useState("semua");
   const [searchTerm, setSearchTerm] = useState("");
@@ -258,6 +260,8 @@ const TampilDaftarStok = () => {
       setNoRangka(response.data.noRangka);
       setNoMesin(response.data.noMesin);
       setNopol(response.data.nopol);
+      setNamaWarna(response.data.namaWarna);
+      setTahun(response.data.tahun);
       setNamaStnk(response.data.namaStnk);
       setTglStnk(response.data.tglStnk);
       setJenisBeli(response.data.jenisBeli);
@@ -531,7 +535,29 @@ const TampilDaftarStok = () => {
                   .map((sup) => ` ${sup.namaTipe}`)}
                 `}
               />
-              <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
+              <Typography sx={[labelInput, spacingTop]}>Nama Warna</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaWarna}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Tahun</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={tahun}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>No. Rangka</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -541,9 +567,7 @@ const TampilDaftarStok = () => {
                 }}
                 value={noRangka}
               />
-            </Box>
-            <Box sx={[showDataWrapper, secondWrapper]}>
-              <Typography sx={labelInput}>No. Mesin</Typography>
+              <Typography sx={[labelInput, spacingTop]}>No. Mesin</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
