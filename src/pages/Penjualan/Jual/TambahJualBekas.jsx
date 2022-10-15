@@ -16,8 +16,6 @@ import {
   Autocomplete,
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogContentText,
   DialogActions,
   Table,
   TableBody,
@@ -45,7 +43,7 @@ const useStyles = makeStyles({
   }
 });
 
-const TambahJual = () => {
+const TambahJualBekas = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   // Data Register/Pembeli
@@ -80,6 +78,7 @@ const TambahJual = () => {
   const [tipe, setTipe] = useState("");
   const [namaWarna, setNamaWarna] = useState("");
   const [tahun, setTahun] = useState("");
+  const [stoks, setStoks] = useState([]);
 
   // Data Penjualan -> dari input
   const [hargaTunai, setHargaTunai] = useState("");
@@ -92,7 +91,7 @@ const TambahJual = () => {
   const [angModal, setAngModal] = useState("");
   const [angBunga, setAngBunga] = useState("");
   const [noJual, setNoJual] = useState("");
-  const [noKwitansi, setNoKwitansi] = useState("");
+  const [noKwitansi, setNoKwitansi] = useState(user.kodeKwitansi);
   const [tglJual, setTglJual] = useState("");
   const [jenisJual, setJenisJual] = useState("");
   const [leasing, setLeasing] = useState("");
@@ -123,6 +122,8 @@ const TambahJual = () => {
     setOpen(false);
   };
 
+  const jenisJualOption = [{ label: "TUNAI" }, { label: "KREDIT" }];
+
   const marketingOptions = marketings.map((marketing) => ({
     label: `${marketing.kodeMarketing} - ${marketing.namaMarketing}`
   }));
@@ -143,6 +144,10 @@ const TambahJual = () => {
     label: `${leasing.kodeLeasing} - ${leasing.namaLeasing}`
   }));
 
+  const nopolOptions = stoks.map((stok) => ({
+    label: `${stok.nopol}`
+  }));
+
   const tempPostsRegister = registers.filter((val) => {
     if (searchTermRegister === "") {
       return val;
@@ -158,6 +163,7 @@ const TambahJual = () => {
   });
 
   useEffect(() => {
+    getStok();
     getRegister();
     getMarketing();
     getSurveyor();
@@ -165,6 +171,30 @@ const TambahJual = () => {
     getKecamatan();
     getLeasing();
   }, []);
+
+  const getStoksByNopol = async (nopol) => {
+    const response = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
+      nopol,
+      id: user._id,
+      token: user.token
+    });
+    setNoRangka(response.data.noRangka);
+    setNoMesin(response.data.noMesin);
+    setTipe(response.data.tipe);
+    setNamaWarna(response.data.namaWarna);
+    setTahun(response.data.tahun);
+    setNopol(nopol);
+  };
+
+  const getStok = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/daftarStoksNopol`, {
+      id: user._id,
+      token: user.token
+    });
+    setStoks(response.data);
+    setLoading(false);
+  };
 
   const getRegister = async () => {
     setLoading(true);
@@ -292,15 +322,177 @@ const TambahJual = () => {
 
   return (
     <Box sx={container}>
-      <Typography color="#757575">Master</Typography>
+      <Typography color="#757575">Penjualan</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Tambah Jual
+        Tambah Jual Bekas
       </Typography>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
+        {/* Data Penjualan */}
         <Paper elevation={6} sx={mainContainer}>
-          <Typography variant="h5" sx={{ textAlign: "center" }}>
-            Data Pembeli
+          <Typography variant="h5" sx={titleStyle} color="primary">
+            DATA PENJUALAN
+          </Typography>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <Typography sx={labelInput}>No. Jual</Typography>
+              <TextField
+                size="small"
+                error={error && noJual.length === 0 && true}
+                helperText={
+                  error && noJual.length === 0 && "No. Jual harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={noJual}
+                onChange={(e) => setNoJual(e.target.value.toUpperCase())}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                No. Kwitansi
+              </Typography>
+              <TextField
+                size="small"
+                error={error && noKwitansi.length === 0 && true}
+                helperText={
+                  error &&
+                  noKwitansi.length === 0 &&
+                  "Nama Register harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={noKwitansi}
+                InputProps={{
+                  readOnly: true
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Tanggal Jual
+              </Typography>
+              <TextField
+                type="date"
+                size="small"
+                error={error && tglJual.length === 0 && true}
+                helperText={
+                  error && tglJual.length === 0 && "No. Jual harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={tglJual}
+                onChange={(e) => setTglJual(e.target.value.toUpperCase())}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Jenis Jual</Typography>
+              <Autocomplete
+                size="small"
+                disablePortal
+                id="combo-box-demo"
+                options={jenisJualOption}
+                renderInput={(params) => (
+                  <TextField
+                    size="small"
+                    error={error && jenisJual.length === 0 && true}
+                    helperText={
+                      error &&
+                      jenisJual.length === 0 &&
+                      "Jenis Jual harus diisi!"
+                    }
+                    {...params}
+                  />
+                )}
+                onInputChange={(e, value) => {
+                  if (value === "TUNAI") {
+                    setTglAng("");
+                    setTglAngAkhir("");
+                    setTglInput("");
+                  }
+                  setJenisJual(value);
+                }}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Leasing</Typography>
+              <Autocomplete
+                size="small"
+                disablePortal
+                id="combo-box-demo"
+                options={leasingOptions}
+                renderInput={(params) => (
+                  <TextField
+                    size="small"
+                    error={error && leasing.length === 0 && true}
+                    helperText={
+                      error && leasing.length === 0 && "Leasing harus diisi!"
+                    }
+                    {...params}
+                  />
+                )}
+                onInputChange={(e, value) => setLeasing(value.split(" ", 1)[0])}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Tanggal Angsuran I
+              </Typography>
+              <TextField
+                type="date"
+                size="small"
+                error={error && tglAng.length === 0 && true}
+                helperText={
+                  error &&
+                  tglAng.length === 0 &&
+                  "Tanggal Angsuran harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={tglAng}
+                onChange={(e) => setTglAng(e.target.value.toUpperCase())}
+                InputProps={{
+                  readOnly: jenisJual === "TUNAI" && true
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Tanggal Angsuran Akhir
+              </Typography>
+              <TextField
+                type="date"
+                size="small"
+                error={error && tglAngAkhir.length === 0 && true}
+                helperText={
+                  error &&
+                  tglAngAkhir.length === 0 &&
+                  "Tanggal Angsuran Akhir harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={tglAngAkhir}
+                onChange={(e) => setTglAngAkhir(e.target.value.toUpperCase())}
+                InputProps={{
+                  readOnly: jenisJual === "TUNAI" && true
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Tanggal Input
+              </Typography>
+              <TextField
+                type="date"
+                size="small"
+                error={error && tglInput.length === 0 && true}
+                helperText={
+                  error && tglInput.length === 0 && "Tanggal Input harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={tglInput}
+                onChange={(e) => setTglInput(e.target.value.toUpperCase())}
+                InputProps={{
+                  readOnly: jenisJual === "TUNAI" && true
+                }}
+              />
+            </Box>
+          </Box>
+        </Paper>
+
+        {/* Data Pembeli */}
+        <Paper elevation={6} sx={mainContainer}>
+          <Typography variant="h5" sx={titleStyle} color="primary">
+            DATA PEMBELI
           </Typography>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
@@ -565,6 +757,227 @@ const TambahJual = () => {
             </Box>
           </Box>
         </Paper>
+
+        {/* Data Motor */}
+        <Paper elevation={6} sx={mainContainer}>
+          <Typography variant="h5" sx={titleStyle} color="primary">
+            DATA MOTOR
+          </Typography>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <Typography sx={labelInput}>Nopol</Typography>
+              <Autocomplete
+                size="small"
+                disablePortal
+                id="combo-box-demo"
+                options={nopolOptions}
+                renderInput={(params) => (
+                  <TextField
+                    size="small"
+                    error={error && nopol.length === 0 && true}
+                    helperText={
+                      error && nopol.length === 0 && "Nopol harus diisi!"
+                    }
+                    {...params}
+                  />
+                )}
+                onInputChange={(e, value) => {
+                  if (value) {
+                    getStoksByNopol(value);
+                  } else {
+                    setNoRangka("");
+                    setNoMesin("");
+                    setTipe("");
+                    setNamaWarna("");
+                    setTahun("");
+                  }
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={noRangka}
+                InputProps={{
+                  readOnly: true
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>No. Mesin</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={noMesin}
+                InputProps={{
+                  readOnly: true
+                }}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Tipe</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={tipe}
+                InputProps={{
+                  readOnly: true
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Nama Warna</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={namaWarna}
+                InputProps={{
+                  readOnly: true
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Tahun Perakitan
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={tahun}
+                InputProps={{
+                  readOnly: true
+                }}
+              />
+            </Box>
+          </Box>
+        </Paper>
+
+        {/* Data Rincian Harga (Input) */}
+        <Paper elevation={6} sx={mainContainer}>
+          <Typography variant="h5" sx={titleStyle} color="primary">
+            RINCIAN HARGA
+          </Typography>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <Typography sx={[labelInput]}>
+                Harga Tunai
+                {hargaTunai !== 0 &&
+                  !isNaN(parseInt(hargaTunai)) &&
+                  ` : Rp ${parseInt(hargaTunai).toLocaleString()}`}
+              </Typography>
+              <TextField
+                type="number"
+                size="small"
+                error={error && hargaTunai.length === 0 && true}
+                helperText={
+                  error && hargaTunai.length === 0 && "Harga Tunai harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={hargaTunai}
+                onChange={(e) => {
+                  setHargaTunai(e.target.value);
+                  let tempSisaPiutang = e.target.value - uangMuka;
+                  setSisaPiutang(tempSisaPiutang);
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Uang Muka
+                {uangMuka !== 0 &&
+                  !isNaN(parseInt(uangMuka)) &&
+                  ` : Rp ${parseInt(uangMuka).toLocaleString()}`}
+              </Typography>
+              <TextField
+                type="number"
+                size="small"
+                error={error && uangMuka.length === 0 && true}
+                helperText={
+                  error && uangMuka.length === 0 && "Uang Muka harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={uangMuka}
+                onChange={(e) => {
+                  setUangMuka(e.target.value);
+                  let tempSisaPiutang = hargaTunai - e.target.value;
+                  setSisaPiutang(tempSisaPiutang);
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Sisa Piutang
+                {sisaPiutang !== 0 &&
+                  !isNaN(parseInt(sisaPiutang)) &&
+                  ` : Rp ${parseInt(sisaPiutang).toLocaleString()}`}
+              </Typography>
+              <TextField
+                size="small"
+                error={error && sisaPiutang.length === 0 && true}
+                helperText={
+                  error &&
+                  sisaPiutang.length === 0 &&
+                  "Sisa Piutang harus diisi!"
+                }
+                id="outlined-basic"
+                variant="outlined"
+                value={sisaPiutang}
+                InputProps={{
+                  readOnly: true
+                }}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>
+                Angsuran/bulan
+                {angPerBulan !== 0 &&
+                  !isNaN(parseInt(angPerBulan)) &&
+                  ` : Rp ${parseInt(angPerBulan).toLocaleString()}`}
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={angPerBulan}
+                onChange={(e) => {
+                  setAngPerBulan(e.target.value);
+                  let tempJumlahPiutang = e.target.value * tenor;
+                  setJumlahPiutang(tempJumlahPiutang);
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Tenor
+                {tenor !== 0 &&
+                  !isNaN(parseInt(tenor)) &&
+                  ` : ${parseInt(tenor).toLocaleString()}`}
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={tenor}
+                onChange={(e) => {
+                  setTenor(e.target.value);
+                  let tempJumlahPiutang = angPerBulan * e.target.value;
+                  setJumlahPiutang(tempJumlahPiutang);
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Total Piutang
+                {jumlahPiutang !== 0 &&
+                  !isNaN(parseInt(jumlahPiutang)) &&
+                  ` : ${parseInt(jumlahPiutang).toLocaleString()}`}
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={jumlahPiutang}
+                InputProps={{
+                  readOnly: true
+                }}
+              />
+            </Box>
+          </Box>
+        </Paper>
+
         <Box sx={spacingTop}>
           <Button
             variant="outlined"
@@ -680,7 +1093,7 @@ const TambahJual = () => {
   );
 };
 
-export default TambahJual;
+export default TambahJualBekas;
 
 const container = {
   p: 4
@@ -758,4 +1171,9 @@ const dialogContainer = {
 const dialogWrapper = {
   width: "100%",
   marginTop: 2
+};
+
+const titleStyle = {
+  textAlign: "center",
+  fontWeight: "600"
 };

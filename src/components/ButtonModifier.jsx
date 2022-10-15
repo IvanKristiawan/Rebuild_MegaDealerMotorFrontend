@@ -19,7 +19,8 @@ const ButtonModifier = ({
   addLink,
   editLink,
   deleteUser,
-  nameUser
+  nameUser,
+  tambahBaru
 }) => {
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -46,6 +47,19 @@ const ButtonModifier = ({
         >
           Tambah
         </Button>
+        {tambahBaru && (
+          <Button
+            color="secondary"
+            sx={{ bgcolor: "secondary.light", textTransform: "none" }}
+            startIcon={<AddCircleOutlineIcon />}
+            size="small"
+            onClick={() => {
+              navigate(tambahBaru);
+            }}
+          >
+            Tambah Baru
+          </Button>
+        )}
         {kode && (
           <>
             {editLink && (

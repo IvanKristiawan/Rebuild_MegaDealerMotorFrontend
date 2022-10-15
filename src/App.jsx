@@ -76,7 +76,7 @@ import {
   TambahRegister,
   UbahRegister,
   TampilJual,
-  TambahJual,
+  TambahJualBekas,
   TampilSupplier,
   TambahSupplier,
   UbahSupplier,
@@ -874,10 +874,10 @@ const App = () => {
                   }
                 />
                 <Route
-                  path="/jual/tambahJual"
+                  path="/jual/tambahJualBekas"
                   element={
                     <USERRoute>
-                      <TambahJual />
+                      <TambahJualBekas />
                     </USERRoute>
                   }
                 />

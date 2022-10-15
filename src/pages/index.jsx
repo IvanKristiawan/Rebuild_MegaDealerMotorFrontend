@@ -59,7 +59,7 @@ export { default as TambahRegister } from "./Penjualan/Register/TambahRegister";
 export { default as UbahRegister } from "./Penjualan/Register/UbahRegister";
 // Jual Page
 export { default as TampilJual } from "./Penjualan/Jual/TampilJual";
-export { default as TambahJual } from "./Penjualan/Jual/TambahJual";
+export { default as TambahJualBekas } from "./Penjualan/Jual/TambahJualBekas";
 // export { default as UbahRegister } from "./Penjualan/Register/UbahRegister";
 // PEMBELIAN
 // Beli Page

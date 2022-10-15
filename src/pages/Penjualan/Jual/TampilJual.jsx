@@ -313,7 +313,7 @@ const TampilJual = () => {
 
   return (
     <Box sx={container}>
-      <Typography color="#757575">Master</Typography>
+      <Typography color="#757575">Penjualan</Typography>
       <Typography variant="h4" sx={subTitleText}>
         Jual
       </Typography>
@@ -331,7 +331,8 @@ const TampilJual = () => {
         <ButtonModifier
           id={id}
           kode={noJual}
-          addLink={`/jual/tambahJual`}
+          tambahBaru={`/jual/tambahJualBaru`}
+          addLink={`/jual/tambahJualBekas`}
           editLink={`/jual/${id}/edit`}
           deleteUser={deleteUser}
           nameUser={noJual}
