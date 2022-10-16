@@ -83,8 +83,10 @@ const TambahABeli = () => {
       id: user._id,
       token: user.token
     });
-    setNoRangka(response.data.noRangka);
-    setNoMesin(response.data.noMesin);
+    if (response.data) {
+      setNoRangka(response.data.noRangka);
+      setNoMesin(response.data.noMesin);
+    }
     setKodeTipe(idTipe);
   };
 
@@ -377,7 +379,10 @@ const TambahABeli = () => {
                   readOnly: true
                 }}
                 onChange={(e) => setNoRangka(e.target.value.toUpperCase())}
-                sx={[textFieldStyle, { flex: 2 }]}
+                sx={[
+                  textFieldStyle,
+                  { flex: 2, backgroundColor: Colors.grey400 }
+                ]}
               />
               <TextField
                 size="small"
@@ -400,7 +405,10 @@ const TambahABeli = () => {
                   readOnly: true
                 }}
                 onChange={(e) => setNoMesin(e.target.value.toUpperCase())}
-                sx={[textFieldStyle, { flex: 2 }]}
+                sx={[
+                  textFieldStyle,
+                  { flex: 2, backgroundColor: Colors.grey400 }
+                ]}
               />
               <TextField
                 size="small"
@@ -418,8 +426,10 @@ const TambahABeli = () => {
               id="outlined-basic"
               variant="outlined"
               value={jenisABeli}
-              onChange={(e) => setJenisABeli(e.target.value.toUpperCase())}
-              disabled
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
           </Box>
           <Box sx={[textFieldWrapper, secondWrapper]}>
@@ -475,8 +485,10 @@ const TambahABeli = () => {
                   id="outlined-basic"
                   variant="outlined"
                   value={nopol}
-                  disabled
-                  onChange={(e) => setNopol(e.target.value.toUpperCase())}
+                  InputProps={{
+                    readOnly: true
+                  }}
+                  sx={{ backgroundColor: Colors.grey400 }}
                 />
                 <Typography sx={[spacingTop]}>Tanggal Stnk</Typography>
                 <TextField
@@ -484,8 +496,10 @@ const TambahABeli = () => {
                   id="outlined-basic"
                   variant="outlined"
                   value={tglStnk}
-                  disabled
-                  onChange={(e) => setTglStnk(e.target.value.toUpperCase())}
+                  InputProps={{
+                    readOnly: true
+                  }}
+                  sx={{ backgroundColor: Colors.grey400 }}
                 />
                 <Typography sx={[spacingTop]}>Nama Stnk</Typography>
                 <TextField
@@ -493,8 +507,10 @@ const TambahABeli = () => {
                   id="outlined-basic"
                   variant="outlined"
                   value={namaStnk}
-                  disabled
-                  onChange={(e) => setNamaStnk(e.target.value.toUpperCase())}
+                  InputProps={{
+                    readOnly: true
+                  }}
+                  sx={{ backgroundColor: Colors.grey400 }}
                 />
               </>
             )}
@@ -539,10 +555,11 @@ const TambahABeli = () => {
                 id="outlined-basic"
                 variant="outlined"
                 size="small"
-                sx={hargaTextField}
+                sx={[hargaTextField, { backgroundColor: Colors.grey400 }]}
                 value={ppnABeli}
-                disabled
-                onChange={(e) => setPpnABeli(e.target.value.toUpperCase())}
+                InputProps={{
+                  readOnly: true
+                }}
               />
             </Box>
           </Box>

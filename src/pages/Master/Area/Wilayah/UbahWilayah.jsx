@@ -97,7 +97,7 @@ const UbahWilayah = () => {
               InputProps={{
                 readOnly: true
               }}
-              onChange={(e) => setKodeWilayah(e.target.value)}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Wilayah</Typography>
             <TextField

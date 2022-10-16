@@ -97,6 +97,7 @@ const TambahCabang = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Cabang</Typography>
             <TextField

@@ -14,6 +14,7 @@ import {
   Alert
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { Colors } from "../../../constants/styles";
 
 const UbahMarketing = () => {
   const { user } = useContext(AuthContext);
@@ -84,42 +85,40 @@ const UbahMarketing = () => {
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
+          <Typography sx={labelInput}>Kode Marketing</Typography>
           <TextField
             error={error && kodeMarketing.length === 0 && true}
             helperText={
               error && kodeMarketing.length === 0 && "Kode harus diisi!"
             }
             id="outlined-basic"
-            label="Kode"
             variant="outlined"
             value={kodeMarketing}
             InputProps={{
               readOnly: true
             }}
-            onChange={(e) => setKodeMarketing(e.target.value.toUpperCase())}
+            sx={{ backgroundColor: Colors.grey400 }}
           />
+          <Typography sx={[labelInput, spacingTop]}>Nama Marketing</Typography>
           <TextField
             error={error && namaMarketing.length === 0 && true}
             helperText={
               error && namaMarketing.length === 0 && "Nama harus diisi!"
             }
             id="outlined-basic"
-            label="Nama"
             variant="outlined"
             value={namaMarketing}
-            sx={spacingTop}
             onChange={(e) => setNamaMarketing(e.target.value.toUpperCase())}
           />
+          <Typography sx={[labelInput, spacingTop]}>Telepon</Typography>
           <TextField
             error={error && teleponMarketing.length === 0 && true}
             helperText={
               error && teleponMarketing.length === 0 && "Telepon harus diisi!"
             }
             id="outlined-basic"
-            label="Telepon"
             variant="outlined"
             value={teleponMarketing}
-            sx={spacingTop}
             onChange={(e) => setTeleponMarketing(e.target.value.toUpperCase())}
           />
         </Box>
@@ -191,4 +190,9 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
 };

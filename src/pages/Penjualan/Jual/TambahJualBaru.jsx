@@ -178,11 +178,13 @@ const TambahJualBaru = () => {
       id: user._id,
       token: user.token
     });
+    if (response.data) {
+      setNoMesin(response.data.noMesin);
+      setTipe(response.data.tipe);
+      setNamaWarna(response.data.namaWarna);
+      setTahun(response.data.tahun);
+    }
     setNoRangka(noRangka);
-    setNoMesin(response.data.noMesin);
-    setTipe(response.data.tipe);
-    setNamaWarna(response.data.namaWarna);
-    setTahun(response.data.tahun);
   };
 
   const getStok = async () => {
@@ -383,6 +385,7 @@ const TambahJualBaru = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tanggal Jual
@@ -459,6 +462,9 @@ const TambahJualBaru = () => {
                 InputProps={{
                   readOnly: jenisJual === "TUNAI" && true
                 }}
+                sx={{
+                  backgroundColor: jenisJual === "TUNAI" && Colors.grey400
+                }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tanggal Angsuran Akhir
@@ -472,6 +478,9 @@ const TambahJualBaru = () => {
                 onChange={(e) => setTglAngAkhir(e.target.value.toUpperCase())}
                 InputProps={{
                   readOnly: jenisJual === "TUNAI" && true
+                }}
+                sx={{
+                  backgroundColor: jenisJual === "TUNAI" && Colors.grey400
                 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
@@ -807,6 +816,7 @@ const TambahJualBaru = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
@@ -819,6 +829,7 @@ const TambahJualBaru = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>Nama Warna</Typography>
               <TextField
@@ -829,6 +840,7 @@ const TambahJualBaru = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tahun Perakitan
@@ -841,6 +853,7 @@ const TambahJualBaru = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
           </Box>
@@ -917,6 +930,7 @@ const TambahJualBaru = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
@@ -982,6 +996,7 @@ const TambahJualBaru = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
           </Box>

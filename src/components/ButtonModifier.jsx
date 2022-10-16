@@ -20,7 +20,8 @@ const ButtonModifier = ({
   editLink,
   deleteUser,
   nameUser,
-  tambahBaru
+  tambahBaru,
+  addTambahText
 }) => {
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -45,7 +46,7 @@ const ButtonModifier = ({
             navigate(addLink);
           }}
         >
-          Tambah
+          Tambah {addTambahText && addTambahText}
         </Button>
         {tambahBaru && (
           <Button

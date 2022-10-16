@@ -178,11 +178,13 @@ const TambahJualBekas = () => {
       id: user._id,
       token: user.token
     });
-    setNoRangka(response.data.noRangka);
-    setNoMesin(response.data.noMesin);
-    setTipe(response.data.tipe);
-    setNamaWarna(response.data.namaWarna);
-    setTahun(response.data.tahun);
+    if (response.data) {
+      setNoRangka(response.data.noRangka);
+      setNoMesin(response.data.noMesin);
+      setTipe(response.data.tipe);
+      setNamaWarna(response.data.namaWarna);
+      setTahun(response.data.tahun);
+    }
     setNopol(nopol);
   };
 
@@ -377,7 +379,7 @@ const TambahJualBekas = () => {
                 helperText={
                   error &&
                   noKwitansi.length === 0 &&
-                  "Nama Register harus diisi!"
+                  "No. Kwitansi harus diisi!"
                 }
                 id="outlined-basic"
                 variant="outlined"
@@ -385,6 +387,7 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tanggal Jual
@@ -461,6 +464,9 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: jenisJual === "TUNAI" && true
                 }}
+                sx={{
+                  backgroundColor: jenisJual === "TUNAI" && Colors.grey400
+                }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tanggal Angsuran Akhir
@@ -474,6 +480,9 @@ const TambahJualBekas = () => {
                 onChange={(e) => setTglAngAkhir(e.target.value.toUpperCase())}
                 InputProps={{
                   readOnly: jenisJual === "TUNAI" && true
+                }}
+                sx={{
+                  backgroundColor: jenisJual === "TUNAI" && Colors.grey400
                 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
@@ -808,6 +817,7 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>No. Mesin</Typography>
               <TextField
@@ -818,6 +828,7 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
@@ -830,6 +841,7 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>Nama Warna</Typography>
               <TextField
@@ -840,6 +852,7 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tahun Perakitan
@@ -852,6 +865,7 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
           </Box>
@@ -928,6 +942,7 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
@@ -993,6 +1008,7 @@ const TambahJualBekas = () => {
                 InputProps={{
                   readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
           </Box>

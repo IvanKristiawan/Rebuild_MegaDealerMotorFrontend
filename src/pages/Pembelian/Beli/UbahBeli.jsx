@@ -183,6 +183,7 @@ const UbahBeli = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Jenis Motor</Typography>
             <TextField
@@ -190,7 +191,10 @@ const UbahBeli = () => {
               id="outlined-basic"
               variant="outlined"
               value={jenisBeli}
-              disabled
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Tanggal (hari-bulan-tahun)
@@ -263,8 +267,10 @@ const UbahBeli = () => {
                 id="outlined-basic"
                 variant="outlined"
                 value={jumlahBeli}
-                onChange={(e) => setJumlahBeli(e.target.value)}
-                disabled
+                InputProps={{
+                  readOnly: true
+                }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
             <Box sx={jumlahContainer}>
@@ -275,6 +281,7 @@ const UbahBeli = () => {
                   ` : Rp ${parseInt(potongan).toLocaleString()}`}
               </Typography>
               <TextField
+                type="number"
                 size="small"
                 error={error && potongan.length === 0 && true}
                 helperText={
@@ -306,7 +313,10 @@ const UbahBeli = () => {
                   id="outlined-basic"
                   variant="outlined"
                   value={ppnBeli}
-                  disabled
+                  InputProps={{
+                    readOnly: true
+                  }}
+                  sx={{ backgroundColor: Colors.grey400 }}
                 />
               </Box>
             )}

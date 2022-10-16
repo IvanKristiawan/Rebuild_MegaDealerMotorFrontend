@@ -337,6 +337,7 @@ const TampilJual = () => {
           editLink={`/jual/${id}/edit`}
           deleteUser={deleteUser}
           nameUser={noJual}
+          addTambahText=" Bekas"
         />
       </Box>
       <Divider sx={dividerStyle} />
@@ -354,7 +355,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={noJual}
                     InputProps={{
                       readOnly: true
@@ -366,7 +367,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={noKwitansi}
                     InputProps={{
                       readOnly: true
@@ -378,7 +379,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tglJual}
                     InputProps={{
                       readOnly: true
@@ -390,7 +391,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={jenisJual}
                     InputProps={{
                       readOnly: true
@@ -402,7 +403,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={leasing}
                     InputProps={{
                       readOnly: true
@@ -414,7 +415,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tglAng}
                     InputProps={{
                       readOnly: true
@@ -426,7 +427,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tglAngAkhir}
                     InputProps={{
                       readOnly: true
@@ -438,7 +439,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tglInput}
                     InputProps={{
                       readOnly: true
@@ -459,7 +460,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={noRegister}
                     InputProps={{
                       readOnly: true
@@ -471,7 +472,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={namaRegister}
                     InputProps={{
                       readOnly: true
@@ -483,7 +484,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={almRegister}
                     InputProps={{
                       readOnly: true
@@ -495,7 +496,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={almKantor}
                     InputProps={{
                       readOnly: true
@@ -507,7 +508,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tlpRegister}
                     InputProps={{
                       readOnly: true
@@ -519,7 +520,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={noKtpRegister}
                     InputProps={{
                       readOnly: true
@@ -531,7 +532,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={noKKRegister}
                     InputProps={{
                       readOnly: true
@@ -543,7 +544,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={namaPjmRegister}
                     InputProps={{
                       readOnly: true
@@ -555,7 +556,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={noKtpPjmRegister}
                     InputProps={{
                       readOnly: true
@@ -567,7 +568,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={namaRefRegister}
                     InputProps={{
                       readOnly: true
@@ -579,7 +580,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={almRefRegister}
                     InputProps={{
                       readOnly: true
@@ -591,7 +592,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tlpRefRegister}
                     InputProps={{
                       readOnly: true
@@ -603,7 +604,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={kodeMarketing}
                     InputProps={{
                       readOnly: true
@@ -615,7 +616,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={kodeSurveyor}
                     InputProps={{
                       readOnly: true
@@ -627,7 +628,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={kodePekerjaan}
                     InputProps={{
                       readOnly: true
@@ -639,7 +640,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={kodeKecamatan}
                     InputProps={{
                       readOnly: true
@@ -651,7 +652,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={kodeLeasing}
                     InputProps={{
                       readOnly: true
@@ -672,7 +673,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={nopol}
                     InputProps={{
                       readOnly: true
@@ -684,7 +685,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={noRangka}
                     InputProps={{
                       readOnly: true
@@ -696,7 +697,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={noMesin}
                     InputProps={{
                       readOnly: true
@@ -708,7 +709,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tipe}
                     InputProps={{
                       readOnly: true
@@ -720,7 +721,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={namaWarna}
                     InputProps={{
                       readOnly: true
@@ -732,7 +733,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tahun}
                     InputProps={{
                       readOnly: true
@@ -759,7 +760,7 @@ const TampilJual = () => {
                     type="number"
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={hargaTunai}
                     InputProps={{
                       readOnly: true
@@ -775,7 +776,7 @@ const TampilJual = () => {
                     type="number"
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={uangMuka}
                     InputProps={{
                       readOnly: true
@@ -790,7 +791,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={sisaPiutang}
                     InputProps={{
                       readOnly: true
@@ -807,7 +808,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={angPerBulan}
                     InputProps={{
                       readOnly: true
@@ -822,7 +823,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={tenor}
                     InputProps={{
                       readOnly: true
@@ -837,7 +838,7 @@ const TampilJual = () => {
                   <TextField
                     size="small"
                     id="outlined-basic"
-                    variant="outlined"
+                    variant="filled"
                     value={jumlahPiutang}
                     InputProps={{
                       readOnly: true

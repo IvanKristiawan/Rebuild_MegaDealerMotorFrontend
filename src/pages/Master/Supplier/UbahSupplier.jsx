@@ -111,7 +111,7 @@ const UbahSupplier = () => {
               id="outlined-basic"
               variant="outlined"
               value={kodeSupplier}
-              onChange={(e) => setKodeSupplier(e.target.value.toUpperCase())}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Supplier</Typography>
             <TextField

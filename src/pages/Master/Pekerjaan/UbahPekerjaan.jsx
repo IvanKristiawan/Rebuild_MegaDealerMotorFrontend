@@ -14,6 +14,7 @@ import {
   Alert
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { Colors } from "../../../constants/styles";
 
 const UbahPekerjaan = () => {
   const { user } = useContext(AuthContext);
@@ -81,21 +82,24 @@ const UbahPekerjaan = () => {
       <Divider sx={dividerStyle} />
       <Box sx={showDataContainer}>
         <Box sx={showDataWrapper}>
+          <Typography sx={labelInput}>Kode Pekerjaan</Typography>
           <TextField
+            size="small"
             error={error && kodePekerjaan.length === 0 && true}
             helperText={
               error && kodePekerjaan.length === 0 && "Kode harus diisi!"
             }
             id="outlined-basic"
-            label="Kode"
             variant="outlined"
             value={kodePekerjaan}
             InputProps={{
               readOnly: true
             }}
-            onChange={(e) => setKodePekerjaan(e.target.value.toUpperCase())}
+            sx={{ backgroundColor: Colors.grey400 }}
           />
+          <Typography sx={[labelInput, spacingTop]}>Nama Pekerjaan</Typography>
           <TextField
+            size="small"
             error={error && namaPekerjaan.length === 0 && true}
             helperText={
               error &&
@@ -103,10 +107,8 @@ const UbahPekerjaan = () => {
               "Nama Pekerjaan harus diisi!"
             }
             id="outlined-basic"
-            label="Nama Pekerjaan"
             variant="outlined"
             value={namaPekerjaan}
-            sx={spacingTop}
             onChange={(e) => setNamaPekerjaan(e.target.value.toUpperCase())}
           />
         </Box>
@@ -178,4 +180,9 @@ const spacingTop = {
 
 const alertBox = {
   width: "100%"
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
 };

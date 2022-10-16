@@ -126,6 +126,7 @@ const TambahRegister = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Register</Typography>
             <TextField

@@ -106,7 +106,7 @@ const UbahLeasing = () => {
               InputProps={{
                 readOnly: true
               }}
-              onChange={(e) => setKodeLeasing(e.target.value)}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Leasing</Typography>
             <TextField

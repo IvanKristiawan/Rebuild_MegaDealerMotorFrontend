@@ -86,6 +86,7 @@ const UbahProfilUser = () => {
           <Box sx={showDataWrapper}>
             <Typography sx={labelInput}>Username</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={username}
@@ -93,9 +94,11 @@ const UbahProfilUser = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Tipe User</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={tipeUser}
@@ -103,9 +106,11 @@ const UbahProfilUser = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Periode</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={periode}
@@ -113,11 +118,13 @@ const UbahProfilUser = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
           </Box>
           <Box sx={[showDataWrapper, secondWrapper]}>
             <Typography sx={labelInput}>Kode Kwitansi</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={kodeKwitansi}
@@ -125,9 +132,11 @@ const UbahProfilUser = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>No Terakhir</Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               value={noTerakhir}
@@ -135,11 +144,13 @@ const UbahProfilUser = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Password (baru)
             </Typography>
             <TextField
+              size="small"
               id="outlined-basic"
               variant="outlined"
               type="password"

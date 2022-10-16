@@ -106,7 +106,7 @@ const UbahDealer = () => {
               InputProps={{
                 readOnly: true
               }}
-              onChange={(e) => setKodeDealer(e.target.value)}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Dealer</Typography>
             <TextField

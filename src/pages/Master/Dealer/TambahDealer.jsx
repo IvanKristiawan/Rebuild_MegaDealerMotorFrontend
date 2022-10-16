@@ -97,6 +97,7 @@ const TambahDealer = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Dealer</Typography>
             <TextField

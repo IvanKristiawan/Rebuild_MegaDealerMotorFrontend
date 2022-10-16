@@ -106,7 +106,7 @@ const UbahCabang = () => {
               InputProps={{
                 readOnly: true
               }}
-              onChange={(e) => setKodeCabang(e.target.value)}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Cabang</Typography>
             <TextField

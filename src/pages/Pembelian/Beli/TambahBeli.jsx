@@ -186,7 +186,10 @@ const TambahBeli = () => {
               id="outlined-basic"
               variant="outlined"
               value={kodeBeli}
-              disabled
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Tanggal (hari-bulan-tahun)
@@ -250,8 +253,10 @@ const TambahBeli = () => {
               id="outlined-basic"
               variant="outlined"
               value={jumlahBeli}
-              disabled
-              onChange={(e) => setJumlahBeli(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
           </Box>
           <Box sx={[textFieldWrapper, secondWrapper]}>
@@ -261,8 +266,10 @@ const TambahBeli = () => {
               id="outlined-basic"
               variant="outlined"
               value={ppnBeli}
-              disabled
-              onChange={(e) => setPpnBeli(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Potongan</Typography>
             <TextField
@@ -270,8 +277,10 @@ const TambahBeli = () => {
               id="outlined-basic"
               variant="outlined"
               value={potongan}
-              disabled
-              onChange={(e) => setPotongan(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Lama (Hari)</Typography>
             <TextField

@@ -110,7 +110,7 @@ const UbahSurveyor = () => {
               InputProps={{
                 readOnly: true
               }}
-              onChange={(e) => setKodeSurveyor(e.target.value)}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Surveyor</Typography>
             <TextField

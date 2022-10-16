@@ -93,6 +93,7 @@ const TambahMarketing = () => {
               InputProps={{
                 readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Nama Marketing
