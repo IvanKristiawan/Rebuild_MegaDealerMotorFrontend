@@ -1339,3 +1339,74 @@ export function ShowTableDaftarStok({
     </TableContainer>
   );
 }
+
+export function ShowTableJual({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Jual
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tanggal
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Customer</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Leasing</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Tipe</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tglInput.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.namaRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.kodeLeasing
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.tipe.toUpperCase().includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/jual/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.noJual}
+                </TableCell>
+                <TableCell>{user.tglInput}</TableCell>
+                <TableCell>{user.namaRegister}</TableCell>
+                <TableCell>{user.kodeLeasing}</TableCell>
+                <TableCell>{user.tipe}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}

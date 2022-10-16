@@ -43,7 +43,7 @@ const useStyles = makeStyles({
   }
 });
 
-const TambahJualBekas = () => {
+const TambahJualBaru = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   // Data Register/Pembeli
@@ -144,8 +144,8 @@ const TambahJualBekas = () => {
     label: `${leasing.kodeLeasing} - ${leasing.namaLeasing}`
   }));
 
-  const nopolOptions = stoks.map((stok) => ({
-    label: `${stok.nopol}`
+  const norangOptions = stoks.map((stok) => ({
+    label: `${stok.noRangka}`
   }));
 
   const tempPostsRegister = registers.filter((val) => {
@@ -172,23 +172,22 @@ const TambahJualBekas = () => {
     getLeasing();
   }, []);
 
-  const getStoksByNopol = async (nopol) => {
-    const response = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
-      nopol,
+  const getStoksByNorang = async (noRangka) => {
+    const response = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
+      noRangka,
       id: user._id,
       token: user.token
     });
-    setNoRangka(response.data.noRangka);
+    setNoRangka(noRangka);
     setNoMesin(response.data.noMesin);
     setTipe(response.data.tipe);
     setNamaWarna(response.data.namaWarna);
     setTahun(response.data.tahun);
-    setNopol(nopol);
   };
 
   const getStok = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/daftarStoksNopol`, {
+    const response = await axios.post(`${tempUrl}/daftarStoksNorang`, {
       id: user._id,
       token: user.token
     });
@@ -270,7 +269,6 @@ const TambahJualBekas = () => {
       kodePekerjaan.length === 0 ||
       kodeKecamatan.length === 0 ||
       kodeLeasing.length === 0 ||
-      nopol.length === 0 ||
       hargaTunai.length === 0 ||
       uangMuka.length === 0 ||
       sisaPiutang.length === 0 ||
@@ -345,7 +343,7 @@ const TambahJualBekas = () => {
     <Box sx={container}>
       <Typography color="#757575">Penjualan</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Tambah Jual Bekas
+        Tambah Jual Baru
       </Typography>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
@@ -771,42 +769,33 @@ const TambahJualBekas = () => {
           </Typography>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
-              <Typography sx={labelInput}>Nopol</Typography>
+              <Typography sx={labelInput}>No. Rangka</Typography>
               <Autocomplete
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                options={nopolOptions}
+                options={norangOptions}
                 renderInput={(params) => (
                   <TextField
                     size="small"
-                    error={error && nopol.length === 0 && true}
+                    error={error && noRangka.length === 0 && true}
                     helperText={
-                      error && nopol.length === 0 && "Nopol harus diisi!"
+                      error &&
+                      noRangka.length === 0 &&
+                      "No. Rangka harus diisi!"
                     }
                     {...params}
                   />
                 )}
                 onInputChange={(e, value) => {
                   if (value) {
-                    getStoksByNopol(value);
+                    getStoksByNorang(value);
                   } else {
-                    setNoRangka("");
                     setNoMesin("");
                     setTipe("");
                     setNamaWarna("");
                     setTahun("");
                   }
-                }}
-              />
-              <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                value={noRangka}
-                InputProps={{
-                  readOnly: true
                 }}
               />
               <Typography sx={[labelInput, spacingTop]}>No. Mesin</Typography>
@@ -1113,7 +1102,7 @@ const TambahJualBekas = () => {
   );
 };
 
-export default TambahJualBekas;
+export default TambahJualBaru;
 
 const container = {
   p: 4
