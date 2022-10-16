@@ -118,6 +118,8 @@ const TampilJual = () => {
       val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.tglInput.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeLeasing.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
       leasings
         .filter((leasing) => leasing.kodeLeasing === val.kodeLeasing)
         .map((sup) => sup.namaLeasing)
