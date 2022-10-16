@@ -108,6 +108,7 @@ const TampilDaftarStok = () => {
       val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase()) ||
       suppliers
         .filter((supplier) => supplier.kodeSupplier === val.supplier)

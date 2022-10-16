@@ -1280,6 +1280,7 @@ export function ShowTableDaftarStok({
                 val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.jenisBeli
                   .toUpperCase()
