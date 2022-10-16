@@ -88,6 +88,12 @@ const TampilJual = () => {
   const [users, setUser] = useState([]);
   const [jualsForTable, setJualsForTable] = useState([]);
   const [jualsForDoc, setJualsForDoc] = useState([]);
+  const [leasings, setLeasings] = useState([]);
+  const [tipes, setTipes] = useState([]);
+  const [marketings, setMarketings] = useState([]);
+  const [surveyors, setSurveyors] = useState([]);
+  const [pekerjaans, setPekerjaans] = useState([]);
+  const [kecamatans, setKecamatans] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -110,7 +116,16 @@ const TampilJual = () => {
       return val;
     } else if (
       val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.namaRegister.toUpperCase().includes(searchTerm.toUpperCase())
+      val.tglInput.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.namaRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      leasings
+        .filter((leasing) => leasing.kodeLeasing === val.kodeLeasing)
+        .map((sup) => sup.namaLeasing)
+        .includes(searchTerm.toUpperCase()) ||
+      tipes
+        .filter((tipe) => tipe.kodeTipe === val.tipe)
+        .map((sup) => sup.namaTipe)
+        .includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -126,10 +141,76 @@ const TampilJual = () => {
   };
 
   useEffect(() => {
+    getMarketing();
+    getSurveyor();
+    getPekerjaan();
+    getKecamatan();
+    getTipe();
+    getLeasing();
     getUsers();
     getJualsForDoc();
     id && getUserById();
   }, [id]);
+
+  const getMarketing = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/marketingsForTable`, {
+      id: user._id,
+      token: user.token
+    });
+    setMarketings(response.data);
+    setLoading(false);
+  };
+
+  const getSurveyor = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/surveyorsForTable`, {
+      id: user._id,
+      token: user.token
+    });
+    setSurveyors(response.data);
+    setLoading(false);
+  };
+
+  const getPekerjaan = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/pekerjaansForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setPekerjaans(response.data);
+    setLoading(false);
+  };
+
+  const getKecamatan = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/kecamatansForTable`, {
+      id: user._id,
+      token: user.token
+    });
+    setKecamatans(response.data);
+    setLoading(false);
+  };
+
+  const getTipe = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/tipesMainInfo`, {
+      id: user._id,
+      token: user.token
+    });
+    setTipes(response.data);
+    setLoading(false);
+  };
+
+  const getLeasing = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/leasingsForTable`, {
+      id: user._id,
+      token: user.token
+    });
+    setLeasings(response.data);
+    setLoading(false);
+  };
 
   const getUsers = async () => {
     setLoading(true);
@@ -605,7 +686,11 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={kodeMarketing}
+                    value={`${kodeMarketing} - ${marketings
+                      .filter(
+                        (marketing) => marketing.kodeMarketing === kodeMarketing
+                      )
+                      .map((sup) => `${sup.namaMarketing}`)}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -617,7 +702,14 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={kodeSurveyor}
+                    value={`${kodeSurveyor} - ${surveyors
+                      .filter(
+                        (surveyor) => surveyor.kodeSurveyor === kodeSurveyor
+                      )
+                      .map((sup) => `${sup.namaSurveyor}`)}`}
+                    InputProps={{
+                      readOnly: true
+                    }}
                     InputProps={{
                       readOnly: true
                     }}
@@ -629,7 +721,11 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={kodePekerjaan}
+                    value={`${kodePekerjaan} - ${pekerjaans
+                      .filter(
+                        (pekerjaan) => pekerjaan.kodePekerjaan === kodePekerjaan
+                      )
+                      .map((sup) => `${sup.namaPekerjaan}`)}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -641,7 +737,11 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={kodeKecamatan}
+                    value={`${kodeKecamatan} - ${kecamatans
+                      .filter(
+                        (kecamatan) => kecamatan.kodeKecamatan === kodeKecamatan
+                      )
+                      .map((sup) => `${sup.namaKecamatan}`)}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -653,7 +753,9 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={kodeLeasing}
+                    value={`${kodeLeasing} - ${leasings
+                      .filter((leasing) => leasing.kodeLeasing === kodeLeasing)
+                      .map((sup) => `${sup.namaLeasing}`)}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -710,7 +812,9 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={tipe}
+                    value={`${tipe} - ${tipes
+                      .filter((tipe1) => tipe1.kodeTipe === tipe)
+                      .map((sup) => `${sup.namaTipe}`)}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -855,7 +959,12 @@ const TampilJual = () => {
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
       <Box sx={tableContainer}>
-        <ShowTableJual currentPosts={currentPosts} searchTerm={searchTerm} />
+        <ShowTableJual
+          currentPosts={currentPosts}
+          searchTerm={searchTerm}
+          leasings={leasings}
+          tipes={tipes}
+        />
       </Box>
       <Box sx={tableContainer}>
         <Pagination

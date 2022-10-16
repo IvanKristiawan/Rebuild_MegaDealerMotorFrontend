@@ -1340,7 +1340,7 @@ export function ShowTableDaftarStok({
   );
 }
 
-export function ShowTableJual({ currentPosts, searchTerm }) {
+export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
   let navigate = useNavigate();
   const classes = useStyles();
   return (
@@ -1379,7 +1379,15 @@ export function ShowTableJual({ currentPosts, searchTerm }) {
                 val.kodeLeasing
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.tipe.toUpperCase().includes(searchTerm.toUpperCase())
+                val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                leasings
+                  .filter((leasing) => leasing.kodeLeasing === val.kodeLeasing)
+                  .map((sup) => sup.namaLeasing)
+                  .includes(searchTerm.toUpperCase()) ||
+                tipes
+                  .filter((tipe) => tipe.kodeTipe === val.tipe)
+                  .map((sup) => sup.namaTipe)
+                  .includes(searchTerm.toUpperCase())
               ) {
                 return val;
               }
@@ -1401,8 +1409,20 @@ export function ShowTableJual({ currentPosts, searchTerm }) {
                 </TableCell>
                 <TableCell>{user.tglInput}</TableCell>
                 <TableCell>{user.namaRegister}</TableCell>
-                <TableCell>{user.kodeLeasing}</TableCell>
-                <TableCell>{user.tipe}</TableCell>
+                <TableCell>
+                  {user.kodeLeasing} -
+                  {leasings
+                    .filter(
+                      (leasing) => leasing.kodeLeasing === user.kodeLeasing
+                    )
+                    .map((sup) => ` ${sup.namaLeasing}`)}
+                </TableCell>
+                <TableCell>
+                  {user.tipe} -
+                  {tipes
+                    .filter((tipe) => tipe.kodeTipe === user.tipe)
+                    .map((sup) => ` ${sup.namaTipe}`)}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

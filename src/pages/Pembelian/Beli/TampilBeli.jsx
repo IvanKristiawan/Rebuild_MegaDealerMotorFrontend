@@ -206,7 +206,7 @@ const TampilBeli = () => {
               }}
               value={`${kodeSupplier} - ${suppliers
                 .filter((supplier) => supplier.kodeSupplier === kodeSupplier)
-                .map((sup) => ` ${sup.namaSupplier}`)}`}
+                .map((sup) => `${sup.namaSupplier}`)}`}
             />
             <Typography sx={[labelInput, spacingTop]}>Jumlah</Typography>
             <TextField
