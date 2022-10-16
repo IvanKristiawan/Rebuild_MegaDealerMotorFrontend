@@ -540,7 +540,7 @@ const TambahJualBekas = () => {
                 onChange={(e) => setNamaRegister(e.target.value.toUpperCase())}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Alamat Register
+                Alamat Rumah
               </Typography>
               <TextField
                 size="small"
