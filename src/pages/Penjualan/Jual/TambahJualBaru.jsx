@@ -1088,7 +1088,7 @@ const TambahJualBaru = () => {
                           setNoRegister(user.noRegister);
                           setNamaRegister(user.namaRegister);
                           setAlmRegister(user.almRegister);
-                          setAlmKantor(user.almKantor);
+                          setAlmKantor(user.almRegister);
                           setTlpRegister(user.tlpRegister);
                           setNoKtpRegister(user.noKtpRegister);
                           setNoKKRegister(user.noKKRegister);
