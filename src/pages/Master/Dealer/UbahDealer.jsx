@@ -47,7 +47,7 @@ const UbahDealer = () => {
       id: user._id,
       token: user.token
     });
-    setKodeDealer(response.data.kodeDealer);
+    setKodeDealer(response.data._id);
     setNamaDealer(response.data.namaDealer);
     setAlamatDealer(response.data.alamatDealer);
     setTeleponDealer(response.data.teleponDealer);
@@ -132,6 +132,7 @@ const UbahDealer = () => {
           <Box sx={[showDataWrapper, secondWrapper]}>
             <Typography sx={labelInput}>Telepon</Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"

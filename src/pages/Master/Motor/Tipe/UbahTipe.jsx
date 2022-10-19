@@ -48,7 +48,7 @@ const UbahTipe = () => {
       id: user._id,
       token: user.token
     });
-    setKodeTipe(response.data.kodeTipe);
+    setKodeTipe(response.data._id);
     setNamaTipe(response.data.namaTipe);
     setNoRangka(response.data.noRangka);
     setNoMesin(response.data.noMesin);
@@ -66,7 +66,6 @@ const UbahTipe = () => {
       try {
         setLoading(true);
         await axios.post(`${tempUrl}/updateTipe/${id}`, {
-          kodeTipe,
           namaTipe,
           noRangka,
           noMesin,
@@ -105,7 +104,10 @@ const UbahTipe = () => {
               id="outlined-basic"
               variant="outlined"
               value={kodeTipe}
-              onChange={(e) => setKodeTipe(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Tipe</Typography>
             <TextField

@@ -44,11 +44,10 @@ const TampilLeasing = () => {
   const [picLeasing, setPicLeasing] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [leasingsForDoc, seLeasingsForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode", field: "kodeLeasing" },
+    { title: "Kode", field: "_id" },
     { title: "Nama Leasing", field: "namaLeasing" },
     { title: "Alamat", field: "alamatLeasing" },
     { title: "Telepon", field: "teleponLeasing" },
@@ -66,7 +65,7 @@ const TampilLeasing = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeLeasing.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaLeasing.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.alamatLeasing.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponLeasing.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -87,7 +86,6 @@ const TampilLeasing = () => {
 
   useEffect(() => {
     getUsers();
-    getLeasingsForDoc();
     id && getUserById();
   }, [id]);
 
@@ -101,23 +99,13 @@ const TampilLeasing = () => {
     setLoading(false);
   };
 
-  const getLeasingsForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/leasingsForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    seLeasingsForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/leasings/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeLeasing(response.data.kodeLeasing);
+      setKodeLeasing(response.data._id);
       setNamaLeasing(response.data.namaLeasing);
       setAlamatLeasing(response.data.alamatLeasing);
       setTeleponLeasing(response.data.teleponLeasing);
@@ -177,7 +165,7 @@ const TampilLeasing = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(leasingsForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Leasing`);
     // Buffer

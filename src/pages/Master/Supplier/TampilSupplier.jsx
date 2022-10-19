@@ -46,11 +46,10 @@ const TampilSupplier = () => {
   const [npwpSupplier, setNpwpSupplier] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [suppliersForDoc, setSuppliersForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode", field: "kodeSupplier" },
+    { title: "Kode", field: "_id" },
     { title: "Nama Supplier", field: "namaSupplier" },
     { title: "Alamat", field: "alamatSupplier" },
     { title: "Kota", field: "kotaSupplier" },
@@ -70,7 +69,7 @@ const TampilSupplier = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.alamatSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.kotaSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -93,7 +92,6 @@ const TampilSupplier = () => {
 
   useEffect(() => {
     getUsers();
-    getSuppliersForDoc();
     id && getUserById();
   }, [id]);
 
@@ -107,23 +105,13 @@ const TampilSupplier = () => {
     setLoading(false);
   };
 
-  const getSuppliersForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/suppliersForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setSuppliersForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/suppliers/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeSupplier(response.data.kodeSupplier);
+      setKodeSupplier(response.data._id);
       setNamaSupplier(response.data.namaSupplier);
       setAlamatSupplier(response.data.alamatSupplier);
       setKotaSupplier(response.data.kotaSupplier);
@@ -187,7 +175,7 @@ const TampilSupplier = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(suppliersForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Supplier`);
     // Buffer

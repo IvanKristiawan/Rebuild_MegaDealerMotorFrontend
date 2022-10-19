@@ -43,7 +43,7 @@ const UbahPekerjaan = () => {
       id: user._id,
       token: user.token
     });
-    setKodePekerjaan(response.data.kodePekerjaan);
+    setKodePekerjaan(response.data._id);
     setNamaPekerjaan(response.data.namaPekerjaan);
     setLoading(false);
   };

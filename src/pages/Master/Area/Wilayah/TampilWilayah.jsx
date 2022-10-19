@@ -41,11 +41,10 @@ const TampilWilayah = () => {
   const [namaWilayah, setNamaWilayah] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [wilayahsForDoc, setWilayahsForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode Wilayah", field: "kodeWilayah" },
+    { title: "Kode Wilayah", field: "_id" },
     { title: "Nama Wilayah", field: "namaWilayah" }
   ];
 
@@ -60,7 +59,7 @@ const TampilWilayah = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeWilayah.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaWilayah.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
@@ -78,7 +77,6 @@ const TampilWilayah = () => {
 
   useEffect(() => {
     getUsers();
-    getWilayahsForDoc();
     id && getUserById();
   }, [id]);
 
@@ -92,23 +90,13 @@ const TampilWilayah = () => {
     setLoading(false);
   };
 
-  const getWilayahsForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/wilayahsForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setWilayahsForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/wilayahs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeWilayah(response.data.kodeWilayah);
+      setKodeWilayah(response.data._id);
       setNamaWilayah(response.data.namaWilayah);
     }
   };
@@ -162,7 +150,7 @@ const TampilWilayah = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(wilayahsForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Wilayah`);
     // Buffer

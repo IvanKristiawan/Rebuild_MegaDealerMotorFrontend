@@ -47,7 +47,7 @@ const UbahCabang = () => {
       id: user._id,
       token: user.token
     });
-    setKodeCabang(response.data.kodeCabang);
+    setKodeCabang(response.data._id);
     setNamaCabang(response.data.namaCabang);
     setAlamatCabang(response.data.alamatCabang);
     setTeleponCabang(response.data.teleponCabang);
@@ -132,13 +132,14 @@ const UbahCabang = () => {
           <Box sx={[showDataWrapper, secondWrapper]}>
             <Typography sx={labelInput}>Telepon</Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"
               value={teleponCabang}
               onChange={(e) => setTeleponCabang(e.target.value.toUpperCase())}
             />
-            <Typography sx={[labelInput, spacingTop]}>Isi</Typography>
+            <Typography sx={[labelInput, spacingTop]}>PIC</Typography>
             <TextField
               size="small"
               error={error && picCabang.length === 0 && true}

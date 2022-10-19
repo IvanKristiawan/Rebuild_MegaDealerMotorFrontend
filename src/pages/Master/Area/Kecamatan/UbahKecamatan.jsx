@@ -73,8 +73,8 @@ const UbahKecamatan = () => {
       try {
         setLoading(true);
         await axios.post(`${tempUrl}/updateKecamatan/${id}`, {
-          kodeWilayah,
-          namaWilayah,
+          kodeWilayah: kodeWilayah.split(" ", 1)[0],
+          namaWilayah: kodeWilayah.split("- ")[1],
           namaKecamatan,
           id: user._id,
           token: user.token
@@ -88,7 +88,7 @@ const UbahKecamatan = () => {
   };
 
   const wilayahOptions = wilayah.map((wil) => ({
-    label: `${wil.kodeWilayah} - ${wil.namaWilayah}`
+    label: `${wil._id} - ${wil.namaWilayah}`
   }));
 
   if (loading) {
@@ -124,8 +124,7 @@ const UbahKecamatan = () => {
                 />
               )}
               onInputChange={(e, value) => {
-                setKodeWilayah(value.split(" ", 1)[0]);
-                setNamaWilayah(value.split("- ")[1]);
+                setKodeWilayah(value);
               }}
               value={{ label: kodeWilayah }}
             />

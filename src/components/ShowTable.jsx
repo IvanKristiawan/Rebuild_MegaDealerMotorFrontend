@@ -91,7 +91,7 @@ export function ShowTableTipe({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodeTipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaTipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -114,7 +114,7 @@ export function ShowTableTipe({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeTipe}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaTipe}</TableCell>
                 <TableCell>{user.noRangka}</TableCell>
@@ -197,9 +197,7 @@ export function ShowTableWilayah({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodeWilayah
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaWilayah.toUpperCase().includes(searchTerm.toUpperCase())
               ) {
                 return val;
@@ -218,7 +216,7 @@ export function ShowTableWilayah({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeWilayah}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaWilayah}</TableCell>
               </TableRow>
@@ -345,9 +343,7 @@ export function ShowTableDealer({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodeDealer
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaDealer
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -375,7 +371,7 @@ export function ShowTableDealer({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeDealer}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaDealer}</TableCell>
                 <TableCell>{user.alamatDealer}</TableCell>
@@ -418,9 +414,7 @@ export function ShowTableMarketing({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodeMarketing
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaMarketing
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -444,7 +438,7 @@ export function ShowTableMarketing({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeMarketing}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaMarketing}</TableCell>
                 <TableCell>{user.teleponMarketing}</TableCell>
@@ -484,9 +478,7 @@ export function ShowTablePekerjaan({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodePekerjaan
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaPekerjaan
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase())
@@ -507,7 +499,7 @@ export function ShowTablePekerjaan({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodePekerjaan}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaPekerjaan}</TableCell>
               </TableRow>
@@ -553,9 +545,7 @@ export function ShowTableSurveyor({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodeSurveyor
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaSurveyor
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -582,7 +572,7 @@ export function ShowTableSurveyor({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeSurveyor}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaSurveyor}</TableCell>
                 <TableCell>{user.teleponSurveyor}</TableCell>
@@ -715,9 +705,7 @@ export function ShowTableCabang({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodeCabang
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaCabang
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -745,7 +733,7 @@ export function ShowTableCabang({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeCabang}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaCabang}</TableCell>
                 <TableCell>{user.alamatCabang}</TableCell>
@@ -786,6 +774,7 @@ export function ShowTableLeasing({ currentPosts, searchTerm }) {
               Alamat Leasing
             </TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Telepon Leasing</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>PIC</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -794,9 +783,7 @@ export function ShowTableLeasing({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodeLeasing
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaLeasing
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -805,7 +792,8 @@ export function ShowTableLeasing({ currentPosts, searchTerm }) {
                   .includes(searchTerm.toUpperCase()) ||
                 val.teleponLeasing
                   .toUpperCase()
-                  .includes(searchTerm.toUpperCase())
+                  .includes(searchTerm.toUpperCase()) ||
+                val.picLeasing.toUpperCase().includes(searchTerm.toUpperCase())
               ) {
                 return val;
               }
@@ -823,11 +811,12 @@ export function ShowTableLeasing({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeLeasing}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaLeasing}</TableCell>
                 <TableCell>{user.alamatLeasing}</TableCell>
                 <TableCell>{user.teleponLeasing}</TableCell>
+                <TableCell>{user.picLeasing}</TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -889,9 +878,7 @@ export function ShowTableSupplier({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.kodeSupplier
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaSupplier
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -927,7 +914,7 @@ export function ShowTableSupplier({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeSupplier}
+                  {user._id}
                 </TableCell>
                 <TableCell>{user.namaSupplier}</TableCell>
                 <TableCell>{user.alamatSupplier}</TableCell>

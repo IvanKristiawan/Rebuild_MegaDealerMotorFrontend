@@ -43,11 +43,10 @@ const TampilSurveyor = () => {
   const [teleponSurveyor, setTeleponSurveyor] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [surveyorsForDoc, setSurveyorsForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode", field: "kodeSurveyor" },
+    { title: "Kode", field: "_id" },
     { title: "Nama Surveyor", field: "namaSurveyor" },
     { title: "Jenis Surveyor", field: "jenisSurveyor" },
     { title: "Telepon Surveyor", field: "teleponSurveyor" }
@@ -64,7 +63,7 @@ const TampilSurveyor = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeSurveyor.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaSurveyor.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jenisSurveyor.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponSurveyor.toUpperCase().includes(searchTerm.toUpperCase())
@@ -84,7 +83,6 @@ const TampilSurveyor = () => {
 
   useEffect(() => {
     getUsers();
-    getSurveyorsForDoc();
     id && getUserById();
   }, [id]);
 
@@ -98,23 +96,13 @@ const TampilSurveyor = () => {
     setLoading(false);
   };
 
-  const getSurveyorsForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/surveyorsForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setSurveyorsForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/surveyors/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeSurveyor(response.data.kodeSurveyor);
+      setKodeSurveyor(response.data._id);
       setNamaSurveyor(response.data.namaSurveyor);
       setJenisSurveyor(response.data.jenisSurveyor);
       setTeleponSurveyor(response.data.teleponSurveyor);
@@ -172,7 +160,7 @@ const TampilSurveyor = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(surveyorsForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Surveyor`);
     // Buffer

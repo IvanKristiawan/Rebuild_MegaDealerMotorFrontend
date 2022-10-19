@@ -49,7 +49,7 @@ const UbahSupplier = () => {
       id: user._id,
       token: user.token
     });
-    setKodeSupplier(response.data.kodeSupplier);
+    setKodeSupplier(response.data._id);
     setNamaSupplier(response.data.namaSupplier);
     setAlamatSupplier(response.data.alamatSupplier);
     setKotaSupplier(response.data.kotaSupplier);
@@ -149,6 +149,7 @@ const UbahSupplier = () => {
           <Box sx={[showDataWrapper, secondWrapper]}>
             <Typography sx={labelInput}>Telepon</Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"

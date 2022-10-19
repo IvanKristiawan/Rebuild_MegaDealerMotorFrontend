@@ -123,13 +123,14 @@ const TambahCabang = () => {
           <Box sx={[showDataWrapper, secondWrapper]}>
             <Typography sx={labelInput}>Telepon</Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"
               value={teleponCabang}
               onChange={(e) => setTeleponCabang(e.target.value.toUpperCase())}
             />
-            <Typography sx={[labelInput, spacingTop]}>Isi</Typography>
+            <Typography sx={[labelInput, spacingTop]}>PIC</Typography>
             <TextField
               size="small"
               error={error && picCabang.length === 0 && true}

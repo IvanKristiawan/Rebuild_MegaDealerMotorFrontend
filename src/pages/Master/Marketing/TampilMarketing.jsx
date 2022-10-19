@@ -42,11 +42,10 @@ const TampilMarketing = () => {
   const [teleponMarketing, setTeleponMarketing] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [marketingsForDoc, setMarketingsForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode", field: "kodeMarketing" },
+    { title: "Kode", field: "_id" },
     { title: "Nama Marketing", field: "namaMarketing" },
     { title: "Telepon Marketing", field: "teleponMarketing" }
   ];
@@ -62,7 +61,7 @@ const TampilMarketing = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeMarketing.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaMarketing.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponMarketing.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
@@ -81,7 +80,6 @@ const TampilMarketing = () => {
 
   useEffect(() => {
     getUsers();
-    getMarketingsForDoc();
     id && getUserById();
   }, [id]);
 
@@ -95,23 +93,13 @@ const TampilMarketing = () => {
     setLoading(false);
   };
 
-  const getMarketingsForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/marketingsForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setMarketingsForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/marketings/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeMarketing(response.data.kodeMarketing);
+      setKodeMarketing(response.data._id);
       setNamaMarketing(response.data.namaMarketing);
       setTeleponMarketing(response.data.teleponMarketing);
     }
@@ -167,7 +155,7 @@ const TampilMarketing = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(marketingsForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Marketing`);
     // Buffer

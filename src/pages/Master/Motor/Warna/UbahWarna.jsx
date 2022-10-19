@@ -12,7 +12,12 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Paper
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Colors } from "../../../../constants/styles";
@@ -25,6 +30,15 @@ const UbahWarna = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
+
+  const handleClickOpenAlert = () => {
+    setOpenAlert(true);
+  };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -54,14 +68,23 @@ const UbahWarna = () => {
       setOpen(!open);
     } else {
       try {
-        setLoading(true);
-        await axios.post(`${tempUrl}/updateWarna/${id}`, {
+        let tempNamaWarna = await axios.post(`${tempUrl}/getNamaWarna`, {
           namaWarna,
           id: user._id,
           token: user.token
         });
-        setLoading(false);
-        navigate(`/warna/${id}`);
+        if (tempNamaWarna.data.length > 0) {
+          handleClickOpenAlert();
+        } else {
+          setLoading(true);
+          await axios.post(`${tempUrl}/updateWarna/${id}`, {
+            namaWarna,
+            id: user._id,
+            token: user.token
+          });
+          setLoading(false);
+          navigate(`/warna/${id}`);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -78,6 +101,22 @@ const UbahWarna = () => {
       <Typography variant="h4" sx={subTitleText}>
         Ubah Warna
       </Typography>
+      <Dialog
+        open={openAlert}
+        onClose={handleCloseAlert}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{`Data Nama Sama`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {`Nama Warna ${namaWarna} sudah ada, ganti Nama Warna!`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAlert}>Ok</Button>
+        </DialogActions>
+      </Dialog>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={showDataContainer}>

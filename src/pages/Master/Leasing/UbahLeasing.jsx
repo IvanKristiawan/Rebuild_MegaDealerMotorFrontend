@@ -47,7 +47,7 @@ const UbahLeasing = () => {
       id: user._id,
       token: user.token
     });
-    setKodeLeasing(response.data.kodeLeasing);
+    setKodeLeasing(response.data._id);
     setNamaLeasing(response.data.namaLeasing);
     setAlamatLeasing(response.data.alamatLeasing);
     setTeleponLeasing(response.data.teleponLeasing);
@@ -132,6 +132,7 @@ const UbahLeasing = () => {
           <Box sx={[showDataWrapper, secondWrapper]}>
             <Typography sx={labelInput}>Telepon</Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"

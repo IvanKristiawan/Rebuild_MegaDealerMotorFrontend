@@ -44,11 +44,10 @@ const TampilDealer = () => {
   const [PICDealer, setPICDealer] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [dealersForDoc, setDealersForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode", field: "kodeDealer" },
+    { title: "Kode", field: "_id" },
     { title: "Nama Dealer", field: "namaDealer" },
     { title: "Alamat", field: "alamatDealer" },
     { title: "Telepon", field: "teleponDealer" },
@@ -66,7 +65,7 @@ const TampilDealer = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeDealer.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaDealer.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.alamatDealer.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponDealer.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -87,7 +86,6 @@ const TampilDealer = () => {
 
   useEffect(() => {
     getUsers();
-    getDealersForDoc();
     id && getUserById();
   }, [id]);
 
@@ -101,23 +99,13 @@ const TampilDealer = () => {
     setLoading(false);
   };
 
-  const getDealersForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/dealersForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setDealersForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/dealers/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeDealer(response.data.kodeDealer);
+      setKodeDealer(response.data._id);
       setNamaDealer(response.data.namaDealer);
       setAlamatDealer(response.data.alamatDealer);
       setTeleponDealer(response.data.teleponDealer);
@@ -177,7 +165,7 @@ const TampilDealer = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(dealersForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Dealer`);
     // Buffer

@@ -44,7 +44,7 @@ const UbahMarketing = () => {
       id: user._id,
       token: user.token
     });
-    setKodeMarketing(response.data.kodeMarketing);
+    setKodeMarketing(response.data._id);
     setNamaMarketing(response.data.namaMarketing);
     setTeleponMarketing(response.data.teleponMarketing);
     setLoading(false);
@@ -87,10 +87,7 @@ const UbahMarketing = () => {
         <Box sx={showDataWrapper}>
           <Typography sx={labelInput}>Kode Marketing</Typography>
           <TextField
-            error={error && kodeMarketing.length === 0 && true}
-            helperText={
-              error && kodeMarketing.length === 0 && "Kode harus diisi!"
-            }
+            size="small"
             id="outlined-basic"
             variant="outlined"
             value={kodeMarketing}
@@ -101,6 +98,7 @@ const UbahMarketing = () => {
           />
           <Typography sx={[labelInput, spacingTop]}>Nama Marketing</Typography>
           <TextField
+            size="small"
             error={error && namaMarketing.length === 0 && true}
             helperText={
               error && namaMarketing.length === 0 && "Nama harus diisi!"
@@ -112,6 +110,8 @@ const UbahMarketing = () => {
           />
           <Typography sx={[labelInput, spacingTop]}>Telepon</Typography>
           <TextField
+            type="number"
+            size="small"
             error={error && teleponMarketing.length === 0 && true}
             helperText={
               error && teleponMarketing.length === 0 && "Telepon harus diisi!"

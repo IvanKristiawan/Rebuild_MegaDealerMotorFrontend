@@ -41,11 +41,10 @@ const TampilPekerjaan = () => {
   const [namaPekerjaan, setNamaPekerjaan] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [pekerjaansForDoc, setPekerjaansForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode", field: "kodePekerjaan" },
+    { title: "Kode", field: "_id" },
     { title: "Nama Pekerjaan", field: "namaPekerjaan" }
   ];
 
@@ -60,7 +59,7 @@ const TampilPekerjaan = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodePekerjaan.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaPekerjaan.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
@@ -78,7 +77,6 @@ const TampilPekerjaan = () => {
 
   useEffect(() => {
     getUsers();
-    getPekerjaansForDoc();
     id && getUserById();
   }, [id]);
 
@@ -92,23 +90,13 @@ const TampilPekerjaan = () => {
     setLoading(false);
   };
 
-  const getPekerjaansForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/pekerjaansForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setPekerjaansForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/pekerjaans/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodePekerjaan(response.data.kodePekerjaan);
+      setKodePekerjaan(response.data._id);
       setNamaPekerjaan(response.data.namaPekerjaan);
     }
   };
@@ -162,7 +150,7 @@ const TampilPekerjaan = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(pekerjaansForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Pekerjaan`);
     // Buffer

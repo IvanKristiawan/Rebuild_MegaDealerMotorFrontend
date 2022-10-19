@@ -45,11 +45,10 @@ const TampilTipe = () => {
   const [merk, setMerk] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [tipesForDoc, setTipesForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode", field: "kodeTipe" },
+    { title: "Kode", field: "_id" },
     { title: "Tipe / Merk", field: "namaTipe" },
     { title: "No. Rangka", field: "noRangka" },
     { title: "no. Mesin", field: "noMesin" },
@@ -68,7 +67,7 @@ const TampilTipe = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeTipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaTipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -90,7 +89,6 @@ const TampilTipe = () => {
 
   useEffect(() => {
     getUsers();
-    getTipesForDoc();
     id && getUserById();
   }, [id]);
 
@@ -104,23 +102,13 @@ const TampilTipe = () => {
     setLoading(false);
   };
 
-  const getTipesForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/tipesForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setTipesForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/tipes/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeTipe(response.data.kodeTipe);
+      setKodeTipe(response.data._id);
       setNamaTipe(response.data.namaTipe);
       setNoRangka(response.data.noRangka);
       setNoMesin(response.data.noMesin);
@@ -182,7 +170,7 @@ const TampilTipe = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(tipesForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Tipe`);
     // Buffer

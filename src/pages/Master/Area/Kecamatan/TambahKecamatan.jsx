@@ -74,7 +74,7 @@ const TambahKecamatan = () => {
   };
 
   const wilayahOptions = wilayah.map((wil) => ({
-    label: `${wil.kodeWilayah} - ${wil.namaWilayah}`
+    label: `${wil._id} - ${wil.namaWilayah}`
   }));
 
   if (loading) {

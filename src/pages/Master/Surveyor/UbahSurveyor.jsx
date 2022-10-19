@@ -47,7 +47,7 @@ const UbahSurveyor = () => {
       id: user._id,
       token: user.token
     });
-    setKodeSurveyor(response.data.kodeSurveyor);
+    setKodeSurveyor(response.data._id);
     setNamaSurveyor(response.data.namaSurveyor);
     setJenisSurveyor(response.data.jenisSurveyor);
     setTeleponSurveyor(response.data.teleponSurveyor);
@@ -130,6 +130,7 @@ const UbahSurveyor = () => {
           <Box sx={[showDataWrapper, secondWrapper]}>
             <Typography sx={labelInput}>Telepon</Typography>
             <TextField
+              type="number"
               size="small"
               error={error && teleponSurveyor.length === 0 && true}
               helperText={

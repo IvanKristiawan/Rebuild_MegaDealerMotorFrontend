@@ -44,11 +44,10 @@ const TampilCabang = () => {
   const [picCabang, setPicCabang] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [cabangsForDoc, setCabangsForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
-    { title: "Kode", field: "kodeCabang" },
+    { title: "Kode", field: "_id" },
     { title: "Nama Cabang", field: "namaCabang" },
     { title: "Alamat", field: "alamatCabang" },
     { title: "Telepon", field: "teleponCabang" },
@@ -66,7 +65,7 @@ const TampilCabang = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.alamatCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -87,7 +86,6 @@ const TampilCabang = () => {
 
   useEffect(() => {
     getUsers();
-    getCabangsForDoc();
     id && getUserById();
   }, [id]);
 
@@ -101,23 +99,13 @@ const TampilCabang = () => {
     setLoading(false);
   };
 
-  const getCabangsForDoc = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/cabangsForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setCabangsForDoc(response.data);
-    setLoading(false);
-  };
-
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/cabangs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeCabang(response.data.kodeCabang);
+      setKodeCabang(response.data._id);
       setNamaCabang(response.data.namaCabang);
       setAlamatCabang(response.data.alamatCabang);
       setTeleponCabang(response.data.teleponCabang);
@@ -177,7 +165,7 @@ const TampilCabang = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(cabangsForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Cabang`);
     // Buffer

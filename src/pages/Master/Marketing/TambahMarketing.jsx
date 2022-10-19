@@ -113,6 +113,7 @@ const TambahMarketing = () => {
             />
             <Typography sx={[labelInput, spacingTop]}>Telepon</Typography>
             <TextField
+              type="number"
               size="small"
               error={error && teleponMarketing.length === 0 && true}
               helperText={
