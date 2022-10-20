@@ -10,19 +10,19 @@ import Paper from "@mui/material/Paper";
 import { makeStyles } from "@mui/styles";
 import { Colors } from "../constants/styles";
 
-const tdTable = {
-  border: "1px solid #dddddd",
-  textAlign: "left",
-  padding: "8px"
-};
+// const tdTable = {
+//   border: "1px solid #dddddd",
+//   textAlign: "left",
+//   padding: "8px"
+// };
 
-const thTable = {
-  border: "1px solid #dddddd",
-  textAlign: "left",
-  padding: "8px",
-  backgroundColor: "gray",
-  color: "white"
-};
+// const thTable = {
+//   border: "1px solid #dddddd",
+//   textAlign: "left",
+//   padding: "8px",
+//   backgroundColor: "gray",
+//   color: "white"
+// };
 
 const useStyles = makeStyles({
   root: {
@@ -91,7 +91,7 @@ export function ShowTableTipe({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.kodeTipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaTipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -114,7 +114,7 @@ export function ShowTableTipe({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user._id}
+                  {user.kodeTipe}
                 </TableCell>
                 <TableCell>{user.namaTipe}</TableCell>
                 <TableCell>{user.noRangka}</TableCell>
@@ -930,7 +930,7 @@ export function ShowTableSupplier({ currentPosts, searchTerm }) {
   );
 }
 
-export function ShowTableDaftarBeli({ currentPosts, searchTerm, suppliers }) {
+export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
   let navigate = useNavigate();
   const classes = useStyles();
   return (
@@ -1018,11 +1018,11 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm, suppliers }) {
                 val.jatuhTempo
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                suppliers
-                  .filter(
-                    (supplier) => supplier.kodeSupplier === val.kodeSupplier
-                  )
-                  .map((sup) => sup.namaSupplier)
+                val.supplier._id
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.supplier.namaSupplier
+                  .toUpperCase()
                   .includes(searchTerm.toUpperCase())
               ) {
                 return val;
@@ -1044,12 +1044,7 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm, suppliers }) {
                   {user.noBeli}
                 </TableCell>
                 <TableCell>
-                  {user.kodeSupplier} -
-                  {suppliers
-                    .filter(
-                      (supplier) => supplier.kodeSupplier === user.kodeSupplier
-                    )
-                    .map((sup) => ` ${sup.namaSupplier}`)}
+                  {user.supplier._id} - {user.supplier.namaSupplier}
                 </TableCell>
                 <TableCell>{user.jumlahBeli.toLocaleString()}</TableCell>
                 <TableCell>{user.ppnBeli.toLocaleString()}</TableCell>
@@ -1169,7 +1164,7 @@ export function ShowTableBeli({ id, currentPosts, nomorNota }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {aBeli.kodeTipe}
+                  {aBeli.tipe.kodeTipe}
                 </TableCell>
                 <TableCell>{aBeli.tahun}</TableCell>
                 <TableCell>{aBeli.namaWarna}</TableCell>
@@ -1191,12 +1186,7 @@ export function ShowTableBeli({ id, currentPosts, nomorNota }) {
   );
 }
 
-export function ShowTableDaftarStok({
-  currentPosts,
-  searchTerm,
-  suppliers,
-  tipes
-}) {
+export function ShowTableDaftarStok({ currentPosts, searchTerm, tipes }) {
   let navigate = useNavigate();
   const classes = useStyles();
   return (
@@ -1262,20 +1252,21 @@ export function ShowTableDaftarStok({
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.supplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.merk.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.jenisBeli
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                suppliers
-                  .filter((supplier) => supplier.kodeSupplier === val.supplier)
-                  .map((sup) => sup.namaSupplier)
+                val.supplier._id
+                  .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
+                val.supplier.namaSupplier
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 tipes
                   .filter((tipe) => tipe.kodeTipe === val.tipe)
                   .map((sup) => sup.namaTipe)
@@ -1301,12 +1292,7 @@ export function ShowTableDaftarStok({
                 </TableCell>
                 <TableCell>{user.tanggalBeli}</TableCell>
                 <TableCell>
-                  {user.supplier} -
-                  {suppliers
-                    .filter(
-                      (supplier) => supplier.kodeSupplier === user.supplier
-                    )
-                    .map((sup) => ` ${sup.namaSupplier}`)}
+                  {user.supplier._id} - {user.supplier.namaSupplier}
                 </TableCell>
                 <TableCell>{user.merk}</TableCell>
                 <TableCell>

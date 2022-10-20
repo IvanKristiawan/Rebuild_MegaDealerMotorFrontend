@@ -49,7 +49,7 @@ const TambahBeli = () => {
   const [tanggalBeli, setTanggalBeli] = useState(`${now_date}`);
 
   const supplierOptions = suppliers.map((supplier) => ({
-    label: `${supplier.kodeSupplier} - ${supplier.namaSupplier}`
+    label: `${supplier._id} - ${supplier.namaSupplier}`
   }));
 
   const jenisBeliOption = [{ label: "BARU" }, { label: "BEKAS" }];

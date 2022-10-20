@@ -39,7 +39,7 @@ const UbahBeli = () => {
   const [loading, setLoading] = useState(false);
 
   const supplierOptions = suppliers.map((supplier) => ({
-    label: `${supplier.kodeSupplier} - ${supplier.namaSupplier}`
+    label: `${supplier._id} - ${supplier.namaSupplier}`
   }));
 
   const handleClose = (event, reason) => {
@@ -73,7 +73,7 @@ const UbahBeli = () => {
     setKodeBeli(response.data.noBeli);
     setTanggalBeli(response.data.tanggalBeli);
     setJumlahBeli(response.data.jumlahBeli);
-    setKodeSupplier(response.data.kodeSupplier);
+    setKodeSupplier(response.data.supplier._id);
     setPpnBeli(response.data.ppnBeli);
     setIsPpnBeli(response.data.isPpnBeli);
     setPotongan(response.data.potongan);

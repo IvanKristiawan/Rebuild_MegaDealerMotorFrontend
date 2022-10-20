@@ -48,7 +48,7 @@ const UbahTipe = () => {
       id: user._id,
       token: user.token
     });
-    setKodeTipe(response.data._id);
+    setKodeTipe(response.data.kodeTipe);
     setNamaTipe(response.data.namaTipe);
     setNoRangka(response.data.noRangka);
     setNoMesin(response.data.noMesin);

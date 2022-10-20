@@ -34,7 +34,6 @@ const TampilBeli = () => {
   const [jenisBeli, setJenisBeli] = useState("");
   const [jatuhTempo, setJatuhTempo] = useState("");
   const [aBelis, setABelis] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -55,20 +54,9 @@ const TampilBeli = () => {
   };
 
   useEffect(() => {
-    getSupplier();
     getAPembelianStoks();
     id && getUserById();
   }, [id, isPpnBeli]);
-
-  const getSupplier = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/supplierMainInfo`, {
-      id: user._id,
-      token: user.token
-    });
-    setSuppliers(response.data);
-    setLoading(false);
-  };
 
   const getAPembelianStoks = async () => {
     setLoading(true);
@@ -89,7 +77,7 @@ const TampilBeli = () => {
       setNoBeli(response.data.noBeli);
       setTanggalBeli(response.data.tanggalBeli);
       setJumlahBeli(response.data.jumlahBeli);
-      setKodeSupplier(response.data.kodeSupplier);
+      setKodeSupplier(response.data.supplier);
       setPpnBeli(response.data.ppnBeli);
       setIsPpnBeli(response.data.isPpnBeli);
       setPotongan(response.data.potongan);
@@ -204,9 +192,7 @@ const TampilBeli = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={`${kodeSupplier} - ${suppliers
-                .filter((supplier) => supplier.kodeSupplier === kodeSupplier)
-                .map((sup) => `${sup.namaSupplier}`)}`}
+              value={`${kodeSupplier._id} - ${kodeSupplier.namaSupplier}`}
             />
             <Typography sx={[labelInput, spacingTop]}>Jumlah</Typography>
             <TextField

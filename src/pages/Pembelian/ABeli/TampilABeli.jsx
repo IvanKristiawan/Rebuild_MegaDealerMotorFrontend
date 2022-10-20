@@ -60,7 +60,7 @@ const TampilABeli = () => {
       });
       setIdStok(response.data.idStok);
       setNoBeli(response.data.noBeli);
-      setKodeTipe(response.data.kodeTipe);
+      setKodeTipe(response.data.tipe);
       setTahun(response.data.tahun);
       setNamaWarna(response.data.namaWarna);
       setNoRangka(response.data.noRangka);
@@ -150,7 +150,7 @@ const TampilABeli = () => {
             <DialogTitle id="alert-dialog-title">{`Hapus Data`}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-slide-description">
-                {`Yakin ingin menghapus data ${kodeTipe}?`}
+                {`Yakin ingin menghapus data ${kodeTipe.kodeTipe}?`}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -189,7 +189,7 @@ const TampilABeli = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={kodeTipe}
+              value={`${kodeTipe.kodeTipe} - ${kodeTipe.namaTipe}`}
             />
             <Typography sx={[labelInput, spacingTop]}>Tahun</Typography>
             <TextField

@@ -12,12 +12,7 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions
+  Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { Colors } from "../../../../constants/styles";
@@ -34,15 +29,6 @@ const TambahTipe = () => {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [openAlert, setOpenAlert] = React.useState(false);
-
-  const handleClickOpenAlert = () => {
-    setOpenAlert(true);
-  };
-
-  const handleCloseAlert = () => {
-    setOpenAlert(false);
-  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -58,27 +44,19 @@ const TambahTipe = () => {
       setOpen(!open);
     } else {
       try {
-        let tempKodeTipe = await axios.post(`${tempUrl}/tipes/${kodeTipe}`, {
+        setLoading(true);
+        await axios.post(`${tempUrl}/saveTipe`, {
+          kodeTipe,
+          namaTipe,
+          noRangka,
+          noMesin,
+          isi,
+          merk,
           id: user._id,
           token: user.token
         });
-        if (tempKodeTipe.data) {
-          handleClickOpenAlert();
-        } else {
-          setLoading(true);
-          await axios.post(`${tempUrl}/saveTipe`, {
-            _id: kodeTipe,
-            namaTipe,
-            noRangka,
-            noMesin,
-            isi,
-            merk,
-            id: user._id,
-            token: user.token
-          });
-          setLoading(false);
-          navigate("/tipe");
-        }
+        setLoading(false);
+        navigate("/tipe");
       } catch (error) {
         console.log(error);
       }
@@ -95,22 +73,6 @@ const TambahTipe = () => {
       <Typography variant="h4" sx={subTitleText}>
         Tambah Tipe
       </Typography>
-      <Dialog
-        open={openAlert}
-        onClose={handleCloseAlert}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{`Data Kode Tipe Sama`}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {`Kode Tipe ${kodeTipe} sudah ada, ganti Kode Tipe!`}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseAlert}>Ok</Button>
-        </DialogActions>
-      </Dialog>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={showDataContainer}>
@@ -123,7 +85,7 @@ const TambahTipe = () => {
               id="outlined-basic"
               variant="outlined"
               value={kodeTipe}
-              onChange={(e) => setKodeTipe(e.target.value.toUpperCase().trim())}
+              onChange={(e) => setKodeTipe(e.target.value.toUpperCase())}
             />
             <Typography sx={[labelInput, spacingTop]}>Nama Tipe</Typography>
             <TextField

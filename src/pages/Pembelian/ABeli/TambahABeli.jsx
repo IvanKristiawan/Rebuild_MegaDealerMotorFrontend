@@ -98,7 +98,7 @@ const TambahABeli = () => {
     });
     setJenisABeli(response.data.jenisBeli);
     setTanggalBeli(response.data.tanggalBeli);
-    setKodeSupplier(response.data.kodeSupplier);
+    setKodeSupplier(response.data.supplier._id);
     setLoading(false);
   };
 
@@ -136,12 +136,12 @@ const TambahABeli = () => {
       id: user._id,
       token: user.token
     });
-    // Get Supplier
-    const getSupplier = await axios.post(`${tempUrl}/suppliersByKode`, {
-      kodeSupplier: kodeSupplier.split(" ", 1)[0],
-      id: user._id,
-      token: user.token
-    });
+    // // Get Supplier
+    // const getSupplier = await axios.post(`${tempUrl}/suppliersByKode`, {
+    //   kodeSupplier: kodeSupplier.split(" ", 1)[0],
+    //   id: user._id,
+    //   token: user.token
+    // });
     // Get Tipe/Merk
     const getTipe = await axios.post(`${tempUrl}/tipesByKode`, {
       kodeTipe,
@@ -170,10 +170,10 @@ const TambahABeli = () => {
           const tempDaftarStok = await axios.post(`${tempUrl}/saveDaftarStok`, {
             noBeli: belis.noBeli,
             tanggalBeli,
-            supplier: `${getSupplier.data.kodeSupplier}`,
+            kodeSupplier,
+            kodeTipe: getTipe.data._id,
             merk: getTipe.data.merk,
-            tipe: `${getTipe.data.kodeTipe}`,
-            namaTipe: getTipe.data.namaTipe,
+            tipe: getTipe.data.kodeTipe,
             noRangka: `${noRangka}${noRangka2}`,
             noMesin: `${noMesin}${noMesin2}`,
             nopol,
@@ -198,7 +198,7 @@ const TambahABeli = () => {
           await axios.post(`${tempUrl}/saveABeli`, {
             idStok: tempDaftarStok.data._id,
             noBeli: belis.noBeli,
-            kodeTipe,
+            kodeTipe: getTipe.data._id,
             tahun,
             namaWarna,
             noRangka: `${noRangka}${noRangka2}`,
@@ -210,7 +210,7 @@ const TambahABeli = () => {
             hargaSatuan,
             ppnABeli,
             tanggalBeli,
-            kodeSupplier: `${getSupplier.data.kodeSupplier}`,
+            kodeSupplier,
             id: user._id,
             token: user.token
           });
@@ -244,10 +244,10 @@ const TambahABeli = () => {
           const tempDaftarStok = await axios.post(`${tempUrl}/saveDaftarStok`, {
             noBeli: belis.noBeli,
             tanggalBeli,
-            supplier: `${getSupplier.data.kodeSupplier}`,
+            kodeSupplier,
+            kodeTipe: getTipe.data._id,
             merk: getTipe.data.merk,
             tipe: `${getTipe.data.kodeTipe}`,
-            namaTipe: getTipe.data.namaTipe,
             noRangka: `${noRangka}${noRangka2}`,
             noMesin: `${noMesin}${noMesin2}`,
             nopol,
@@ -272,7 +272,7 @@ const TambahABeli = () => {
           await axios.post(`${tempUrl}/saveABeli`, {
             idStok: tempDaftarStok.data._id,
             noBeli: belis.noBeli,
-            kodeTipe,
+            kodeTipe: getTipe.data._id,
             tahun,
             namaWarna,
             noRangka: `${noRangka}${noRangka2}`,
@@ -283,7 +283,7 @@ const TambahABeli = () => {
             jenisABeli,
             hargaSatuan,
             ppnABeli,
-            kodeSupplier: `${getSupplier.data.kodeSupplier}`,
+            kodeSupplier: kodeSupplier,
             id: user._id,
             token: user.token
           });
@@ -328,7 +328,7 @@ const TambahABeli = () => {
               )}
               onInputChange={(e, value) => {
                 if (value) {
-                  getTipe(`${value.split(" ", 1)[0]}`);
+                  getTipe(`${value.split(" -", 1)[0]}`);
                 } else {
                   setNoRangka("");
                   setNoMesin("");

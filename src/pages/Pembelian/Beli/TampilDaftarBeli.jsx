@@ -33,13 +33,10 @@ const TampilDaftarBeli = () => {
     } else if (
       val.noBeli.includes(searchTerm) ||
       val.tanggalBeli.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.kodeSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jumlahBeli.toString().includes(searchTerm) ||
       val.ppnBeli.toString().toUpperCase().includes(searchTerm.toUpperCase()) ||
-      suppliers
-        .filter((supplier) => supplier.kodeSupplier === val.kodeSupplier)
-        .map((sup) => sup.namaSupplier)
-        .includes(searchTerm.toUpperCase())
+      val.supplier._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.supplier.namaSupplier.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
     }

@@ -60,6 +60,7 @@ const TampilDaftarStok = () => {
   const [users, setUser] = useState([]);
   const [stoksForTable, setStoksForTable] = useState([]);
   const [daftarStoksForDoc, setDaftarStoksForDoc] = useState([]);
+  const [daftarStoksForPdf, setDaftarStoksForPdf] = useState([]);
   const [rekapStoks, setRekapStoks] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [tipes, setTipes] = useState([]);
@@ -102,18 +103,17 @@ const TampilDaftarStok = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.supplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.merk.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.noRangka.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.noMesin.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      suppliers
-        .filter((supplier) => supplier.kodeSupplier === val.supplier)
-        .map((sup) => sup.namaSupplier)
+      val.supplier._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.supplier.namaSupplier
+        .toUpperCase()
         .includes(searchTerm.toUpperCase()) ||
+      val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
       tipes
         .filter((tipe) => tipe.kodeTipe === val.tipe)
         .map((sup) => sup.namaTipe)
@@ -244,6 +244,7 @@ const TampilDaftarStok = () => {
         });
     }
     setDaftarStoksForDoc(response.data);
+    setDaftarStoksForPdf(groupBy(response.data, "merk"));
     setLoading(false);
   };
 
@@ -294,10 +295,10 @@ const TampilDaftarStok = () => {
       15,
       280
     );
-    for (var i = 0; i < Object.keys(stoksForTable).length; i++) {
+    for (var i = 0; i < Object.keys(daftarStoksForPdf).length; i++) {
       doc.setFontSize(10);
       doc.text(
-        `Merk : ${Object.values(stoksForTable)[i][0].merk}`,
+        `Merk : ${Object.values(daftarStoksForPdf)[i][0].merk}`,
         15,
         tempSubGroupHeight + 5
       );
@@ -306,8 +307,11 @@ const TampilDaftarStok = () => {
           fontSize: 8
         },
         margin: { top: 43 },
-        columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-        body: Object.values(stoksForTable)[i],
+        columns: columns.map((col) => ({
+          ...col,
+          dataKey: col.field
+        })),
+        body: Object.values(daftarStoksForPdf)[i],
         headStyles: {
           fillColor: [117, 117, 117],
           color: [0, 0, 0]
@@ -317,14 +321,14 @@ const TampilDaftarStok = () => {
           tempHeight = d.cursor.y;
         }
       });
-      Object.values(stoksForTable)[i].map((val) => {
+      Object.values(daftarStoksForPdf)[i].map((val) => {
         tempSubTotal += val.hargaSatuan;
         tempTotal += val.hargaSatuan;
       });
       doc.setFontSize(8);
       doc.text(
         `Sub Total : ${
-          Object.values(stoksForTable)[i].length
+          Object.values(daftarStoksForPdf)[i].length
         } | Rp ${tempSubTotal.toLocaleString()}`,
         140,
         tempHeight + 2
@@ -508,9 +512,7 @@ const TampilDaftarStok = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={`${supplier} - ${suppliers
-                  .filter((supplier1) => supplier1.kodeSupplier === supplier)
-                  .map((sup) => ` ${sup.namaSupplier}`)}
+                value={`${supplier._id} - ${supplier.namaSupplier}
                 `}
               />
               <Typography sx={[labelInput, spacingTop]}>Merk</Typography>
@@ -533,7 +535,7 @@ const TampilDaftarStok = () => {
                 }}
                 value={`${tipe} - ${tipes
                   .filter((tipe1) => tipe1.kodeTipe === tipe)
-                  .map((sup) => ` ${sup.namaTipe}`)}
+                  .map((sup) => `${sup.namaTipe}`)}
                 `}
               />
               <Typography sx={[labelInput, spacingTop]}>Nama Warna</Typography>
@@ -644,7 +646,6 @@ const TampilDaftarStok = () => {
         <ShowTableDaftarStok
           currentPosts={currentPosts}
           searchTerm={searchTerm}
-          suppliers={suppliers}
           tipes={tipes}
         />
       </Box>
