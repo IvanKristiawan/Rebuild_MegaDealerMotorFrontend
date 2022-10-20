@@ -67,8 +67,6 @@ const UbahTipe = () => {
         setLoading(true);
         await axios.post(`${tempUrl}/updateTipe/${id}`, {
           namaTipe,
-          noRangka,
-          noMesin,
           isi,
           merk,
           id: user._id,
@@ -127,7 +125,10 @@ const UbahTipe = () => {
               id="outlined-basic"
               variant="outlined"
               value={noRangka}
-              onChange={(e) => setNoRangka(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
           </Box>
           <Box sx={[showDataWrapper, secondWrapper]}>
@@ -137,7 +138,10 @@ const UbahTipe = () => {
               id="outlined-basic"
               variant="outlined"
               value={noMesin}
-              onChange={(e) => setNoMesin(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Isi</Typography>
             <TextField

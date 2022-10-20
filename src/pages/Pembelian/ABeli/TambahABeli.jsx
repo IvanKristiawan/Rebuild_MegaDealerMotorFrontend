@@ -14,7 +14,12 @@ import {
   Autocomplete,
   Snackbar,
   Alert,
-  Paper
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { Colors } from "../../../constants/styles";
@@ -44,6 +49,15 @@ const TambahABeli = () => {
   const [warnas, setWarnas] = useState([]);
   const [belis, setBelis] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
+
+  const handleClickOpenAlert = () => {
+    setOpenAlert(true);
+  };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
 
   const tipeOptions = tipes.map((tipe) => ({
     label: `${tipe.kodeTipe} - ${tipe.namaTipe}`
@@ -136,12 +150,6 @@ const TambahABeli = () => {
       id: user._id,
       token: user.token
     });
-    // // Get Supplier
-    // const getSupplier = await axios.post(`${tempUrl}/suppliersByKode`, {
-    //   kodeSupplier: kodeSupplier.split(" ", 1)[0],
-    //   id: user._id,
-    //   token: user.token
-    // });
     // Get Tipe/Merk
     const getTipe = await axios.post(`${tempUrl}/tipesByKode`, {
       kodeTipe,
@@ -227,68 +235,80 @@ const TambahABeli = () => {
         namaWarna.length === 0 ||
         nopol.length === 0 ||
         namaStnk.length === 0 ||
-        tglStnk.length === 0 ||
+        !tglStnk ||
         hargaSatuan.length === 0
       ) {
         setError(true);
         setOpen(!open);
       } else {
         try {
-          setLoading(true);
-          // Get Beli
-          const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
-            id: user._id,
-            token: user.token
-          });
-          // Save Daftar Stok
-          const tempDaftarStok = await axios.post(`${tempUrl}/saveDaftarStok`, {
-            noBeli: belis.noBeli,
-            tanggalBeli,
-            kodeSupplier,
-            kodeTipe: getTipe.data._id,
-            merk: getTipe.data.merk,
-            tipe: `${getTipe.data.kodeTipe}`,
-            noRangka: `${noRangka}${noRangka2}`,
-            noMesin: `${noMesin}${noMesin2}`,
+          let tempNopol = await axios.post(`${tempUrl}/aBelisNopol`, {
             nopol,
-            tahun,
-            namaWarna,
-            namaStnk,
-            tglStnk: combineTanggalBeli,
-            jenisBeli: jenisABeli,
-            hargaSatuan,
-            hargaTable: `Rp ${parseInt(hargaSatuan).toLocaleString()}`,
             id: user._id,
             token: user.token
           });
-          // Update Beli
-          await axios.post(`${tempUrl}/updateBeli/${id}`, {
-            jumlahBeli:
-              parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
-            id: user._id,
-            token: user.token
-          });
-          // Save A Beli
-          await axios.post(`${tempUrl}/saveABeli`, {
-            idStok: tempDaftarStok.data._id,
-            noBeli: belis.noBeli,
-            kodeTipe: getTipe.data._id,
-            tahun,
-            namaWarna,
-            noRangka: `${noRangka}${noRangka2}`,
-            noMesin: `${noMesin}${noMesin2}`,
-            nopol,
-            namaStnk,
-            tglStnk: combineTanggalBeli,
-            jenisABeli,
-            hargaSatuan,
-            ppnABeli,
-            kodeSupplier: kodeSupplier,
-            id: user._id,
-            token: user.token
-          });
-          setLoading(false);
-          navigate(`/daftarBeli/beli/${id}`);
+          if (tempNopol.data.length > 0) {
+            handleClickOpenAlert();
+          } else {
+            setLoading(true);
+            // Get Beli
+            const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
+              id: user._id,
+              token: user.token
+            });
+            // Save Daftar Stok
+            const tempDaftarStok = await axios.post(
+              `${tempUrl}/saveDaftarStok`,
+              {
+                noBeli: belis.noBeli,
+                tanggalBeli,
+                kodeSupplier,
+                kodeTipe: getTipe.data._id,
+                merk: getTipe.data.merk,
+                tipe: `${getTipe.data.kodeTipe}`,
+                noRangka: `${noRangka}${noRangka2}`,
+                noMesin: `${noMesin}${noMesin2}`,
+                nopol,
+                tahun,
+                namaWarna,
+                namaStnk,
+                tglStnk: combineTanggalBeli,
+                jenisBeli: jenisABeli,
+                hargaSatuan,
+                hargaTable: `Rp ${parseInt(hargaSatuan).toLocaleString()}`,
+                id: user._id,
+                token: user.token
+              }
+            );
+            // Update Beli
+            await axios.post(`${tempUrl}/updateBeli/${id}`, {
+              jumlahBeli:
+                parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
+              id: user._id,
+              token: user.token
+            });
+            // Save A Beli
+            await axios.post(`${tempUrl}/saveABeli`, {
+              idStok: tempDaftarStok.data._id,
+              noBeli: belis.noBeli,
+              kodeTipe: getTipe.data._id,
+              tahun,
+              namaWarna,
+              noRangka: `${noRangka}${noRangka2}`,
+              noMesin: `${noMesin}${noMesin2}`,
+              nopol,
+              namaStnk,
+              tglStnk: combineTanggalBeli,
+              jenisABeli,
+              hargaSatuan,
+              ppnABeli,
+              kodeSupplier: kodeSupplier,
+              id: user._id,
+              token: user.token
+            });
+            setLoading(false);
+            navigate(`/daftarBeli/beli/${id}`);
+          }
         } catch (error) {
           console.log(error);
         }
@@ -306,6 +326,22 @@ const TambahABeli = () => {
       <Typography variant="h4" sx={subTitleText}>
         Tambah Barang Beli
       </Typography>
+      <Dialog
+        open={openAlert}
+        onClose={handleCloseAlert}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{`Data Nopol Sama`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {`Nopol ${nopol} sudah ada, ganti Nopol!`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAlert}>Ok</Button>
+        </DialogActions>
+      </Dialog>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={textFieldContainer}>

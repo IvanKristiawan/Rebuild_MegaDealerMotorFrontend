@@ -62,33 +62,7 @@ const UbahWarna = () => {
   };
 
   const updateUser = async (e) => {
-    e.preventDefault();
-    if (namaWarna.length === 0) {
-      setError(true);
-      setOpen(!open);
-    } else {
-      try {
-        let tempNamaWarna = await axios.post(`${tempUrl}/getNamaWarna`, {
-          namaWarna,
-          id: user._id,
-          token: user.token
-        });
-        if (tempNamaWarna.data.length > 0) {
-          handleClickOpenAlert();
-        } else {
-          setLoading(true);
-          await axios.post(`${tempUrl}/updateWarna/${id}`, {
-            namaWarna,
-            id: user._id,
-            token: user.token
-          });
-          setLoading(false);
-          navigate(`/warna/${id}`);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    navigate(`/warna/${id}`);
   };
 
   if (loading) {
@@ -101,22 +75,6 @@ const UbahWarna = () => {
       <Typography variant="h4" sx={subTitleText}>
         Ubah Warna
       </Typography>
-      <Dialog
-        open={openAlert}
-        onClose={handleCloseAlert}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{`Data Nama Sama`}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {`Nama Warna ${namaWarna} sudah ada, ganti Nama Warna!`}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseAlert}>Ok</Button>
-        </DialogActions>
-      </Dialog>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={showDataContainer}>
@@ -131,7 +89,10 @@ const UbahWarna = () => {
               id="outlined-basic"
               variant="outlined"
               value={namaWarna}
-              onChange={(e) => setNamaWarna(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
           </Box>
         </Box>

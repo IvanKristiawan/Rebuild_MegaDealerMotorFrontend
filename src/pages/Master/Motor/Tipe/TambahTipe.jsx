@@ -12,7 +12,12 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Paper
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { Colors } from "../../../../constants/styles";
@@ -29,6 +34,24 @@ const TambahTipe = () => {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [openAlertRangka, setOpenAlertRangka] = React.useState(false);
+  const [openAlertMesin, setOpenAlertMesin] = React.useState(false);
+
+  const handleClickOpenAlertRangka = () => {
+    setOpenAlertRangka(true);
+  };
+
+  const handleCloseAlertRangka = () => {
+    setOpenAlertRangka(false);
+  };
+
+  const handleClickOpenAlertMesin = () => {
+    setOpenAlertMesin(true);
+  };
+
+  const handleCloseAlertMesin = () => {
+    setOpenAlertMesin(false);
+  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -44,19 +67,35 @@ const TambahTipe = () => {
       setOpen(!open);
     } else {
       try {
-        setLoading(true);
-        await axios.post(`${tempUrl}/saveTipe`, {
-          kodeTipe,
-          namaTipe,
+        let tempNoRangka = await axios.post(`${tempUrl}/tipesNoRangka`, {
           noRangka,
-          noMesin,
-          isi,
-          merk,
           id: user._id,
           token: user.token
         });
-        setLoading(false);
-        navigate("/tipe");
+        let tempNoMesin = await axios.post(`${tempUrl}/tipesNoMesin`, {
+          noMesin,
+          id: user._id,
+          token: user.token
+        });
+        if (tempNoRangka.data.length > 0) {
+          handleClickOpenAlertRangka();
+        } else if (tempNoMesin.data.length > 0) {
+          handleClickOpenAlertMesin();
+        } else {
+          setLoading(true);
+          await axios.post(`${tempUrl}/saveTipe`, {
+            kodeTipe,
+            namaTipe,
+            noRangka,
+            noMesin,
+            isi,
+            merk,
+            id: user._id,
+            token: user.token
+          });
+          setLoading(false);
+          navigate("/tipe");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -73,6 +112,38 @@ const TambahTipe = () => {
       <Typography variant="h4" sx={subTitleText}>
         Tambah Tipe
       </Typography>
+      <Dialog
+        open={openAlertRangka}
+        onClose={handleCloseAlertRangka}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{`No Rangka Sama`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {`No Rangka ${noRangka} sudah ada, ganti No Rangka!`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAlertRangka}>Ok</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openAlertMesin}
+        onClose={handleCloseAlertMesin}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{`No Mesin Sama`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {`No Mesin ${noMesin} sudah ada, ganti No Mesin!`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAlertMesin}>Ok</Button>
+        </DialogActions>
+      </Dialog>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={showDataContainer}>
