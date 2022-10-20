@@ -158,6 +158,7 @@ const TambahRegister = () => {
               Telepon Register
             </Typography>
             <TextField
+              type="number"
               size="small"
               error={error && tlpRegister.length === 0 && true}
               helperText={
@@ -214,9 +215,9 @@ const TambahRegister = () => {
               value={namaPjmRegister}
               onChange={(e) => setNamaPjmRegister(e.target.value.toUpperCase())}
             />
-            <Typography sx={[labelInput, spacingTop]}>
-              Alamat Penjamin
-            </Typography>
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Alamat Penjamin</Typography>
             <TextField
               size="small"
               id="outlined-basic"
@@ -224,9 +225,9 @@ const TambahRegister = () => {
               value={almPjmRegister}
               onChange={(e) => setAlmPjmRegister(e.target.value.toUpperCase())}
             />
-          </Box>
-          <Box sx={[showDataWrapper, secondWrapper]}>
-            <Typography sx={labelInput}>Telepon Penjamin</Typography>
+            <Typography sx={[labelInput, spacingTop]}>
+              Telepon Penjamin
+            </Typography>
             <TextField
               size="small"
               id="outlined-basic"

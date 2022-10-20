@@ -94,7 +94,6 @@ const TambahJualBekas = () => {
   const [noKwitansi, setNoKwitansi] = useState(user.kodeKwitansi);
   const [tglJual, setTglJual] = useState("");
   const [jenisJual, setJenisJual] = useState("");
-  const [leasing, setLeasing] = useState("");
   const [tglAng, setTglAng] = useState("");
   const [tglAngAkhir, setTglAngAkhir] = useState("");
   const [tglInput, setTglInput] = useState("");
@@ -125,15 +124,15 @@ const TambahJualBekas = () => {
   const jenisJualOption = [{ label: "TUNAI" }, { label: "KREDIT" }];
 
   const marketingOptions = marketings.map((marketing) => ({
-    label: `${marketing.kodeMarketing} - ${marketing.namaMarketing}`
+    label: `${marketing._id} - ${marketing.namaMarketing}`
   }));
 
   const surveyorOptions = surveyors.map((surveyor) => ({
-    label: `${surveyor.kodeSurveyor} - ${surveyor.namaSurveyor}`
+    label: `${surveyor._id} - ${surveyor.namaSurveyor}`
   }));
 
   const pekerjaanOptions = pekerjaans.map((pekerjaan) => ({
-    label: `${pekerjaan.kodePekerjaan} - ${pekerjaan.namaPekerjaan}`
+    label: `${pekerjaan._id} - ${pekerjaan.namaPekerjaan}`
   }));
 
   const kecamatanOptions = kecamatans.map((kecamatan) => ({
@@ -141,7 +140,7 @@ const TambahJualBekas = () => {
   }));
 
   const leasingOptions = leasings.map((leasing) => ({
-    label: `${leasing.kodeLeasing} - ${leasing.namaLeasing}`
+    label: `${leasing._id} - ${leasing.namaLeasing}`
   }));
 
   const nopolOptions = stoks.map((stok) => ({
@@ -210,7 +209,7 @@ const TambahJualBekas = () => {
 
   const getMarketing = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/marketingsForTable`, {
+    const response = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
       token: user.token
     });
@@ -220,7 +219,7 @@ const TambahJualBekas = () => {
 
   const getSurveyor = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/surveyorsForTable`, {
+    const response = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
       token: user.token
     });
@@ -230,7 +229,7 @@ const TambahJualBekas = () => {
 
   const getPekerjaan = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/pekerjaansForDoc`, {
+    const response = await axios.post(`${tempUrl}/pekerjaans`, {
       id: user._id,
       token: user.token
     });
@@ -240,7 +239,7 @@ const TambahJualBekas = () => {
 
   const getKecamatan = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kecamatansForTable`, {
+    const response = await axios.post(`${tempUrl}/kecamatans`, {
       id: user._id,
       token: user.token
     });
@@ -264,7 +263,6 @@ const TambahJualBekas = () => {
       noJual.length === 0 ||
       tglJual.length === 0 ||
       jenisJual.length === 0 ||
-      leasing.length === 0 ||
       tglInput.length === 0 ||
       noRegister.length === 0 ||
       kodeMarketing.length === 0 ||
@@ -285,6 +283,18 @@ const TambahJualBekas = () => {
     } else {
       try {
         setLoading(true);
+        const tempStok = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
+          nopol,
+          id: user._id,
+          token: user.token
+        });
+        // Update Stok
+        await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
+          noJual,
+          tanggalJual: tglJual,
+          id: user._id,
+          token: user.token
+        });
         await axios.post(`${tempUrl}/saveJual`, {
           noRegister,
           namaRegister,
@@ -320,9 +330,8 @@ const TambahJualBekas = () => {
           angBunga,
           noJual,
           noKwitansi,
-          tglJual,
+          tanggalJual: tglJual,
           jenisJual,
-          leasing,
           tglAng,
           tglAngAkhir,
           tglInput,
@@ -433,27 +442,7 @@ const TambahJualBekas = () => {
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
-              <Typography sx={labelInput}>Leasing</Typography>
-              <Autocomplete
-                size="small"
-                disablePortal
-                id="combo-box-demo"
-                options={leasingOptions}
-                renderInput={(params) => (
-                  <TextField
-                    size="small"
-                    error={error && leasing.length === 0 && true}
-                    helperText={
-                      error && leasing.length === 0 && "Leasing harus diisi!"
-                    }
-                    {...params}
-                  />
-                )}
-                onInputChange={(e, value) => setLeasing(value.split(" ", 1)[0])}
-              />
-              <Typography sx={[labelInput, spacingTop]}>
-                Tanggal Angsuran I
-              </Typography>
+              <Typography sx={labelInput}>Tanggal Angsuran I</Typography>
               <TextField
                 type="date"
                 size="small"

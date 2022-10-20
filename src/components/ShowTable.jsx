@@ -1350,14 +1350,13 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
                 val.namaRegister
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.kodeLeasing
+                val.kodeLeasing._id
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.kodeLeasing.namaLeasing
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
                 val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                leasings
-                  .filter((leasing) => leasing.kodeLeasing === val.kodeLeasing)
-                  .map((sup) => sup.namaLeasing)
-                  .includes(searchTerm.toUpperCase()) ||
                 tipes
                   .filter((tipe) => tipe.kodeTipe === val.tipe)
                   .map((sup) => sup.namaTipe)
@@ -1384,12 +1383,7 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
                 <TableCell>{user.tglInput}</TableCell>
                 <TableCell>{user.namaRegister}</TableCell>
                 <TableCell>
-                  {user.kodeLeasing} -
-                  {leasings
-                    .filter(
-                      (leasing) => leasing.kodeLeasing === user.kodeLeasing
-                    )
-                    .map((sup) => ` ${sup.namaLeasing}`)}
+                  {user.kodeLeasing._id} - {user.kodeLeasing.namaLeasing}
                 </TableCell>
                 <TableCell>
                   {user.tipe} -

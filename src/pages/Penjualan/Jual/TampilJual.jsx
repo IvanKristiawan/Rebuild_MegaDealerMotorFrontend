@@ -85,7 +85,7 @@ const TampilJual = () => {
   const [tglInput, setTglInput] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
   const [jualsForTable, setJualsForTable] = useState([]);
   const [jualsForDoc, setJualsForDoc] = useState([]);
   const [leasings, setLeasings] = useState([]);
@@ -111,19 +111,18 @@ const TampilJual = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = jualsForTable.filter((val) => {
+  const tempPosts = users.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
       val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.tglInput.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.kodeLeasing.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      leasings
-        .filter((leasing) => leasing.kodeLeasing === val.kodeLeasing)
-        .map((sup) => sup.namaLeasing)
+      val.kodeLeasing._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeLeasing.namaLeasing
+        .toUpperCase()
         .includes(searchTerm.toUpperCase()) ||
+      val.tipe.toUpperCase().includes(searchTerm.toUpperCase()) ||
       tipes
         .filter((tipe) => tipe.kodeTipe === val.tipe)
         .map((sup) => sup.namaTipe)
@@ -143,46 +142,13 @@ const TampilJual = () => {
   };
 
   useEffect(() => {
-    getMarketing();
-    getSurveyor();
-    getPekerjaan();
+    getJualsForTable();
     getKecamatan();
     getTipe();
-    getLeasing();
     getUsers();
     getJualsForDoc();
     id && getUserById();
   }, [id]);
-
-  const getMarketing = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/marketingsForTable`, {
-      id: user._id,
-      token: user.token
-    });
-    setMarketings(response.data);
-    setLoading(false);
-  };
-
-  const getSurveyor = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/surveyorsForTable`, {
-      id: user._id,
-      token: user.token
-    });
-    setSurveyors(response.data);
-    setLoading(false);
-  };
-
-  const getPekerjaan = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/pekerjaansForDoc`, {
-      id: user._id,
-      token: user.token
-    });
-    setPekerjaans(response.data);
-    setLoading(false);
-  };
 
   const getKecamatan = async () => {
     setLoading(true);
@@ -204,17 +170,17 @@ const TampilJual = () => {
     setLoading(false);
   };
 
-  const getLeasing = async () => {
+  const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/leasingsForTable`, {
+    const response = await axios.post(`${tempUrl}/juals`, {
       id: user._id,
       token: user.token
     });
-    setLeasings(response.data);
+    setUsers(response.data);
     setLoading(false);
   };
 
-  const getUsers = async () => {
+  const getJualsForTable = async () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/jualsForTable`, {
       id: user._id,
@@ -291,6 +257,18 @@ const TampilJual = () => {
   const deleteUser = async (id) => {
     try {
       setLoading(true);
+      const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
+        noRangka,
+        id: user._id,
+        token: user.token
+      });
+      // Update Stok
+      await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
+        noJual: "",
+        tanggalJual: "",
+        id: user._id,
+        token: user.token
+      });
       await axios.post(`${tempUrl}/deleteJual/${id}`, {
         id: user._id,
         token: user.token
@@ -380,7 +358,7 @@ const TampilJual = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(jualsForDoc);
+    const workSheet = XLSX.utils.json_to_sheet(users);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Jual`);
     // Buffer
@@ -482,19 +460,7 @@ const TampilJual = () => {
                   />
                 </Box>
                 <Box sx={[showDataWrapper, secondWrapper]}>
-                  <Typography sx={labelInput}>Leasing</Typography>
-                  <TextField
-                    size="small"
-                    id="outlined-basic"
-                    variant="filled"
-                    value={leasing}
-                    InputProps={{
-                      readOnly: true
-                    }}
-                  />
-                  <Typography sx={[labelInput, spacingTop]}>
-                    Tanggal Angsuran I
-                  </Typography>
+                  <Typography sx={labelInput}>Tanggal Angsuran I</Typography>
                   <TextField
                     size="small"
                     id="outlined-basic"
@@ -688,11 +654,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodeMarketing} - ${marketings
-                      .filter(
-                        (marketing) => marketing.kodeMarketing === kodeMarketing
-                      )
-                      .map((sup) => `${sup.namaMarketing}`)}`}
+                    value={`${kodeMarketing._id} - ${kodeMarketing.namaMarketing}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -704,14 +666,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodeSurveyor} - ${surveyors
-                      .filter(
-                        (surveyor) => surveyor.kodeSurveyor === kodeSurveyor
-                      )
-                      .map((sup) => `${sup.namaSurveyor}`)}`}
-                    InputProps={{
-                      readOnly: true
-                    }}
+                    value={`${kodeSurveyor._id} - ${kodeSurveyor.namaSurveyor}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -723,11 +678,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodePekerjaan} - ${pekerjaans
-                      .filter(
-                        (pekerjaan) => pekerjaan.kodePekerjaan === kodePekerjaan
-                      )
-                      .map((sup) => `${sup.namaPekerjaan}`)}`}
+                    value={`${kodePekerjaan._id} - ${kodePekerjaan.namaPekerjaan}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -755,9 +706,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodeLeasing} - ${leasings
-                      .filter((leasing) => leasing.kodeLeasing === kodeLeasing)
-                      .map((sup) => `${sup.namaLeasing}`)}`}
+                    value={`${kodeLeasing._id} - ${kodeLeasing.namaLeasing}`}
                     InputProps={{
                       readOnly: true
                     }}

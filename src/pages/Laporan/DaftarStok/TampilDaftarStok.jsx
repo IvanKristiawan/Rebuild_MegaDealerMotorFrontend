@@ -6,7 +6,7 @@ import {
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -58,11 +58,9 @@ const TampilDaftarStok = () => {
   const [value, setValue] = useState("semua");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
-  const [stoksForTable, setStoksForTable] = useState([]);
   const [daftarStoksForDoc, setDaftarStoksForDoc] = useState([]);
   const [daftarStoksForPdf, setDaftarStoksForPdf] = useState([]);
   const [rekapStoks, setRekapStoks] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
   const [tipes, setTipes] = useState([]);
 
   const columns = [
@@ -138,7 +136,6 @@ const TampilDaftarStok = () => {
 
   useEffect(() => {
     getTipe();
-    getSupplier();
     getUsers();
     getRekapStoks();
     getDaftarStoksLength();
@@ -156,23 +153,28 @@ const TampilDaftarStok = () => {
     setLoading(false);
   };
 
-  const getSupplier = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/supplierMainInfo`, {
-      id: user._id,
-      token: user.token
-    });
-    setSuppliers(response.data);
-    setLoading(false);
-  };
-
   const getRekapStoks = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/daftarStoksRekap`, {
-      id: user._id,
-      token: user.token
-    });
-    // setRekapStoks(response.data);
+    let response;
+    switch (value) {
+      case "terjual":
+        response = await axios.post(`${tempUrl}/daftarStoksRekapTerjual`, {
+          id: user._id,
+          token: user.token
+        });
+        break;
+      case "belum":
+        response = await axios.post(`${tempUrl}/daftarStoksRekapBlmTerjual`, {
+          id: user._id,
+          token: user.token
+        });
+        break;
+      default:
+        response = await axios.post(`${tempUrl}/daftarStoksRekap`, {
+          id: user._id,
+          token: user.token
+        });
+    }
     setRekapStoks(groupBy(response.data, "merk"));
     setLoading(false);
   };
@@ -187,7 +189,6 @@ const TampilDaftarStok = () => {
           token: user.token
         });
         setUser(response.data);
-        setStoksForTable(groupBy(response.data, "merk"));
         break;
       case "belum":
         response = await axios.post(`${tempUrl}/daftarStoksBelumTerjual`, {
@@ -195,7 +196,6 @@ const TampilDaftarStok = () => {
           token: user.token
         });
         setUser(response.data);
-        setStoksForTable(groupBy(response.data, "merk"));
         break;
       default:
         response = await axios.post(`${tempUrl}/daftarStoks`, {
@@ -203,7 +203,6 @@ const TampilDaftarStok = () => {
           token: user.token
         });
         setUser(response.data);
-        setStoksForTable(groupBy(response.data, "merk"));
     }
     setLoading(false);
   };
