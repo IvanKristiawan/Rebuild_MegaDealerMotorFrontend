@@ -732,7 +732,7 @@ export function ShowTableCabang({ currentPosts, searchTerm }) {
               sx={{ fontWeight: "bold" }}
               className={classes.tableRightBorder}
             >
-              Kode Cabang
+              Kode
             </TableCell>
             <TableCell
               sx={{ fontWeight: "bold" }}
@@ -744,15 +744,16 @@ export function ShowTableCabang({ currentPosts, searchTerm }) {
               sx={{ fontWeight: "bold" }}
               className={classes.tableRightBorder}
             >
-              Alamat Cabang
+              Alamat
             </TableCell>
             <TableCell
               sx={{ fontWeight: "bold" }}
               className={classes.tableRightBorder}
             >
-              Telepon Cabang
+              Telepon
             </TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>PIC</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Unit Bisnis</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -771,7 +772,15 @@ export function ShowTableCabang({ currentPosts, searchTerm }) {
                 val.teleponCabang
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.picCabang.toUpperCase().includes(searchTerm.toUpperCase())
+                val.picCabang
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.unitBisnis._id
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.unitBisnis.namaUnitBisnis
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
               ) {
                 return val;
               }
@@ -795,6 +804,9 @@ export function ShowTableCabang({ currentPosts, searchTerm }) {
                 <TableCell>{user.alamatCabang}</TableCell>
                 <TableCell>{user.teleponCabang}</TableCell>
                 <TableCell>{user.picCabang}</TableCell>
+                <TableCell>
+                  {user.unitBisnis._id} - {user.unitBisnis.namaUnitBisnis}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

@@ -12,7 +12,8 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Paper
+  Paper,
+  Autocomplete
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { Colors } from "../../../constants/styles";
@@ -20,14 +21,20 @@ import { Colors } from "../../../constants/styles";
 const TambahCabang = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
   const [kodeCabang, setKodeCabang] = useState("");
   const [namaCabang, setNamaCabang] = useState("");
   const [alamatCabang, setAlamatCabang] = useState("");
   const [teleponCabang, setTeleponCabang] = useState("");
   const [picCabang, setPicCabang] = useState("");
+  const [unitBisnis, setUnitBisnis] = useState([]);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  const unitBisnisOptions = unitBisnis.map((unitBisnis1) => ({
+    label: `${unitBisnis1._id} - ${unitBisnis1.namaUnitBisnis}`
+  }));
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -37,8 +44,19 @@ const TambahCabang = () => {
   };
 
   useEffect(() => {
+    getUnitBisnis();
     getNextLength();
   }, []);
+
+  const getUnitBisnis = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/unitBisnis`, {
+      id: user._id,
+      token: user.token
+    });
+    setUnitBisnis(response.data);
+    setLoading(false);
+  };
 
   const getNextLength = async () => {
     setLoading(true);
@@ -63,6 +81,7 @@ const TambahCabang = () => {
           alamatCabang,
           teleponCabang,
           picCabang,
+          kodeUnitBisnis,
           id: user._id,
           token: user.token
         });
@@ -141,6 +160,28 @@ const TambahCabang = () => {
               variant="outlined"
               value={picCabang}
               onChange={(e) => setPicCabang(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Kode Supplier</Typography>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={unitBisnisOptions}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && kodeUnitBisnis.length === 0 && true}
+                  helperText={
+                    error &&
+                    kodeUnitBisnis.length === 0 &&
+                    "Kode Unit Bisnis harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) =>
+                setKodeUnitBisnis(value.split(" -")[0])
+              }
             />
           </Box>
         </Box>

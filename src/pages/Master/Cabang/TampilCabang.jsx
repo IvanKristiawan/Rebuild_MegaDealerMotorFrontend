@@ -42,8 +42,10 @@ const TampilCabang = () => {
   const [alamatCabang, setAlamatCabang] = useState("");
   const [teleponCabang, setTeleponCabang] = useState("");
   const [picCabang, setPicCabang] = useState("");
+  const [unitBisnis, setUnitBisnis] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
+  const [cabangForDoc, setCabangForDoc] = useState([]);
   const navigate = useNavigate();
 
   const columns = [
@@ -51,7 +53,8 @@ const TampilCabang = () => {
     { title: "Nama Cabang", field: "namaCabang" },
     { title: "Alamat", field: "alamatCabang" },
     { title: "Telepon", field: "teleponCabang" },
-    { title: "PIC", field: "picCabang" }
+    { title: "PIC", field: "picCabang" },
+    { title: "Unit Bisnis", field: "unitBisnis" }
   ];
 
   const [loading, setLoading] = useState(false);
@@ -69,7 +72,11 @@ const TampilCabang = () => {
       val.namaCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.alamatCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.picCabang.toUpperCase().includes(searchTerm.toUpperCase())
+      val.picCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.unitBisnis._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.unitBisnis.namaUnitBisnis
+        .toUpperCase()
+        .includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -85,6 +92,7 @@ const TampilCabang = () => {
   };
 
   useEffect(() => {
+    getUsersForDoc();
     getUsers();
     id && getUserById();
   }, [id]);
@@ -99,6 +107,16 @@ const TampilCabang = () => {
     setLoading(false);
   };
 
+  const getUsersForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/cabangsForDoc`, {
+      id: user._id,
+      token: user.token
+    });
+    setCabangForDoc(response.data);
+    setLoading(false);
+  };
+
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/cabangs/${id}`, {
@@ -110,6 +128,7 @@ const TampilCabang = () => {
       setAlamatCabang(response.data.alamatCabang);
       setTeleponCabang(response.data.teleponCabang);
       setPicCabang(response.data.picCabang);
+      setUnitBisnis(response.data.unitBisnis);
     }
   };
 
@@ -126,6 +145,7 @@ const TampilCabang = () => {
       setAlamatCabang("");
       setTeleponCabang("");
       setPicCabang("");
+      setUnitBisnis("");
       setLoading(false);
       navigate("/cabang");
     } catch (error) {
@@ -155,7 +175,7 @@ const TampilCabang = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: cabangForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -165,7 +185,7 @@ const TampilCabang = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(cabangForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Cabang`);
     // Buffer
@@ -262,6 +282,16 @@ const TampilCabang = () => {
                   readOnly: true
                 }}
                 value={picCabang}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Unit Bisnis</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={`${unitBisnis._id} - ${unitBisnis.namaUnitBisnis}`}
               />
             </Box>
           </Box>

@@ -90,9 +90,6 @@ const TampilJual = () => {
   const [jualsForDoc, setJualsForDoc] = useState([]);
   const [leasings, setLeasings] = useState([]);
   const [tipes, setTipes] = useState([]);
-  const [marketings, setMarketings] = useState([]);
-  const [surveyors, setSurveyors] = useState([]);
-  const [pekerjaans, setPekerjaans] = useState([]);
   const [kecamatans, setKecamatans] = useState([]);
   const navigate = useNavigate();
 
