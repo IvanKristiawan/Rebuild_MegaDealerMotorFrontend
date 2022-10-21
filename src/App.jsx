@@ -32,6 +32,7 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import SellIcon from "@mui/icons-material/Sell";
 import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -68,6 +69,9 @@ import {
   TampilCabang,
   TambahCabang,
   UbahCabang,
+  TampilUnitBisnis,
+  TambahUnitBisnis,
+  UbahUnitBisnis,
   TampilLeasing,
   TambahLeasing,
   UbahLeasing,
@@ -244,13 +248,6 @@ const App = () => {
                       </MenuItem>
                     </Box>
                   </Link>
-                  <Link to="/cabang" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<AddHomeWorkIcon name="cabang-icon" />}>
-                        Cabang
-                      </MenuItem>
-                    </Box>
-                  </Link>
                   <Link to="/leasing" style={linkText}>
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<CarRentalIcon name="leasing-icon" />}>
@@ -262,6 +259,21 @@ const App = () => {
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<AddReactionIcon name="supplier-icon" />}>
                         Supplier
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Divider />
+                  <Link to="/cabang" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<AddHomeWorkIcon name="cabang-icon" />}>
+                        Cabang
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/unitBisnis" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<ApartmentIcon name="cabang-icon" />}>
+                        Unit Bisnis
                       </MenuItem>
                     </Box>
                   </Link>
@@ -682,6 +694,39 @@ const App = () => {
                   element={
                     <USERRoute>
                       <UbahCabang />
+                    </USERRoute>
+                  }
+                />
+                {/* Unit Bisnis */}
+                <Route
+                  path="/unitBisnis"
+                  element={
+                    <USERRoute>
+                      <TampilUnitBisnis />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/unitBisnis/:id"
+                  element={
+                    <USERRoute>
+                      <TampilUnitBisnis />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/unitBisnis/tambahUnitBisnis"
+                  element={
+                    <USERRoute>
+                      <TambahUnitBisnis />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/unitBisnis/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahUnitBisnis />
                     </USERRoute>
                   }
                 />
