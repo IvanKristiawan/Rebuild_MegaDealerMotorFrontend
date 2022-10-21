@@ -674,6 +674,8 @@ export function ShowTableUser({ currentPosts, searchTerm }) {
               Kode Kwitansi
             </TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>No Terakhir</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Unit Bisnis</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Cabang</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -688,7 +690,21 @@ export function ShowTableUser({ currentPosts, searchTerm }) {
                 val.kodeKwitansi
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.noTerakhir.toUpperCase().includes(searchTerm.toUpperCase())
+                val.noTerakhir
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.unitBisnis._id
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.unitBisnis.namaUnitBisnis
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.cabang._id
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.cabang.namaCabang
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
               ) {
                 return val;
               }
@@ -712,6 +728,12 @@ export function ShowTableUser({ currentPosts, searchTerm }) {
                 <TableCell>{user.periode}</TableCell>
                 <TableCell>{user.kodeKwitansi}</TableCell>
                 <TableCell>{user.noTerakhir}</TableCell>
+                <TableCell>
+                  {user.unitBisnis._id} - {user.unitBisnis.namaUnitBisnis}
+                </TableCell>
+                <TableCell>
+                  {user.cabang._id} - {user.cabang.namaCabang}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

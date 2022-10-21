@@ -50,6 +50,7 @@ const ProfilUser = () => {
           />
           <Typography sx={[labelInput, spacingTop]}>Tipe User</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
             variant="filled"
             InputProps={{
@@ -59,6 +60,7 @@ const ProfilUser = () => {
           />
           <Typography sx={[labelInput, spacingTop]}>Periode</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
             variant="filled"
             InputProps={{
@@ -66,10 +68,31 @@ const ProfilUser = () => {
             }}
             value={user.periode}
           />
+          <Typography sx={[labelInput, spacingTop]}>Unit Bisnis</Typography>
+          <TextField
+            size="small"
+            id="outlined-basic"
+            variant="filled"
+            InputProps={{
+              readOnly: true
+            }}
+            value={`${user.unitBisnis._id} - ${user.unitBisnis.namaUnitBisnis}`}
+          />
+          <Typography sx={[labelInput, spacingTop]}>Cabang</Typography>
+          <TextField
+            size="small"
+            id="outlined-basic"
+            variant="filled"
+            InputProps={{
+              readOnly: true
+            }}
+            value={`${user.cabang._id} - ${user.cabang.namaCabang}`}
+          />
         </Box>
         <Box sx={[showDataWrapper, secondWrapper]}>
           <Typography sx={labelInput}>Kode Kwitansi</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
             variant="filled"
             InputProps={{
@@ -79,6 +102,7 @@ const ProfilUser = () => {
           />
           <Typography sx={[labelInput, spacingTop]}>No Terakhir</Typography>
           <TextField
+            size="small"
             id="outlined-basic"
             variant="filled"
             InputProps={{

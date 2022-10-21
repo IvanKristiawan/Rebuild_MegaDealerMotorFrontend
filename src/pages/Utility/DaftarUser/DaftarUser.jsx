@@ -40,6 +40,8 @@ const DaftarUser = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
+  const [kodeCabang, setKodeCabang] = useState("");
   const [username, setUsername] = useState("");
   const [tipeUser, setTipeUser] = useState("");
   const [periode, setPeriode] = useState("");
@@ -55,7 +57,9 @@ const DaftarUser = () => {
     { title: "Tipe User", field: "tipeUser" },
     { title: "Periode", field: "periode" },
     { title: "Kode Kwitansi", field: "kodeKwitansi" },
-    { title: "No. Terakhir", field: "noTerakhir" }
+    { title: "No. Terakhir", field: "noTerakhir" },
+    { title: "Unit Bisnis", field: "unitBisnis" },
+    { title: "Cabang", field: "cabang" }
   ];
 
   const [open, setOpen] = useState(false);
@@ -83,7 +87,13 @@ const DaftarUser = () => {
       val.tipeUser.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.periode.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.kodeKwitansi.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.noTerakhir.toUpperCase().includes(searchTerm.toUpperCase())
+      val.noTerakhir.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.unitBisnis._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.unitBisnis.namaUnitBisnis
+        .toUpperCase()
+        .includes(searchTerm.toUpperCase()) ||
+      val.cabang._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.cabang.namaCabang.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -128,7 +138,7 @@ const DaftarUser = () => {
 
   const getUserById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/users/${id}`, {
+      const response = await axios.post(`${tempUrl}/findUser/${id}`, {
         tipeAdmin: user.tipeUser,
         id: user._id,
         token: user.token
@@ -138,6 +148,8 @@ const DaftarUser = () => {
       setPeriode(response.data.periode);
       setKodeKwitansi(response.data.kodeKwitansi);
       setNoTerakhir(response.data.noTerakhir);
+      setKodeUnitBisnis(response.data.unitBisnis);
+      setKodeCabang(response.data.cabang);
     }
   };
 
@@ -155,6 +167,8 @@ const DaftarUser = () => {
       setPeriode("");
       setKodeKwitansi("");
       setNoTerakhir("");
+      setKodeUnitBisnis("");
+      setKodeCabang("");
       setLoading(false);
       navigate("/daftarUser");
     } catch (error) {
@@ -184,7 +198,7 @@ const DaftarUser = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: usersForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -314,6 +328,26 @@ const DaftarUser = () => {
                   readOnly: true
                 }}
                 value={periode}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Unit Bisnis</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={`${kodeUnitBisnis._id} - ${kodeUnitBisnis.namaUnitBisnis}`}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Cabang</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={`${kodeCabang._id} - ${kodeCabang.namaCabang}`}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>

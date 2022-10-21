@@ -17,6 +17,8 @@ import { Colors } from "../../../constants/styles";
 
 const UbahProfilUser = () => {
   const { user, dispatch } = useContext(AuthContext);
+  const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
+  const [kodeCabang, setKodeCabang] = useState("");
   const [username, setUsername] = useState("");
   const [tipeUser, setTipeUser] = useState("");
   const [periode, setPeriode] = useState("");
@@ -33,7 +35,7 @@ const UbahProfilUser = () => {
 
   const getUserById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/users/${id}`, {
+    const response = await axios.post(`${tempUrl}/findUser/${id}`, {
       id: user._id,
       token: user.token
     });
@@ -42,6 +44,8 @@ const UbahProfilUser = () => {
     setPeriode(response.data.periode);
     setKodeKwitansi(response.data.kodeKwitansi);
     setNoTerakhir(response.data.noTerakhir);
+    setKodeUnitBisnis(response.data.unitBisnis);
+    setKodeCabang(response.data.cabang);
     setLoading(false);
   };
 
@@ -90,7 +94,6 @@ const UbahProfilUser = () => {
               id="outlined-basic"
               variant="outlined"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
               InputProps={{
                 readOnly: true
               }}
@@ -102,7 +105,6 @@ const UbahProfilUser = () => {
               id="outlined-basic"
               variant="outlined"
               value={tipeUser}
-              onChange={(e) => setTipeUser(e.target.value)}
               InputProps={{
                 readOnly: true
               }}
@@ -114,7 +116,28 @@ const UbahProfilUser = () => {
               id="outlined-basic"
               variant="outlined"
               value={periode}
-              onChange={(e) => setPeriode(e.target.value)}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Unit Bisnis</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={`${kodeUnitBisnis._id} - ${kodeUnitBisnis.namaUnitBisnis}`}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Cabang</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={`${kodeCabang._id} - ${kodeCabang.namaCabang}`}
               InputProps={{
                 readOnly: true
               }}
@@ -128,7 +151,6 @@ const UbahProfilUser = () => {
               id="outlined-basic"
               variant="outlined"
               value={kodeKwitansi}
-              onChange={(e) => setKodeKwitansi(e.target.value)}
               InputProps={{
                 readOnly: true
               }}
@@ -140,7 +162,6 @@ const UbahProfilUser = () => {
               id="outlined-basic"
               variant="outlined"
               value={noTerakhir}
-              onChange={(e) => setNoTerakhir(e.target.value)}
               InputProps={{
                 readOnly: true
               }}

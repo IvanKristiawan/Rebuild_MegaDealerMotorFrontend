@@ -161,7 +161,9 @@ const TambahCabang = () => {
               value={picCabang}
               onChange={(e) => setPicCabang(e.target.value.toUpperCase())}
             />
-            <Typography sx={[labelInput, spacingTop]}>Kode Supplier</Typography>
+            <Typography sx={[labelInput, spacingTop]}>
+              Kode Unit Bisnis
+            </Typography>
             <Autocomplete
               size="small"
               disablePortal

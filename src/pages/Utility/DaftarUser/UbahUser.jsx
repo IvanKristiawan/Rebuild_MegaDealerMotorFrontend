@@ -12,7 +12,8 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Paper
+  Paper,
+  Autocomplete
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Colors } from "../../../constants/styles";
@@ -20,16 +21,28 @@ import { Colors } from "../../../constants/styles";
 const UbahUser = () => {
   const { user, dispatch } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
+  const [kodeCabang, setKodeCabang] = useState("");
   const [username, setUsername] = useState("");
   const [tipeUser, setTipeUser] = useState("");
   const [periode, setPeriode] = useState("");
   const [kodeKwitansi, setKodeKwitansi] = useState("");
   const [noTerakhir, setNoTerakhir] = useState("");
   const [password, setPassword] = useState("");
+  const [unitBisnis, setUnitBisnis] = useState([]);
+  const [cabangs, setCabangs] = useState([]);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+
+  const unitBisnisOptions = unitBisnis.map((unitBisnis1) => ({
+    label: `${unitBisnis1._id} - ${unitBisnis1.namaUnitBisnis}`
+  }));
+
+  const cabangOptions = cabangs.map((cabang) => ({
+    label: `${cabang._id} - ${cabang.namaCabang}`
+  }));
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -39,12 +52,33 @@ const UbahUser = () => {
   };
 
   useEffect(() => {
+    getUnitBisnis();
     getUserById();
   }, []);
 
+  const getUnitBisnis = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/unitBisnis`, {
+      id: user._id,
+      token: user.token
+    });
+    setUnitBisnis(response.data);
+    setLoading(false);
+  };
+
+  const getCabangsByUnitBisnis = async (kodeUnit) => {
+    setKodeCabang("");
+    const response = await axios.post(`${tempUrl}/cabangsByUnitBisnis`, {
+      kodeUnitBisnis: kodeUnit,
+      id: user._id,
+      token: user.token
+    });
+    setCabangs(response.data);
+  };
+
   const getUserById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/users/${id}`, {
+    const response = await axios.post(`${tempUrl}/findUser/${id}`, {
       tipeAdmin: user.tipeUser,
       id: user._id,
       token: user.token
@@ -54,6 +88,8 @@ const UbahUser = () => {
     setPeriode(response.data.periode);
     setKodeKwitansi(response.data.kodeKwitansi);
     setNoTerakhir(response.data.noTerakhir);
+    setKodeUnitBisnis(response.data.unitBisnis._id);
+    setKodeCabang(response.data.cabang._id);
     setLoading(false);
   };
 
@@ -63,7 +99,9 @@ const UbahUser = () => {
       username.length === 0 ||
       tipeUser.length === 0 ||
       periode.length === 0 ||
-      kodeKwitansi.length === 0
+      kodeKwitansi.length === 0 ||
+      kodeUnitBisnis.length === 0 ||
+      kodeCabang.length === 0
     ) {
       setError(true);
       setOpen(!open);
@@ -80,6 +118,8 @@ const UbahUser = () => {
           kodeKwitansi,
           noTerakhir,
           password,
+          kodeUnitBisnis: kodeUnitBisnis.split(" ", 1)[0],
+          kodeCabang: kodeCabang.split(" ", 1)[0],
           tipeAdmin: user.tipeUser,
           id: user._id,
           token: user.token
@@ -141,6 +181,53 @@ const UbahUser = () => {
               variant="outlined"
               value={periode}
               onChange={(e) => setPeriode(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Kode Unit Bisnis
+            </Typography>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={unitBisnisOptions}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && kodeUnitBisnis.length === 0 && true}
+                  helperText={
+                    error &&
+                    kodeUnitBisnis.length === 0 &&
+                    "Kode Unit Bisnis harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => {
+                setKodeUnitBisnis(value);
+                getCabangsByUnitBisnis(value.split(" -")[0]);
+              }}
+              value={kodeUnitBisnis}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Kode Cabang</Typography>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={cabangOptions}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && kodeCabang.length === 0 && true}
+                  helperText={
+                    error &&
+                    kodeCabang.length === 0 &&
+                    "Kode Cabang harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => setKodeCabang(value)}
+              value={kodeCabang}
             />
           </Box>
           <Box sx={[showDataWrapper, secondWrapper]}>
