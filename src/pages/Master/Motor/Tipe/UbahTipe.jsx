@@ -69,6 +69,8 @@ const UbahTipe = () => {
           namaTipe,
           isi,
           merk,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });

@@ -61,6 +61,8 @@ const UbahMarketing = () => {
         await axios.post(`${tempUrl}/updateMarketing/${id}`, {
           namaMarketing,
           teleponMarketing,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });

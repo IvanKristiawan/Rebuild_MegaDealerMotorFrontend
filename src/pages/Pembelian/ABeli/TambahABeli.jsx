@@ -192,6 +192,8 @@ const TambahABeli = () => {
             jenisBeli: jenisABeli,
             hargaSatuan,
             hargaTable: `Rp ${parseInt(hargaSatuan).toLocaleString()}`,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
           });
@@ -219,6 +221,8 @@ const TambahABeli = () => {
             ppnABeli,
             tanggalBeli,
             kodeSupplier,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
           });
@@ -276,6 +280,8 @@ const TambahABeli = () => {
                 jenisBeli: jenisABeli,
                 hargaSatuan,
                 hargaTable: `Rp ${parseInt(hargaSatuan).toLocaleString()}`,
+                kodeUnitBisnis: user.unitBisnis._id,
+                kodeCabang: user.cabang._id,
                 id: user._id,
                 token: user.token
               }
@@ -303,6 +309,8 @@ const TambahABeli = () => {
               hargaSatuan,
               ppnABeli,
               kodeSupplier: kodeSupplier,
+              kodeUnitBisnis: user.unitBisnis._id,
+              kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token
             });

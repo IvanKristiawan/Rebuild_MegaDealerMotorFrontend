@@ -62,6 +62,8 @@ const TambahKecamatan = () => {
           kodeWilayah,
           namaWilayah,
           namaKecamatan,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });

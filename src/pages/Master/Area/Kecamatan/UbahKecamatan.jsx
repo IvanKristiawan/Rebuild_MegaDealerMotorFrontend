@@ -76,6 +76,8 @@ const UbahKecamatan = () => {
           kodeWilayah: kodeWilayah.split(" ", 1)[0],
           namaWilayah: kodeWilayah.split("- ")[1],
           namaKecamatan,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });

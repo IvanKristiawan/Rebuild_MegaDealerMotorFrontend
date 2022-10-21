@@ -524,7 +524,7 @@ export function ShowTablePekerjaan({ currentPosts, searchTerm }) {
               sx={{ fontWeight: "bold" }}
               className={classes.tableRightBorder}
             >
-              Nama Marketing
+              Nama Pekerjaan
             </TableCell>
           </TableRow>
         </TableHead>

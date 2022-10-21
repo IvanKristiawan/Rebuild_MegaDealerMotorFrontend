@@ -59,6 +59,8 @@ const UbahWilayah = () => {
         setLoading(true);
         await axios.post(`${tempUrl}/updateWilayah/${id}`, {
           namaWilayah,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });
