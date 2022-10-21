@@ -31,6 +31,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import SellIcon from "@mui/icons-material/Sell";
+import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -52,6 +53,9 @@ import {
   TampilDealer,
   TambahDealer,
   UbahDealer,
+  TampilKolektor,
+  TambahKolektor,
+  UbahKolektor,
   TampilMarketing,
   TambahMarketing,
   UbahMarketing,
@@ -203,6 +207,15 @@ const App = () => {
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<PersonPinIcon name="dealer-icon" />}>
                         Dealer
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/kolektor" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<SensorOccupiedIcon name="dealer-icon" />}
+                      >
+                        Kolektor
                       </MenuItem>
                     </Box>
                   </Link>
@@ -504,6 +517,39 @@ const App = () => {
                   element={
                     <USERRoute>
                       <UbahDealer />
+                    </USERRoute>
+                  }
+                />
+                {/* Kolektor */}
+                <Route
+                  path="/kolektor"
+                  element={
+                    <USERRoute>
+                      <TampilKolektor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kolektor/:id"
+                  element={
+                    <USERRoute>
+                      <TampilKolektor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kolektor/tambahKolektor"
+                  element={
+                    <USERRoute>
+                      <TambahKolektor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kolektor/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahKolektor />
                     </USERRoute>
                   }
                 />

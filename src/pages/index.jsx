@@ -21,6 +21,10 @@ export { default as UbahKecamatan } from "./Master/Area/Kecamatan/UbahKecamatan"
 export { default as TampilDealer } from "./Master/Dealer/TampilDealer";
 export { default as TambahDealer } from "./Master/Dealer/TambahDealer";
 export { default as UbahDealer } from "./Master/Dealer/UbahDealer";
+// Kolektor Page
+export { default as TampilKolektor } from "./Master/Kolektor/TampilKolektor";
+export { default as TambahKolektor } from "./Master/Kolektor/TambahKolektor";
+export { default as UbahKolektor } from "./Master/Kolektor/UbahKolektor";
 // Marketing Page
 export { default as TampilMarketing } from "./Master/Marketing/TampilMarketing";
 export { default as TambahMarketing } from "./Master/Marketing/TambahMarketing";

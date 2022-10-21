@@ -10,20 +10,6 @@ import Paper from "@mui/material/Paper";
 import { makeStyles } from "@mui/styles";
 import { Colors } from "../constants/styles";
 
-// const tdTable = {
-//   border: "1px solid #dddddd",
-//   textAlign: "left",
-//   padding: "8px"
-// };
-
-// const thTable = {
-//   border: "1px solid #dddddd",
-//   textAlign: "left",
-//   padding: "8px",
-//   backgroundColor: "gray",
-//   color: "white"
-// };
-
 const useStyles = makeStyles({
   root: {
     "& .MuiTableCell-head": {
@@ -377,6 +363,76 @@ export function ShowTableDealer({ currentPosts, searchTerm }) {
                 <TableCell>{user.alamatDealer}</TableCell>
                 <TableCell>{user.teleponDealer}</TableCell>
                 <TableCell>{user.PICDealer}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export function ShowTableKolektor({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kode
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama Kolektor
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Telepon
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.namaKolektor
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.teleponKolektor
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/kolektor/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user._id}
+                </TableCell>
+                <TableCell>{user.namaKolektor}</TableCell>
+                <TableCell>{user.teleponKolektor}</TableCell>
               </TableRow>
             ))}
         </TableBody>
