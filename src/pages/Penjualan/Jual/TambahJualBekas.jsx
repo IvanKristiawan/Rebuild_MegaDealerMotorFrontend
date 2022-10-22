@@ -259,93 +259,110 @@ const TambahJualBekas = () => {
 
   const saveUser = async (e) => {
     e.preventDefault();
-    if (
-      noJual.length === 0 ||
-      tglJual.length === 0 ||
-      jenisJual.length === 0 ||
-      tglInput.length === 0 ||
-      noRegister.length === 0 ||
-      kodeMarketing.length === 0 ||
-      kodeSurveyor.length === 0 ||
-      kodePekerjaan.length === 0 ||
-      kodeKecamatan.length === 0 ||
-      kodeLeasing.length === 0 ||
-      nopol.length === 0 ||
-      hargaTunai.length === 0 ||
-      uangMuka.length === 0 ||
-      sisaPiutang.length === 0 ||
-      angPerBulan.length === 0 ||
-      tenor.length === 0 ||
-      jumlahPiutang.length === 0
-    ) {
-      setError(true);
-      setOpen(!open);
+    let tempDateAng = tglAng.split("-")[2];
+    if (tempDateAng > 28) {
+      alert(`Tanggal Angsuran I tidak boleh lebih dari 28!`);
     } else {
-      try {
-        setLoading(true);
-        const tempStok = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
-          nopol,
-          id: user._id,
-          token: user.token
-        });
-        // Update Stok
-        await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
-          noJual,
-          tanggalJual: tglJual,
-          id: user._id,
-          token: user.token
-        });
-        await axios.post(`${tempUrl}/saveJual`, {
-          noRegister,
-          namaRegister,
-          almRegister,
-          almKantor,
-          tlpRegister,
-          noKtpRegister,
-          noKKRegister,
-          namaPjmRegister,
-          noKtpPjmRegister,
-          namaRefRegister,
-          almRefRegister,
-          tlpRefRegister,
-          kodeMarketing,
-          kodeSurveyor,
-          kodePekerjaan,
-          kodeKecamatan,
-          kodeLeasing,
-          noRangka,
-          noMesin,
-          nopol,
-          tipe,
-          namaWarna,
-          tahun,
-          hargaTunai,
-          uangMuka,
-          sisaPiutang,
-          angPerBulan,
-          tenor,
-          bunga,
-          jumlahPiutang,
-          angModal,
-          angBunga,
-          noJual,
-          noKwitansi,
-          tanggalJual: tglJual,
-          jenisJual,
-          tglAng,
-          tglAngAkhir,
-          tglInput,
-          angModal: sisaPiutang / tenor,
-          angBunga: angPerBulan - sisaPiutang / tenor,
-          kodeUnitBisnis: user.unitBisnis._id,
-          kodeCabang: user.cabang._id,
-          id: user._id,
-          token: user.token
-        });
-        setLoading(false);
-        navigate("/jual");
-      } catch (error) {
-        console.log(error);
+      if (
+        noJual.length === 0 ||
+        tglJual.length === 0 ||
+        jenisJual.length === 0 ||
+        tglInput.length === 0 ||
+        noRegister.length === 0 ||
+        kodeMarketing.length === 0 ||
+        kodeSurveyor.length === 0 ||
+        kodePekerjaan.length === 0 ||
+        kodeKecamatan.length === 0 ||
+        kodeLeasing.length === 0 ||
+        nopol.length === 0 ||
+        hargaTunai.length === 0 ||
+        uangMuka.length === 0 ||
+        sisaPiutang.length === 0 ||
+        angPerBulan.length === 0 ||
+        tenor.length === 0 ||
+        jumlahPiutang.length === 0
+      ) {
+        setError(true);
+        setOpen(!open);
+      } else {
+        try {
+          setLoading(true);
+          const tempStok = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
+            nopol,
+            id: user._id,
+            token: user.token
+          });
+          // Update Stok
+          await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
+            noJual,
+            tanggalJual: tglJual,
+            id: user._id,
+            token: user.token
+          });
+          // Save Angsuran
+          let tempAngsuran = await axios.post(`${tempUrl}/saveAngsuran`, {
+            tenor,
+            noJual,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
+            tglAng,
+            angModal: sisaPiutang / tenor,
+            angBunga: angPerBulan - sisaPiutang / tenor,
+            angPerBulan,
+            id: user._id,
+            token: user.token
+          });
+          await axios.post(`${tempUrl}/saveJual`, {
+            noRegister,
+            namaRegister,
+            almRegister,
+            almKantor,
+            tlpRegister,
+            noKtpRegister,
+            noKKRegister,
+            namaPjmRegister,
+            noKtpPjmRegister,
+            namaRefRegister,
+            almRefRegister,
+            tlpRefRegister,
+            kodeMarketing,
+            kodeSurveyor,
+            kodePekerjaan,
+            kodeKecamatan,
+            kodeLeasing,
+            noRangka,
+            noMesin,
+            nopol,
+            tipe,
+            namaWarna,
+            tahun,
+            hargaTunai,
+            uangMuka,
+            sisaPiutang,
+            angPerBulan,
+            tenor,
+            bunga,
+            jumlahPiutang,
+            noJual,
+            noKwitansi,
+            tanggalJual: tglJual,
+            jenisJual,
+            tglAng,
+            tglAngAkhir,
+            tglInput,
+            angModal: sisaPiutang / tenor,
+            angBunga: angPerBulan - sisaPiutang / tenor,
+            kodeAngsuran: tempAngsuran.data._id,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
+            id: user._id,
+            token: user.token
+          });
+          setLoading(false);
+          navigate("/jual");
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   };
@@ -451,7 +468,9 @@ const TambahJualBekas = () => {
                 id="outlined-basic"
                 variant="outlined"
                 value={tglAng}
-                onChange={(e) => setTglAng(e.target.value.toUpperCase())}
+                onChange={(e) => {
+                  setTglAng(e.target.value.toUpperCase());
+                }}
                 InputProps={{
                   readOnly: jenisJual === "TUNAI" && true
                 }}

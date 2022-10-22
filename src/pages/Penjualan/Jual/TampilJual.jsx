@@ -84,6 +84,7 @@ const TampilJual = () => {
   const [tglAng, setTglAng] = useState("");
   const [tglAngAkhir, setTglAngAkhir] = useState("");
   const [tglInput, setTglInput] = useState("");
+  const [kodeAngsuran, setKodeAngsuran] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
@@ -250,6 +251,7 @@ const TampilJual = () => {
       setTglAng(response.data.tglAng);
       setTglAngAkhir(response.data.tglAngAkhir);
       setTglInput(response.data.tglInput);
+      setKodeAngsuran(response.data.kodeAngsuran);
     }
   };
 
@@ -265,6 +267,11 @@ const TampilJual = () => {
       await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
         noJual: "",
         tanggalJual: "",
+        id: user._id,
+        token: user.token
+      });
+      // Delete Angsuran
+      await axios.post(`${tempUrl}/deleteAngsuran/${kodeAngsuran}`, {
         id: user._id,
         token: user.token
       });
