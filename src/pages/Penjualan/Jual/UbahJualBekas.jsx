@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { Loader, SearchBar } from "../../../components";
 import {
@@ -43,9 +43,11 @@ const useStyles = makeStyles({
   }
 });
 
-const TambahJualBaru = () => {
+const UbahJualBekas = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
   // Data Register/Pembeli
   const [registers, setRegisters] = useState([]);
   const [noRegister, setNoRegister] = useState("");
@@ -73,6 +75,7 @@ const TambahJualBaru = () => {
 
   // Data Motor -> Dari Stok
   const [noRangka, setNoRangka] = useState("");
+  const [tempNoRangka, setTempNoRangka] = useState("");
   const [noMesin, setNoMesin] = useState("");
   const [nopol, setNopol] = useState("");
   const [tipe, setTipe] = useState("");
@@ -121,8 +124,6 @@ const TambahJualBaru = () => {
     setOpen(false);
   };
 
-  const jenisJualOption = [{ label: "TUNAI" }, { label: "KREDIT" }];
-
   const marketingOptions = marketings.map((marketing) => ({
     label: `${marketing._id} - ${marketing.namaMarketing}`
   }));
@@ -143,8 +144,8 @@ const TambahJualBaru = () => {
     label: `${leasing._id} - ${leasing.namaLeasing}`
   }));
 
-  const norangOptions = stoks.map((stok) => ({
-    label: `${stok.noRangka}`
+  const nopolOptions = stoks.map((stok) => ({
+    label: `${stok.nopol}`
   }));
 
   const tempPostsRegister = registers.filter((val) => {
@@ -162,6 +163,7 @@ const TambahJualBaru = () => {
   });
 
   useEffect(() => {
+    getUserById();
     getStok();
     getRegister();
     getMarketing();
@@ -171,24 +173,25 @@ const TambahJualBaru = () => {
     getLeasing();
   }, []);
 
-  const getStoksByNorang = async (noRangka) => {
-    const response = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
-      noRangka,
+  const getStoksByNopol = async (nopol) => {
+    const response = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
+      nopol,
       id: user._id,
       token: user.token
     });
     if (response.data) {
+      setNoRangka(response.data.noRangka);
       setNoMesin(response.data.noMesin);
       setTipe(response.data.tipe);
       setNamaWarna(response.data.namaWarna);
       setTahun(response.data.tahun);
     }
-    setNoRangka(noRangka);
+    setNopol(nopol);
   };
 
   const getStok = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/daftarStoksNorang`, {
+    const response = await axios.post(`${tempUrl}/daftarStoksNopol`, {
       id: user._id,
       token: user.token
     });
@@ -248,7 +251,7 @@ const TambahJualBaru = () => {
 
   const getLeasing = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/leasings`, {
+    const response = await axios.post(`${tempUrl}/leasingsForTable`, {
       id: user._id,
       token: user.token
     });
@@ -256,7 +259,61 @@ const TambahJualBaru = () => {
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const getUserById = async () => {
+    if (id) {
+      const response = await axios.post(`${tempUrl}/jualsNoPopulate/${id}`, {
+        id: user._id,
+        token: user.token
+      });
+      // Data Register/Pembeli
+      setNoRegister(response.data.noRegister);
+      setNamaRegister(response.data.namaRegister);
+      setAlmRegister(response.data.almRegister);
+      setAlmKantor(response.data.almKantor);
+      setTlpRegister(response.data.tlpRegister);
+      setNoKtpRegister(response.data.noKtpRegister);
+      setNoKKRegister(response.data.noKKRegister);
+      setNamaPjmRegister(response.data.namaPjmRegister);
+      setNoKtpPjmRegister(response.data.noKtpPjmRegister);
+      setNamaRefRegister(response.data.namaRefRegister);
+      setAlmRefRegister(response.data.almRefRegister);
+      setTlpRefRegister(response.data.tlpRefRegister);
+      setKodeMarketing(response.data.kodeMarketing);
+      setKodeSurveyor(response.data.kodeSurveyor);
+      setKodePekerjaan(response.data.kodePekerjaan);
+      setKodeKecamatan(response.data.kodeKecamatan);
+      setKodeLeasing(response.data.kodeLeasing);
+
+      // Data Motor -> Dari Stok
+      setNoRangka(response.data.noRangka);
+      setTempNoRangka(response.data.noRangka);
+      setNoMesin(response.data.noMesin);
+      setNopol(response.data.nopol);
+      setTipe(response.data.tipe);
+      setNamaWarna(response.data.namaWarna);
+      setTahun(response.data.tahun);
+
+      // Data Penjualan -> dari input
+      setHargaTunai(response.data.hargaTunai);
+      setUangMuka(response.data.uangMuka);
+      setSisaPiutang(response.data.sisaPiutang);
+      setAngPerBulan(response.data.angPerBulan);
+      setTenor(response.data.tenor);
+      setBunga(response.data.bunga);
+      setJumlahPiutang(response.data.jumlahPiutang);
+      setAngModal(response.data.angModal);
+      setAngBunga(response.data.angBunga);
+      setNoJual(response.data.noJual);
+      setNoKwitansi(response.data.noKwitansi);
+      setTglJual(response.data.tanggalJual);
+      setJenisJual(response.data.jenisJual);
+      setTglAng(response.data.tglAng);
+      setTglAngAkhir(response.data.tglAngAkhir);
+      setTglInput(response.data.tglInput);
+    }
+  };
+
+  const updateUser = async (e) => {
     e.preventDefault();
     if (
       noJual.length === 0 ||
@@ -269,6 +326,7 @@ const TambahJualBaru = () => {
       kodePekerjaan.length === 0 ||
       kodeKecamatan.length === 0 ||
       kodeLeasing.length === 0 ||
+      nopol.length === 0 ||
       hargaTunai.length === 0 ||
       uangMuka.length === 0 ||
       sisaPiutang.length === 0 ||
@@ -281,19 +339,36 @@ const TambahJualBaru = () => {
     } else {
       try {
         setLoading(true);
-        const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
-          noRangka,
-          id: user._id,
-          token: user.token
-        });
-        // Update Stok
-        await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
-          noJual,
-          tanggalJual: tglJual,
-          id: user._id,
-          token: user.token
-        });
-        await axios.post(`${tempUrl}/saveJual`, {
+        if (tempNoRangka !== noRangka) {
+          const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
+            noRangka: tempNoRangka,
+            id: user._id,
+            token: user.token
+          });
+          // Update Stok
+          await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
+            noJual: "",
+            tanggalJual: "",
+            id: user._id,
+            token: user.token
+          });
+          const tempStok2 = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
+            nopol,
+            id: user._id,
+            token: user.token
+          });
+          // Update Stok
+          await axios.post(
+            `${tempUrl}/updateDaftarStok/${tempStok2.data._id}`,
+            {
+              noJual,
+              tanggalJual: tglJual,
+              id: user._id,
+              token: user.token
+            }
+          );
+        }
+        await axios.post(`${tempUrl}/updateJual/${id}`, {
           noRegister,
           namaRegister,
           almRegister,
@@ -306,11 +381,11 @@ const TambahJualBaru = () => {
           namaRefRegister,
           almRefRegister,
           tlpRefRegister,
-          kodeMarketing,
-          kodeSurveyor,
-          kodePekerjaan,
-          kodeKecamatan,
-          kodeLeasing,
+          kodeMarketing: kodeMarketing.split(" -", 1)[0],
+          kodeSurveyor: kodeSurveyor.split(" -", 1)[0],
+          kodePekerjaan: kodePekerjaan.split(" -", 1)[0],
+          kodeKecamatan: kodeKecamatan.split(" -", 1)[0],
+          kodeLeasing: kodeLeasing.split(" -", 1)[0],
           noRangka,
           noMesin,
           nopol,
@@ -326,13 +401,7 @@ const TambahJualBaru = () => {
           jumlahPiutang,
           angModal,
           angBunga,
-          noJual,
           noKwitansi,
-          tanggalJual: tglJual,
-          jenisJual,
-          tglAng,
-          tglAngAkhir,
-          tglInput,
           angModal: sisaPiutang / tenor,
           angBunga: angPerBulan - sisaPiutang / tenor,
           kodeUnitBisnis: user.unitBisnis._id,
@@ -356,7 +425,7 @@ const TambahJualBaru = () => {
     <Box sx={container}>
       <Typography color="#757575">Penjualan</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Tambah Jual Baru
+        Ubah Jual Bekas
       </Typography>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
@@ -370,26 +439,19 @@ const TambahJualBaru = () => {
               <Typography sx={labelInput}>No. Jual</Typography>
               <TextField
                 size="small"
-                error={error && noJual.length === 0 && true}
-                helperText={
-                  error && noJual.length === 0 && "No. Jual harus diisi!"
-                }
                 id="outlined-basic"
                 variant="outlined"
                 value={noJual}
-                onChange={(e) => setNoJual(e.target.value.toUpperCase())}
+                InputProps={{
+                  readOnly: true
+                }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 No. Kwitansi
               </Typography>
               <TextField
                 size="small"
-                error={error && noKwitansi.length === 0 && true}
-                helperText={
-                  error &&
-                  noKwitansi.length === 0 &&
-                  "Nama Register harus diisi!"
-                }
                 id="outlined-basic"
                 variant="outlined"
                 value={noKwitansi}
@@ -402,92 +464,66 @@ const TambahJualBaru = () => {
                 Tanggal Jual
               </Typography>
               <TextField
-                type="date"
                 size="small"
-                error={error && tglJual.length === 0 && true}
-                helperText={
-                  error && tglJual.length === 0 && "No. Jual harus diisi!"
-                }
                 id="outlined-basic"
                 variant="outlined"
                 value={tglJual}
-                onChange={(e) => setTglJual(e.target.value.toUpperCase())}
+                InputProps={{
+                  readOnly: true
+                }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>Jenis Jual</Typography>
-              <Autocomplete
+              <TextField
                 size="small"
-                disablePortal
-                id="combo-box-demo"
-                options={jenisJualOption}
-                renderInput={(params) => (
-                  <TextField
-                    size="small"
-                    error={error && jenisJual.length === 0 && true}
-                    helperText={
-                      error &&
-                      jenisJual.length === 0 &&
-                      "Jenis Jual harus diisi!"
-                    }
-                    {...params}
-                  />
-                )}
-                onInputChange={(e, value) => {
-                  if (value === "TUNAI") {
-                    setTglAng("");
-                    setTglAngAkhir("");
-                    setTglInput("");
-                  }
-                  setJenisJual(value);
+                id="outlined-basic"
+                variant="outlined"
+                value={jenisJual}
+                InputProps={{
+                  readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
               <Typography sx={labelInput}>Tanggal Angsuran I</Typography>
               <TextField
-                type="date"
                 size="small"
                 id="outlined-basic"
                 variant="outlined"
                 value={tglAng}
                 onChange={(e) => setTglAng(e.target.value.toUpperCase())}
                 InputProps={{
-                  readOnly: jenisJual === "TUNAI" && true
+                  readOnly: true
                 }}
-                sx={{
-                  backgroundColor: jenisJual === "TUNAI" && Colors.grey400
-                }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tanggal Angsuran Akhir
               </Typography>
               <TextField
-                type="date"
                 size="small"
                 id="outlined-basic"
                 variant="outlined"
                 value={tglAngAkhir}
                 onChange={(e) => setTglAngAkhir(e.target.value.toUpperCase())}
                 InputProps={{
-                  readOnly: jenisJual === "TUNAI" && true
+                  readOnly: true
                 }}
-                sx={{
-                  backgroundColor: jenisJual === "TUNAI" && Colors.grey400
-                }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tanggal Input
               </Typography>
               <TextField
-                type="date"
                 size="small"
-                error={error && tglInput.length === 0 && true}
-                helperText={
-                  error && tglInput.length === 0 && "Tanggal Input harus diisi!"
-                }
                 id="outlined-basic"
                 variant="outlined"
                 value={tglInput}
-                onChange={(e) => setTglInput(e.target.value.toUpperCase())}
+                InputProps={{
+                  readOnly: true
+                }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
             </Box>
           </Box>
@@ -658,9 +694,8 @@ const TambahJualBaru = () => {
                     {...params}
                   />
                 )}
-                onInputChange={(e, value) =>
-                  setKodeMarketing(value.split(" ", 1)[0])
-                }
+                onInputChange={(e, value) => setKodeMarketing(value)}
+                value={kodeMarketing}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Kode Surveyor
@@ -682,9 +717,8 @@ const TambahJualBaru = () => {
                     {...params}
                   />
                 )}
-                onInputChange={(e, value) =>
-                  setKodeSurveyor(value.split(" ", 1)[0])
-                }
+                onInputChange={(e, value) => setKodeSurveyor(value)}
+                value={kodeSurveyor}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Kode Pekerjaan
@@ -706,9 +740,8 @@ const TambahJualBaru = () => {
                     {...params}
                   />
                 )}
-                onInputChange={(e, value) =>
-                  setKodePekerjaan(value.split(" ", 1)[0])
-                }
+                onInputChange={(e, value) => setKodePekerjaan(value)}
+                value={kodePekerjaan}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Kode Kecamatan
@@ -730,9 +763,8 @@ const TambahJualBaru = () => {
                     {...params}
                   />
                 )}
-                onInputChange={(e, value) =>
-                  setKodeKecamatan(value.split(" ", 1)[0])
-                }
+                onInputChange={(e, value) => setKodeKecamatan(value)}
+                value={kodeKecamatan}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Kode Leasing
@@ -754,9 +786,8 @@ const TambahJualBaru = () => {
                     {...params}
                   />
                 )}
-                onInputChange={(e, value) =>
-                  setKodeLeasing(value.split(" ", 1)[0])
-                }
+                onInputChange={(e, value) => setKodeLeasing(value)}
+                value={kodeLeasing}
               />
             </Box>
           </Box>
@@ -769,34 +800,45 @@ const TambahJualBaru = () => {
           </Typography>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
-              <Typography sx={labelInput}>No. Rangka</Typography>
+              <Typography sx={labelInput}>Nopol</Typography>
               <Autocomplete
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                options={norangOptions}
+                options={nopolOptions}
                 renderInput={(params) => (
                   <TextField
                     size="small"
-                    error={error && noRangka.length === 0 && true}
+                    error={error && nopol.length === 0 && true}
                     helperText={
-                      error &&
-                      noRangka.length === 0 &&
-                      "No. Rangka harus diisi!"
+                      error && nopol.length === 0 && "Nopol harus diisi!"
                     }
                     {...params}
                   />
                 )}
                 onInputChange={(e, value) => {
                   if (value) {
-                    getStoksByNorang(value);
+                    getStoksByNopol(value);
                   } else {
+                    setNoRangka("");
                     setNoMesin("");
                     setTipe("");
                     setNamaWarna("");
                     setTahun("");
                   }
                 }}
+                value={nopol}
+              />
+              <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={noRangka}
+                InputProps={{
+                  readOnly: true
+                }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>No. Mesin</Typography>
               <TextField
@@ -1005,7 +1047,7 @@ const TambahJualBaru = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={updateUser}
           >
             Simpan
           </Button>
@@ -1108,7 +1150,7 @@ const TambahJualBaru = () => {
   );
 };
 
-export default TambahJualBaru;
+export default UbahJualBekas;
 
 const container = {
   p: 4

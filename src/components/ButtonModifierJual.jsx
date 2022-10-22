@@ -13,13 +13,16 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-const ButtonModifier = ({
+const ButtonModifierJual = ({
   id,
   kode,
   addLink,
   editLink,
   deleteUser,
-  nameUser
+  nameUser,
+  tambahBaru,
+  addTambahText,
+  editable
 }) => {
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -44,11 +47,24 @@ const ButtonModifier = ({
             navigate(addLink);
           }}
         >
-          Tambah
+          Tambah {addTambahText && addTambahText}
         </Button>
+        {tambahBaru && (
+          <Button
+            color="secondary"
+            sx={{ bgcolor: "secondary.light", textTransform: "none" }}
+            startIcon={<AddCircleOutlineIcon />}
+            size="small"
+            onClick={() => {
+              navigate(tambahBaru);
+            }}
+          >
+            Tambah Baru
+          </Button>
+        )}
         {kode && (
           <>
-            {editLink && (
+            {editLink && editable && (
               <Button
                 color="primary"
                 startIcon={<EditIcon />}
@@ -92,4 +108,4 @@ const ButtonModifier = ({
   );
 };
 
-export default ButtonModifier;
+export default ButtonModifierJual;

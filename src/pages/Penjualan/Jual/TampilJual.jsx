@@ -22,7 +22,7 @@ import {
   SearchBar,
   Loader,
   usePagination,
-  ButtonModifier
+  ButtonModifierJual
 } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
@@ -71,6 +71,7 @@ const TampilJual = () => {
   const [sisaPiutang, setSisaPiutang] = useState("");
   const [angPerBulan, setAngPerBulan] = useState("");
   const [tenor, setTenor] = useState("");
+  const [sisaBulan, setSisaBulan] = useState("");
   const [bunga, setBunga] = useState("");
   const [jumlahPiutang, setJumlahPiutang] = useState("");
   const [angModal, setAngModal] = useState("");
@@ -236,13 +237,14 @@ const TampilJual = () => {
       setSisaPiutang(response.data.sisaPiutang);
       setAngPerBulan(response.data.angPerBulan);
       setTenor(response.data.tenor);
+      setSisaBulan(response.data.sisaBulan);
       setBunga(response.data.bunga);
       setJumlahPiutang(response.data.jumlahPiutang);
       setAngModal(response.data.angModal);
       setAngBunga(response.data.angBunga);
       setNoJual(response.data.noJual);
       setNoKwitansi(response.data.noKwitansi);
-      setTglJual(response.data.tglJual);
+      setTglJual(response.data.tanggalJual);
       setJenisJual(response.data.jenisJual);
       setLeasing(response.data.leasing);
       setTglAng(response.data.tglAng);
@@ -387,15 +389,18 @@ const TampilJual = () => {
         </ButtonGroup>
       </Box>
       <Box sx={buttonModifierContainer}>
-        <ButtonModifier
+        <ButtonModifierJual
           id={id}
           kode={noJual}
           tambahBaru={`/jual/tambahJualBaru`}
           addLink={`/jual/tambahJualBekas`}
-          editLink={`/jual/${id}/edit`}
+          editLink={
+            nopol.length > 0 ? `/jual/${id}/editBekas` : `/jual/${id}/editBaru`
+          }
           deleteUser={deleteUser}
           nameUser={noJual}
           addTambahText=" Bekas"
+          editable={tenor - sisaBulan === 0}
         />
       </Box>
       <Divider sx={dividerStyle} />

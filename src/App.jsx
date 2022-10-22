@@ -86,6 +86,8 @@ import {
   TampilJual,
   TambahJualBekas,
   TambahJualBaru,
+  UbahJualBekas,
+  UbahJualBaru,
   TampilSupplier,
   TambahSupplier,
   UbahSupplier,
@@ -981,14 +983,22 @@ const App = () => {
                     </USERRoute>
                   }
                 />
-                {/* <Route
-                  path="/register/:id/edit"
+                <Route
+                  path="/jual/:id/editBekas"
                   element={
                     <USERRoute>
-                      <UbahRegister />
+                      <UbahJualBekas />
                     </USERRoute>
                   }
-                /> */}
+                />
+                <Route
+                  path="/jual/:id/editBaru"
+                  element={
+                    <USERRoute>
+                      <UbahJualBaru />
+                    </USERRoute>
+                  }
+                />
                 <Route path="*" element={<p>Halaman tidak ditemukan!</p>} />
               </Routes>
             </Box>
