@@ -57,6 +57,7 @@ const TambahAngsuran = () => {
   const [juals, setJuals] = useState([]);
   const [noJual, setNoJual] = useState("");
   const [noKwitansi, setNoKwitansi] = useState(user.kodeKwitansi);
+  const [penerimaanId, setPenerimaanId] = useState("");
   const [parentId, setParentId] = useState("");
   const [jualId, setJualId] = useState("");
 
@@ -194,6 +195,12 @@ const TambahAngsuran = () => {
       tempAng = angsuranBefore.data.hutangDenda;
       setHutangDendaBefore(angsuranBefore.data.hutangDenda);
     }
+    const penerimaan = await axios.post(`${tempUrl}/penerimaansByNoJual`, {
+      noJual: noKontrak,
+      id: user._id,
+      token: user.token
+    });
+    setPenerimaanId(penerimaan.data._id);
     const angsuran = await axios.post(`${tempUrl}/angsuransByNoJual`, {
       noJual: noKontrak,
       id: user._id,
@@ -273,6 +280,18 @@ const TambahAngsuran = () => {
           totalPiutang,
           totalBayar,
           bayar,
+          id: user._id,
+          token: user.token
+        });
+        await axios.post(`${tempUrl}/updatePenerimaan/${penerimaanId}`, {
+          angsuranKe: noAngsuran - 1,
+          _id: noAngsuran,
+          angModal,
+          angBunga,
+          noKwitansi,
+          keterangan,
+          denda,
+          potongan,
           id: user._id,
           token: user.token
         });

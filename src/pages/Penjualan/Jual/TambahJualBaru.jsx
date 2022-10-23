@@ -310,6 +310,17 @@ const TambahJualBaru = () => {
             id: user._id,
             token: user.token
           });
+          // Save Penerimaan
+          let tempPenerimaan = await axios.post(`${tempUrl}/savePenerimaan`, {
+            tenor,
+            noJual,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
+            angModal: sisaPiutang / tenor,
+            angBunga: angPerBulan - sisaPiutang / tenor,
+            id: user._id,
+            token: user.token
+          });
           await axios.post(`${tempUrl}/saveJual`, {
             noRegister,
             namaRegister,
