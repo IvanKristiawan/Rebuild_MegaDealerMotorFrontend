@@ -407,7 +407,7 @@ const TambahJualBaru = () => {
                 helperText={
                   error &&
                   noKwitansi.length === 0 &&
-                  "Nama Register harus diisi!"
+                  "No. Kwitansi harus diisi!"
                 }
                 id="outlined-basic"
                 variant="outlined"
@@ -425,7 +425,7 @@ const TambahJualBaru = () => {
                 size="small"
                 error={error && tglJual.length === 0 && true}
                 helperText={
-                  error && tglJual.length === 0 && "No. Jual harus diisi!"
+                  error && tglJual.length === 0 && "Tanggal Jual harus diisi!"
                 }
                 id="outlined-basic"
                 variant="outlined"

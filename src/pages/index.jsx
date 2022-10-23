@@ -83,3 +83,6 @@ export { default as TampilDaftarStok } from "./Laporan/DaftarStok/TampilDaftarSt
 // A Beli Page
 export { default as TampilABeli } from "./Pembelian/ABeli/TampilABeli";
 export { default as TambahABeli } from "./Pembelian/ABeli/TambahABeli";
+// PIUTANG
+// Angsuran Page
+export { default as TambahAngsuran } from "./Piutang/Angsuran/TambahAngsuran";

@@ -33,6 +33,8 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import SellIcon from "@mui/icons-material/Sell";
 import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
 import ApartmentIcon from "@mui/icons-material/Apartment";
+import PriceChangeIcon from "@mui/icons-material/PriceChange";
+import PaymentIcon from "@mui/icons-material/Payment";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -97,7 +99,8 @@ import {
   UbahBeli,
   TampilABeli,
   TambahABeli,
-  TampilDaftarStok
+  TampilDaftarStok,
+  TambahAngsuran
 } from "./pages/index";
 
 const App = () => {
@@ -326,6 +329,19 @@ const App = () => {
                         icon={<FormatListNumberedIcon name="profil-icon" />}
                       >
                         Daftar Stok
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                </SubMenu>
+                <Divider />
+                <SubMenu
+                  label="Piutang"
+                  icon={<PriceChangeIcon name="utility-icon" />}
+                >
+                  <Link to="/angsuran" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<PaymentIcon name="profil-icon" />}>
+                        Angsuran
                       </MenuItem>
                     </Box>
                   </Link>
@@ -996,6 +1012,15 @@ const App = () => {
                   element={
                     <USERRoute>
                       <UbahJualBaru />
+                    </USERRoute>
+                  }
+                />
+                {/* Angsuran */}
+                <Route
+                  path="/angsuran"
+                  element={
+                    <USERRoute>
+                      <TambahAngsuran />
                     </USERRoute>
                   }
                 />
