@@ -1263,7 +1263,7 @@ export function ShowTableDaftarAngsuran({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val.namaRegister.includes(searchTerm) ||
+                val.namaRegister.includes(searchTerm.toUpperCase()) ||
                 val.almRegister
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
