@@ -866,6 +866,12 @@ const TambahAngsuran = () => {
                       sx={{ fontWeight: "bold" }}
                       className={classes.tableRightBorder}
                     >
+                      Status
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontWeight: "bold" }}
+                      className={classes.tableRightBorder}
+                    >
                       Nama Register
                     </TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Tanggal</TableCell>
@@ -930,6 +936,11 @@ const TambahAngsuran = () => {
                       >
                         <TableCell component="th" scope="row">
                           {user.noRegister}
+                        </TableCell>
+                        <TableCell>
+                          {user.tenor - user.bayarKe !== 0
+                            ? "MASIH"
+                            : "SELESAI"}
                         </TableCell>
                         <TableCell>{user.namaRegister}</TableCell>
                         <TableCell>{user.tglAng}</TableCell>
