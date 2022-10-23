@@ -1211,6 +1211,107 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
   );
 }
 
+export function ShowTableDaftarAngsuran({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama Customer
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Kontrak
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tanggal
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Plat
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Alamat
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tipe
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.namaRegister.includes(searchTerm) ||
+                val.almRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.nopol.toString().includes(searchTerm) ||
+                val.noJual
+                  .toString()
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.tanggalJual
+                  .toString()
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.tipe
+                  .toString()
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/daftarAngsuran/angsuran/${user.noJual}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.namaRegister}
+                </TableCell>
+                <TableCell>{user.noJual}</TableCell>
+                <TableCell>{user.tanggalJual}</TableCell>
+                <TableCell>{user.nopol}</TableCell>
+                <TableCell>{user.almRegister}</TableCell>
+                <TableCell>{user.tipe}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
 export function ShowTableBeli({ id, currentPosts, nomorNota }) {
   let navigate = useNavigate();
   const classes = useStyles();
@@ -1330,6 +1431,88 @@ export function ShowTableBeli({ id, currentPosts, nomorNota }) {
                 <TableCell>{aBeli.noJual}</TableCell>
               </TableRow>
             ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export function ShowTableAngsuran({ id, currentPosts }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. Bayar
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. Jt
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Kwitansi
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              A. Modal
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              A. Bunga
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              A/bulan
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts.map((angsuran, index) => (
+            <TableRow
+              key={angsuran._id}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                "&:hover": { bgcolor: Colors.grey300 },
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                navigate(`/daftarAngsuran/angsuran/${id}/${angsuran._id}`);
+              }}
+            >
+              <TableCell component="th" scope="row">
+                {angsuran.tglBayar}
+              </TableCell>
+              <TableCell>{angsuran.tglJatuhTempo}</TableCell>
+              <TableCell>{angsuran.noKwitansi}</TableCell>
+              <TableCell>{angsuran._id}</TableCell>
+              <TableCell>{angsuran.angModal.toLocaleString()}</TableCell>
+              <TableCell>{angsuran.angBunga.toLocaleString()}</TableCell>
+              <TableCell>{angsuran.angPerBulan.toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

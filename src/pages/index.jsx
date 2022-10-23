@@ -86,3 +86,6 @@ export { default as TambahABeli } from "./Pembelian/ABeli/TambahABeli";
 // PIUTANG
 // Angsuran Page
 export { default as TambahAngsuran } from "./Piutang/Angsuran/TambahAngsuran";
+export { default as TampilDaftarAngsuran } from "./Piutang/Angsuran/TampilDaftarAngsuran";
+export { default as TampilAngsuran } from "./Piutang/Angsuran/TampilAngsuran";
+export { default as TampilAAngsuran } from "./Piutang/Angsuran/TampilAAngsuran";

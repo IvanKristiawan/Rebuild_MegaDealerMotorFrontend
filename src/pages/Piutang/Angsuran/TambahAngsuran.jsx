@@ -189,7 +189,11 @@ const TambahAngsuran = () => {
       id: user._id,
       token: user.token
     });
-    setHutangDendaBefore(angsuranBefore.data.hutangDenda);
+    let tempAng = 0;
+    if (angsuranBefore.data.hutangDenda) {
+      tempAng = angsuranBefore.data.hutangDenda;
+      setHutangDendaBefore(angsuranBefore.data.hutangDenda);
+    }
     const angsuran = await axios.post(`${tempUrl}/angsuransByNoJual`, {
       noJual: noKontrak,
       id: user._id,
@@ -214,25 +218,25 @@ const TambahAngsuran = () => {
       response.data.angPerBulan +
         response.data.denda +
         response.data.hutangDenda +
-        angsuranBefore.data.hutangDenda
+        tempAng
     );
     setTempTotalPiutang(
       response.data.angPerBulan +
         response.data.denda +
         response.data.hutangDenda +
-        angsuranBefore.data.hutangDenda
+        tempAng
     );
     setTotalBayar(
       response.data.angPerBulan +
         response.data.denda +
         response.data.hutangDenda +
-        angsuranBefore.data.hutangDenda
+        tempAng
     );
     setTempTotalBayar(
       response.data.angPerBulan +
         response.data.denda +
         response.data.hutangDenda +
-        angsuranBefore.data.hutangDenda
+        tempAng
     );
   };
 
@@ -283,7 +287,7 @@ const TambahAngsuran = () => {
           token: user.token
         });
         setLoading(false);
-        navigate("/");
+        navigate("/daftarAngsuran");
       } catch (error) {
         console.log(error);
       }
@@ -795,7 +799,7 @@ const TambahAngsuran = () => {
           <Button
             variant="outlined"
             color="secondary"
-            onClick={() => navigate("/jual")}
+            onClick={() => navigate("/daftarAngsuran")}
             sx={{ marginRight: 2 }}
           >
             {"< Kembali"}

@@ -100,7 +100,10 @@ import {
   TampilABeli,
   TambahABeli,
   TampilDaftarStok,
-  TambahAngsuran
+  TampilDaftarAngsuran,
+  TambahAngsuran,
+  TampilAngsuran,
+  TampilAAngsuran
 } from "./pages/index";
 
 const App = () => {
@@ -338,7 +341,7 @@ const App = () => {
                   label="Piutang"
                   icon={<PriceChangeIcon name="utility-icon" />}
                 >
-                  <Link to="/angsuran" style={linkText}>
+                  <Link to="/daftarAngsuran" style={linkText}>
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<PaymentIcon name="profil-icon" />}>
                         Angsuran
@@ -1017,10 +1020,34 @@ const App = () => {
                 />
                 {/* Angsuran */}
                 <Route
-                  path="/angsuran"
+                  path="/daftarAngsuran"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarAngsuran />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarAngsuran/angsuran/tambahAngsuran"
                   element={
                     <USERRoute>
                       <TambahAngsuran />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarAngsuran/angsuran/:id"
+                  element={
+                    <USERRoute>
+                      <TampilAngsuran />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarAngsuran/angsuran/:id/:idAAngsuran"
+                  element={
+                    <USERRoute>
+                      <TampilAAngsuran />
                     </USERRoute>
                   }
                 />
