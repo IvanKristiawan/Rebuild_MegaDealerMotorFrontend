@@ -30,7 +30,7 @@ const TampilDaftarAngsuran = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.namaRegister.includes(searchTerm) ||
+      val.namaRegister.includes(searchTerm.toUpperCase()) ||
       val.almRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.nopol.toString().includes(searchTerm) ||
       val.noJual.toString().toUpperCase().includes(searchTerm.toUpperCase()) ||
