@@ -56,11 +56,7 @@ const UbahSurveyor = () => {
 
   const updateUser = async (e) => {
     e.preventDefault();
-    if (
-      namaSurveyor.length === 0 ||
-      jenisSurveyor.length === 0 ||
-      teleponSurveyor.length === 0
-    ) {
+    if (namaSurveyor.length === 0 || jenisSurveyor.length === 0) {
       setError(true);
       setOpen(!open);
     } else {
@@ -134,12 +130,6 @@ const UbahSurveyor = () => {
             <TextField
               type="number"
               size="small"
-              error={error && teleponSurveyor.length === 0 && true}
-              helperText={
-                error &&
-                teleponSurveyor.length === 0 &&
-                "Telepon Surveyor harus diisi!"
-              }
               id="outlined-basic"
               variant="outlined"
               value={teleponSurveyor}

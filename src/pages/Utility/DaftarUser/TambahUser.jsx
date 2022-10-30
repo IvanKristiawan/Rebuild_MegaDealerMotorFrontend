@@ -95,11 +95,13 @@ const TambahUser = () => {
           kodeKwitansi,
           noTerakhir,
           kodeUnitBisnis: kodeUnitBisnis.split(" ", 1)[0],
-          kodeCabang: kodeCabang.split(" ", 1)[0]
+          kodeCabang: kodeCabang.split(" ", 1)[0],
+          id: user._id,
+          token: user.token
         });
         navigate("/daftarUser");
       } catch (err) {
-        dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+        console.log(err);
       }
     }
   };

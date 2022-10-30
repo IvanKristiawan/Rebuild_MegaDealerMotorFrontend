@@ -70,6 +70,7 @@ const UbahCabang = () => {
     setAlamatCabang(response.data.alamatCabang);
     setTeleponCabang(response.data.teleponCabang);
     setPicCabang(response.data.picCabang);
+    setKodeUnitBisnis(response.data.unitBisnis._id);
     setLoading(false);
   };
 
@@ -193,6 +194,7 @@ const UbahCabang = () => {
               onInputChange={(e, value) =>
                 setKodeUnitBisnis(value.split(" -")[0])
               }
+              value={{ label: kodeUnitBisnis }}
             />
           </Box>
         </Box>

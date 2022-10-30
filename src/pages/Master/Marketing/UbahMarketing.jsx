@@ -52,7 +52,7 @@ const UbahMarketing = () => {
 
   const updateUser = async (e) => {
     e.preventDefault();
-    if (namaMarketing.length === 0 || teleponMarketing.length === 0) {
+    if (namaMarketing.length === 0) {
       setError(true);
       setOpen(!open);
     } else {
@@ -114,10 +114,6 @@ const UbahMarketing = () => {
           <TextField
             type="number"
             size="small"
-            error={error && teleponMarketing.length === 0 && true}
-            helperText={
-              error && teleponMarketing.length === 0 && "Telepon harus diisi!"
-            }
             id="outlined-basic"
             variant="outlined"
             value={teleponMarketing}
