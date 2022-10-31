@@ -6,5 +6,5 @@ export const kotaPerusahaan = "Tg. Balai Karimun";
 export const noTelpPerusahaan = "0777-368678";
 export const PPN = 0.11;
 export const dendaSetting = 1000;
-export const toleransiSetting = 7;
+export const toleransiSetting = 3;
 export const jemputanSetting = 10000;

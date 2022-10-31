@@ -56,7 +56,7 @@ const TambahAngsuran = () => {
   // Inputan Penjualan
   const [juals, setJuals] = useState([]);
   const [noJual, setNoJual] = useState("");
-  const [noKwitansi, setNoKwitansi] = useState(user.kodeKwitansi);
+  const [noKwitansi, setNoKwitansi] = useState(user.noTerakhir);
   const [penerimaanId, setPenerimaanId] = useState("");
   const [parentId, setParentId] = useState("");
   const [jualId, setJualId] = useState("");
@@ -80,7 +80,9 @@ const TambahAngsuran = () => {
   const [noAngsuran, setNoAngsuran] = useState("");
   const [dari, setDari] = useState("");
   const [tglJatuhTempo, setTglJatuhTempo] = useState("");
-  const [tglBayar, setTglBayar] = useState(""); // Input
+  var curr = new Date();
+  var date = curr.toISOString().substring(0, 10);
+  const [tglBayar, setTglBayar] = useState(date); // Input
   const [angModal, setAngModal] = useState("");
   const [angBunga, setAngBunga] = useState("");
   const [angPerBulan, setAngPerBulan] = useState("");
@@ -160,9 +162,22 @@ const TambahAngsuran = () => {
   });
 
   useEffect(() => {
+    increaseNoKwt();
     getJual();
     getKolektor();
   }, []);
+
+  const increaseNoKwt = async () => {
+    const response = await axios.post(`${tempUrl}/findUser/${user._id}`, {
+      id: user._id,
+      token: user.token
+    });
+    let tempNoTerakhir = response.data.noTerakhir;
+    let tempNoKwt = tempNoTerakhir.slice(1, tempNoTerakhir.length);
+    let tempFirstNoKwt = tempNoTerakhir[0];
+    tempNoKwt++;
+    setNoKwitansi(tempFirstNoKwt + tempNoKwt);
+  };
 
   const getKolektor = async () => {
     setLoading(true);
@@ -178,7 +193,7 @@ const TambahAngsuran = () => {
 
   const getJual = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/juals`, {
+    const response = await axios.post(`${tempUrl}/jualsForAngsuran`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
@@ -243,6 +258,12 @@ const TambahAngsuran = () => {
         response.data.hutangDenda +
         tempAng
     );
+    setBayar(
+      response.data.angPerBulan +
+        response.data.denda +
+        response.data.hutangDenda +
+        tempAng
+    );
     setTempTotalBayar(
       response.data.angPerBulan +
         response.data.denda +
@@ -257,7 +278,6 @@ const TambahAngsuran = () => {
       noJual.length === 0 ||
       tglBayar.length === 0 ||
       kodeKolektor.length === 0 ||
-      potongan.length === 0 ||
       bayar.length === 0
     ) {
       setError(true);
@@ -265,6 +285,13 @@ const TambahAngsuran = () => {
     } else {
       try {
         setLoading(true);
+        // Update No Kwitansi User
+        await axios.post(`${tempUrl}/users/${user._id}`, {
+          noTerakhir: noKwitansi,
+          id: user._id,
+          token: user.token
+        });
+        // Update Angsuran
         await axios.post(`${tempUrl}/updateAngsuran/${parentId}`, {
           angsuranKe: noAngsuran - 1,
           _id: noAngsuran,
@@ -277,7 +304,7 @@ const TambahAngsuran = () => {
           noKwitansi,
           keterangan,
           denda,
-          potongan,
+          potongan: potongan ? potongan : 0,
           jemputan: 0,
           biayaTarik,
           hutangDenda,
@@ -295,7 +322,7 @@ const TambahAngsuran = () => {
           noKwitansi,
           keterangan,
           denda,
-          potongan,
+          potongan: potongan ? potongan : 0,
           id: user._id,
           token: user.token
         });
@@ -576,37 +603,68 @@ const TambahAngsuran = () => {
                 }}
                 sx={{ backgroundColor: Colors.grey400 }}
               />
-              <Typography sx={[labelInput, spacingTop]}>
-                Tanggal Bayar
-              </Typography>
-              <TextField
-                type="date"
-                size="small"
-                error={error && tglBayar.length === 0 && true}
-                helperText={
-                  error && tglBayar.length === 0 && "Tanggal Bayar harus diisi!"
-                }
-                id="outlined-basic"
-                variant="outlined"
-                value={tglBayar}
-                onChange={(e) => {
-                  setTglBayar(e.target.value);
+              {user.tipeUser === "ADM" ? (
+                <>
+                  <Typography sx={[labelInput, spacingTop]}>
+                    Tanggal Bayar
+                  </Typography>
+                  <TextField
+                    type="date"
+                    size="small"
+                    error={error && tglBayar.length === 0 && true}
+                    helperText={
+                      error &&
+                      tglBayar.length === 0 &&
+                      "Tanggal Bayar harus diisi!"
+                    }
+                    id="outlined-basic"
+                    variant="outlined"
+                    value={tglBayar}
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    sx={{ backgroundColor: Colors.grey400 }}
+                  />
+                </>
+              ) : (
+                <>
+                  <Typography sx={[labelInput, spacingTop]}>
+                    Tanggal Bayar
+                  </Typography>
+                  <TextField
+                    type="date"
+                    size="small"
+                    error={error && tglBayar.length === 0 && true}
+                    helperText={
+                      error &&
+                      tglBayar.length === 0 &&
+                      "Tanggal Bayar harus diisi!"
+                    }
+                    id="outlined-basic"
+                    variant="outlined"
+                    value={tglBayar}
+                    onChange={(e) => {
+                      setTglBayar(e.target.value);
 
-                  var d1 = new Date(e.target.value); //"now"
-                  var d2 = new Date(tglJatuhTempo); // some date
-                  if (d1 > d2) {
-                    var diff = Math.abs(d1 - d2); // difference in milliseconds
-                    var total = dhm(diff);
-                    setDenda(dendaSetting * total);
-                    setTotalPiutang(tempTotalPiutang + dendaSetting * total);
-                    setTotalBayar(tempTotalBayar + dendaSetting * total);
-                  } else {
-                    setDenda(0);
-                    setTotalPiutang(tempTotalPiutang);
-                    setTotalBayar(tempTotalBayar);
-                  }
-                }}
-              />
+                      var d1 = new Date(e.target.value); //"now"
+                      var d2 = new Date(tglJatuhTempo); // some date
+                      var diff = Math.abs(d1 - d2); // difference in milliseconds
+                      var total = dhm(diff);
+                      if (d1 > d2 && total > toleransiSetting) {
+                        setDenda(dendaSetting * total);
+                        setTotalPiutang(
+                          tempTotalPiutang + dendaSetting * total
+                        );
+                        setTotalBayar(tempTotalBayar + dendaSetting * total);
+                      } else {
+                        setDenda(0);
+                        setTotalPiutang(tempTotalPiutang);
+                        setTotalBayar(tempTotalBayar);
+                      }
+                    }}
+                  />
+                </>
+              )}
               <Typography sx={[labelInput, spacingTop]}>
                 Angsuran Modal
                 {angModal !== 0 &&
@@ -672,7 +730,7 @@ const TambahAngsuran = () => {
                 sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Hutang Denda
+                Hutang Denda (baru)
                 {hutangDenda !== 0 &&
                   !isNaN(parseInt(hutangDenda)) &&
                   ` : ${parseInt(hutangDenda).toLocaleString()}`}
@@ -682,6 +740,22 @@ const TambahAngsuran = () => {
                 id="outlined-basic"
                 variant="outlined"
                 value={hutangDenda}
+                InputProps={{
+                  readOnly: true
+                }}
+                sx={{ backgroundColor: Colors.grey400 }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Hutang Denda (lama)
+                {hutangDendaBefore !== 0 &&
+                  !isNaN(parseInt(hutangDendaBefore)) &&
+                  ` : ${parseInt(hutangDendaBefore).toLocaleString()}`}
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="outlined"
+                value={hutangDendaBefore}
                 InputProps={{
                   readOnly: true
                 }}
@@ -763,6 +837,7 @@ const TambahAngsuran = () => {
                 onChange={(e) => {
                   setPotongan(e.target.value);
                   setTotalBayar(totalPiutang - e.target.value);
+                  setBayar(totalPiutang - e.target.value);
                 }}
               />
               <Typography sx={[labelInput, spacingTop]}>

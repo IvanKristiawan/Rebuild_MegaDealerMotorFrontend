@@ -1241,7 +1241,7 @@ export function ShowTableDaftarAngsuran({ currentPosts, searchTerm }) {
               sx={{ fontWeight: "bold" }}
               className={classes.tableRightBorder}
             >
-              No. Plat
+              Nopol
             </TableCell>
             <TableCell
               sx={{ fontWeight: "bold" }}
@@ -1290,7 +1290,8 @@ export function ShowTableDaftarAngsuran({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  backgroundColor: user.sisaBulan === 0 ? "#f79892" : "white"
                 }}
                 onClick={() => {
                   navigate(`/daftarAngsuran/angsuran/${user.noJual}`);
