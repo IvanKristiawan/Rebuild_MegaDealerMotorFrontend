@@ -37,6 +37,7 @@ import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import PaymentIcon from "@mui/icons-material/Payment";
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -102,6 +103,7 @@ import {
   TampilABeli,
   TambahABeli,
   TampilDaftarStok,
+  CariTotalPiutang,
   TampilDaftarAngsuran,
   TambahAngsuran,
   TampilAngsuran,
@@ -334,6 +336,15 @@ const App = () => {
                         icon={<FormatListNumberedIcon name="profil-icon" />}
                       >
                         Daftar Stok
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/totalPiutang" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<RecentActorsIcon name="total-piutang-icon" />}
+                      >
+                        Total Piutang
                       </MenuItem>
                     </Box>
                   </Link>
@@ -885,6 +896,15 @@ const App = () => {
                     element={
                       <USERRoute>
                         <TampilDaftarStok />
+                      </USERRoute>
+                    }
+                  />
+                  {/* Total Piutang */}
+                  <Route
+                    path="/totalPiutang"
+                    element={
+                      <USERRoute>
+                        <CariTotalPiutang />
                       </USERRoute>
                     }
                   />
