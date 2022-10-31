@@ -115,7 +115,9 @@ const TampilRegister = () => {
     try {
       const response = await axios.post(`${tempUrl}/registers`, {
         id: user._id,
-        token: user.token
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
       });
       setUser(response.data);
     } catch (err) {
@@ -128,7 +130,9 @@ const TampilRegister = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/registersForDoc`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setRegistersForDoc(response.data);
     setLoading(false);

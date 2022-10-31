@@ -147,7 +147,9 @@ const TampilDaftarStok = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/tipesMainInfo`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setTipes(response.data);
     setLoading(false);
@@ -186,21 +188,27 @@ const TampilDaftarStok = () => {
       case "terjual":
         response = await axios.post(`${tempUrl}/daftarStoksTerjual`, {
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         setUser(response.data);
         break;
       case "belum":
         response = await axios.post(`${tempUrl}/daftarStoksBelumTerjual`, {
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         setUser(response.data);
         break;
       default:
         response = await axios.post(`${tempUrl}/daftarStoks`, {
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         setUser(response.data);
     }
@@ -211,7 +219,9 @@ const TampilDaftarStok = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/daftarStoksLength`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setDaftarStoksLength(response.data);
     setLoading(false);
@@ -224,7 +234,9 @@ const TampilDaftarStok = () => {
       case "terjual":
         response = await axios.post(`${tempUrl}/daftarStoksTerjualForDoc`, {
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         break;
       case "belum":
@@ -232,14 +244,18 @@ const TampilDaftarStok = () => {
           `${tempUrl}/daftarStoksBelumTerjualForDoc`,
           {
             id: user._id,
-            token: user.token
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
           }
         );
         break;
       default:
         response = await axios.post(`${tempUrl}/daftarStoksForDoc`, {
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
     }
     setDaftarStoksForDoc(response.data);

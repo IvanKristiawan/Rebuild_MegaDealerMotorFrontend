@@ -42,7 +42,9 @@ const TambahKolektor = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/kolektorsNextLength`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKodeKolektor(response.data);
     setLoading(false);

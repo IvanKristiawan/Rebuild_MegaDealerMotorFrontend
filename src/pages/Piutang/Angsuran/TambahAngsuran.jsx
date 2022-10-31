@@ -168,7 +168,9 @@ const TambahAngsuran = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/kolektors`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKolektors(response.data);
     setLoading(false);
@@ -178,7 +180,9 @@ const TambahAngsuran = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/juals`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setJuals(response.data);
     setLoading(false);

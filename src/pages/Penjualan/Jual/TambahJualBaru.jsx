@@ -175,7 +175,9 @@ const TambahJualBaru = () => {
     const response = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
       noRangka,
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     if (response.data) {
       setNoMesin(response.data.noMesin);
@@ -190,7 +192,9 @@ const TambahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/daftarStoksNorang`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setStoks(response.data);
     setLoading(false);
@@ -200,7 +204,9 @@ const TambahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/registers`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setRegisters(response.data);
     setLoading(false);
@@ -210,7 +216,9 @@ const TambahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setMarketings(response.data);
     setLoading(false);
@@ -220,7 +228,9 @@ const TambahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setSurveyors(response.data);
     setLoading(false);
@@ -230,7 +240,9 @@ const TambahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/pekerjaans`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setPekerjaans(response.data);
     setLoading(false);
@@ -240,7 +252,9 @@ const TambahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/kecamatans`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKecamatans(response.data);
     setLoading(false);
@@ -250,7 +264,9 @@ const TambahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/leasings`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setLeasings(response.data);
     setLoading(false);
@@ -288,7 +304,9 @@ const TambahJualBaru = () => {
           const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
             noRangka,
             id: user._id,
-            token: user.token
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
           });
           // Update Stok
           await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
@@ -297,78 +315,128 @@ const TambahJualBaru = () => {
             id: user._id,
             token: user.token
           });
-          // Save Angsuran
-          let tempAngsuran = await axios.post(`${tempUrl}/saveAngsuran`, {
-            tenor,
-            noJual,
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            tglAng,
-            angModal: sisaPiutang / tenor,
-            angBunga: angPerBulan - sisaPiutang / tenor,
-            angPerBulan,
-            id: user._id,
-            token: user.token
-          });
-          // Save Penerimaan
-          let tempPenerimaan = await axios.post(`${tempUrl}/savePenerimaan`, {
-            tenor,
-            noJual,
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            angModal: sisaPiutang / tenor,
-            angBunga: angPerBulan - sisaPiutang / tenor,
-            id: user._id,
-            token: user.token
-          });
-          await axios.post(`${tempUrl}/saveJual`, {
-            noRegister,
-            namaRegister,
-            almRegister,
-            almKantor,
-            tlpRegister,
-            noKtpRegister,
-            noKKRegister,
-            namaPjmRegister,
-            noKtpPjmRegister,
-            namaRefRegister,
-            almRefRegister,
-            tlpRefRegister,
-            kodeMarketing,
-            kodeSurveyor,
-            kodePekerjaan,
-            kodeKecamatan,
-            kodeLeasing,
-            noRangka,
-            noMesin,
-            nopol,
-            tipe,
-            namaWarna,
-            tahun,
-            hargaTunai,
-            uangMuka,
-            sisaPiutang,
-            angPerBulan,
-            tenor,
-            bunga,
-            jumlahPiutang,
-            angModal,
-            angBunga,
-            noJual,
-            noKwitansi,
-            tanggalJual: tglJual,
-            jenisJual,
-            tglAng,
-            tglAngAkhir,
-            tglInput,
-            angModal: sisaPiutang / tenor,
-            angBunga: angPerBulan - sisaPiutang / tenor,
-            kodeAngsuran: tempAngsuran.data._id,
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            id: user._id,
-            token: user.token
-          });
+          if (jenisJual === "KREDIT") {
+            // Save Angsuran
+            let tempAngsuran = await axios.post(`${tempUrl}/saveAngsuran`, {
+              tenor,
+              noJual,
+              kodeUnitBisnis: user.unitBisnis._id,
+              kodeCabang: user.cabang._id,
+              tglAng,
+              angModal: sisaPiutang / tenor,
+              angBunga: angPerBulan - sisaPiutang / tenor,
+              angPerBulan,
+              id: user._id,
+              token: user.token
+            });
+            // Save Penerimaan
+            let tempPenerimaan = await axios.post(`${tempUrl}/savePenerimaan`, {
+              tenor,
+              noJual,
+              kodeUnitBisnis: user.unitBisnis._id,
+              kodeCabang: user.cabang._id,
+              angModal: sisaPiutang / tenor,
+              angBunga: angPerBulan - sisaPiutang / tenor,
+              id: user._id,
+              token: user.token
+            });
+            await axios.post(`${tempUrl}/saveJual`, {
+              noRegister,
+              namaRegister,
+              almRegister,
+              almKantor,
+              tlpRegister,
+              noKtpRegister,
+              noKKRegister,
+              namaPjmRegister,
+              noKtpPjmRegister,
+              namaRefRegister,
+              almRefRegister,
+              tlpRefRegister,
+              kodeMarketing,
+              kodeSurveyor,
+              kodePekerjaan,
+              kodeKecamatan,
+              kodeLeasing,
+              noRangka,
+              noMesin,
+              nopol,
+              tipe,
+              namaWarna,
+              tahun,
+              hargaTunai,
+              uangMuka,
+              sisaPiutang,
+              angPerBulan,
+              tenor,
+              bunga,
+              jumlahPiutang,
+              angModal,
+              angBunga,
+              noJual,
+              noKwitansi,
+              tanggalJual: tglJual,
+              jenisJual,
+              tglAng,
+              tglAngAkhir,
+              tglInput,
+              angModal: sisaPiutang / tenor,
+              angBunga: angPerBulan - sisaPiutang / tenor,
+              kodeAngsuran: tempAngsuran.data._id,
+              kodeUnitBisnis: user.unitBisnis._id,
+              kodeCabang: user.cabang._id,
+              id: user._id,
+              token: user.token
+            });
+          } else {
+            await axios.post(`${tempUrl}/saveJual`, {
+              noRegister,
+              namaRegister,
+              almRegister,
+              almKantor,
+              tlpRegister,
+              noKtpRegister,
+              noKKRegister,
+              namaPjmRegister,
+              noKtpPjmRegister,
+              namaRefRegister,
+              almRefRegister,
+              tlpRefRegister,
+              kodeMarketing,
+              kodeSurveyor,
+              kodePekerjaan,
+              kodeKecamatan,
+              kodeLeasing,
+              noRangka,
+              noMesin,
+              nopol,
+              tipe,
+              namaWarna,
+              tahun,
+              hargaTunai,
+              uangMuka,
+              sisaPiutang,
+              angPerBulan,
+              tenor,
+              bunga,
+              jumlahPiutang,
+              angModal,
+              angBunga,
+              noJual,
+              noKwitansi,
+              tanggalJual: tglJual,
+              jenisJual,
+              tglAng,
+              tglAngAkhir,
+              tglInput,
+              angModal: sisaPiutang / tenor,
+              angBunga: angPerBulan - sisaPiutang / tenor,
+              kodeUnitBisnis: user.unitBisnis._id,
+              kodeCabang: user.cabang._id,
+              id: user._id,
+              token: user.token
+            });
+          }
           setLoading(false);
           navigate("/jual");
         } catch (error) {

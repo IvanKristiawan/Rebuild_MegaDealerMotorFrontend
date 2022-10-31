@@ -70,7 +70,9 @@ const TambahBeli = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/belisNextLength`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKodeBeli(response.data);
     setLoading(false);
@@ -80,7 +82,9 @@ const TambahBeli = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/suppliers`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setSuppliers(response.data);
     setLoading(false);

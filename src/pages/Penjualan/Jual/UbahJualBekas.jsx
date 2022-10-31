@@ -177,7 +177,9 @@ const UbahJualBekas = () => {
     const response = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
       nopol,
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     if (response.data) {
       setNoRangka(response.data.noRangka);
@@ -193,7 +195,9 @@ const UbahJualBekas = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/daftarStoksNopol`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setStoks(response.data);
     setLoading(false);
@@ -203,7 +207,9 @@ const UbahJualBekas = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/registers`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setRegisters(response.data);
     setLoading(false);
@@ -213,7 +219,9 @@ const UbahJualBekas = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setMarketings(response.data);
     setLoading(false);
@@ -223,7 +231,9 @@ const UbahJualBekas = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setSurveyors(response.data);
     setLoading(false);
@@ -233,7 +243,9 @@ const UbahJualBekas = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/pekerjaans`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setPekerjaans(response.data);
     setLoading(false);
@@ -243,7 +255,9 @@ const UbahJualBekas = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/kecamatans`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKecamatans(response.data);
     setLoading(false);
@@ -253,7 +267,9 @@ const UbahJualBekas = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/leasingsForTable`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setLeasings(response.data);
     setLoading(false);
@@ -263,7 +279,9 @@ const UbahJualBekas = () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/jualsNoPopulate/${id}`, {
         id: user._id,
-        token: user.token
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
       });
       // Data Register/Pembeli
       setNoRegister(response.data.noRegister);

@@ -44,7 +44,9 @@ const TambahDealer = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/dealersNextLength`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKodeDealer(response.data);
     setLoading(false);

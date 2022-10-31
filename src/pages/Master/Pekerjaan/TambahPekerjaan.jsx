@@ -41,7 +41,9 @@ const TambahPekerjaan = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/pekerjaansNextLength`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKodePekerjaan(response.data);
     setLoading(false);

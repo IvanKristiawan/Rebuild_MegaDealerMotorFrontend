@@ -87,7 +87,9 @@ const TampilWilayah = () => {
     try {
       const response = await axios.post(`${tempUrl}/wilayahs`, {
         id: user._id,
-        token: user.token
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
       });
       setUser(response.data);
     } catch (err) {

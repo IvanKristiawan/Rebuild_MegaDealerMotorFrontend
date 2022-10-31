@@ -155,7 +155,9 @@ const TampilJual = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/kecamatansForTable`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKecamatans(response.data);
     setLoading(false);
@@ -165,7 +167,9 @@ const TampilJual = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/tipesMainInfo`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setTipes(response.data);
     setLoading(false);
@@ -176,7 +180,9 @@ const TampilJual = () => {
     try {
       const response = await axios.post(`${tempUrl}/juals`, {
         id: user._id,
-        token: user.token
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
       });
       setUsers(response.data);
     } catch (err) {
@@ -189,7 +195,9 @@ const TampilJual = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/jualsForTable`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setJualsForTable(response.data);
     setLoading(false);
@@ -199,7 +207,9 @@ const TampilJual = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/jualsForDoc`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setJualsForDoc(response.data);
     setLoading(false);
@@ -276,11 +286,13 @@ const TampilJual = () => {
         id: user._id,
         token: user.token
       });
-      // Delete Angsuran
-      await axios.post(`${tempUrl}/deleteAngsuran/${kodeAngsuran}`, {
-        id: user._id,
-        token: user.token
-      });
+      if (kodeAngsuran) {
+        // Delete Angsuran
+        await axios.post(`${tempUrl}/deleteAngsuran/${kodeAngsuran}`, {
+          id: user._id,
+          token: user.token
+        });
+      }
       await axios.post(`${tempUrl}/deleteJual/${id}`, {
         id: user._id,
         token: user.token

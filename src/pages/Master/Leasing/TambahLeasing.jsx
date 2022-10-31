@@ -44,7 +44,9 @@ const TambahLeasing = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/leasingsNextLength`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKodeLeasing(response.data);
     setLoading(false);

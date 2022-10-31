@@ -179,7 +179,9 @@ const UbahJualBaru = () => {
     const response = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
       noRangka,
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     if (response.data) {
       setNoMesin(response.data.noMesin);
@@ -194,7 +196,9 @@ const UbahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/daftarStoksNorang`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setStoks(response.data);
     setLoading(false);
@@ -204,7 +208,9 @@ const UbahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/registers`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setRegisters(response.data);
     setLoading(false);
@@ -214,7 +220,9 @@ const UbahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setMarketings(response.data);
     setLoading(false);
@@ -224,7 +232,9 @@ const UbahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setSurveyors(response.data);
     setLoading(false);
@@ -234,7 +244,9 @@ const UbahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/pekerjaans`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setPekerjaans(response.data);
     setLoading(false);
@@ -244,7 +256,9 @@ const UbahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/kecamatans`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKecamatans(response.data);
     setLoading(false);
@@ -254,7 +268,9 @@ const UbahJualBaru = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/leasings`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setLeasings(response.data);
     setLoading(false);
@@ -264,7 +280,9 @@ const UbahJualBaru = () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/jualsNoPopulate/${id}`, {
         id: user._id,
-        token: user.token
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
       });
       // Data Register/Pembeli
       setNoRegister(response.data.noRegister);
@@ -343,7 +361,9 @@ const UbahJualBaru = () => {
           const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
             noRangka: tempNoRangka,
             id: user._id,
-            token: user.token
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
           });
           // Update Stok
           await axios.post(`${tempUrl}/updateDaftarStok/${tempStok.data._id}`, {
@@ -355,7 +375,9 @@ const UbahJualBaru = () => {
           const tempStok2 = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
             noRangka,
             id: user._id,
-            token: user.token
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
           });
           // Update Stok
           await axios.post(

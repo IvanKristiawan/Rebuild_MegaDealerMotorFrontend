@@ -58,7 +58,9 @@ const TampilAngsuran = () => {
     const response = await axios.post(`${tempUrl}/angsuransByNoJual`, {
       noJual: id,
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setAngsurans(response.data.angsuran);
     setLoading(false);
@@ -69,7 +71,9 @@ const TampilAngsuran = () => {
       const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
         noJual: id,
         id: user._id,
-        token: user.token
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
       });
       setNamaRegister(response.data.namaRegister);
       setNoJual(response.data.noJual);

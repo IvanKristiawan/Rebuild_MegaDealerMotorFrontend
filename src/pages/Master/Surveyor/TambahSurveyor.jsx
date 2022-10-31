@@ -44,7 +44,9 @@ const TambahSurveyor = () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/surveyorsNextLength`, {
       id: user._id,
-      token: user.token
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
     });
     setKodeSurveyor(response.data);
     setLoading(false);
