@@ -18,6 +18,7 @@ import {
   Paper
 } from "@mui/material";
 import { ShowTableJual } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
   SearchBar,
   Loader,
@@ -38,6 +39,7 @@ const TampilJual = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [isFetchError, setIsFetchError] = useState(false);
   // Data Register/Pembeli
   const [noRegister, setNoRegister] = useState("");
   const [namaRegister, setNamaRegister] = useState("");
@@ -171,11 +173,15 @@ const TampilJual = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/juals`, {
-      id: user._id,
-      token: user.token
-    });
-    setUsers(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/juals`, {
+        id: user._id,
+        token: user.token
+      });
+      setUsers(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
@@ -377,6 +383,10 @@ const TampilJual = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (

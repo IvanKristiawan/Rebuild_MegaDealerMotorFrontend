@@ -3,6 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { Box, Typography, Divider, Pagination } from "@mui/material";
 import { ShowTableDaftarAngsuran } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
   SearchBar,
   Loader,
@@ -15,6 +16,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 const TampilDaftarAngsuran = () => {
   const { user, dispatch } = useContext(AuthContext);
   const { screenSize } = useStateContext();
+  const [isFetchError, setIsFetchError] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
   const kode = null;
@@ -59,16 +61,24 @@ const TampilDaftarAngsuran = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/jualsForDaftarAngsuran`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/jualsForDaftarAngsuran`, {
+        id: user._id,
+        token: user.token
+      });
+      setUser(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (

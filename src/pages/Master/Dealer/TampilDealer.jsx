@@ -17,6 +17,7 @@ import {
   ButtonGroup
 } from "@mui/material";
 import { ShowTableDealer } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
   SearchBar,
   Loader,
@@ -37,6 +38,7 @@ const TampilDealer = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [isFetchError, setIsFetchError] = useState(false);
   const [kodeDealer, setKodeDealer] = useState("");
   const [namaDealer, setNamaDealer] = useState("");
   const [alamatDealer, setAlamatDealer] = useState("");
@@ -91,11 +93,15 @@ const TampilDealer = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/dealers`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/dealers`, {
+        id: user._id,
+        token: user.token
+      });
+      setUser(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
@@ -178,6 +184,10 @@ const TampilDealer = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (

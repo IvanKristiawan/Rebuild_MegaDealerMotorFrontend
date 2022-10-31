@@ -17,6 +17,7 @@ import {
   ButtonGroup
 } from "@mui/material";
 import { ShowTableSupplier } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
   SearchBar,
   Loader,
@@ -37,6 +38,7 @@ const TampilSupplier = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [isFetchError, setIsFetchError] = useState(false);
   const [kodeSupplier, setKodeSupplier] = useState("");
   const [namaSupplier, setNamaSupplier] = useState("");
   const [alamatSupplier, setAlamatSupplier] = useState("");
@@ -97,11 +99,15 @@ const TampilSupplier = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/suppliers`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/suppliers`, {
+        id: user._id,
+        token: user.token
+      });
+      setUser(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
@@ -188,6 +194,10 @@ const TampilSupplier = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (

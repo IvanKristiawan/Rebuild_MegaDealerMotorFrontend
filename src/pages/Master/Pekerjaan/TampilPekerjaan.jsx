@@ -17,6 +17,7 @@ import {
   ButtonGroup
 } from "@mui/material";
 import { ShowTablePekerjaan } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
   SearchBar,
   Loader,
@@ -37,6 +38,7 @@ const TampilPekerjaan = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [isFetchError, setIsFetchError] = useState(false);
   const [kodePekerjaan, setKodePekerjaan] = useState("");
   const [namaPekerjaan, setNamaPekerjaan] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -82,11 +84,15 @@ const TampilPekerjaan = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/pekerjaans`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/pekerjaans`, {
+        id: user._id,
+        token: user.token
+      });
+      setUser(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
@@ -163,6 +169,10 @@ const TampilPekerjaan = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (

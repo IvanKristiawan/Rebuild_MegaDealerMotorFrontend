@@ -273,17 +273,17 @@ const App = () => {
                     </Box>
                   </Link>
                   <Divider />
-                  <Link to="/cabang" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<AddHomeWorkIcon name="cabang-icon" />}>
-                        Cabang
-                      </MenuItem>
-                    </Box>
-                  </Link>
                   <Link to="/unitBisnis" style={linkText}>
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<ApartmentIcon name="cabang-icon" />}>
                         Unit Bisnis
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/cabang" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<AddHomeWorkIcon name="cabang-icon" />}>
+                        Cabang
                       </MenuItem>
                     </Box>
                   </Link>
@@ -909,33 +909,33 @@ const App = () => {
                   <Route
                     path="/daftarUser"
                     element={
-                      <MGRRoute>
+                      <USERRoute>
                         <DaftarUser />
-                      </MGRRoute>
+                      </USERRoute>
                     }
                   />
                   <Route
                     path="/daftarUser/:id"
                     element={
-                      <MGRRoute>
+                      <USERRoute>
                         <DaftarUser />
-                      </MGRRoute>
+                      </USERRoute>
                     }
                   />
                   <Route
                     path="/daftarUser/:id/edit"
                     element={
-                      <MGRRoute>
+                      <USERRoute>
                         <UbahUser />
-                      </MGRRoute>
+                      </USERRoute>
                     }
                   />
                   <Route
                     path="/daftarUser/tambahUser"
                     element={
-                      <MGRRoute>
+                      <USERRoute>
                         <TambahUser />
-                      </MGRRoute>
+                      </USERRoute>
                     }
                   />
                   {/* PENJUALAN */}

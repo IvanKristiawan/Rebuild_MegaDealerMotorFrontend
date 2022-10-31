@@ -17,6 +17,7 @@ import {
   ButtonGroup
 } from "@mui/material";
 import { ShowTableKecamatan } from "../../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
 import {
   SearchBar,
   Loader,
@@ -37,6 +38,7 @@ const TampilKecamatan = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [isFetchError, setIsFetchError] = useState(false);
   const [kodeWilayah, setKodeWilayah] = useState("");
   const [namaWilayah, setNamaWilayah] = useState("");
   const [kodeKecamatan, setKodeKecamatan] = useState("");
@@ -90,11 +92,15 @@ const TampilKecamatan = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kecamatans`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/kecamatans`, {
+        id: user._id,
+        token: user.token
+      });
+      setUser(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
@@ -185,6 +191,10 @@ const TampilKecamatan = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (

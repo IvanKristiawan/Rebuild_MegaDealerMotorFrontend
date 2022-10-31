@@ -17,6 +17,7 @@ import {
   ButtonGroup
 } from "@mui/material";
 import { ShowTableCabang } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
   SearchBar,
   Loader,
@@ -37,6 +38,7 @@ const TampilCabang = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [isFetchError, setIsFetchError] = useState(false);
   const [kodeCabang, setKodeCabang] = useState("");
   const [namaCabang, setNamaCabang] = useState("");
   const [alamatCabang, setAlamatCabang] = useState("");
@@ -99,11 +101,15 @@ const TampilCabang = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/cabangs`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/cabangs`, {
+        id: user._id,
+        token: user.token
+      });
+      setUser(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
@@ -198,6 +204,10 @@ const TampilCabang = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (

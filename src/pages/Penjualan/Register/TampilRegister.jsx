@@ -22,6 +22,7 @@ import {
   usePagination,
   ButtonModifier
 } from "../../../components";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
@@ -38,6 +39,7 @@ const TampilRegister = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [isFetchError, setIsFetchError] = useState(false);
   const [noRegister, setNoRegister] = useState("");
   const [tanggalRegister, setTanggalRegister] = useState("");
   const [namaRegister, setNamaRegister] = useState("");
@@ -110,11 +112,15 @@ const TampilRegister = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/registers`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/registers`, {
+        id: user._id,
+        token: user.token
+      });
+      setUser(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
@@ -227,6 +233,10 @@ const TampilRegister = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (

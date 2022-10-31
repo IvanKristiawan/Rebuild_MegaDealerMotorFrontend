@@ -17,6 +17,7 @@ import {
   ButtonGroup
 } from "@mui/material";
 import { ShowTableTipe } from "../../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
 import {
   SearchBar,
   Loader,
@@ -37,6 +38,7 @@ const TampilTipe = () => {
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
+  const [isFetchError, setIsFetchError] = useState(false);
   const [kodeTipe, setKodeTipe] = useState("");
   const [namaTipe, setNamaTipe] = useState("");
   const [noRangka, setNoRangka] = useState("");
@@ -96,11 +98,15 @@ const TampilTipe = () => {
 
   const getUsers = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/tipes`, {
-      id: user._id,
-      token: user.token
-    });
-    setUser(response.data);
+    try {
+      const response = await axios.post(`${tempUrl}/tipes`, {
+        id: user._id,
+        token: user.token
+      });
+      setUser(response.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
     setLoading(false);
   };
 
@@ -130,24 +136,20 @@ const TampilTipe = () => {
   };
 
   const deleteUser = async (id) => {
-    try {
-      setLoading(true);
-      await axios.post(`${tempUrl}/deleteTipe/${id}`, {
-        id: user._id,
-        token: user.token
-      });
-      getUsers();
-      setKodeTipe("");
-      setNamaTipe("");
-      setNoRangka("");
-      setNoMesin("");
-      setIsi("");
-      setMerk("");
-      setLoading(false);
-      navigate("/tipe");
-    } catch (error) {
-      console.log(error);
-    }
+    setLoading(true);
+    await axios.post(`${tempUrl}/deleteTipe/${id}`, {
+      id: user._id,
+      token: user.token
+    });
+    getUsers();
+    setKodeTipe("");
+    setNamaTipe("");
+    setNoRangka("");
+    setNoMesin("");
+    setIsi("");
+    setMerk("");
+    setLoading(false);
+    navigate("/tipe");
   };
 
   const downloadPdf = () => {
@@ -195,6 +197,10 @@ const TampilTipe = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if (isFetchError) {
+    return <FetchErrorHandling />;
   }
 
   return (
