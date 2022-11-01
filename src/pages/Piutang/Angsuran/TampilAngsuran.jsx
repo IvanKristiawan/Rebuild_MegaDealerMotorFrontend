@@ -3,17 +3,27 @@ import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
+  namaPerusahaan,
+  lokasiPerusahaan,
+  kotaPerusahaan
+} from "../../../constants/GeneralSetting";
+import {
   Box,
   TextField,
   Typography,
   Divider,
   Pagination,
-  Button
+  Button,
+  ButtonGroup
 } from "@mui/material";
 import { ShowTableAngsuran } from "../../../components/ShowTable";
 import { Loader, usePagination } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
+import DownloadIcon from "@mui/icons-material/Download";
+import PrintIcon from "@mui/icons-material/Print";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const TampilAngsuran = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -28,8 +38,31 @@ const TampilAngsuran = () => {
   const [nopol, setNopol] = useState("");
   const [almRegister, setAlmRegister] = useState("");
   const [tipe, setTipe] = useState("");
+  const [hargaTunai, setHargaTunai] = useState("");
+  const [uangMuka, setUangMuka] = useState("");
+  const [angPerBulan, setAngPerBulan] = useState("");
+  const [tenor, setTenor] = useState("");
+  const [jumlahPiutang, setJumlahPiutang] = useState("");
+  const [tahun, setTahun] = useState("");
+  const [namaWarna, setNamaWarna] = useState("");
+  const [noRangka, setNoRangka] = useState("");
+  const [noMesin, setNoMesin] = useState("");
+  const [noRegister, setNoRegister] = useState("");
+  const [tglAng, setTglAng] = useState("");
+  const [tglAngAkhir, setTglAngAkhir] = useState("");
   const [angsurans, setAngsurans] = useState([]);
+  const [angsuranTable, setAngsuranTable] = useState([]);
   const navigate = useNavigate();
+
+  const columnsRekap = [
+    { title: "Tgl. Bayar", field: "tglBayar" },
+    { title: "TJ. Tempo", field: "tglJatuhTempo" },
+    { title: "No. Kwitansi", field: "noKwitansi" },
+    { title: "Ke", field: "_id" },
+    { title: "Keterangan", field: "keterangan" },
+    { title: "Bayar", field: "angPerBulan" },
+    { title: "Saldo", field: "saldo" }
+  ];
 
   const [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
@@ -50,6 +83,7 @@ const TampilAngsuran = () => {
 
   useEffect(() => {
     getAngsuran();
+    getAngsuranForDoc();
     id && getUserById();
   }, [id]);
 
@@ -66,6 +100,19 @@ const TampilAngsuran = () => {
     setLoading(false);
   };
 
+  const getAngsuranForDoc = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/angsuransByNoJualForDoc`, {
+      noJual: id,
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
+    setAngsuranTable(response.data);
+    setLoading(false);
+  };
+
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
@@ -77,11 +124,73 @@ const TampilAngsuran = () => {
       });
       setNamaRegister(response.data.namaRegister);
       setNoJual(response.data.noJual);
-      setTanggalJual(response.data.tanggalJual);
+      setTanggalJual(response.data.tglAng);
       setNopol(response.data.nopol);
       setAlmRegister(response.data.almRegister);
       setTipe(response.data.tipe);
+      setHargaTunai(response.data.hargaTunai);
+      setUangMuka(response.data.uangMuka);
+      setAngPerBulan(response.data.angPerBulan);
+      setTenor(response.data.tenor);
+      setJumlahPiutang(response.data.jumlahPiutang);
+      setTahun(response.data.tahun);
+      setNamaWarna(response.data.namaWarna);
+      setNoRangka(response.data.noRangka);
+      setNoMesin(response.data.noMesin);
+      setNoRegister(response.data.noRegister);
+      setTglAng(response.data.tglAng);
+      setTglAngAkhir(response.data.tglAngAkhir);
     }
+  };
+
+  const downloadPdfRekap = () => {
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
+    doc.text(`${lokasiPerusahaan}`, 15, 15);
+    doc.setFontSize(16);
+    doc.text(`Kartu Kredit`, 90, 30);
+    doc.setFontSize(10);
+    doc.text(`Nama               : ${namaRegister}`, 15, 40);
+    doc.text(`Tipe                    : ${tipe}`, 120, 40);
+    doc.text(`Alamat              : ${almRegister.substring(0, 30)}`, 15, 45);
+    doc.text(`No. Rangka        : ${noRangka}`, 120, 45);
+    doc.text(`Tgl. kontrak      : ${tanggalJual}`, 15, 50);
+    doc.text(`No. Mesin           : ${noMesin}`, 120, 50);
+    doc.text(`Harga Tunai     : ${hargaTunai.toLocaleString()}`, 15, 55);
+    doc.text(`Nopol                  : ${nopol}`, 120, 55);
+    doc.text(`Uang Muka       : ${uangMuka.toLocaleString()}`, 15, 60);
+    doc.text(`No. Kontrak        : ${noRegister}`, 120, 60);
+    doc.text(
+      `Angs / Bulan    : ${angPerBulan.toLocaleString()} / ${tenor}`,
+      15,
+      65
+    );
+    doc.text(`Tgl. Angs. I         : ${tglAng}`, 120, 65);
+    doc.text(`Jml. Piutang    : ${jumlahPiutang.toLocaleString()}`, 15, 70);
+    doc.text(`Tgl. Angs. Akhir  : ${tglAngAkhir}`, 120, 70);
+    doc.text(`Thn / Warna     : ${tahun} / ${namaWarna}`, 15, 75);
+    doc.text(
+      `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
+      15,
+      280
+    );
+    doc.setFontSize(12);
+    doc.autoTable({
+      margin: { top: 80 },
+      columns: columnsRekap.map((col) => ({ ...col, dataKey: col.field })),
+      body: angsuranTable,
+      headStyles: {
+        fillColor: [117, 117, 117],
+        color: [0, 0, 0]
+      }
+    });
+    doc.save(`kartuKredit.pdf`);
   };
 
   if (loading) {
@@ -98,6 +207,16 @@ const TampilAngsuran = () => {
       >
         {"< Kembali"}
       </Button>
+      <Box sx={downloadButtons}>
+        <ButtonGroup variant="outlined" color="secondary">
+          <Button startIcon={<PrintIcon />} onClick={() => downloadPdfRekap()}>
+            Rekap
+          </Button>
+          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+            Rinci
+          </Button>
+        </ButtonGroup>
+      </Box>
       <Box sx={container}>
         <Typography color="#757575">Piutang</Typography>
         <Typography variant="h4" sx={subTitleText}>
@@ -249,4 +368,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };
