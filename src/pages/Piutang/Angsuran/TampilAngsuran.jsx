@@ -186,7 +186,7 @@ const TampilAngsuran = () => {
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Kartu Kredit Rekap`, 90, 30);
+    doc.text(`Kartu Kredit Rekap`, 85, 30);
     doc.setFontSize(10);
     doc.text(`Nama               : ${namaRegister}`, 15, 40);
     doc.text(`Tipe                    : ${tipe}`, 120, 40);

@@ -102,12 +102,12 @@ const CariTotalPiutang = () => {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const doc = new jsPDF();
+    const doc = new jsPDF("l", "mm", [280, 210]);
     doc.setFontSize(12);
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Total Piutang`, 90, 30);
+    doc.text(`Total Piutang`, 130, 30);
     doc.setFontSize(10);
     doc.text(`Sisa Bulan : ${sisaBulan}`, 15, 35);
     doc.text(

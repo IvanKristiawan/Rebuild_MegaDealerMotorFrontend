@@ -298,12 +298,12 @@ const TampilDaftarStok = () => {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const doc = new jsPDF();
+    const doc = new jsPDF("l", "mm", [250, 210]);
     doc.setFontSize(12);
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Daftar Stok`, 90, 30);
+    doc.text(`Daftar Stok`, 110, 30);
     doc.setFontSize(10);
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
@@ -345,7 +345,7 @@ const TampilDaftarStok = () => {
         `Sub Total : ${
           Object.values(daftarStoksForPdf)[i].length
         } | Rp ${tempSubTotal.toLocaleString()}`,
-        140,
+        180,
         tempHeight + 2
       );
       tempSubTotal = 0;
@@ -353,7 +353,7 @@ const TampilDaftarStok = () => {
     doc.setFontSize(10);
     doc.text(
       `Total : ${daftarStoksLength} | Rp ${tempTotal.toLocaleString()}`,
-      140,
+      180,
       tempHeight + 8
     );
     doc.save(`daftarStok.pdf`);
