@@ -50,8 +50,11 @@ const TampilAngsuran = () => {
   const [noRegister, setNoRegister] = useState("");
   const [tglAng, setTglAng] = useState("");
   const [tglAngAkhir, setTglAngAkhir] = useState("");
+  const [modal, setModal] = useState("");
+  const [bunga, setBunga] = useState("");
   const [angsurans, setAngsurans] = useState([]);
-  const [angsuranTable, setAngsuranTable] = useState([]);
+  const [angsuranTableRekap, setAngsuranTableRekap] = useState([]);
+  const [angsuranTableRinci, setAngsuranTableRinci] = useState([]);
   const navigate = useNavigate();
 
   const columnsRekap = [
@@ -60,6 +63,19 @@ const TampilAngsuran = () => {
     { title: "No. Kwitansi", field: "noKwitansi" },
     { title: "Ke", field: "_id" },
     { title: "Keterangan", field: "keterangan" },
+    { title: "Bayar", field: "angPerBulan" },
+    { title: "Saldo", field: "saldo" }
+  ];
+
+  const columnsRinci = [
+    { title: "Tgl. Bayar", field: "tglBayar" },
+    { title: "TJ. Tempo", field: "tglJatuhTempo" },
+    { title: "No. Kwitansi", field: "noKwitansi" },
+    { title: "Ke", field: "_id" },
+    { title: "A. Modal", field: "angModal" },
+    { title: "Saldo", field: "modal" },
+    { title: "A. Bunga", field: "angBunga" },
+    { title: "Saldo", field: "bunga" },
     { title: "Bayar", field: "angPerBulan" },
     { title: "Saldo", field: "saldo" }
   ];
@@ -83,7 +99,8 @@ const TampilAngsuran = () => {
 
   useEffect(() => {
     getAngsuran();
-    getAngsuranForDoc();
+    getAngsuranRekap();
+    getAngsuranRinci();
     id && getUserById();
   }, [id]);
 
@@ -97,19 +114,34 @@ const TampilAngsuran = () => {
       kodeCabang: user.cabang._id
     });
     setAngsurans(response.data.angsuran);
+    setModal(response.data.angsuran[0].angModal * response.data.tenor);
+    setBunga(response.data.angsuran[0].angBunga * response.data.tenor);
     setLoading(false);
   };
 
-  const getAngsuranForDoc = async () => {
+  const getAngsuranRekap = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/angsuransByNoJualForDoc`, {
+    const response = await axios.post(`${tempUrl}/angsuransByNoJualRekap`, {
       noJual: id,
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setAngsuranTable(response.data);
+    setAngsuranTableRekap(response.data);
+    setLoading(false);
+  };
+
+  const getAngsuranRinci = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/angsuransByNoJualRinci`, {
+      noJual: id,
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
+    setAngsuranTableRinci(response.data);
     setLoading(false);
   };
 
@@ -154,7 +186,7 @@ const TampilAngsuran = () => {
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Kartu Kredit`, 90, 30);
+    doc.text(`Kartu Kredit Rekap`, 90, 30);
     doc.setFontSize(10);
     doc.text(`Nama               : ${namaRegister}`, 15, 40);
     doc.text(`Tipe                    : ${tipe}`, 120, 40);
@@ -184,13 +216,65 @@ const TampilAngsuran = () => {
     doc.autoTable({
       margin: { top: 80 },
       columns: columnsRekap.map((col) => ({ ...col, dataKey: col.field })),
-      body: angsuranTable,
+      body: angsuranTableRekap,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
       }
     });
-    doc.save(`kartuKredit.pdf`);
+    doc.save(`kartuKreditRekap.pdf`);
+  };
+
+  const downloadPdfRinci = () => {
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
+    doc.text(`${lokasiPerusahaan}`, 15, 15);
+    doc.setFontSize(16);
+    doc.text(`Kartu Kredit Rinci`, 90, 30);
+    doc.setFontSize(10);
+    doc.text(`Nama               : ${namaRegister}`, 15, 40);
+    doc.text(`Tipe                    : ${tipe}`, 120, 40);
+    doc.text(`Alamat              : ${almRegister.substring(0, 30)}`, 15, 45);
+    doc.text(`No. Rangka        : ${noRangka}`, 120, 45);
+    doc.text(`Tgl. kontrak      : ${tanggalJual}`, 15, 50);
+    doc.text(`No. Mesin           : ${noMesin}`, 120, 50);
+    doc.text(`Harga Tunai     : ${hargaTunai.toLocaleString()}`, 15, 55);
+    doc.text(`Nopol                  : ${nopol}`, 120, 55);
+    doc.text(`Uang Muka       : ${uangMuka.toLocaleString()}`, 15, 60);
+    doc.text(`No. Kontrak        : ${noRegister}`, 120, 60);
+    doc.text(
+      `Angs / Bulan     : ${angPerBulan.toLocaleString()} / ${tenor}`,
+      15,
+      65
+    );
+    doc.text(`Tgl. Angs. I         : ${tglAng}`, 120, 65);
+    doc.text(`Jml. Piutang     : ${jumlahPiutang.toLocaleString()}`, 15, 70);
+    doc.text(`Tgl. Angs. Akhir  : ${tglAngAkhir}`, 120, 70);
+    doc.text(`Thn / Warna     : ${tahun} / ${namaWarna}`, 15, 75);
+    doc.text(`Modal              : ${modal.toLocaleString()}`, 15, 80);
+    doc.text(`Bunga              : ${bunga.toLocaleString()}`, 15, 85);
+    doc.text(
+      `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
+      15,
+      280
+    );
+    doc.setFontSize(12);
+    doc.autoTable({
+      margin: { top: 90 },
+      columns: columnsRinci.map((col) => ({ ...col, dataKey: col.field })),
+      body: angsuranTableRinci,
+      headStyles: {
+        fillColor: [117, 117, 117],
+        color: [0, 0, 0]
+      }
+    });
+    doc.save(`kartuKreditRinci.pdf`);
   };
 
   if (loading) {
@@ -212,7 +296,10 @@ const TampilAngsuran = () => {
           <Button startIcon={<PrintIcon />} onClick={() => downloadPdfRekap()}>
             Rekap
           </Button>
-          <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
+          <Button
+            startIcon={<DownloadIcon />}
+            onClick={() => downloadPdfRinci()}
+          >
             Rinci
           </Button>
         </ButtonGroup>
