@@ -80,6 +80,7 @@ const TambahAngsuran = () => {
   const [noAngsuran, setNoAngsuran] = useState("");
   const [dari, setDari] = useState("");
   const [tglJatuhTempo, setTglJatuhTempo] = useState("");
+  const [tglJatuhTempoNext, setTglJatuhTempoNext] = useState("");
   var curr = new Date();
   var date = curr.toISOString().substring(0, 10);
   const [tglBayar, setTglBayar] = useState(date); // Input
@@ -232,6 +233,12 @@ const TambahAngsuran = () => {
       id: user._id,
       token: user.token
     });
+    const responseNext = await axios.post(`${tempUrl}/angsuransChildNext`, {
+      noJual: noKontrak,
+      id: user._id,
+      token: user.token
+    });
+    setTglJatuhTempoNext(responseNext.data.tglJatuhTempo);
     setNoAngsuran(response.data._id);
     setTglJatuhTempo(response.data.tglJatuhTempo);
     setAngModal(response.data.angModal);
@@ -333,6 +340,7 @@ const TambahAngsuran = () => {
         });
         await axios.post(`${tempUrl}/updateJual/${jualId}`, {
           sisaBulan: dari - noAngsuran,
+          tglJatuhTempo: tglJatuhTempoNext,
           id: user._id,
           token: user.token
         });
