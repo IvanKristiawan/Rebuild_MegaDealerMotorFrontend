@@ -20,9 +20,12 @@ import PrintIcon from "@mui/icons-material/Print";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
-const CariTotalPiutang = () => {
+const CariTunggakan = () => {
   const { user } = useContext(AuthContext);
   const [sisaBulan, setSisaBulan] = useState("");
+  const [perTanggal, setPerTanggal] = useState("");
+  const [lebihDari, setLebihDari] = useState("");
+  const [sampaiDengan, setSampaiDengan] = useState("");
   const [kodeMarketing, setKodeMarketing] = useState("");
   const [kodeSurveyor, setKodeSurveyor] = useState("");
   const [marketings, setMarketings] = useState([]);
@@ -32,16 +35,23 @@ const CariTotalPiutang = () => {
 
   const columns = [
     { title: "No", field: "no" },
-    { title: "Tanggal", field: "tglAng" },
-    { title: "No. Kon", field: "noRegister" },
-    { title: "No. Telp", field: "tlpRegister" },
-    { title: "Nopol", field: "nopol" },
+    { title: "No. Kon", field: "noJual" },
+    { title: "Nama", field: "namaRegister" },
+    { title: "Alm", field: "almRegister" },
+    { title: "Tlp", field: "tlpRegister" },
     { title: "Tipe", field: "tipe" },
     { title: "Thn", field: "tahun" },
-    { title: "P. Modal", field: "pModal" },
-    { title: "P. Bunga", field: "pBunga" },
-    { title: "Total", field: "total" },
-    { title: "Bln", field: "bulan" }
+    { title: "Ang", field: "angPerBulan" },
+    { title: "Surveyor", field: "kodeSurveyor" },
+    { title: "Tenor", field: "tenor" },
+    { title: "Sisa Bln", field: "sisaBulan" },
+    { title: "JTO", field: "tglJatuhTempo" },
+    { title: "MD1", field: "MD1" },
+    { title: "MD2", field: "MD2" },
+    { title: "MD3", field: "MD3" },
+    { title: "SP", field: "SP" },
+    { title: "ST", field: "ST" },
+    { title: "HR", field: "hr" }
   ];
 
   const marketingOptions = marketings.map((marketing) => ({
@@ -82,8 +92,10 @@ const CariTotalPiutang = () => {
   };
 
   const downloadPdf = async () => {
-    const response = await axios.post(`${tempUrl}/totalPiutangs`, {
-      sisaBulan,
+    const response = await axios.post(`${tempUrl}/jualsForTunggakan`, {
+      perTanggal,
+      lebihDari,
+      sampaiDengan,
       kodeMarketing,
       kodeSurveyor,
       id: user._id,
@@ -92,24 +104,19 @@ const CariTotalPiutang = () => {
       kodeCabang: user.cabang._id
     });
 
-    let tempTotal = 0;
-    let tempPModal = 0;
-    let tempPBunga = 0;
-    let tempSubGroupHeight = 35;
-    let tempHeight = 35;
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const doc = new jsPDF();
+    const doc = new jsPDF("l", "mm", [400, 210]);
     doc.setFontSize(12);
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Total Piutang`, 90, 30);
+    doc.text(`Laporan Tunggakan`, 180, 30);
     doc.setFontSize(10);
-    doc.text(`Sisa Bulan : ${sisaBulan}`, 15, 35);
+    doc.text(`Per Tanggal : ${perTanggal}`, 15, 35);
     doc.text(
       `Marketing : ${kodeMarketing === "" ? "SEMUA MARKETING" : kodeMarketing}`,
       15,
@@ -133,30 +140,9 @@ const CariTotalPiutang = () => {
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
-      },
-      didDrawPage: (d) => {
-        tempSubGroupHeight = d.cursor.y;
-        tempHeight = d.cursor.y;
       }
     });
-    response.data.map((val) => {
-      tempPModal += val.pModal;
-      tempPBunga += val.pBunga;
-      tempTotal += val.pModal + val.pBunga;
-    });
-    doc.setFontSize(8);
-    doc.text(
-      `P. Modal : Rp ${tempPModal.toLocaleString()}`,
-      15,
-      tempHeight + 4
-    );
-    doc.text(
-      `P. Bunga : Rp ${tempPBunga.toLocaleString()}`,
-      15,
-      tempHeight + 8
-    );
-    doc.text(`Total : Rp ${tempTotal.toLocaleString()}`, 15, tempHeight + 12);
-    doc.save(`totalPiutang.pdf`);
+    doc.save(`laporanTunggakan.pdf`);
   };
 
   if (loading) {
@@ -167,22 +153,22 @@ const CariTotalPiutang = () => {
     <Box sx={container}>
       <Typography color="#757575">Laporan</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Cari Total Piutang
+        Cari Tunggakan
       </Typography>
       <Divider sx={dividerStyle} />
       <Box sx={showDataWrapper}>
-        <Typography sx={[labelInput, spacingTop]}>Sisa Bulan</Typography>
+        <Typography sx={[labelInput, spacingTop]}>Per. Tanggal</Typography>
         <TextField
-          type="number"
+          type="date"
           size="small"
-          error={error && sisaBulan.length === 0 && true}
+          error={error && perTanggal.length === 0 && true}
           helperText={
-            error && sisaBulan.length === 0 && "Sisa Bulan harus diisi!"
+            error && perTanggal.length === 0 && "Per. Tanggal harus diisi!"
           }
           id="outlined-basic"
           variant="outlined"
-          value={sisaBulan}
-          onChange={(e) => setSisaBulan(e.target.value)}
+          value={perTanggal}
+          onChange={(e) => setPerTanggal(e.target.value)}
         />
         <Typography sx={[labelInput, spacingTop]}>Kode Marketing</Typography>
         <Autocomplete
@@ -226,6 +212,32 @@ const CariTotalPiutang = () => {
           )}
           onInputChange={(e, value) => setKodeSurveyor(value.split(" ", 1)[0])}
         />
+        <Typography sx={[labelInput, spacingTop]}>Lebih dari</Typography>
+        <TextField
+          type="number"
+          size="small"
+          error={error && lebihDari.length === 0 && true}
+          helperText={
+            error && lebihDari.length === 0 && "Lebih dari harus diisi!"
+          }
+          id="outlined-basic"
+          variant="outlined"
+          value={lebihDari}
+          onChange={(e) => setLebihDari(e.target.value)}
+        />
+        <Typography sx={[labelInput, spacingTop]}>Sampai dengan</Typography>
+        <TextField
+          type="number"
+          size="small"
+          error={error && sampaiDengan.length === 0 && true}
+          helperText={
+            error && sampaiDengan.length === 0 && "Sampai dengan harus diisi!"
+          }
+          id="outlined-basic"
+          variant="outlined"
+          value={sampaiDengan}
+          onChange={(e) => setSampaiDengan(e.target.value)}
+        />
       </Box>
       <Box sx={spacingTop}>
         <Button
@@ -240,7 +252,7 @@ const CariTotalPiutang = () => {
   );
 };
 
-export default CariTotalPiutang;
+export default CariTunggakan;
 
 const container = {
   p: 4

@@ -38,6 +38,7 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import PaymentIcon from "@mui/icons-material/Payment";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
+import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -104,6 +105,7 @@ import {
   TambahABeli,
   TampilDaftarStok,
   CariTotalPiutang,
+  CariTunggakan,
   TampilDaftarAngsuran,
   TambahAngsuran,
   TampilAngsuran,
@@ -345,6 +347,15 @@ const App = () => {
                         icon={<RecentActorsIcon name="total-piutang-icon" />}
                       >
                         Total Piutang
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/tunggakan" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<PlaylistRemoveIcon name="tunggakan-icon" />}
+                      >
+                        Tunggakan
                       </MenuItem>
                     </Box>
                   </Link>
@@ -905,6 +916,15 @@ const App = () => {
                     element={
                       <USERRoute>
                         <CariTotalPiutang />
+                      </USERRoute>
+                    }
+                  />
+                  {/* Tunggakan */}
+                  <Route
+                    path="/tunggakan"
+                    element={
+                      <USERRoute>
+                        <CariTunggakan />
                       </USERRoute>
                     }
                   />

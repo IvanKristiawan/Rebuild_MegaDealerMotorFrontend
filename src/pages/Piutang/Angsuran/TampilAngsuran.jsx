@@ -231,12 +231,12 @@ const TampilAngsuran = () => {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const doc = new jsPDF();
+    const doc = new jsPDF("l", "mm", [280, 210]);
     doc.setFontSize(12);
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Kartu Kredit Rinci`, 90, 30);
+    doc.text(`Kartu Kredit Rinci`, 120, 30);
     doc.setFontSize(10);
     doc.text(`Nama               : ${namaRegister}`, 15, 40);
     doc.text(`Tipe                    : ${tipe}`, 120, 40);

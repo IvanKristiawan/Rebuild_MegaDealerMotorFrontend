@@ -81,6 +81,7 @@ export { default as UbahBeli } from "./Pembelian/Beli/UbahBeli";
 // Daftar Stok Page
 export { default as TampilDaftarStok } from "./Laporan/DaftarStok/TampilDaftarStok";
 export { default as CariTotalPiutang } from "./Laporan/TotalPiutang/CariTotalPiutang";
+export { default as CariTunggakan } from "./Laporan/Tunggakan/CariTunggakan";
 // A Beli Page
 export { default as TampilABeli } from "./Pembelian/ABeli/TampilABeli";
 export { default as TambahABeli } from "./Pembelian/ABeli/TambahABeli";
