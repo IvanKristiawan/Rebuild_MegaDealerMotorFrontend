@@ -33,7 +33,8 @@ const CariTotalPiutang = () => {
   const columns = [
     { title: "No", field: "no" },
     { title: "Tanggal", field: "tglAng" },
-    { title: "No. Kon", field: "noRegister" },
+    { title: "Nama", field: "namaRegister" },
+    { title: "No. Kon", field: "noJual" },
     { title: "No. Telp", field: "tlpRegister" },
     { title: "Nopol", field: "nopol" },
     { title: "Tipe", field: "tipe" },
