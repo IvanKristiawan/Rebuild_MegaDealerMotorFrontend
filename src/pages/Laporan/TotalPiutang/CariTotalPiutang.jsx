@@ -42,7 +42,7 @@ const CariTotalPiutang = () => {
     { title: "P. Modal", field: "pModal" },
     { title: "P. Bunga", field: "pBunga" },
     { title: "Total", field: "total" },
-    { title: "Bln", field: "bulan" }
+    { title: "S. Bln", field: "sisaBulan" }
   ];
 
   const marketingOptions = marketings.map((marketing) => ({
@@ -92,6 +92,15 @@ const CariTotalPiutang = () => {
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
+    const responseForDoc = await axios.post(`${tempUrl}/totalPiutangsForDoc`, {
+      sisaBulan,
+      kodeMarketing,
+      kodeSurveyor,
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
 
     let tempTotal = 0;
     let tempPModal = 0;
@@ -103,24 +112,24 @@ const CariTotalPiutang = () => {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const doc = new jsPDF("l", "mm", [280, 210]);
+    const doc = new jsPDF("l", "mm", [330, 210]);
     doc.setFontSize(12);
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Total Piutang`, 130, 30);
+    doc.text(`Total Piutang`, 150, 30);
     doc.setFontSize(10);
-    doc.text(`Sisa Bulan : ${sisaBulan}`, 15, 35);
     doc.text(
       `Marketing : ${kodeMarketing === "" ? "SEMUA MARKETING" : kodeMarketing}`,
       15,
-      40
+      35
     );
     doc.text(
       `Surveyor : ${kodeSurveyor === "" ? "SEMUA SURVEYOR" : kodeSurveyor}`,
       15,
-      45
+      40
     );
+    doc.text(`Sisa Bulan : ${sisaBulan}`, 15, 45);
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
@@ -130,7 +139,7 @@ const CariTotalPiutang = () => {
     doc.autoTable({
       margin: { top: 50 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: response.data,
+      body: responseForDoc.data,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -138,6 +147,21 @@ const CariTotalPiutang = () => {
       didDrawPage: (d) => {
         tempSubGroupHeight = d.cursor.y;
         tempHeight = d.cursor.y;
+      },
+      columnStyles: {
+        0: { cellWidth: 10 },
+        1: { cellWidth: 25 },
+        2: { cellWidth: 40 },
+        3: { cellWidth: 20 },
+        4: { cellWidth: 30 },
+        5: { cellWidth: 30 },
+        6: { cellWidth: 15 },
+        7: { cellWidth: 15 },
+        8: { cellWidth: 30 },
+        9: { cellWidth: 30 },
+        10: { cellWidth: 30 },
+        11: { cellWidth: 20 }
+        // etc
       }
     });
     response.data.map((val) => {
@@ -145,18 +169,12 @@ const CariTotalPiutang = () => {
       tempPBunga += val.pBunga;
       tempTotal += val.pModal + val.pBunga;
     });
-    doc.setFontSize(8);
-    doc.text(
-      `P. Modal : Rp ${tempPModal.toLocaleString()}`,
-      15,
-      tempHeight + 4
-    );
-    doc.text(
-      `P. Bunga : Rp ${tempPBunga.toLocaleString()}`,
-      15,
-      tempHeight + 8
-    );
-    doc.text(`Total : Rp ${tempTotal.toLocaleString()}`, 15, tempHeight + 12);
+    doc.setFontSize(10);
+    doc.line(15, tempHeight + 2, 320, tempHeight + 2);
+    doc.text(`TOTAL : `, 15, tempHeight + 6);
+    doc.text(`${tempPModal.toLocaleString()}`, 200, tempHeight + 6);
+    doc.text(`${tempPBunga.toLocaleString()}`, 230, tempHeight + 6);
+    doc.text(`${tempTotal.toLocaleString()}`, 260, tempHeight + 6);
     doc.save(`totalPiutang.pdf`);
   };
 

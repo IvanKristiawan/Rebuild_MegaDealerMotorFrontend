@@ -80,7 +80,7 @@ const TampilDaftarStok = () => {
   const columnsRekap = [
     { title: "Tipe", field: "_id" },
     { title: "Total", field: "total" },
-    { title: "Harga", field: `harga` }
+    { title: "Harga", field: "hargaTable" }
   ];
 
   var groupBy = function (xs, key) {
@@ -162,19 +162,25 @@ const TampilDaftarStok = () => {
       case "terjual":
         response = await axios.post(`${tempUrl}/daftarStoksRekapTerjual`, {
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         break;
       case "belum":
         response = await axios.post(`${tempUrl}/daftarStoksRekapBlmTerjual`, {
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         break;
       default:
         response = await axios.post(`${tempUrl}/daftarStoksRekap`, {
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
     }
     setRekapStoks(groupBy(response.data, "merk"));
