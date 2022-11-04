@@ -34,7 +34,7 @@ const CariTotalPiutang = () => {
     { title: "No", field: "no" },
     { title: "Tanggal", field: "tglAng" },
     { title: "Nama", field: "namaRegister" },
-    { title: "No. Kon", field: "noJual" },
+    { title: "No. Jual", field: "noJual" },
     { title: "No. Telp", field: "tlpRegister" },
     { title: "Nopol", field: "nopol" },
     { title: "Tipe", field: "tipe" },
