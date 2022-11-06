@@ -22,8 +22,9 @@ import "jspdf-autotable";
 
 const CariTunggakan = () => {
   const { user } = useContext(AuthContext);
-  const [sisaBulan, setSisaBulan] = useState("");
-  const [perTanggal, setPerTanggal] = useState("");
+  var curr = new Date();
+  var date = curr.toISOString().substring(0, 10);
+  const [perTanggal, setPerTanggal] = useState(date);
   const [lebihDari, setLebihDari] = useState("");
   const [sampaiDengan, setSampaiDengan] = useState("");
   const [kodeMarketing, setKodeMarketing] = useState("");
@@ -35,7 +36,7 @@ const CariTunggakan = () => {
 
   const columns = [
     { title: "No", field: "no" },
-    { title: "No. Kon", field: "noJual" },
+    { title: "No. Jual", field: "noJual" },
     { title: "Nama", field: "namaRegister" },
     { title: "Alm", field: "almRegister" },
     { title: "Tlp", field: "tlpRegister" },

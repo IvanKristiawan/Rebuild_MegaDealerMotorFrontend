@@ -2,21 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Box,
-  TextField,
-  Typography,
-  Divider,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions
-} from "@mui/material";
+import { Box, TextField, Typography, Divider, Button } from "@mui/material";
 import { Loader } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import SaveIcon from "@mui/icons-material/Save";
 
 const TampilAAngsuran = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -24,6 +13,7 @@ const TampilAAngsuran = () => {
   const navigate = useNavigate();
 
   // Data Angsuran
+  const [mainId, setMainId] = useState("");
   const [idAngsuran, setIdAngsuran] = useState("");
   const [tglJatuhTempo, setTglJatuhTempo] = useState("");
   const [angModal, setAngModal] = useState("");
@@ -44,16 +34,17 @@ const TampilAAngsuran = () => {
   const [totalBayar, setTotalBayar] = useState("");
   const [bayar, setBayar] = useState("");
 
+  const [md1, setMd1] = useState("");
+  const [md2, setMd2] = useState("");
+  const [md3, setMd3] = useState("");
+  const [sp, setSp] = useState("");
+  const [st, setSt] = useState("");
+
+  const [isDisabledMd1, setIsDisabledMd1] = useState(true);
+  const [isDisabledMd2, setIsDisabledMd2] = useState(true);
+  const [isDisabledMd3, setIsDisabledMd3] = useState(true);
+
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   useEffect(() => {
     getUserById();
@@ -61,6 +52,13 @@ const TampilAAngsuran = () => {
 
   const getUserById = async () => {
     if (id) {
+      const findAngsuranId = await axios.post(`${tempUrl}/angsuransByNoJual`, {
+        noJual: id,
+        ke: idAAngsuran,
+        id: user._id,
+        token: user.token
+      });
+      setMainId(findAngsuranId.data._id);
       const response = await axios.post(`${tempUrl}/angsuransFindChild`, {
         noJual: id,
         ke: idAAngsuran,
@@ -84,21 +82,74 @@ const TampilAAngsuran = () => {
       setTotalPiutang(response.data.totalPiutang);
       setTotalBayar(response.data.totalBayar);
       setBayar(response.data.bayar);
-
       if (response.data.kodeKolektor) {
-        const kolektorData = await axios.post(
-          `${tempUrl}/kolektors/${response.data.kodeKolektor}`,
-          {
-            id: user._id,
-            token: user.token
-          }
-        );
         setKodeKolektor(
-          `${kolektorData.data._id} - ${kolektorData.data.namaKolektor}`
+          `${response.data.kodeKolektor._id} - ${response.data.kodeKolektor.namaKolektor}`
         );
-      } else {
-        setKodeKolektor("");
       }
+
+      setMd1(response.data.md1);
+      setMd2(response.data.md2);
+      setMd3(response.data.md3);
+      setSp(response.data.sp);
+      setSt(response.data.st);
+
+      if (
+        response.data.tglBayar.length === 0 &&
+        response.data.md1.length === 0
+      ) {
+        setIsDisabledMd1(false);
+      } else if (
+        response.data.md1.length > 0 &&
+        response.data.md2.length === 0
+      ) {
+        setIsDisabledMd2(false);
+      } else if (
+        response.data.md1.length > 0 &&
+        response.data.md2.length > 0 &&
+        response.data.md3.length === 0
+      ) {
+        setIsDisabledMd3(false);
+      }
+    }
+  };
+
+  const saveUser = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      // Update Angsuran
+      await axios.post(`${tempUrl}/updateAngsuran/${mainId}`, {
+        angsuranKe: idAAngsuran - 1,
+        _id: idAAngsuran,
+        tglJatuhTempo,
+        angModal,
+        angBunga,
+        angPerBulan,
+        tglBayar,
+        kodeKolektor: kodeKolektor.split(" ", 1)[0],
+        noKwitansi,
+        keterangan,
+        denda,
+        potongan,
+        jemputan,
+        biayaTarik,
+        hutangDenda,
+        totalPiutang,
+        totalBayar,
+        bayar,
+        md1,
+        md2,
+        md3,
+        sp,
+        st,
+        id: user._id,
+        token: user.token
+      });
+      setLoading(false);
+      navigate(`/daftarAngsuran/angsuran/${id}`);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -156,7 +207,7 @@ const TampilAAngsuran = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={angModal}
+              value={angModal.toLocaleString()}
             />
           </Box>
           <Box sx={[textFieldWrapper, secondWrapper]}>
@@ -168,7 +219,7 @@ const TampilAAngsuran = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={angBunga}
+              value={angBunga.toLocaleString()}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Angsuran/Bulan
@@ -180,7 +231,7 @@ const TampilAAngsuran = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={angPerBulan}
+              value={angPerBulan.toLocaleString()}
             />
           </Box>
         </Box>
@@ -311,6 +362,68 @@ const TampilAAngsuran = () => {
             />
           </Box>
         </Box>
+        <Divider sx={dividerStyle} />
+        <Box sx={textFieldContainer}>
+          <Box sx={textFieldWrapper}>
+            <Typography sx={labelInput}>Md1</Typography>
+            <TextField
+              type="date"
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={md1}
+              disabled={isDisabledMd1}
+              onChange={(e) => setMd1(e.target.value)}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Md2</Typography>
+            <TextField
+              type="date"
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={md2}
+              disabled={isDisabledMd2}
+              onChange={(e) => setMd2(e.target.value)}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Md3</Typography>
+            <TextField
+              type="date"
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={md3}
+              disabled={isDisabledMd3}
+              onChange={(e) => setMd3(e.target.value)}
+            />
+          </Box>
+          <Box sx={[textFieldWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>SP</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              disabled
+              value={sp}
+            />
+            <Typography sx={[labelInput, spacingTop]}>ST</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              disabled
+              value={st}
+            />
+          </Box>
+        </Box>
+        <Box sx={spacingTop}>
+          <Button
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={saveUser}
+          >
+            Simpan
+          </Button>
+        </Box>
       </Box>
     </>
   );
@@ -324,13 +437,6 @@ const container = {
 
 const subTitleText = {
   fontWeight: "900"
-};
-
-const deleteButtonContainer = {
-  mt: 4,
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "center"
 };
 
 const dividerStyle = {
@@ -353,11 +459,6 @@ const textFieldWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const labelInput = {

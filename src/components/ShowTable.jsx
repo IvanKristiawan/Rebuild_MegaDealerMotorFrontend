@@ -1488,6 +1488,36 @@ export function ShowTableAngsuran({ id, currentPosts }) {
             >
               A/bulan
             </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Md1
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Md2
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Md3
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              SP
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              ST
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -1512,6 +1542,11 @@ export function ShowTableAngsuran({ id, currentPosts }) {
               <TableCell>{angsuran.angModal.toLocaleString()}</TableCell>
               <TableCell>{angsuran.angBunga.toLocaleString()}</TableCell>
               <TableCell>{angsuran.angPerBulan.toLocaleString()}</TableCell>
+              <TableCell>{angsuran.md1}</TableCell>
+              <TableCell>{angsuran.md2}</TableCell>
+              <TableCell>{angsuran.md3}</TableCell>
+              <TableCell>{angsuran.sp}</TableCell>
+              <TableCell>{angsuran.st}</TableCell>
             </TableRow>
           ))}
         </TableBody>
