@@ -544,7 +544,7 @@ const TambahSuratPemberitahuan = () => {
                           setTglMdTerakhir(user.tglMdTerakhir);
                           setTglJatuhTempo(user.tglJatuhTempo);
                           user.tglMdTerakhir.length > 0 && handleClickOpenMd();
-                          date < user.tglJatuhTempo && handleClickOpenJt();
+                          date < new Date(user.tglJatuhTempo) && handleClickOpenJt();
                           handleCloseJual();
                         }}
                       >

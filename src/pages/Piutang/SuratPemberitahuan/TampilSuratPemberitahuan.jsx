@@ -30,7 +30,6 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import { Colors } from "../../../constants/styles";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilSuratPemberitahuan = () => {
@@ -43,6 +42,7 @@ const TampilSuratPemberitahuan = () => {
   const [noJual, setNoJual] = useState("");
   const [namaRegister, setNamaRegister] = useState("");
   const [almRegister, setAlmRegister] = useState("");
+  const [tlpRegister, setTlpRegister] = useState("");
   const [tglAng, setTglAng] = useState("");
   const [tenor, setTenor] = useState("");
   const [bulan, setBulan] = useState("");
@@ -124,6 +124,7 @@ const TampilSuratPemberitahuan = () => {
       setNoJual(response.data.noJual);
       setNamaRegister(response.data.idJual.namaRegister);
       setAlmRegister(response.data.idJual.almRegister);
+      setTlpRegister(response.data.idJual.tlpRegister);
       setTglAng(response.data.idJual.tglAng);
       setTenor(response.data.idJual.tenor);
       setBulan(response.data.idJual.tenor - response.data.idJual.sisaBulan);
@@ -188,19 +189,145 @@ const TampilSuratPemberitahuan = () => {
     }
   };
 
-  const downloadPdf = () => {
+  const downloadPdf = async () => {
+    let tempY = 15;
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-    var current_time =
-      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    var tempDate;
+    var tempDateName;
+    const response = await axios.post(`${tempUrl}/angsuransChildTunggak`, {
+      tglInput: date,
+      noJual,
+      id: user._id,
+      token: user.token,
+    });
+
     const doc = new jsPDF();
     doc.setFontSize(16);
-    doc.text(`SURAT PEMBERITAHUAN`, 75, 10).setFont(undefined, "bold");
+    doc.setFont(undefined, "bold");
+    doc.text(`SURAT PEMBERITAHUAN`, 75, tempY);
+    tempY += 20;
+    doc.setFont(undefined, "normal");
     doc.setFontSize(12);
-    doc.text(`${lokasiSP}, ${current_date}`, 15, 30);
-    doc.text(`Kepada Yth. Bapak / Ibu ${namaRegister}`, 15, 40);
-    // doc.fromHTML( 'Paranyan <b>loves</b> jsPDF', 35, 25)
+    doc.text(`${lokasiSP}, ${current_date}`, 15, tempY);
+    tempY += 15;
+    doc.text(`Kepada Yth. Bapak / Ibu`, 15, tempY);
+    doc.setFont(undefined, "bold");
+    doc.text(`${namaRegister} - ${noJual}`, 64, tempY);
+    doc.setFont(undefined, "normal");
+    tempY += 6;
+    doc.text(`${almRegister}`, 15, tempY);
+    tempY += 6;
+    doc.text(`(${tlpRegister})`, 15, tempY);
+    tempY += 15;
+    doc.text(`Dengan Hormat,`, 15, tempY);
+    tempY += 6;
+    doc.text(
+      `Bersama dengan ini kami sampaikan bahwa Bapak / Ibu telah melakukan pembayaran`,
+      15,
+      tempY
+    );
+    tempY += 6;
+    doc.text(
+      `sewa sepeda motor dan untuk menghindari dari biaya pengambilan kembali sepeda motor,`,
+      15,
+      tempY
+    );
+    tempY += 6;
+    doc.text(
+      `dengan ini kami sampaikan bahwa Bapak / Ibu telah menunggak ${response.data.length} bulan.`,
+      15,
+      tempY
+    );
+    tempY += 6;
+    doc.text(`( sepeda motor ${tipe})`, 15, tempY);
+    tempY += 12;
+    for (let i = 0; i < response.data.length; i++) {
+      tempDate = new Date(response.data[i].tglJatuhTempo);
+
+      switch (tempDate.getMonth()) {
+        case 1:
+          tempDateName = "JANUARI";
+          break;
+        case 2:
+          tempDateName = "FEBRUARI";
+          break;
+        case 3:
+          tempDateName = "MARET";
+          break;
+        case 4:
+          tempDateName = "APRIL";
+          break;
+        case 5:
+          tempDateName = "MEI";
+          break;
+        case 6:
+          tempDateName = "JUNI";
+          break;
+        case 7:
+          tempDateName = "JULI";
+          break;
+        case 8:
+          tempDateName = "AGUSTUS";
+          break;
+        case 9:
+          tempDateName = "SEPTEMBER";
+          break;
+        case 10:
+          tempDateName = "OKTOBER";
+          break;
+        case 11:
+          tempDateName = "NOVEMBER";
+          break;
+        case 12:
+          tempDateName = "DESEMBER";
+          break;
+        default:
+          break;
+      }
+
+      doc.text(
+        `${i + 1}.  Angsuran ke ${
+          i + 1
+        } ${tempDateName} ${tempDate.getFullYear()}`,
+        30,
+        tempY
+      );
+      doc.text(`( ${response.data[i].tglJatuhTempo} )`, 120, tempY);
+      doc.text(
+        `Rp. ${response.data[i].angPerBulan.toLocaleString()}`,
+        150,
+        tempY
+      );
+      tempY += 6;
+    }
+    tempY += 6;
+    doc.text(`Jumlah di atas belum termasuk denda tunggakan.`, 15, tempY);
+    tempY += 12;
+    doc.text(
+      `Demikian surat pemberitahuan ini kami sampaikan kepada Bapak / Ibu, dan kami`,
+      15,
+      tempY
+    );
+    tempY += 6;
+    doc.text(
+      `menunggu 3 hari dari surat ini diterima. Apabila dalam 3 hari Bapak / Ibu tidak datang`,
+      15,
+      tempY
+    );
+    tempY += 6;
+    doc.text(
+      `ke kantor kami, maka kami akan menarik kembali sepeda motor tersebut.`,
+      15,
+      tempY
+    );
+    tempY += 6;
+    doc.text(`Atas kerjasamanya kami ucapkan terimakasih.`, 15, tempY);
+    tempY += 30;
+    doc.text(`Hormat kami,`, 15, tempY);
+    tempY += 30;
+    doc.text(`${user.username}`, 15, tempY);
     doc.setFontSize(12);
     doc.save(`suratPemberitahuan.pdf`);
   };
