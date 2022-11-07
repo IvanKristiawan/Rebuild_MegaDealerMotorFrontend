@@ -39,6 +39,7 @@ import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import PaymentIcon from "@mui/icons-material/Payment";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -369,6 +370,13 @@ const App = () => {
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<PaymentIcon name="profil-icon" />}>
                         Angsuran
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/suratPemberitahuan" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<HistoryEduIcon name="sp-icon" />}>
+                        SP
                       </MenuItem>
                     </Box>
                   </Link>
