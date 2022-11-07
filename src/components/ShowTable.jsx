@@ -14,15 +14,15 @@ const useStyles = makeStyles({
   root: {
     "& .MuiTableCell-head": {
       color: "white",
-      backgroundColor: Colors.blue700
-    }
+      backgroundColor: Colors.blue700,
+    },
   },
   tableRightBorder: {
     borderWidth: 0,
     borderRightWidth: 1,
     borderColor: "white",
-    borderStyle: "solid"
-  }
+    borderStyle: "solid",
+  },
 });
 
 export function ShowTableTipe({ currentPosts, searchTerm }) {
@@ -93,7 +93,7 @@ export function ShowTableTipe({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/tipe/${user._id}`);
@@ -143,7 +143,7 @@ export function ShowTableWarna({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/warna/${user._id}`);
@@ -195,7 +195,7 @@ export function ShowTableWilayah({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/wilayah/${user._id}`);
@@ -268,7 +268,7 @@ export function ShowTableKecamatan({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/kecamatan/${user._id}`);
@@ -350,7 +350,7 @@ export function ShowTableDealer({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/dealer/${user._id}`);
@@ -422,7 +422,7 @@ export function ShowTableKolektor({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/kolektor/${user._id}`);
@@ -487,7 +487,7 @@ export function ShowTableMarketing({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/marketing/${user._id}`);
@@ -548,7 +548,7 @@ export function ShowTablePekerjaan({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/pekerjaan/${user._id}`);
@@ -621,7 +621,7 @@ export function ShowTableSurveyor({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/surveyor/${user._id}`);
@@ -715,7 +715,7 @@ export function ShowTableUser({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/daftarUser/${user._id}`);
@@ -813,7 +813,7 @@ export function ShowTableCabang({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/cabang/${user._id}`);
@@ -879,7 +879,7 @@ export function ShowTableUnitBisnis({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/unitBisnis/${user._id}`);
@@ -954,7 +954,7 @@ export function ShowTableLeasing({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/leasing/${user._id}`);
@@ -1057,7 +1057,7 @@ export function ShowTableSupplier({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/supplier/${user._id}`);
@@ -1184,7 +1184,7 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/daftarBeli/beli/${user._id}`);
@@ -1229,7 +1229,7 @@ export function ShowTableDaftarAngsuran({ currentPosts, searchTerm }) {
               sx={{ fontWeight: "bold" }}
               className={classes.tableRightBorder}
             >
-              No. Kontrak
+              No. Jual
             </TableCell>
             <TableCell
               sx={{ fontWeight: "bold" }}
@@ -1254,6 +1254,12 @@ export function ShowTableDaftarAngsuran({ currentPosts, searchTerm }) {
               className={classes.tableRightBorder}
             >
               Tipe
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              SP
             </TableCell>
           </TableRow>
         </TableHead>
@@ -1291,7 +1297,7 @@ export function ShowTableDaftarAngsuran({ currentPosts, searchTerm }) {
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
                   cursor: "pointer",
-                  backgroundColor: user.sisaBulan === 0 ? "#f79892" : "white"
+                  backgroundColor: user.sisaBulan === 0 ? "#f79892" : "white",
                 }}
                 onClick={() => {
                   navigate(`/daftarAngsuran/angsuran/${user.noJual}`);
@@ -1305,6 +1311,7 @@ export function ShowTableDaftarAngsuran({ currentPosts, searchTerm }) {
                 <TableCell>{user.nopol}</TableCell>
                 <TableCell>{user.almRegister}</TableCell>
                 <TableCell>{user.tipe}</TableCell>
+                <TableCell>{user.spKe}</TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -1409,7 +1416,7 @@ export function ShowTableBeli({ id, currentPosts, nomorNota }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/daftarBeli/beli/${id}/${aBeli._id}`);
@@ -1527,7 +1534,7 @@ export function ShowTableAngsuran({ id, currentPosts }) {
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
                 "&:hover": { bgcolor: Colors.grey300 },
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               onClick={() => {
                 navigate(`/daftarAngsuran/angsuran/${id}/${angsuran._id}`);
@@ -1650,7 +1657,7 @@ export function ShowTableDaftarStok({ currentPosts, searchTerm, tipes }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/daftarStok/${user._id}`);
@@ -1740,7 +1747,7 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   navigate(`/jual/${user._id}`);
@@ -1760,6 +1767,136 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
                     .filter((tipe) => tipe.kodeTipe === user.tipe)
                     .map((sup) => ` ${sup.namaTipe}`)}
                 </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export function ShowTableSuratPemberitahuan({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Jual
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Alamat
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. Angsuran
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. SP
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              SP Ke-
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Angsuran
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Bln
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nopol
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kolektor
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.idJual.namaRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.idJual.almRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.idJual.tglAng
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.tglSp.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.idJual.nopol
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigate(`/suratPemberitahuan/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.noJual}
+                </TableCell>
+                <TableCell>{user.idJual.namaRegister}</TableCell>
+                <TableCell>{user.idJual.almRegister}</TableCell>
+                <TableCell>{user.idJual.tglAng}</TableCell>
+                <TableCell>{user.tglSp}</TableCell>
+                <TableCell>{user.spKe}</TableCell>
+                <TableCell>
+                  {user.idJual.angPerBulan.toLocaleString()}
+                </TableCell>
+                <TableCell>
+                  {user.idJual.tenor - user.idJual.sisaBulan}
+                </TableCell>
+                <TableCell>{user.idJual.nopol}</TableCell>
+                <TableCell>{`${user.kodeKolektor._id} - ${user.kodeKolektor.namaKolektor}`}</TableCell>
               </TableRow>
             ))}
         </TableBody>

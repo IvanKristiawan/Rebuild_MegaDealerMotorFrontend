@@ -6,6 +6,7 @@ import { Box, TextField, Typography, Divider, Button } from "@mui/material";
 import { Loader } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import SaveIcon from "@mui/icons-material/Save";
+import { Colors } from "../../../constants/styles";
 
 const TampilAAngsuran = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -39,6 +40,7 @@ const TampilAAngsuran = () => {
   const [md3, setMd3] = useState("");
   const [sp, setSp] = useState("");
   const [st, setSt] = useState("");
+  const [mdTerakhir, setMdTerakhir] = useState("");
 
   const [isDisabledMd1, setIsDisabledMd1] = useState(true);
   const [isDisabledMd2, setIsDisabledMd2] = useState(true);
@@ -56,14 +58,14 @@ const TampilAAngsuran = () => {
         noJual: id,
         ke: idAAngsuran,
         id: user._id,
-        token: user.token
+        token: user.token,
       });
       setMainId(findAngsuranId.data._id);
       const response = await axios.post(`${tempUrl}/angsuransFindChild`, {
         noJual: id,
         ke: idAAngsuran,
         id: user._id,
-        token: user.token
+        token: user.token,
       });
       setIdAngsuran(response.data._id);
       setTglJatuhTempo(response.data.tglJatuhTempo);
@@ -118,6 +120,21 @@ const TampilAAngsuran = () => {
     e.preventDefault();
     try {
       setLoading(true);
+      // Update Jual
+      const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
+        noJual: id,
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
+      });
+      await axios.post(`${tempUrl}/updateJual/${response.data._id}`, {
+        tglMdTerakhir: mdTerakhir,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
+        id: user._id,
+        token: user.token,
+      });
       // Update Angsuran
       await axios.post(`${tempUrl}/updateAngsuran/${mainId}`, {
         angsuranKe: idAAngsuran - 1,
@@ -144,7 +161,7 @@ const TampilAAngsuran = () => {
         sp,
         st,
         id: user._id,
-        token: user.token
+        token: user.token,
       });
       setLoading(false);
       navigate(`/daftarAngsuran/angsuran/${id}`);
@@ -181,7 +198,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={idAngsuran}
             />
@@ -193,7 +210,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={tglJatuhTempo}
             />
@@ -205,7 +222,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={angModal.toLocaleString()}
             />
@@ -217,7 +234,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={angBunga.toLocaleString()}
             />
@@ -229,7 +246,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={angPerBulan.toLocaleString()}
             />
@@ -244,7 +261,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={tglBayar}
             />
@@ -254,7 +271,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={noKwitansi}
             />
@@ -264,7 +281,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={keterangan}
             />
@@ -274,7 +291,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={kodeKolektor}
             />
@@ -284,7 +301,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={denda.toLocaleString()}
             />
@@ -294,7 +311,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={potongan.toLocaleString()}
             />
@@ -306,7 +323,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={jemputan.toLocaleString()}
             />
@@ -316,7 +333,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={biayaTarik.toLocaleString()}
             />
@@ -326,7 +343,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={hutangDenda.toLocaleString()}
             />
@@ -336,7 +353,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={totalPiutang.toLocaleString()}
             />
@@ -346,7 +363,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={totalBayar.toLocaleString()}
             />
@@ -356,7 +373,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true
+                readOnly: true,
               }}
               value={bayar.toLocaleString()}
             />
@@ -373,7 +390,10 @@ const TampilAAngsuran = () => {
               variant="outlined"
               value={md1}
               disabled={isDisabledMd1}
-              onChange={(e) => setMd1(e.target.value)}
+              onChange={(e) => {
+                setMd1(e.target.value);
+                setMdTerakhir(e.target.value);
+              }}
             />
             <Typography sx={[labelInput, spacingTop]}>Md2</Typography>
             <TextField
@@ -383,7 +403,10 @@ const TampilAAngsuran = () => {
               variant="outlined"
               value={md2}
               disabled={isDisabledMd2}
-              onChange={(e) => setMd2(e.target.value)}
+              onChange={(e) => {
+                setMd2(e.target.value);
+                setMdTerakhir(e.target.value);
+              }}
             />
             <Typography sx={[labelInput, spacingTop]}>Md3</Typography>
             <TextField
@@ -393,7 +416,10 @@ const TampilAAngsuran = () => {
               variant="outlined"
               value={md3}
               disabled={isDisabledMd3}
-              onChange={(e) => setMd3(e.target.value)}
+              onChange={(e) => {
+                setMd3(e.target.value);
+                setMdTerakhir(e.target.value);
+              }}
             />
           </Box>
           <Box sx={[textFieldWrapper, secondWrapper]}>
@@ -404,6 +430,7 @@ const TampilAAngsuran = () => {
               variant="outlined"
               disabled
               value={sp}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>ST</Typography>
             <TextField
@@ -412,6 +439,7 @@ const TampilAAngsuran = () => {
               variant="outlined"
               disabled
               value={st}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
           </Box>
         </Box>
@@ -432,24 +460,24 @@ const TampilAAngsuran = () => {
 export default TampilAAngsuran;
 
 const container = {
-  p: 4
+  p: 4,
 };
 
 const subTitleText = {
-  fontWeight: "900"
+  fontWeight: "900",
 };
 
 const dividerStyle = {
   pt: 4,
-  mb: 2
+  mb: 2,
 };
 
 const textFieldContainer = {
   display: "flex",
   flexDirection: {
     xs: "column",
-    sm: "row"
-  }
+    sm: "row",
+  },
 };
 
 const textFieldWrapper = {
@@ -457,25 +485,25 @@ const textFieldWrapper = {
   flex: 1,
   flexDirection: "column",
   maxWidth: {
-    md: "40vw"
-  }
+    md: "40vw",
+  },
 };
 
 const labelInput = {
   fontWeight: "600",
-  marginLeft: 1
+  marginLeft: 1,
 };
 
 const spacingTop = {
-  mt: 4
+  mt: 4,
 };
 
 const secondWrapper = {
   marginLeft: {
-    md: 4
+    md: 4,
   },
   marginTop: {
     md: 0,
-    xs: 4
-  }
+    xs: 4,
+  },
 };
