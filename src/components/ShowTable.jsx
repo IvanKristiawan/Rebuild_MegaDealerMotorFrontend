@@ -1904,3 +1904,76 @@ export function ShowTableSuratPemberitahuan({ currentPosts, searchTerm }) {
     </TableContainer>
   );
 }
+
+export function ShowTableSuratPenarikan({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Jual
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. ST
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. ST
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kolektor
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.noSt.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tglSt.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.noJual.toUpperCase().includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigate(`/suratPenarikan/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.noJual}
+                </TableCell>
+                <TableCell>{user.noSt}</TableCell>
+                <TableCell>{user.tglSt}</TableCell>
+                <TableCell>{`${user.kodeKolektor._id} - ${user.kodeKolektor.namaKolektor}`}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}

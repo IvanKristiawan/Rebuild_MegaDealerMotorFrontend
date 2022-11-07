@@ -17,7 +17,7 @@ import {
   ButtonGroup,
   Button,
 } from "@mui/material";
-import { ShowTableSuratPemberitahuan } from "../../../components/ShowTable";
+import { ShowTableSuratPenarikan } from "../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
   SearchBar,
@@ -32,14 +32,23 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import PrintIcon from "@mui/icons-material/Print";
 
-const TampilSuratPemberitahuan = () => {
+const TampilSuratPenarikan = () => {
   const { user, dispatch } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
   const [isFetchError, setIsFetchError] = useState(false);
+  const [noSt, setNoSt] = useState("");
+  const [tglSt, setTglSt] = useState("");
   const [noJual, setNoJual] = useState("");
+  const [kodeKolektor, setKodeKolektor] = useState("");
+  const [angPerBulan, setAngPerBulan] = useState("");
+  const [jmlBlnTelat, setJmlBlnTelat] = useState("");
+  const [totalDenda, setTotalDenda] = useState("");
+  const [biayaTarik, setBiayaTarik] = useState("");
+
+  // Delete it
   const [namaRegister, setNamaRegister] = useState("");
   const [almRegister, setAlmRegister] = useState("");
   const [tlpRegister, setTlpRegister] = useState("");
@@ -50,7 +59,6 @@ const TampilSuratPemberitahuan = () => {
   const [tglSp, setTglSp] = useState("");
   const [spKe, setSpKe] = useState("");
 
-  const [kodeKolektor, setKodeKolektor] = useState("");
   const [tipe, setTipe] = useState("");
   const [noRangka, setNoRangka] = useState("");
   const [tahun, setTahun] = useState("");
@@ -72,14 +80,9 @@ const TampilSuratPemberitahuan = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.idJual.namaRegister
-        .toUpperCase()
-        .includes(searchTerm.toUpperCase()) ||
-      val.idJual.almRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.idJual.tglAng.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.tglSp.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.idJual.nopol.toUpperCase().includes(searchTerm.toUpperCase())
+      val.noSt.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.tglSt.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.noJual.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -102,7 +105,7 @@ const TampilSuratPemberitahuan = () => {
   const getUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/sps`, {
+      const response = await axios.post(`${tempUrl}/sts`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
@@ -117,36 +120,27 @@ const TampilSuratPemberitahuan = () => {
 
   const getUserById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/sps/${id}`, {
+      const response = await axios.post(`${tempUrl}/sts/${id}`, {
         id: user._id,
         token: user.token,
       });
+      setNoSt(response.data.noSt);
+      setTglSt(response.data.tglSt);
       setNoJual(response.data.noJual);
-      setNamaRegister(response.data.idJual.namaRegister);
-      setAlmRegister(response.data.idJual.almRegister);
-      setTlpRegister(response.data.idJual.tlpRegister);
-      setTglAng(response.data.idJual.tglAng);
-      setTenor(response.data.idJual.tenor);
-      setBulan(response.data.idJual.tenor - response.data.idJual.sisaBulan);
-      setSisaBulan(response.data.idJual.sisaBulan);
-      setTglSp(response.data.tglSp);
-      setSpKe(response.data.spKe);
-
       setKodeKolektor(
         `${response.data.kodeKolektor._id} - ${response.data.kodeKolektor.namaKolektor}`
       );
-      setTipe(response.data.idJual.tipe);
-      setNoRangka(response.data.idJual.noRangka);
-      setTahun(response.data.idJual.tahun);
-      setNamaWarna(response.data.idJual.namaWarna);
-      setNopol(response.data.idJual.nopol);
+      setAngPerBulan(response.data.angPerBulan);
+      setJmlBlnTelat(response.data.jmlBlnTelat);
+      setTotalDenda(response.data.totalDenda);
+      setBiayaTarik(response.data.biayaTarik);
     }
   };
 
   const deleteUser = async (id) => {
     try {
       setLoading(true);
-      await axios.post(`${tempUrl}/deleteSp/${id}`, {
+      await axios.post(`${tempUrl}/deleteSt/${id}`, {
         id: user._id,
         token: user.token,
       });
@@ -166,24 +160,16 @@ const TampilSuratPemberitahuan = () => {
         id: user._id,
         token: user.token,
       });
+      setNoSt("");
+      setTglSt("");
       setNoJual("");
-      setNamaRegister("");
-      setAlmRegister("");
-      setTglAng("");
-      setTenor("");
-      setBulan("");
-      setSisaBulan("");
-      setTglSp("");
-      setSpKe("");
-
       setKodeKolektor("");
-      setTipe("");
-      setNoRangka("");
-      setTahun("");
-      setNamaWarna("");
-      setNopol("");
+      setAngPerBulan("");
+      setJmlBlnTelat("");
+      setTotalDenda("");
+      setBiayaTarik("");
       setLoading(false);
-      navigate("/suratPemberitahuan");
+      navigate("/suratPenarikan");
     } catch (error) {
       console.log(error);
     }
@@ -344,7 +330,7 @@ const TampilSuratPemberitahuan = () => {
     <Box sx={container}>
       <Typography color="#757575">Piutang</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Surat Pemberitahuan
+        Surat Penarikan
       </Typography>
       {noJual.length !== 0 && (
         <Box sx={downloadButtons}>
@@ -359,7 +345,7 @@ const TampilSuratPemberitahuan = () => {
         <ButtonModifier
           id={id}
           kode={noJual}
-          addLink={`/suratPemberitahuan/tambahSuratPemberitahuan`}
+          addLink={`/suratPenarikan/tambahSuratPenarikan`}
           deleteUser={deleteUser}
           nameUser={noJual}
         />
@@ -379,28 +365,8 @@ const TampilSuratPemberitahuan = () => {
                 }}
                 value={noJual}
               />
-              <Typography sx={[labelInput, spacingTop]}>Nama</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true,
-                }}
-                value={namaRegister}
-              />
-              <Typography sx={[labelInput, spacingTop]}>Alamat</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true,
-                }}
-                value={almRegister}
-              />
               <Typography sx={[labelInput, spacingTop]}>
-                Tgl. Angsuran
+                No. Surat Penarikan
               </Typography>
               <TextField
                 size="small"
@@ -409,71 +375,21 @@ const TampilSuratPemberitahuan = () => {
                 InputProps={{
                   readOnly: true,
                 }}
-                value={tglAng}
+                value={noSt}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Angs. / Bulan / Sisa
+                Tgl. Surat Penarikan
               </Typography>
-              <Box sx={{ display: "flex" }}>
-                <TextField
-                  size="small"
-                  id="outlined-basic"
-                  variant="outlined"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  value={tenor}
-                  sx={{ backgroundColor: Colors.grey400 }}
-                />
-                <TextField
-                  size="small"
-                  id="outlined-basic"
-                  variant="outlined"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  value={bulan}
-                  sx={{ ml: 2, backgroundColor: Colors.grey400 }}
-                />
-                <TextField
-                  size="small"
-                  id="outlined-basic"
-                  variant="outlined"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  value={sisaBulan}
-                  sx={{ ml: 2, backgroundColor: Colors.grey400 }}
-                />
-              </Box>
-              <Typography sx={[labelInput, spacingTop]}>
-                Tgl. SP / Ke
-              </Typography>
-              <Box sx={{ display: "flex" }}>
-                <TextField
-                  size="small"
-                  id="outlined-basic"
-                  variant="outlined"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  value={tglSp}
-                  sx={{ backgroundColor: Colors.grey400 }}
-                />
-                <TextField
-                  size="small"
-                  id="outlined-basic"
-                  variant="outlined"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  value={spKe}
-                  sx={{ ml: 2, backgroundColor: Colors.grey400 }}
-                />
-              </Box>
-            </Box>
-            <Box sx={[showDataWrapper, secondWrapper]}>
-              <Typography sx={labelInput}>Kolektor</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true,
+                }}
+                value={tglSt}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Kolektor</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -483,7 +399,9 @@ const TampilSuratPemberitahuan = () => {
                 }}
                 value={kodeKolektor}
               />
-              <Typography sx={[labelInput, spacingTop]}>Tipe</Typography>
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Angsuran / Bulan</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -491,53 +409,40 @@ const TampilSuratPemberitahuan = () => {
                 InputProps={{
                   readOnly: true,
                 }}
-                value={tipe}
-              />
-              <Typography sx={[labelInput, spacingTop]}>No. Rangka</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true,
-                }}
-                value={noRangka}
-              />
-              <Typography sx={[labelInput, spacingTop]}>Nopol</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true,
-                }}
-                value={nopol}
+                value={angPerBulan}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Tahun / Warna
+                Jml Bulan Telat
               </Typography>
-              <Box sx={{ display: "flex" }}>
-                <TextField
-                  size="small"
-                  id="outlined-basic"
-                  variant="outlined"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  value={tahun}
-                  sx={{ backgroundColor: Colors.grey400 }}
-                />
-                <TextField
-                  size="small"
-                  id="outlined-basic"
-                  variant="outlined"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  value={namaWarna}
-                  sx={{ ml: 2, backgroundColor: Colors.grey400 }}
-                />
-              </Box>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true,
+                }}
+                value={jmlBlnTelat}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Total Denda</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true,
+                }}
+                value={totalDenda}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Biaya Tarik</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true,
+                }}
+                value={biayaTarik}
+              />
             </Box>
           </Box>
           <Divider sx={dividerStyle} />
@@ -547,7 +452,7 @@ const TampilSuratPemberitahuan = () => {
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
       <Box sx={tableContainer}>
-        <ShowTableSuratPemberitahuan
+        <ShowTableSuratPenarikan
           currentPosts={currentPosts}
           searchTerm={searchTerm}
         />
@@ -565,7 +470,7 @@ const TampilSuratPemberitahuan = () => {
   );
 };
 
-export default TampilSuratPemberitahuan;
+export default TampilSuratPenarikan;
 
 const container = {
   p: 4,

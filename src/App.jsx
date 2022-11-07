@@ -40,6 +40,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
 import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -113,6 +114,7 @@ import {
   TampilAAngsuran,
   TampilSuratPemberitahuan,
   TambahSuratPemberitahuan,
+  TampilSuratPenarikan
 } from "./pages/index";
 
 const App = () => {
@@ -379,6 +381,13 @@ const App = () => {
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<HistoryEduIcon name="sp-icon" />}>
                         SP
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/suratPenarikan" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<CompareArrowsIcon name="sp-icon" />}>
+                        ST
                       </MenuItem>
                     </Box>
                   </Link>
@@ -1126,6 +1135,31 @@ const App = () => {
                     element={
                       <USERRoute>
                         <TampilSuratPemberitahuan />
+                      </USERRoute>
+                    }
+                  />
+                  {/* Surat Penarikan */}
+                  <Route
+                    path="/suratPenarikan"
+                    element={
+                      <USERRoute>
+                        <TampilSuratPenarikan />
+                      </USERRoute>
+                    }
+                  />
+                  {/* <Route
+                    path="/suratPemberitahuan/tambahSuratPemberitahuan"
+                    element={
+                      <USERRoute>
+                        <TambahSuratPemberitahuan />
+                      </USERRoute>
+                    }
+                  /> */}
+                  <Route
+                    path="/suratPenarikan/:id"
+                    element={
+                      <USERRoute>
+                        <TampilSuratPenarikan />
                       </USERRoute>
                     }
                   />
