@@ -1,8 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import {
+  namaPerusahaan,
+  lokasiPerusahaan,
+  kotaPerusahaan,
+  lokasiSP,
+} from "../../../constants/GeneralSetting";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Box, TextField, Typography, Divider, Pagination } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Typography,
+  Divider,
+  Pagination,
+  ButtonGroup,
+  Button,
+} from "@mui/material";
 import { ShowTableSuratPemberitahuan } from "../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
@@ -13,8 +27,11 @@ import {
 } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import "jspdf-autotable";
 import { Colors } from "../../../constants/styles";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import DownloadIcon from "@mui/icons-material/Download";
+import PrintIcon from "@mui/icons-material/Print";
 
 const TampilSuratPemberitahuan = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -171,6 +188,23 @@ const TampilSuratPemberitahuan = () => {
     }
   };
 
+  const downloadPdf = () => {
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text(`SURAT PEMBERITAHUAN`, 75, 10).setFont(undefined, "bold");
+    doc.setFontSize(12);
+    doc.text(`${lokasiSP}, ${current_date}`, 15, 30);
+    doc.text(`Kepada Yth. Bapak / Ibu ${namaRegister}`, 15, 40);
+    // doc.fromHTML( 'Paranyan <b>loves</b> jsPDF', 35, 25)
+    doc.setFontSize(12);
+    doc.save(`suratPemberitahuan.pdf`);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -183,8 +217,17 @@ const TampilSuratPemberitahuan = () => {
     <Box sx={container}>
       <Typography color="#757575">Piutang</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Surat Pemberitahuan
+        Surat Pemberitahuans
       </Typography>
+      {noJual.length !== 0 && (
+        <Box sx={downloadButtons}>
+          <ButtonGroup variant="outlined" color="secondary">
+            <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+              CETAK
+            </Button>
+          </ButtonGroup>
+        </Box>
+      )}
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
           id={id}
