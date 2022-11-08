@@ -282,7 +282,6 @@ const TampilSuratPemberitahuan = () => {
           break;
       }
 
-      alert(response.data[i].tglJatuhTempo);
       var dt = new Date(response.data[i].tglJatuhTempo);
       let day = dt.getDate().toLocaleString("en-US", {
         minimumIntegerDigits: 2,
