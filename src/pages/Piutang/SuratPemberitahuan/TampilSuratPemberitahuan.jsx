@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import {
-  namaPerusahaan,
-  lokasiPerusahaan,
-  kotaPerusahaan,
-  lokasiSP,
-} from "../../../constants/GeneralSetting";
+import { lokasiSP } from "../../../constants/GeneralSetting";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -15,7 +10,7 @@ import {
   Divider,
   Pagination,
   ButtonGroup,
-  Button,
+  Button
 } from "@mui/material";
 import { ShowTableSuratPemberitahuan } from "../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
@@ -23,7 +18,7 @@ import {
   SearchBar,
   Loader,
   usePagination,
-  ButtonModifier,
+  ButtonModifier
 } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
@@ -106,7 +101,7 @@ const TampilSuratPemberitahuan = () => {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id,
+        kodeCabang: user.cabang._id
       });
       setUser(response.data);
     } catch (err) {
@@ -119,7 +114,7 @@ const TampilSuratPemberitahuan = () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/sps/${id}`, {
         id: user._id,
-        token: user.token,
+        token: user.token
       });
       setNoJual(response.data.noJual);
       setNamaRegister(response.data.idJual.namaRegister);
@@ -148,7 +143,7 @@ const TampilSuratPemberitahuan = () => {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteSp/${id}`, {
         id: user._id,
-        token: user.token,
+        token: user.token
       });
       // Find Jual
       const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
@@ -156,7 +151,7 @@ const TampilSuratPemberitahuan = () => {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id,
+        kodeCabang: user.cabang._id
       });
       await axios.post(`${tempUrl}/updateJual/${response.data._id}`, {
         spKe: response.data.spKe - 1,
@@ -164,7 +159,7 @@ const TampilSuratPemberitahuan = () => {
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
-        token: user.token,
+        token: user.token
       });
       setNoJual("");
       setNamaRegister("");
@@ -200,7 +195,7 @@ const TampilSuratPemberitahuan = () => {
       tglInput: date,
       noJual,
       id: user._id,
-      token: user.token,
+      token: user.token
     });
 
     const doc = new jsPDF();
@@ -246,7 +241,7 @@ const TampilSuratPemberitahuan = () => {
     for (let i = 0; i < response.data.length; i++) {
       tempDate = new Date(response.data[i].tglJatuhTempo);
 
-      switch (tempDate.getMonth()) {
+      switch (tempDate.getMonth() + 1) {
         case 1:
           tempDateName = "JANUARI";
           break;
@@ -287,6 +282,18 @@ const TampilSuratPemberitahuan = () => {
           break;
       }
 
+      alert(response.data[i].tglJatuhTempo);
+      var dt = new Date(response.data[i].tglJatuhTempo);
+      let day = dt.getDate().toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      });
+      let month = (dt.getMonth() + 1).toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      });
+      let sum = day + "-" + month + "-" + dt.getFullYear();
+
       doc.text(
         `${i + 1}.  Angsuran ke ${
           i + 1
@@ -294,7 +301,7 @@ const TampilSuratPemberitahuan = () => {
         30,
         tempY
       );
-      doc.text(`( ${response.data[i].tglJatuhTempo} )`, 120, tempY);
+      doc.text(`( ${sum} )`, 120, tempY);
       doc.text(
         `Rp. ${response.data[i].angPerBulan.toLocaleString()}`,
         150,
@@ -375,7 +382,7 @@ const TampilSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={noJual}
               />
@@ -385,7 +392,7 @@ const TampilSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={namaRegister}
               />
@@ -395,7 +402,7 @@ const TampilSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={almRegister}
               />
@@ -407,7 +414,7 @@ const TampilSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={tglAng}
               />
@@ -420,7 +427,7 @@ const TampilSuratPemberitahuan = () => {
                   id="outlined-basic"
                   variant="outlined"
                   InputProps={{
-                    readOnly: true,
+                    readOnly: true
                   }}
                   value={tenor}
                   sx={{ backgroundColor: Colors.grey400 }}
@@ -430,7 +437,7 @@ const TampilSuratPemberitahuan = () => {
                   id="outlined-basic"
                   variant="outlined"
                   InputProps={{
-                    readOnly: true,
+                    readOnly: true
                   }}
                   value={bulan}
                   sx={{ ml: 2, backgroundColor: Colors.grey400 }}
@@ -440,7 +447,7 @@ const TampilSuratPemberitahuan = () => {
                   id="outlined-basic"
                   variant="outlined"
                   InputProps={{
-                    readOnly: true,
+                    readOnly: true
                   }}
                   value={sisaBulan}
                   sx={{ ml: 2, backgroundColor: Colors.grey400 }}
@@ -455,7 +462,7 @@ const TampilSuratPemberitahuan = () => {
                   id="outlined-basic"
                   variant="outlined"
                   InputProps={{
-                    readOnly: true,
+                    readOnly: true
                   }}
                   value={tglSp}
                   sx={{ backgroundColor: Colors.grey400 }}
@@ -465,7 +472,7 @@ const TampilSuratPemberitahuan = () => {
                   id="outlined-basic"
                   variant="outlined"
                   InputProps={{
-                    readOnly: true,
+                    readOnly: true
                   }}
                   value={spKe}
                   sx={{ ml: 2, backgroundColor: Colors.grey400 }}
@@ -479,7 +486,7 @@ const TampilSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={kodeKolektor}
               />
@@ -489,7 +496,7 @@ const TampilSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={tipe}
               />
@@ -499,7 +506,7 @@ const TampilSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={noRangka}
               />
@@ -509,7 +516,7 @@ const TampilSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={nopol}
               />
@@ -522,7 +529,7 @@ const TampilSuratPemberitahuan = () => {
                   id="outlined-basic"
                   variant="outlined"
                   InputProps={{
-                    readOnly: true,
+                    readOnly: true
                   }}
                   value={tahun}
                   sx={{ backgroundColor: Colors.grey400 }}
@@ -532,7 +539,7 @@ const TampilSuratPemberitahuan = () => {
                   id="outlined-basic"
                   variant="outlined"
                   InputProps={{
-                    readOnly: true,
+                    readOnly: true
                   }}
                   value={namaWarna}
                   sx={{ ml: 2, backgroundColor: Colors.grey400 }}
@@ -568,22 +575,22 @@ const TampilSuratPemberitahuan = () => {
 export default TampilSuratPemberitahuan;
 
 const container = {
-  p: 4,
+  p: 4
 };
 
 const subTitleText = {
-  fontWeight: "900",
+  fontWeight: "900"
 };
 
 const buttonModifierContainer = {
   mt: 4,
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "center",
+  justifyContent: "center"
 };
 
 const dividerStyle = {
-  pt: 4,
+  pt: 4
 };
 
 const showDataContainer = {
@@ -591,8 +598,8 @@ const showDataContainer = {
   display: "flex",
   flexDirection: {
     xs: "column",
-    sm: "row",
-  },
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -600,44 +607,44 @@ const showDataWrapper = {
   flex: 1,
   flexDirection: "column",
   maxWidth: {
-    md: "40vw",
-  },
+    md: "40vw"
+  }
 };
 
 const searchBarContainer = {
   pt: 6,
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "center"
 };
 
 const tableContainer = {
   pt: 4,
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "center"
 };
 
 const labelInput = {
   fontWeight: "600",
-  marginLeft: 1,
+  marginLeft: 1
 };
 
 const spacingTop = {
-  mt: 4,
+  mt: 4
 };
 
 const secondWrapper = {
   marginLeft: {
-    md: 4,
+    md: 4
   },
   marginTop: {
     md: 0,
-    xs: 4,
-  },
+    xs: 4
+  }
 };
 
 const downloadButtons = {
   mt: 4,
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "center",
+  justifyContent: "center"
 };

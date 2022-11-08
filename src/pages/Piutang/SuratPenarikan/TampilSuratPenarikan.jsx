@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import {
-  namaPerusahaan,
-  lokasiPerusahaan,
-  kotaPerusahaan,
-  lokasiSP
-} from "../../../constants/GeneralSetting";
+import { lokasiSP } from "../../../constants/GeneralSetting";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -27,10 +22,10 @@ import {
 } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { Colors } from "../../../constants/styles";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import PrintIcon from "@mui/icons-material/Print";
+import angkaTerbilang from "@develoka/angka-terbilang-js";
 
 const TampilSuratPenarikan = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -52,18 +47,8 @@ const TampilSuratPenarikan = () => {
   const [namaRegister, setNamaRegister] = useState("");
   const [almRegister, setAlmRegister] = useState("");
   const [tlpRegister, setTlpRegister] = useState("");
-  const [tglAng, setTglAng] = useState("");
-  const [tenor, setTenor] = useState("");
-  const [bulan, setBulan] = useState("");
-  const [sisaBulan, setSisaBulan] = useState("");
-  const [tglSp, setTglSp] = useState("");
-  const [spKe, setSpKe] = useState("");
-
-  const [tipe, setTipe] = useState("");
-  const [noRangka, setNoRangka] = useState("");
-  const [tahun, setTahun] = useState("");
-  const [namaWarna, setNamaWarna] = useState("");
   const [nopol, setNopol] = useState("");
+  const [tglJatuhTempo, setTglJatuhTempo] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
@@ -134,6 +119,24 @@ const TampilSuratPenarikan = () => {
       setJmlBlnTelat(response.data.jmlBlnTelat);
       setTotalDenda(response.data.totalDenda);
       setBiayaTarik(response.data.biayaTarik);
+
+      setNamaRegister(response.data.idJual.namaRegister);
+      setAlmRegister(response.data.idJual.almRegister);
+      setTlpRegister(response.data.idJual.tlpRegister);
+      setNopol(response.data.idJual.nopol);
+
+      var dt = new Date(response.data.idJual.tglJatuhTempo);
+      let day = dt.getDate().toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      });
+      let month = (dt.getMonth() + 1).toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      });
+      let sum = day + "-" + month + "-" + dt.getFullYear();
+
+      setTglJatuhTempo(sum);
     }
   };
 
@@ -164,19 +167,11 @@ const TampilSuratPenarikan = () => {
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-    var tempDate;
-    var tempDateName;
-    const response = await axios.post(`${tempUrl}/angsuransChildTunggak`, {
-      tglInput: date,
-      noJual,
-      id: user._id,
-      token: user.token
-    });
 
     const doc = new jsPDF();
-    doc.setFontSize(16);
+    doc.setFontSize(14);
     doc.setFont(undefined, "bold");
-    doc.text(`SURAT PEMBERITAHUAN`, 75, tempY);
+    doc.text(`SURAT PEMBERITAHUAN PENGAMBILAN KEMBALI KENDARAAN`, 28, tempY);
     tempY += 20;
     doc.setFont(undefined, "normal");
     doc.setFontSize(12);
@@ -194,112 +189,63 @@ const TampilSuratPenarikan = () => {
     doc.text(`Dengan Hormat,`, 15, tempY);
     tempY += 6;
     doc.text(
-      `Bersama dengan ini kami sampaikan bahwa Bapak / Ibu telah melakukan pembayaran`,
+      `Bersama dengan ini kami sampaikan kembali perihal Bapak / Ibu masih lalai melakukan`,
       15,
       tempY
     );
     tempY += 6;
     doc.text(
-      `sewa sepeda motor dan untuk menghindari dari biaya pengambilan kembali sepeda motor,`,
+      `pembayaran sewa kendaraan dengan perincian sebagai berikut :`,
       15,
       tempY
     );
-    tempY += 6;
-    doc.text(
-      `dengan ini kami sampaikan bahwa Bapak / Ibu telah menunggak ${response.data.length} bulan.`,
-      15,
-      tempY
-    );
-    tempY += 6;
-    doc.text(`( sepeda motor ${tipe})`, 15, tempY);
     tempY += 12;
-    for (let i = 0; i < response.data.length; i++) {
-      tempDate = new Date(response.data[i].tglJatuhTempo);
-
-      switch (tempDate.getMonth()) {
-        case 1:
-          tempDateName = "JANUARI";
-          break;
-        case 2:
-          tempDateName = "FEBRUARI";
-          break;
-        case 3:
-          tempDateName = "MARET";
-          break;
-        case 4:
-          tempDateName = "APRIL";
-          break;
-        case 5:
-          tempDateName = "MEI";
-          break;
-        case 6:
-          tempDateName = "JUNI";
-          break;
-        case 7:
-          tempDateName = "JULI";
-          break;
-        case 8:
-          tempDateName = "AGUSTUS";
-          break;
-        case 9:
-          tempDateName = "SEPTEMBER";
-          break;
-        case 10:
-          tempDateName = "OKTOBER";
-          break;
-        case 11:
-          tempDateName = "NOVEMBER";
-          break;
-        case 12:
-          tempDateName = "DESEMBER";
-          break;
-        default:
-          break;
-      }
-
-      doc.text(
-        `${i + 1}.  Angsuran ke ${
-          i + 1
-        } ${tempDateName} ${tempDate.getFullYear()}`,
-        30,
-        tempY
-      );
-      doc.text(`( ${response.data[i].tglJatuhTempo} )`, 120, tempY);
-      doc.text(
-        `Rp. ${response.data[i].angPerBulan.toLocaleString()}`,
-        150,
-        tempY
-      );
-      tempY += 6;
-    }
+    doc.text(`Tanggal Jatuh Tempo`, 35, tempY);
+    doc.text(`: ${tglJatuhTempo}`, 115, tempY);
     tempY += 6;
-    doc.text(`Jumlah di atas belum termasuk denda tunggakan.`, 15, tempY);
-    tempY += 12;
+    doc.text(`No. Polisi`, 35, tempY);
+    doc.text(`: ${nopol}`, 115, tempY);
+    tempY += 6;
+    doc.text(`Sewa / Bulan`, 35, tempY);
+    doc.text(`: ${angPerBulan.toLocaleString()}`, 115, tempY);
+    tempY += 6;
+    doc.text(`Jumlah Bulan Telat`, 35, tempY);
+    doc.text(`: ${jmlBlnTelat} bulan`, 115, tempY);
+    tempY += 6;
+    doc.text(`Denda Tunggakan`, 35, tempY);
+    doc.text(`: ${totalDenda.toLocaleString()}`, 115, tempY);
+    tempY += 6;
+    doc.text(`Biaya Pengambilan`, 35, tempY);
+    doc.text(`: ${biayaTarik.toLocaleString()}`, 115, tempY);
+    tempY += 6;
+    doc.text(`Total harus dibayar`, 35, tempY);
+    doc.text(`: ${(totalDenda + biayaTarik).toLocaleString()}`, 115, tempY);
+    tempY += 6;
     doc.text(
-      `Demikian surat pemberitahuan ini kami sampaikan kepada Bapak / Ibu, dan kami`,
+      `Terbilang : ${angkaTerbilang(totalDenda + biayaTarik)} rupiah`,
+      35,
+      tempY
+    );
+    tempY += 15;
+    doc.text(
+      `Untuk menghindari Pengambilan Kembali Kendaraan, Mohon SEGERA menyelesaikan`,
       15,
       tempY
     );
     tempY += 6;
+    doc.text(`tunggakan sewa di kantor kami.`, 15, tempY);
+    tempY += 6;
     doc.text(
-      `menunggu 3 hari dari surat ini diterima. Apabila dalam 3 hari Bapak / Ibu tidak datang`,
+      `Demikian atas perhatian dan kerjasamanya, kami ucapkan Terima Kasih.`,
       15,
       tempY
     );
-    tempY += 6;
-    doc.text(
-      `ke kantor kami, maka kami akan menarik kembali sepeda motor tersebut.`,
-      15,
-      tempY
-    );
-    tempY += 6;
-    doc.text(`Atas kerjasamanya kami ucapkan terimakasih.`, 15, tempY);
-    tempY += 30;
+    tempY += 15;
     doc.text(`Hormat kami,`, 15, tempY);
     tempY += 30;
     doc.text(`${user.username}`, 15, tempY);
     doc.setFontSize(12);
-    doc.save(`suratPemberitahuan.pdf`);
+    doc.save(`suratPenarikan.pdf`);
   };
 
   if (loading) {

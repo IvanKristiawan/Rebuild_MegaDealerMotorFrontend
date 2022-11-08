@@ -20,8 +20,6 @@ import {
   Autocomplete,
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogContentText,
   DialogActions,
   Table,
   TableBody,
@@ -55,6 +53,7 @@ const TambahSuratPenarikan = () => {
   var curr = new Date();
   var date = curr.toISOString().substring(0, 10);
 
+  const [kolektors, setKolektors] = useState([]);
   const [juals, setJuals] = useState([]);
   // Customer
   const [noSt, setNoSt] = useState(""); // I
@@ -81,24 +80,11 @@ const TambahSuratPenarikan = () => {
   const [biayaTarik, setBiayaTarik] = useState(""); // I
   const [total, setTotal] = useState("");
 
-  // Delete it
-  const [tenor, setTenor] = useState("");
-  const [bulan, setBulan] = useState("");
-  const [sisaBulan, setSisaBulan] = useState("");
-  const [tglSp, setTglSp] = useState(date);
-  const [spKe, setSpKe] = useState("");
-
-  const [tglMdTerakhir, setTglMdTerakhir] = useState("");
-  const [kolektors, setKolektors] = useState([]);
-
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [searchTermJual, setSearchTermJual] = useState("");
   const [openJual, setOpenJual] = useState(false);
-  const [openMd, setOpenMd] = useState(false);
-  const [openJt, setOpenJt] = useState(false);
-  const [openSpLebih, setOpenSpLebih] = useState(false);
 
   const classes = useStyles();
 
@@ -205,11 +191,20 @@ const TambahSuratPenarikan = () => {
     } else {
       try {
         setLoading(true);
-        // Update Angsuran
+        // Find Jual
+        const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
+          noJual,
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
+        // Update Surat Penarikan
         await axios.post(`${tempUrl}/saveSt`, {
           noSt,
           tglSt,
           noJual,
+          idJual: response.data._id,
           kodeKolektor,
           angPerBulan,
           jmlBlnTelat,
@@ -691,16 +686,11 @@ const TambahSuratPenarikan = () => {
                           setKodeKecamatan(user.kodeKecamatan);
                           setAngPerBulan(user.angPerBulan);
                           setTlpRegister(user.tlpRegister);
-                          setTenor(user.tenor);
-                          setBulan(user.tenor - user.sisaBulan);
-                          setSisaBulan(user.sisaBulan);
-                          setSpKe(user.spKe + 1);
                           setTipe(user.tipe);
                           setNoRangka(user.noRangka);
                           setNamaWarna(user.namaWarna);
                           setTahun(user.tahun);
                           setNopol(user.nopol);
-                          setTglMdTerakhir(user.tglMdTerakhir);
                           setTglJatuhTempo(user.tglJatuhTempo);
                           setJmlBlnTelat(
                             monthDiff(
