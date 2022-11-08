@@ -245,6 +245,8 @@ const TambahSuratPenarikan = () => {
               <Typography sx={labelInput}>No. Surat Penarikan</Typography>
               <TextField
                 size="small"
+                error={error && noSt.length === 0 && true}
+                helperText={error && noSt.length === 0 && "No. ST harus diisi!"}
                 id="outlined-basic"
                 variant="outlined"
                 value={noSt}
@@ -274,6 +276,10 @@ const TambahSuratPenarikan = () => {
                   </Typography>
                   <TextField
                     type="date"
+                    error={error && tglSt.length === 0 && true}
+                    helperText={
+                      error && tglSt.length === 0 && "Tgl. ST harus diisi!"
+                    }
                     size="small"
                     id="outlined-basic"
                     variant="outlined"
