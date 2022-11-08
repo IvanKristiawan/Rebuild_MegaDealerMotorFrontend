@@ -8,7 +8,7 @@ import {
   Menu,
   SubMenu,
   MenuItem,
-  useProSidebar,
+  useProSidebar
 } from "react-pro-sidebar";
 import { ErrorBoundary } from "react-error-boundary";
 import { Fallback } from "./components/Fallback";
@@ -40,7 +40,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
 import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -114,7 +114,8 @@ import {
   TampilAAngsuran,
   TampilSuratPemberitahuan,
   TambahSuratPemberitahuan,
-  TampilSuratPenarikan
+  TampilSuratPenarikan,
+  TambahSuratPenarikan
 } from "./pages/index";
 
 const App = () => {
@@ -149,7 +150,7 @@ const App = () => {
 
   const contentWrapper = {
     minHeight: "100vh",
-    width: open ? "80vw" : "100vw",
+    width: open ? "80vw" : "100vw"
   };
 
   useEffect(() => {
@@ -1147,14 +1148,14 @@ const App = () => {
                       </USERRoute>
                     }
                   />
-                  {/* <Route
-                    path="/suratPemberitahuan/tambahSuratPemberitahuan"
+                  <Route
+                    path="/suratPenarikan/tambahSuratPenarikan"
                     element={
                       <USERRoute>
-                        <TambahSuratPemberitahuan />
+                        <TambahSuratPenarikan />
                       </USERRoute>
                     }
-                  /> */}
+                  />
                   <Route
                     path="/suratPenarikan/:id"
                     element={
@@ -1179,7 +1180,7 @@ export default App;
 const container = {
   display: "flex",
   height: "100%",
-  minHeight: "100vh",
+  minHeight: "100vh"
 };
 
 const sidebarIcon = {
@@ -1188,10 +1189,10 @@ const sidebarIcon = {
   padding: 1,
   marginLeft: 1,
   marginTop: 1,
-  cursor: "pointer",
+  cursor: "pointer"
 };
 
 const linkText = {
   textDecoration: "none",
-  color: "inherit",
+  color: "inherit"
 };

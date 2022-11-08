@@ -96,4 +96,4 @@ export { default as TampilSuratPemberitahuan } from "./Piutang/SuratPemberitahua
 export { default as TambahSuratPemberitahuan } from "./Piutang/SuratPemberitahuan/TambahSuratPemberitahuan";
 // Surat Penarikan
 export { default as TampilSuratPenarikan } from "./Piutang/SuratPenarikan/TampilSuratPenarikan";
-// export { default as TambahSuratPemberitahuan } from "./Piutang/SuratPemberitahuan/TambahSuratPemberitahuan";
+export { default as TambahSuratPenarikan } from "./Piutang/SuratPenarikan/TambahSuratPenarikan";

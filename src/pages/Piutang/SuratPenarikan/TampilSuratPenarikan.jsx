@@ -4,7 +4,7 @@ import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan,
-  lokasiSP,
+  lokasiSP
 } from "../../../constants/GeneralSetting";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -15,7 +15,7 @@ import {
   Divider,
   Pagination,
   ButtonGroup,
-  Button,
+  Button
 } from "@mui/material";
 import { ShowTableSuratPenarikan } from "../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
@@ -23,7 +23,7 @@ import {
   SearchBar,
   Loader,
   usePagination,
-  ButtonModifier,
+  ButtonModifier
 } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { useStateContext } from "../../../contexts/ContextProvider";
@@ -109,7 +109,7 @@ const TampilSuratPenarikan = () => {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id,
+        kodeCabang: user.cabang._id
       });
       setUser(response.data);
     } catch (err) {
@@ -122,7 +122,7 @@ const TampilSuratPenarikan = () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/sts/${id}`, {
         id: user._id,
-        token: user.token,
+        token: user.token
       });
       setNoSt(response.data.noSt);
       setTglSt(response.data.tglSt);
@@ -142,23 +142,7 @@ const TampilSuratPenarikan = () => {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteSt/${id}`, {
         id: user._id,
-        token: user.token,
-      });
-      // Find Jual
-      const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
-        noJual,
-        id: user._id,
-        token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id,
-      });
-      await axios.post(`${tempUrl}/updateJual/${response.data._id}`, {
-        spKe: response.data.spKe - 1,
-        tglSpTerakhir: "",
-        kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id,
-        id: user._id,
-        token: user.token,
+        token: user.token
       });
       setNoSt("");
       setTglSt("");
@@ -186,7 +170,7 @@ const TampilSuratPenarikan = () => {
       tglInput: date,
       noJual,
       id: user._id,
-      token: user.token,
+      token: user.token
     });
 
     const doc = new jsPDF();
@@ -361,7 +345,7 @@ const TampilSuratPenarikan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={noJual}
               />
@@ -373,7 +357,7 @@ const TampilSuratPenarikan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={noSt}
               />
@@ -385,7 +369,7 @@ const TampilSuratPenarikan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={tglSt}
               />
@@ -395,43 +379,45 @@ const TampilSuratPenarikan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={kodeKolektor}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
-              <Typography sx={labelInput}>Angsuran / Bulan</Typography>
+              <Typography sx={labelInput}>Jml Bulan Telat</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
-                value={angPerBulan}
+                value={`${jmlBlnTelat} bulan`}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Jml Bulan Telat
+                Angsuran / Bulan
               </Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
-                value={jmlBlnTelat}
+                value={angPerBulan.toLocaleString()}
               />
-              <Typography sx={[labelInput, spacingTop]}>Total Denda</Typography>
+              <Typography sx={[labelInput, spacingTop]}>
+                Denda Tunggakan
+              </Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
-                value={totalDenda}
+                value={totalDenda.toLocaleString()}
               />
               <Typography sx={[labelInput, spacingTop]}>Biaya Tarik</Typography>
               <TextField
@@ -439,9 +425,19 @@ const TampilSuratPenarikan = () => {
                 id="outlined-basic"
                 variant="filled"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
-                value={biayaTarik}
+                value={biayaTarik.toLocaleString()}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Total</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={(biayaTarik + totalDenda).toLocaleString()}
               />
             </Box>
           </Box>
@@ -473,22 +469,22 @@ const TampilSuratPenarikan = () => {
 export default TampilSuratPenarikan;
 
 const container = {
-  p: 4,
+  p: 4
 };
 
 const subTitleText = {
-  fontWeight: "900",
+  fontWeight: "900"
 };
 
 const buttonModifierContainer = {
   mt: 4,
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "center",
+  justifyContent: "center"
 };
 
 const dividerStyle = {
-  pt: 4,
+  pt: 4
 };
 
 const showDataContainer = {
@@ -496,8 +492,8 @@ const showDataContainer = {
   display: "flex",
   flexDirection: {
     xs: "column",
-    sm: "row",
-  },
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -505,44 +501,44 @@ const showDataWrapper = {
   flex: 1,
   flexDirection: "column",
   maxWidth: {
-    md: "40vw",
-  },
+    md: "40vw"
+  }
 };
 
 const searchBarContainer = {
   pt: 6,
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "center"
 };
 
 const tableContainer = {
   pt: 4,
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "center"
 };
 
 const labelInput = {
   fontWeight: "600",
-  marginLeft: 1,
+  marginLeft: 1
 };
 
 const spacingTop = {
-  mt: 4,
+  mt: 4
 };
 
 const secondWrapper = {
   marginLeft: {
-    md: 4,
+    md: 4
   },
   marginTop: {
     md: 0,
-    xs: 4,
-  },
+    xs: 4
+  }
 };
 
 const downloadButtons = {
   mt: 4,
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "center",
+  justifyContent: "center"
 };

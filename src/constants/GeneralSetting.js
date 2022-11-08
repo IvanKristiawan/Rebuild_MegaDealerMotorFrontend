@@ -9,3 +9,4 @@ export const PPN = 0.11;
 export const dendaSetting = 1000;
 export const toleransiSetting = 3;
 export const jemputanSetting = 10000;
+export const biayaTarikSetting = 200000;
