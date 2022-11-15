@@ -428,745 +428,745 @@ const App = () => {
               </Tooltip>
             )}
             <Box sx={contentWrapper}>
-              <ErrorBoundary FallbackComponent={Fallback}>
-                <Routes>
-                  <Route path="/" />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/unauthorized" element={<Login />} />
-                  {/* Tipe */}
-                  <Route
-                    path="/tipe"
-                    element={
-                      <USERRoute>
-                        <TampilTipe />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/tipe/tambahTipe"
-                    element={
-                      <USERRoute>
-                        <TambahTipe />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/tipe/:id"
-                    element={
-                      <USERRoute>
-                        <TampilTipe />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/tipe/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahTipe />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Warna */}
-                  <Route
-                    path="/warna"
-                    element={
-                      <USERRoute>
-                        <TampilWarna />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/warna/:id"
-                    element={
-                      <USERRoute>
-                        <TampilWarna />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/warna/tambahWarna"
-                    element={
-                      <USERRoute>
-                        <TambahWarna />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/warna/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahWarna />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Wilayah */}
-                  <Route
-                    path="/wilayah"
-                    element={
-                      <USERRoute>
-                        <TampilWilayah />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/wilayah/:id"
-                    element={
-                      <USERRoute>
-                        <TampilWilayah />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/wilayah/tambahWilayah"
-                    element={
-                      <USERRoute>
-                        <TambahWilayah />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/wilayah/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahWilayah />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Kecamatan */}
-                  <Route
-                    path="/kecamatan"
-                    element={
-                      <USERRoute>
-                        <TampilKecamatan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/kecamatan/:id"
-                    element={
-                      <USERRoute>
-                        <TampilKecamatan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/kecamatan/tambahKecamatan"
-                    element={
-                      <USERRoute>
-                        <TambahKecamatan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/kecamatan/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahKecamatan />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Dealer */}
-                  <Route
-                    path="/dealer"
-                    element={
-                      <USERRoute>
-                        <TampilDealer />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/dealer/:id"
-                    element={
-                      <USERRoute>
-                        <TampilDealer />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/dealer/tambahDealer"
-                    element={
-                      <USERRoute>
-                        <TambahDealer />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/dealer/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahDealer />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Kolektor */}
-                  <Route
-                    path="/kolektor"
-                    element={
-                      <USERRoute>
-                        <TampilKolektor />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/kolektor/:id"
-                    element={
-                      <USERRoute>
-                        <TampilKolektor />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/kolektor/tambahKolektor"
-                    element={
-                      <USERRoute>
-                        <TambahKolektor />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/kolektor/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahKolektor />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Marketing */}
-                  <Route
-                    path="/marketing"
-                    element={
-                      <USERRoute>
-                        <TampilMarketing />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/marketing/:id"
-                    element={
-                      <USERRoute>
-                        <TampilMarketing />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/marketing/tambahMarketing"
-                    element={
-                      <USERRoute>
-                        <TambahMarketing />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/marketing/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahMarketing />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Pekerjaan */}
-                  <Route
-                    path="/pekerjaan"
-                    element={
-                      <USERRoute>
-                        <TampilPekerjaan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/pekerjaan/:id"
-                    element={
-                      <USERRoute>
-                        <TampilPekerjaan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/pekerjaan/tambahPekerjaan"
-                    element={
-                      <USERRoute>
-                        <TambahPekerjaan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/pekerjaan/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahPekerjaan />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Surveyor */}
-                  <Route
-                    path="/surveyor"
-                    element={
-                      <USERRoute>
-                        <TampilSurveyor />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/surveyor/:id"
-                    element={
-                      <USERRoute>
-                        <TampilSurveyor />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/surveyor/tambahSurveyor"
-                    element={
-                      <USERRoute>
-                        <TambahSurveyor />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/surveyor/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahSurveyor />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Cabang */}
-                  <Route
-                    path="/cabang"
-                    element={
-                      <USERRoute>
-                        <TampilCabang />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/cabang/:id"
-                    element={
-                      <USERRoute>
-                        <TampilCabang />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/cabang/tambahCabang"
-                    element={
-                      <USERRoute>
-                        <TambahCabang />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/cabang/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahCabang />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Unit Bisnis */}
-                  <Route
-                    path="/unitBisnis"
-                    element={
-                      <USERRoute>
-                        <TampilUnitBisnis />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/unitBisnis/:id"
-                    element={
-                      <USERRoute>
-                        <TampilUnitBisnis />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/unitBisnis/tambahUnitBisnis"
-                    element={
-                      <USERRoute>
-                        <TambahUnitBisnis />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/unitBisnis/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahUnitBisnis />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Leasing */}
-                  <Route
-                    path="/leasing"
-                    element={
-                      <USERRoute>
-                        <TampilLeasing />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/leasing/:id"
-                    element={
-                      <USERRoute>
-                        <TampilLeasing />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/leasing/tambahLeasing"
-                    element={
-                      <USERRoute>
-                        <TambahLeasing />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/leasing/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahLeasing />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Supplier */}
-                  <Route
-                    path="/supplier"
-                    element={
-                      <USERRoute>
-                        <TampilSupplier />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/supplier/:id"
-                    element={
-                      <USERRoute>
-                        <TampilSupplier />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/supplier/tambahSupplier"
-                    element={
-                      <USERRoute>
-                        <TambahSupplier />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/supplier/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahSupplier />
-                      </USERRoute>
-                    }
-                  />
-                  {/* PEMBELIAN */}
-                  {/* Beli */}
-                  <Route
-                    path="/daftarBeli"
-                    element={
-                      <USERRoute>
-                        <TampilDaftarBeli />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarBeli/beli/tambahBeli"
-                    element={
-                      <USERRoute>
-                        <TambahBeli />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarBeli/beli/:id"
-                    element={
-                      <USERRoute>
-                        <TampilBeli />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarBeli/beli/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahBeli />
-                      </USERRoute>
-                    }
-                  />
-                  {/* A Beli */}
-                  <Route
-                    path="/daftarBeli/beli/:id/tambahABeli"
-                    element={
-                      <USERRoute>
-                        <TambahABeli />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarBeli/beli/:id/:idABeli"
-                    element={
-                      <USERRoute>
-                        <TampilABeli />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Daftar Stok */}
-                  <Route
-                    path="/daftarStok"
-                    element={
-                      <USERRoute>
-                        <TampilDaftarStok />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarStok/:id"
-                    element={
-                      <USERRoute>
-                        <TampilDaftarStok />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Total Piutang */}
-                  <Route
-                    path="/totalPiutang"
-                    element={
-                      <USERRoute>
-                        <CariTotalPiutang />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Tunggakan */}
-                  <Route
-                    path="/tunggakan"
-                    element={
-                      <USERRoute>
-                        <CariTunggakan />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Profil User */}
-                  <Route
-                    path="/profilUser"
-                    element={
-                      <USERRoute>
-                        <ProfilUser />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/profilUser/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahProfilUser />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Daftar User */}
-                  <Route
-                    path="/daftarUser"
-                    element={
-                      <USERRoute>
-                        <DaftarUser />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarUser/:id"
-                    element={
-                      <USERRoute>
-                        <DaftarUser />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarUser/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahUser />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarUser/tambahUser"
-                    element={
-                      <USERRoute>
-                        <TambahUser />
-                      </USERRoute>
-                    }
-                  />
-                  {/* PENJUALAN */}
-                  {/* Register */}
-                  <Route
-                    path="/register"
-                    element={
-                      <USERRoute>
-                        <TampilRegister />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/register/:id"
-                    element={
-                      <USERRoute>
-                        <TampilRegister />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/register/tambahRegister"
-                    element={
-                      <USERRoute>
-                        <TambahRegister />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/register/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahRegister />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Jual */}
-                  <Route
-                    path="/jual"
-                    element={
-                      <USERRoute>
-                        <TampilJual />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/jual/:id"
-                    element={
-                      <USERRoute>
-                        <TampilJual />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/jual/tambahJualBekas"
-                    element={
-                      <USERRoute>
-                        <TambahJualBekas />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/jual/tambahJualBaru"
-                    element={
-                      <USERRoute>
-                        <TambahJualBaru />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/jual/:id/editBekas"
-                    element={
-                      <USERRoute>
-                        <UbahJualBekas />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/jual/:id/editBaru"
-                    element={
-                      <USERRoute>
-                        <UbahJualBaru />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Angsuran */}
-                  <Route
-                    path="/daftarAngsuran"
-                    element={
-                      <USERRoute>
-                        <TampilDaftarAngsuran />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarAngsuran/angsuran/tambahAngsuran"
-                    element={
-                      <USERRoute>
-                        <TambahAngsuran />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarAngsuran/angsuran/:id"
-                    element={
-                      <USERRoute>
-                        <TampilAngsuran />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/daftarAngsuran/angsuran/:id/:idAAngsuran"
-                    element={
-                      <USERRoute>
-                        <TampilAAngsuran />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Surat Pemberitahuan */}
-                  <Route
-                    path="/suratPemberitahuan"
-                    element={
-                      <USERRoute>
-                        <TampilSuratPemberitahuan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/suratPemberitahuan/tambahSuratPemberitahuan"
-                    element={
-                      <USERRoute>
-                        <TambahSuratPemberitahuan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/suratPemberitahuan/:id"
-                    element={
-                      <USERRoute>
-                        <TampilSuratPemberitahuan />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Surat Penarikan */}
-                  <Route
-                    path="/suratPenarikan"
-                    element={
-                      <USERRoute>
-                        <TampilSuratPenarikan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/suratPenarikan/tambahSuratPenarikan"
-                    element={
-                      <USERRoute>
-                        <TambahSuratPenarikan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/suratPenarikan/:id"
-                    element={
-                      <USERRoute>
-                        <TampilSuratPenarikan />
-                      </USERRoute>
-                    }
-                  />
-                  <Route path="*" element={<p>Halaman tidak ditemukan!</p>} />
-                </Routes>
-              </ErrorBoundary>
+              {/* <ErrorBoundary FallbackComponent={Fallback}> */}
+              <Routes>
+                <Route path="/" />
+                <Route path="/login" element={<Login />} />
+                <Route path="/unauthorized" element={<Login />} />
+                {/* Tipe */}
+                <Route
+                  path="/tipe"
+                  element={
+                    <USERRoute>
+                      <TampilTipe />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/tipe/tambahTipe"
+                  element={
+                    <USERRoute>
+                      <TambahTipe />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/tipe/:id"
+                  element={
+                    <USERRoute>
+                      <TampilTipe />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/tipe/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahTipe />
+                    </USERRoute>
+                  }
+                />
+                {/* Warna */}
+                <Route
+                  path="/warna"
+                  element={
+                    <USERRoute>
+                      <TampilWarna />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/warna/:id"
+                  element={
+                    <USERRoute>
+                      <TampilWarna />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/warna/tambahWarna"
+                  element={
+                    <USERRoute>
+                      <TambahWarna />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/warna/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahWarna />
+                    </USERRoute>
+                  }
+                />
+                {/* Wilayah */}
+                <Route
+                  path="/wilayah"
+                  element={
+                    <USERRoute>
+                      <TampilWilayah />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/wilayah/:id"
+                  element={
+                    <USERRoute>
+                      <TampilWilayah />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/wilayah/tambahWilayah"
+                  element={
+                    <USERRoute>
+                      <TambahWilayah />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/wilayah/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahWilayah />
+                    </USERRoute>
+                  }
+                />
+                {/* Kecamatan */}
+                <Route
+                  path="/kecamatan"
+                  element={
+                    <USERRoute>
+                      <TampilKecamatan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kecamatan/:id"
+                  element={
+                    <USERRoute>
+                      <TampilKecamatan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kecamatan/tambahKecamatan"
+                  element={
+                    <USERRoute>
+                      <TambahKecamatan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kecamatan/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahKecamatan />
+                    </USERRoute>
+                  }
+                />
+                {/* Dealer */}
+                <Route
+                  path="/dealer"
+                  element={
+                    <USERRoute>
+                      <TampilDealer />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/dealer/:id"
+                  element={
+                    <USERRoute>
+                      <TampilDealer />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/dealer/tambahDealer"
+                  element={
+                    <USERRoute>
+                      <TambahDealer />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/dealer/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahDealer />
+                    </USERRoute>
+                  }
+                />
+                {/* Kolektor */}
+                <Route
+                  path="/kolektor"
+                  element={
+                    <USERRoute>
+                      <TampilKolektor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kolektor/:id"
+                  element={
+                    <USERRoute>
+                      <TampilKolektor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kolektor/tambahKolektor"
+                  element={
+                    <USERRoute>
+                      <TambahKolektor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/kolektor/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahKolektor />
+                    </USERRoute>
+                  }
+                />
+                {/* Marketing */}
+                <Route
+                  path="/marketing"
+                  element={
+                    <USERRoute>
+                      <TampilMarketing />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/marketing/:id"
+                  element={
+                    <USERRoute>
+                      <TampilMarketing />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/marketing/tambahMarketing"
+                  element={
+                    <USERRoute>
+                      <TambahMarketing />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/marketing/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahMarketing />
+                    </USERRoute>
+                  }
+                />
+                {/* Pekerjaan */}
+                <Route
+                  path="/pekerjaan"
+                  element={
+                    <USERRoute>
+                      <TampilPekerjaan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/pekerjaan/:id"
+                  element={
+                    <USERRoute>
+                      <TampilPekerjaan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/pekerjaan/tambahPekerjaan"
+                  element={
+                    <USERRoute>
+                      <TambahPekerjaan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/pekerjaan/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahPekerjaan />
+                    </USERRoute>
+                  }
+                />
+                {/* Surveyor */}
+                <Route
+                  path="/surveyor"
+                  element={
+                    <USERRoute>
+                      <TampilSurveyor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/surveyor/:id"
+                  element={
+                    <USERRoute>
+                      <TampilSurveyor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/surveyor/tambahSurveyor"
+                  element={
+                    <USERRoute>
+                      <TambahSurveyor />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/surveyor/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahSurveyor />
+                    </USERRoute>
+                  }
+                />
+                {/* Cabang */}
+                <Route
+                  path="/cabang"
+                  element={
+                    <USERRoute>
+                      <TampilCabang />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/cabang/:id"
+                  element={
+                    <USERRoute>
+                      <TampilCabang />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/cabang/tambahCabang"
+                  element={
+                    <USERRoute>
+                      <TambahCabang />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/cabang/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahCabang />
+                    </USERRoute>
+                  }
+                />
+                {/* Unit Bisnis */}
+                <Route
+                  path="/unitBisnis"
+                  element={
+                    <USERRoute>
+                      <TampilUnitBisnis />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/unitBisnis/:id"
+                  element={
+                    <USERRoute>
+                      <TampilUnitBisnis />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/unitBisnis/tambahUnitBisnis"
+                  element={
+                    <USERRoute>
+                      <TambahUnitBisnis />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/unitBisnis/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahUnitBisnis />
+                    </USERRoute>
+                  }
+                />
+                {/* Leasing */}
+                <Route
+                  path="/leasing"
+                  element={
+                    <USERRoute>
+                      <TampilLeasing />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/leasing/:id"
+                  element={
+                    <USERRoute>
+                      <TampilLeasing />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/leasing/tambahLeasing"
+                  element={
+                    <USERRoute>
+                      <TambahLeasing />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/leasing/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahLeasing />
+                    </USERRoute>
+                  }
+                />
+                {/* Supplier */}
+                <Route
+                  path="/supplier"
+                  element={
+                    <USERRoute>
+                      <TampilSupplier />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/supplier/:id"
+                  element={
+                    <USERRoute>
+                      <TampilSupplier />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/supplier/tambahSupplier"
+                  element={
+                    <USERRoute>
+                      <TambahSupplier />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/supplier/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahSupplier />
+                    </USERRoute>
+                  }
+                />
+                {/* PEMBELIAN */}
+                {/* Beli */}
+                <Route
+                  path="/daftarBeli"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarBeli />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarBeli/beli/tambahBeli"
+                  element={
+                    <USERRoute>
+                      <TambahBeli />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarBeli/beli/:id"
+                  element={
+                    <USERRoute>
+                      <TampilBeli />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarBeli/beli/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahBeli />
+                    </USERRoute>
+                  }
+                />
+                {/* A Beli */}
+                <Route
+                  path="/daftarBeli/beli/:id/tambahABeli"
+                  element={
+                    <USERRoute>
+                      <TambahABeli />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarBeli/beli/:id/:idABeli"
+                  element={
+                    <USERRoute>
+                      <TampilABeli />
+                    </USERRoute>
+                  }
+                />
+                {/* Daftar Stok */}
+                <Route
+                  path="/daftarStok"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarStok />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarStok/:id"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarStok />
+                    </USERRoute>
+                  }
+                />
+                {/* Total Piutang */}
+                <Route
+                  path="/totalPiutang"
+                  element={
+                    <USERRoute>
+                      <CariTotalPiutang />
+                    </USERRoute>
+                  }
+                />
+                {/* Tunggakan */}
+                <Route
+                  path="/tunggakan"
+                  element={
+                    <USERRoute>
+                      <CariTunggakan />
+                    </USERRoute>
+                  }
+                />
+                {/* Profil User */}
+                <Route
+                  path="/profilUser"
+                  element={
+                    <USERRoute>
+                      <ProfilUser />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/profilUser/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahProfilUser />
+                    </USERRoute>
+                  }
+                />
+                {/* Daftar User */}
+                <Route
+                  path="/daftarUser"
+                  element={
+                    <USERRoute>
+                      <DaftarUser />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarUser/:id"
+                  element={
+                    <USERRoute>
+                      <DaftarUser />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarUser/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahUser />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarUser/tambahUser"
+                  element={
+                    <USERRoute>
+                      <TambahUser />
+                    </USERRoute>
+                  }
+                />
+                {/* PENJUALAN */}
+                {/* Register */}
+                <Route
+                  path="/register"
+                  element={
+                    <USERRoute>
+                      <TampilRegister />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/register/:id"
+                  element={
+                    <USERRoute>
+                      <TampilRegister />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/register/tambahRegister"
+                  element={
+                    <USERRoute>
+                      <TambahRegister />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/register/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahRegister />
+                    </USERRoute>
+                  }
+                />
+                {/* Jual */}
+                <Route
+                  path="/jual"
+                  element={
+                    <USERRoute>
+                      <TampilJual />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jual/:id"
+                  element={
+                    <USERRoute>
+                      <TampilJual />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jual/tambahJualBekas"
+                  element={
+                    <USERRoute>
+                      <TambahJualBekas />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jual/tambahJualBaru"
+                  element={
+                    <USERRoute>
+                      <TambahJualBaru />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jual/:id/editBekas"
+                  element={
+                    <USERRoute>
+                      <UbahJualBekas />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jual/:id/editBaru"
+                  element={
+                    <USERRoute>
+                      <UbahJualBaru />
+                    </USERRoute>
+                  }
+                />
+                {/* Angsuran */}
+                <Route
+                  path="/daftarAngsuran"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarAngsuran />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarAngsuran/angsuran/tambahAngsuran"
+                  element={
+                    <USERRoute>
+                      <TambahAngsuran />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarAngsuran/angsuran/:id"
+                  element={
+                    <USERRoute>
+                      <TampilAngsuran />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarAngsuran/angsuran/:id/:idAAngsuran"
+                  element={
+                    <USERRoute>
+                      <TampilAAngsuran />
+                    </USERRoute>
+                  }
+                />
+                {/* Surat Pemberitahuan */}
+                <Route
+                  path="/suratPemberitahuan"
+                  element={
+                    <USERRoute>
+                      <TampilSuratPemberitahuan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/suratPemberitahuan/tambahSuratPemberitahuan"
+                  element={
+                    <USERRoute>
+                      <TambahSuratPemberitahuan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/suratPemberitahuan/:id"
+                  element={
+                    <USERRoute>
+                      <TampilSuratPemberitahuan />
+                    </USERRoute>
+                  }
+                />
+                {/* Surat Penarikan */}
+                <Route
+                  path="/suratPenarikan"
+                  element={
+                    <USERRoute>
+                      <TampilSuratPenarikan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/suratPenarikan/tambahSuratPenarikan"
+                  element={
+                    <USERRoute>
+                      <TambahSuratPenarikan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/suratPenarikan/:id"
+                  element={
+                    <USERRoute>
+                      <TampilSuratPenarikan />
+                    </USERRoute>
+                  }
+                />
+                <Route path="*" element={<p>Halaman tidak ditemukan!</p>} />
+              </Routes>
+              {/* </ErrorBoundary> */}
             </Box>
           </main>
         </div>

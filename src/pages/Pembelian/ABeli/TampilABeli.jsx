@@ -25,6 +25,7 @@ const TampilABeli = () => {
   const [idStok, setIdStok] = useState("");
   const [noBeli, setNoBeli] = useState("");
   const [kodeTipe, setKodeTipe] = useState("");
+  const [namaTipe, setNamaTipe] = useState("");
   const [tahun, setTahun] = useState("");
   const [namaWarna, setNamaWarna] = useState("");
   const [noRangka, setNoRangka] = useState("");
@@ -54,11 +55,11 @@ const TampilABeli = () => {
 
   const getUserById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/aBelis/${idABeli}`, {
+      const response = await axios.post(`${tempUrl}/daftarStoks/${idABeli}`, {
         id: user._id,
         token: user.token
       });
-      setIdStok(response.data.idStok);
+      setIdStok(response.data._id);
       setNoBeli(response.data.noBeli);
       setKodeTipe(response.data.tipe);
       setTahun(response.data.tahun);
@@ -73,6 +74,14 @@ const TampilABeli = () => {
       setPpnABeli(response.data.ppnABeli);
       setTanggalJual(response.data.tanggalJual);
       setNoJual(response.data.noJual);
+      const findTipe = await axios.post(`${tempUrl}/tipesByKode`, {
+        kodeTipe: response.data.tipe,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
+        id: user._id,
+        token: user.token
+      });
+      setNamaTipe(findTipe.data.namaTipe);
     }
   };
 
@@ -81,20 +90,20 @@ const TampilABeli = () => {
       setLoading(true);
       // Get Beli
       const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token
       });
       // Update Beli
       await axios.post(`${tempUrl}/updateBeli/${id}`, {
         jumlahBeli: parseInt(getBeli.data.jumlahBeli) - parseInt(hargaSatuan),
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token
       });
-      // Delete A Beli
-      await axios.post(`${tempUrl}/deleteABeli/${idABeli}`, {
-        id: user._id,
-        token: user.token
-      });
+      alert(idStok);
       // Delete Daftar Stok
       await axios.post(`${tempUrl}/deleteDaftarStok/${idStok}`, {
         id: user._id,
@@ -150,7 +159,7 @@ const TampilABeli = () => {
             <DialogTitle id="alert-dialog-title">{`Hapus Data`}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-slide-description">
-                {`Yakin ingin menghapus data ${kodeTipe.kodeTipe}?`}
+                {`Yakin ingin menghapus data ${kodeTipe}?`}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -189,7 +198,7 @@ const TampilABeli = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={`${kodeTipe.kodeTipe} - ${kodeTipe.namaTipe}`}
+              value={`${kodeTipe} - ${namaTipe}`}
             />
             <Typography sx={[labelInput, spacingTop]}>Tahun</Typography>
             <TextField

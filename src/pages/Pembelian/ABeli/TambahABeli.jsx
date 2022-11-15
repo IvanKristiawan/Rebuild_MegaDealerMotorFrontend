@@ -84,6 +84,8 @@ const TambahABeli = () => {
   const getTipes = async () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/tipes`, {
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
@@ -94,6 +96,8 @@ const TambahABeli = () => {
   const getTipe = async (idTipe) => {
     const response = await axios.post(`${tempUrl}/tipesByKode`, {
       kodeTipe: idTipe,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
@@ -107,6 +111,8 @@ const TambahABeli = () => {
   const getTipeBeli = async () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/belis/${id}`, {
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
@@ -119,6 +125,8 @@ const TambahABeli = () => {
   const getWarnas = async () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/warnas`, {
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
@@ -129,6 +137,8 @@ const TambahABeli = () => {
   const getBelis = async () => {
     setLoading(true);
     const response = await axios.post(`${tempUrl}/belis/${id}`, {
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
@@ -147,11 +157,15 @@ const TambahABeli = () => {
     }
     // Get Beli
     const response = await axios.post(`${tempUrl}/belis/${id}`, {
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
     // Get Tipe/Merk
     const getTipe = await axios.post(`${tempUrl}/tipesByKode`, {
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id,
       kodeTipe,
       id: user._id,
       token: user.token
@@ -171,6 +185,8 @@ const TambahABeli = () => {
           setLoading(true);
           // Get Beli
           const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
           });
@@ -179,7 +195,6 @@ const TambahABeli = () => {
             noBeli: belis.noBeli,
             tanggalBeli,
             kodeSupplier,
-            kodeTipe: getTipe.data._id,
             merk: getTipe.data.merk,
             tipe: getTipe.data.kodeTipe,
             noRangka: `${noRangka}${noRangka2}`,
@@ -191,6 +206,7 @@ const TambahABeli = () => {
             tglStnk,
             jenisBeli: jenisABeli,
             hargaSatuan,
+            ppnABeli,
             kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
@@ -200,26 +216,6 @@ const TambahABeli = () => {
           await axios.post(`${tempUrl}/updateBeli/${id}`, {
             jumlahBeli:
               parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
-            id: user._id,
-            token: user.token
-          });
-          // Save A Beli
-          await axios.post(`${tempUrl}/saveABeli`, {
-            idStok: tempDaftarStok.data._id,
-            noBeli: belis.noBeli,
-            kodeTipe: getTipe.data._id,
-            tahun,
-            namaWarna,
-            noRangka: `${noRangka}${noRangka2}`,
-            noMesin: `${noMesin}${noMesin2}`,
-            nopol,
-            namaStnk,
-            tglStnk,
-            jenisABeli,
-            hargaSatuan,
-            ppnABeli,
-            tanggalBeli,
-            kodeSupplier,
             kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
@@ -245,76 +241,47 @@ const TambahABeli = () => {
         setOpen(!open);
       } else {
         try {
-          let tempNopol = await axios.post(`${tempUrl}/aBelisNopol`, {
-            nopol,
+          setLoading(true);
+          // Get Beli
+          const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
           });
-          if (tempNopol.data.length > 0) {
-            handleClickOpenAlert();
-          } else {
-            setLoading(true);
-            // Get Beli
-            const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
-              id: user._id,
-              token: user.token
-            });
-            // Save Daftar Stok
-            const tempDaftarStok = await axios.post(
-              `${tempUrl}/saveDaftarStok`,
-              {
-                noBeli: belis.noBeli,
-                tanggalBeli,
-                kodeSupplier,
-                kodeTipe: getTipe.data._id,
-                merk: getTipe.data.merk,
-                tipe: `${getTipe.data.kodeTipe}`,
-                noRangka: `${noRangka}${noRangka2}`,
-                noMesin: `${noMesin}${noMesin2}`,
-                nopol,
-                tahun,
-                namaWarna,
-                namaStnk,
-                tglStnk: combineTanggalBeli,
-                jenisBeli: jenisABeli,
-                hargaSatuan,
-                kodeUnitBisnis: user.unitBisnis._id,
-                kodeCabang: user.cabang._id,
-                id: user._id,
-                token: user.token
-              }
-            );
-            // Update Beli
-            await axios.post(`${tempUrl}/updateBeli/${id}`, {
-              jumlahBeli:
-                parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
-              id: user._id,
-              token: user.token
-            });
-            // Save A Beli
-            await axios.post(`${tempUrl}/saveABeli`, {
-              idStok: tempDaftarStok.data._id,
-              noBeli: belis.noBeli,
-              kodeTipe: getTipe.data._id,
-              tahun,
-              namaWarna,
-              noRangka: `${noRangka}${noRangka2}`,
-              noMesin: `${noMesin}${noMesin2}`,
-              nopol,
-              namaStnk,
-              tglStnk: combineTanggalBeli,
-              jenisABeli,
-              hargaSatuan,
-              ppnABeli,
-              kodeSupplier: kodeSupplier,
-              kodeUnitBisnis: user.unitBisnis._id,
-              kodeCabang: user.cabang._id,
-              id: user._id,
-              token: user.token
-            });
-            setLoading(false);
-            navigate(`/daftarBeli/beli/${id}`);
-          }
+          // Save Daftar Stok
+          const tempDaftarStok = await axios.post(`${tempUrl}/saveDaftarStok`, {
+            noBeli: belis.noBeli,
+            tanggalBeli,
+            kodeSupplier,
+            merk: getTipe.data.merk,
+            tipe: `${getTipe.data.kodeTipe}`,
+            noRangka: `${noRangka}${noRangka2}`,
+            noMesin: `${noMesin}${noMesin2}`,
+            nopol,
+            tahun,
+            namaWarna,
+            namaStnk,
+            tglStnk: combineTanggalBeli,
+            jenisBeli: jenisABeli,
+            hargaSatuan,
+            ppnABeli,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
+            id: user._id,
+            token: user.token
+          });
+          // Update Beli
+          await axios.post(`${tempUrl}/updateBeli/${id}`, {
+            jumlahBeli:
+              parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id,
+            id: user._id,
+            token: user.token
+          });
+          setLoading(false);
+          navigate(`/daftarBeli/beli/${id}`);
         } catch (error) {
           console.log(error);
         }

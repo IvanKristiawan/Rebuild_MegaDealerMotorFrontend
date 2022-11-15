@@ -54,23 +54,14 @@ const TampilBeli = () => {
   };
 
   useEffect(() => {
-    getAPembelianStoks();
     id && getUserById();
   }, [id, isPpnBeli]);
-
-  const getAPembelianStoks = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/aBelis`, {
-      id: user._id,
-      token: user.token
-    });
-    setABelis(response.data);
-    setLoading(false);
-  };
 
   const getUserById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/belis/${id}`, {
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token
       });
@@ -84,6 +75,14 @@ const TampilBeli = () => {
       setLama(response.data.lama);
       setJenisBeli(response.data.jenisBeli);
       setJatuhTempo(response.data.jatuhTempo);
+      const response2 = await axios.post(`${tempUrl}/daftarStoksByNoBeli`, {
+        noBeli: response.data.noBeli,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
+        id: user._id,
+        token: user.token
+      });
+      setABelis(response2.data);
     }
   };
 
@@ -91,16 +90,10 @@ const TampilBeli = () => {
     try {
       setLoading(true);
       for (let aBeli of aBelis) {
-        if (aBeli.noBeli === noBeli) {
-          await axios.post(`${tempUrl}/deleteDaftarStok/${aBeli.idStok}`, {
-            id: user._id,
-            token: user.token
-          });
-          await axios.post(`${tempUrl}/deleteABeli/${aBeli._id}`, {
-            id: user._id,
-            token: user.token
-          });
-        }
+        await axios.post(`${tempUrl}/deleteDaftarStok/${aBeli._id}`, {
+          id: user._id,
+          token: user.token
+        });
       }
       await axios.post(`${tempUrl}/deleteBeli/${id}`, {
         id: user._id,
