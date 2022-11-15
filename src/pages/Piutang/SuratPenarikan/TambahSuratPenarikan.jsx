@@ -150,9 +150,22 @@ const TambahSuratPenarikan = () => {
   });
 
   useEffect(() => {
+    getSuratPenarikanNextLength();
     getJual();
     getKolektor();
   }, []);
+
+  const getSuratPenarikanNextLength = async () => {
+    setLoading(true);
+    const response = await axios.post(`${tempUrl}/stsNextLength`, {
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
+    setNoSt(response.data);
+    setLoading(false);
+  };
 
   const getKolektor = async () => {
     setLoading(true);
