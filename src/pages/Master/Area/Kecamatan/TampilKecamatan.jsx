@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableKecamatan } from "../../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableKecamatan } from "../../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../../components";
-import { tempUrl } from "../../../../contexts/ContextProvider";
-import { useStateContext } from "../../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +32,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilKecamatan = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -44,9 +43,10 @@ const TampilKecamatan = () => {
   const [kodeKecamatan, setKodeKecamatan] = useState("");
   const [namaKecamatan, setNamaKecamatan] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [kecamatansData, setKecamatansData] = useState([]);
   const [kecamatansForDoc, setKecamatansForDoc] = useState([]);
   const navigate = useNavigate();
+  let isKecamatanExist = kodeKecamatan.length !== 0;
 
   const columns = [
     { title: "Kode Wilayah", field: "kodeWilayah" },
@@ -62,7 +62,7 @@ const TampilKecamatan = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = kecamatansData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -77,7 +77,7 @@ const TampilKecamatan = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(kecamatansData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -85,21 +85,21 @@ const TampilKecamatan = () => {
   };
 
   useEffect(() => {
-    getUsers();
+    getKecamatansData();
     getKecamatansForDoc();
-    id && getUserById();
+    id && getKecamatanById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getKecamatansData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/kecamatans`, {
+      const allKecamatans = await axios.post(`${tempUrl}/kecamatans`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setKecamatansData(allKecamatans.data);
     } catch (err) {
       setIsFetchError(true);
     }
@@ -108,37 +108,39 @@ const TampilKecamatan = () => {
 
   const getKecamatansForDoc = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kecamatansForDoc`, {
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setKecamatansForDoc(response.data);
+    const allKecamatansForDoc = await axios.post(
+      `${tempUrl}/kecamatansForDoc`,
+      {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setKecamatansForDoc(allKecamatansForDoc.data);
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getKecamatanById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/kecamatans/${id}`, {
+      const pickedKecamatan = await axios.post(`${tempUrl}/kecamatans/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeWilayah(response.data.kodeWilayah);
-      setNamaWilayah(response.data.namaWilayah);
-      setKodeKecamatan(response.data.kodeKecamatan);
-      setNamaKecamatan(response.data.namaKecamatan);
+      setKodeWilayah(pickedKecamatan.data.kodeWilayah);
+      setNamaWilayah(pickedKecamatan.data.namaWilayah);
+      setKodeKecamatan(pickedKecamatan.data.kodeKecamatan);
+      setNamaKecamatan(pickedKecamatan.data.namaKecamatan);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteKecamatan = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteKecamatan/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeWilayah("");
       setNamaWilayah("");
       setKodeKecamatan("");
@@ -172,7 +174,7 @@ const TampilKecamatan = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: kecamatansData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -223,12 +225,12 @@ const TampilKecamatan = () => {
           kode={kodeWilayah}
           addLink={`/kecamatan/tambahKecamatan`}
           editLink={`/kecamatan/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteKecamatan}
           nameUser={kodeKecamatan}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeKecamatan.length !== 0 && (
+      {isKecamatanExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
@@ -342,11 +344,6 @@ const showDataWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const searchBarContainer = {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../../contexts/ContextProvider";
+import { Colors } from "../../../../constants/styles";
 import { Loader } from "../../../../components";
 import {
   Box,
@@ -16,7 +17,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../../constants/styles";
 
 const TambahKecamatan = () => {
   const { user } = useContext(AuthContext);
@@ -24,7 +24,7 @@ const TambahKecamatan = () => {
   const [kodeWilayah, setKodeWilayah] = useState("");
   const [namaWilayah, setNamaWilayah] = useState("");
   const [namaKecamatan, setNamaKecamatan] = useState("");
-  const [wilayah, setWilayah] = useState([]);
+  const [wilayahsData, setWilayahsData] = useState([]);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -37,24 +37,26 @@ const TambahKecamatan = () => {
   };
 
   useEffect(() => {
-    getWilayah();
+    getWilayahs();
   }, []);
 
-  const getWilayah = async () => {
+  const getWilayahs = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/wilayahs`, {
+    const allWilayahs = await axios.post(`${tempUrl}/wilayahs`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setWilayah(response.data);
+    setWilayahsData(allWilayahs.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveKecamatan = async (e) => {
     e.preventDefault();
-    if (kodeWilayah.length === 0 || namaKecamatan.length === 0) {
+    let isFailValidation =
+      kodeWilayah.length === 0 || namaKecamatan.length === 0;
+    if (isFailValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -77,7 +79,7 @@ const TambahKecamatan = () => {
     }
   };
 
-  const wilayahOptions = wilayah.map((wil) => ({
+  const wilayahOptions = wilayahsData.map((wil) => ({
     label: `${wil._id} - ${wil.namaWilayah}`
   }));
 
@@ -148,7 +150,7 @@ const TambahKecamatan = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveKecamatan}
           >
             Simpan
           </Button>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../../contexts/ContextProvider";
+import { Colors } from "../../../../constants/styles";
 import { Loader } from "../../../../components";
 import {
   Box,
@@ -16,15 +17,13 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../../constants/styles";
 
 const UbahKecamatan = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [kodeWilayah, setKodeWilayah] = useState("");
-  const [namaWilayah, setNamaWilayah] = useState("");
   const [namaKecamatan, setNamaKecamatan] = useState("");
-  const [wilayah, setWilayah] = useState([]);
+  const [wilayahsData, setWilayahsData] = useState([]);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -38,37 +37,40 @@ const UbahKecamatan = () => {
   };
 
   useEffect(() => {
-    getUserById();
-    getWilayah();
+    getKecamatanById();
+    getWilayahsData();
   }, []);
 
-  const getWilayah = async () => {
+  const getWilayahsData = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/wilayahs`, {
+    const allWilayahs = await axios.post(`${tempUrl}/wilayahs`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setWilayah(response.data);
+    setWilayahsData(allWilayahs.data);
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getKecamatanById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kecamatans/${id}`, {
+    const pickedKecamatan = await axios.post(`${tempUrl}/kecamatans/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeWilayah(response.data.kodeWilayah);
-    setNamaWilayah(response.data.namaWilayah);
-    setNamaKecamatan(response.data.namaKecamatan);
+    setKodeWilayah(
+      `${pickedKecamatan.data.kodeWilayah} - ${pickedKecamatan.data.namaWilayah}`
+    );
+    setNamaKecamatan(pickedKecamatan.data.namaKecamatan);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateKecamatan = async (e) => {
     e.preventDefault();
-    if (kodeWilayah.length === 0 || namaKecamatan.length === 0) {
+    let isFailValidation =
+      kodeWilayah.length === 0 || namaKecamatan.length === 0;
+    if (isFailValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -91,7 +93,7 @@ const UbahKecamatan = () => {
     }
   };
 
-  const wilayahOptions = wilayah.map((wil) => ({
+  const wilayahOptions = wilayahsData.map((wil) => ({
     label: `${wil._id} - ${wil.namaWilayah}`
   }));
 
@@ -162,7 +164,7 @@ const UbahKecamatan = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateKecamatan}
           >
             Ubah
           </Button>
