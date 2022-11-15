@@ -24,7 +24,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { makeStyles } from "@mui/styles";
@@ -34,15 +34,15 @@ const useStyles = makeStyles({
   root: {
     "& .MuiTableCell-head": {
       color: "white",
-      backgroundColor: Colors.blue700,
-    },
+      backgroundColor: Colors.blue700
+    }
   },
   tableRightBorder: {
     borderWidth: 0,
     borderRightWidth: 1,
     borderColor: "white",
-    borderStyle: "solid",
-  },
+    borderStyle: "solid"
+  }
 });
 
 const TambahSuratPemberitahuan = () => {
@@ -116,7 +116,7 @@ const TambahSuratPemberitahuan = () => {
   };
 
   const kolektorOptions = kolektors.map((kolektor) => ({
-    label: `${kolektor._id} - ${kolektor.namaKolektor}`,
+    label: `${kolektor._id} - ${kolektor.namaKolektor}`
   }));
 
   const handleClose = (event, reason) => {
@@ -151,7 +151,7 @@ const TambahSuratPemberitahuan = () => {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id,
+      kodeCabang: user.cabang._id
     });
     setKolektors(response.data);
     setLoading(false);
@@ -163,7 +163,7 @@ const TambahSuratPemberitahuan = () => {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id,
+      kodeCabang: user.cabang._id
     });
     setJuals(response.data);
     setLoading(false);
@@ -192,7 +192,7 @@ const TambahSuratPemberitahuan = () => {
             id: user._id,
             token: user.token,
             kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
+            kodeCabang: user.cabang._id
           });
           await axios.post(`${tempUrl}/updateJual/${response.data._id}`, {
             spKe,
@@ -200,7 +200,7 @@ const TambahSuratPemberitahuan = () => {
             kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
-            token: user.token,
+            token: user.token
           });
           // Update Angsuran
           await axios.post(`${tempUrl}/saveSp`, {
@@ -212,7 +212,7 @@ const TambahSuratPemberitahuan = () => {
             id: user._id,
             token: user.token,
             kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
+            kodeCabang: user.cabang._id
           });
           setLoading(false);
           navigate("/suratPemberitahuan");
@@ -248,7 +248,7 @@ const TambahSuratPemberitahuan = () => {
               variant="outlined"
               value={noJual}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               onClick={() => handleClickOpenJual()}
               placeholder="Pilih..."
@@ -260,7 +260,7 @@ const TambahSuratPemberitahuan = () => {
               variant="outlined"
               value={namaRegister}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               sx={{ backgroundColor: Colors.grey400 }}
             />
@@ -271,7 +271,7 @@ const TambahSuratPemberitahuan = () => {
               variant="outlined"
               value={almRegister}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               sx={{ backgroundColor: Colors.grey400 }}
             />
@@ -282,7 +282,7 @@ const TambahSuratPemberitahuan = () => {
               variant="outlined"
               value={tglAng}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               sx={{ backgroundColor: Colors.grey400 }}
             />
@@ -295,7 +295,7 @@ const TambahSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="outlined"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={tenor}
                 sx={{ backgroundColor: Colors.grey400 }}
@@ -305,7 +305,7 @@ const TambahSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="outlined"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={bulan}
                 sx={{ ml: 2, backgroundColor: Colors.grey400 }}
@@ -315,7 +315,7 @@ const TambahSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="outlined"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={sisaBulan}
                 sx={{ ml: 2, backgroundColor: Colors.grey400 }}
@@ -340,7 +340,7 @@ const TambahSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="outlined"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={spKe}
                 sx={{ ml: 2, backgroundColor: Colors.grey400 }}
@@ -370,6 +370,19 @@ const TambahSuratPemberitahuan = () => {
                 setKodeKolektor(value.split(" ", 1)[0])
               }
             />
+            <Typography sx={[labelInput, spacingTop]}>
+              Tgl. Minta Waktu Terakhir
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="outlined"
+              value={tglMdTerakhir}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
+            />
             <Typography sx={[labelInput, spacingTop]}>Tipe</Typography>
             <TextField
               size="small"
@@ -377,7 +390,7 @@ const TambahSuratPemberitahuan = () => {
               variant="outlined"
               value={tipe}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               sx={{ backgroundColor: Colors.grey400 }}
             />
@@ -388,7 +401,7 @@ const TambahSuratPemberitahuan = () => {
               variant="outlined"
               value={noRangka}
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               sx={{ backgroundColor: Colors.grey400 }}
             />
@@ -398,7 +411,7 @@ const TambahSuratPemberitahuan = () => {
               id="outlined-basic"
               variant="outlined"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               sx={{ backgroundColor: Colors.grey400 }}
               value={nopol}
@@ -410,7 +423,7 @@ const TambahSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="outlined"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={tahun}
                 sx={{ backgroundColor: Colors.grey400 }}
@@ -420,7 +433,7 @@ const TambahSuratPemberitahuan = () => {
                 id="outlined-basic"
                 variant="outlined"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: true
                 }}
                 value={namaWarna}
                 sx={{ ml: 2, backgroundColor: Colors.grey400 }}
@@ -442,6 +455,7 @@ const TambahSuratPemberitahuan = () => {
             variant="contained"
             startIcon={<SaveIcon />}
             onClick={saveUser}
+            disabled={tglSp < tglMdTerakhir && tglSp < tglAng ? true : false}
           >
             Simpan
           </Button>
@@ -525,7 +539,7 @@ const TambahSuratPemberitahuan = () => {
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                           "&:hover": { bgcolor: Colors.grey300 },
-                          cursor: "pointer",
+                          cursor: "pointer"
                         }}
                         onClick={() => {
                           setNoJual(user.noJual);
@@ -544,7 +558,8 @@ const TambahSuratPemberitahuan = () => {
                           setTglMdTerakhir(user.tglMdTerakhir);
                           setTglJatuhTempo(user.tglJatuhTempo);
                           user.tglMdTerakhir.length > 0 && handleClickOpenMd();
-                          date < new Date(user.tglJatuhTempo) && handleClickOpenJt();
+                          date < new Date(user.tglJatuhTempo) &&
+                            handleClickOpenJt();
                           handleCloseJual();
                         }}
                       >
@@ -623,15 +638,15 @@ const TambahSuratPemberitahuan = () => {
 export default TambahSuratPemberitahuan;
 
 const container = {
-  p: 4,
+  p: 4
 };
 
 const subTitleText = {
-  fontWeight: "900",
+  fontWeight: "900"
 };
 
 const dividerStyle = {
-  mt: 2,
+  mt: 2
 };
 
 const showDataContainer = {
@@ -639,8 +654,8 @@ const showDataContainer = {
   display: "flex",
   flexDirection: {
     xs: "column",
-    sm: "row",
-  },
+    sm: "row"
+  }
 };
 
 const showDataWrapper = {
@@ -648,59 +663,59 @@ const showDataWrapper = {
   flex: 1,
   flexDirection: "column",
   maxWidth: {
-    md: "40vw",
-  },
+    md: "40vw"
+  }
 };
 
 const spacingTop = {
-  mt: 4,
+  mt: 4
 };
 
 const alertBox = {
-  width: "100%",
+  width: "100%"
 };
 
 const labelInput = {
   fontWeight: "600",
-  marginLeft: 1,
+  marginLeft: 1
 };
 
 const contentContainer = {
   p: 3,
   pt: 1,
   mt: 2,
-  backgroundColor: Colors.grey100,
+  backgroundColor: Colors.grey100
 };
 
 const secondWrapper = {
   marginLeft: {
-    md: 4,
+    md: 4
   },
   marginTop: {
     md: 0,
-    xs: 4,
-  },
+    xs: 4
+  }
 };
 
 const mainContainer = {
   padding: 3,
   borderRadius: "20px",
-  margin: 4,
+  margin: 4
 };
 
 const dialogContainer = {
   display: "flex",
   flexDirection: "column",
   padding: 4,
-  width: "1000px",
+  width: "1000px"
 };
 
 const dialogWrapper = {
   width: "100%",
-  marginTop: 2,
+  marginTop: 2
 };
 
 const titleStyle = {
   textAlign: "center",
-  fontWeight: "600",
+  fontWeight: "600"
 };
