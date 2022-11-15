@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableWilayah } from "../../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableWilayah } from "../../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../../components";
-import { tempUrl } from "../../../../contexts/ContextProvider";
-import { useStateContext } from "../../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -42,8 +41,9 @@ const TampilWilayah = () => {
   const [kodeWilayah, setKodeWilayah] = useState("");
   const [namaWilayah, setNamaWilayah] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [wilayahsData, setWilayahsData] = useState([]);
   const navigate = useNavigate();
+  let isWilayahExist = kodeWilayah.length !== 0;
 
   const columns = [
     { title: "Kode Wilayah", field: "_id" },
@@ -57,7 +57,7 @@ const TampilWilayah = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = wilayahsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -70,7 +70,7 @@ const TampilWilayah = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(wilayahsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -78,45 +78,44 @@ const TampilWilayah = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getWilayahsData();
+    id && getWilayahById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getWilayahsData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/wilayahs`, {
+      const allWilayahs = await axios.post(`${tempUrl}/wilayahs`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setWilayahsData(allWilayahs.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getWilayahById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/wilayahs/${id}`, {
+      const pickedWilayah = await axios.post(`${tempUrl}/wilayahs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeWilayah(response.data._id);
-      setNamaWilayah(response.data.namaWilayah);
+      setKodeWilayah(pickedWilayah.data._id);
+      setNamaWilayah(pickedWilayah.data.namaWilayah);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteWilayah = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteWilayah/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeWilayah("");
       setNamaWilayah("");
       setLoading(false);
@@ -148,7 +147,7 @@ const TampilWilayah = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: wilayahsData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -158,7 +157,7 @@ const TampilWilayah = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(wilayahsData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Wilayah`);
     // Buffer
@@ -199,12 +198,12 @@ const TampilWilayah = () => {
           kode={kodeWilayah}
           addLink={`/wilayah/tambahWilayah`}
           editLink={`/wilayah/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteWilayah}
           nameUser={kodeWilayah}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeWilayah.length !== 0 && (
+      {isWilayahExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>

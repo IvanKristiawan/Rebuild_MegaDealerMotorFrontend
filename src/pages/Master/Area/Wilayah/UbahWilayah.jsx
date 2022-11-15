@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../../contexts/ContextProvider";
+import { Colors } from "../../../../constants/styles";
 import { Loader } from "../../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../../constants/styles";
 
 const UbahWilayah = () => {
   const { user } = useContext(AuthContext);
@@ -35,23 +35,24 @@ const UbahWilayah = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getWilayahById();
   }, []);
 
-  const getUserById = async () => {
+  const getWilayahById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/wilayahs/${id}`, {
+    const pickedWilayah = await axios.post(`${tempUrl}/wilayahs/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeWilayah(response.data._id);
-    setNamaWilayah(response.data.namaWilayah);
+    setKodeWilayah(pickedWilayah.data._id);
+    setNamaWilayah(pickedWilayah.data.namaWilayah);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateWilayah = async (e) => {
     e.preventDefault();
-    if (namaWilayah.length === 0) {
+    let isFailedValidation = namaWilayah.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -127,7 +128,7 @@ const UbahWilayah = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateWilayah}
           >
             Ubah
           </Button>

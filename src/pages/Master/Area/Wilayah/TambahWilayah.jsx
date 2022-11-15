@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../../contexts/ContextProvider";
+import { Colors } from "../../../../constants/styles";
 import { Loader } from "../../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../../constants/styles";
 
 const TambahWilayah = () => {
   const { user } = useContext(AuthContext);
@@ -34,24 +34,25 @@ const TambahWilayah = () => {
   };
 
   useEffect(() => {
-    getNextLength();
+    getNextKodeWilayah();
   }, []);
 
-  const getNextLength = async () => {
+  const getNextKodeWilayah = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/wilayahsNextLength`, {
+    const nextKodeWilayah = await axios.post(`${tempUrl}/wilayahNextKode`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKodeWilayah(response.data);
+    setKodeWilayah(nextKodeWilayah.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveWilayah = async (e) => {
     e.preventDefault();
-    if (namaWilayah.length === 0) {
+    let isFailedValidation = namaWilayah.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -123,7 +124,7 @@ const TambahWilayah = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveWilayah}
           >
             Simpan
           </Button>
