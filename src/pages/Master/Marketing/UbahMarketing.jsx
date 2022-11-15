@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -14,7 +15,6 @@ import {
   Alert
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahMarketing = () => {
   const { user } = useContext(AuthContext);
@@ -35,24 +35,25 @@ const UbahMarketing = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getMarketingById();
   }, []);
 
-  const getUserById = async () => {
+  const getMarketingById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/marketings/${id}`, {
+    const pickedMarketing = await axios.post(`${tempUrl}/marketings/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeMarketing(response.data._id);
-    setNamaMarketing(response.data.namaMarketing);
-    setTeleponMarketing(response.data.teleponMarketing);
+    setKodeMarketing(pickedMarketing.data._id);
+    setNamaMarketing(pickedMarketing.data.namaMarketing);
+    setTeleponMarketing(pickedMarketing.data.teleponMarketing);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateMarketing = async (e) => {
     e.preventDefault();
-    if (namaMarketing.length === 0) {
+    let isFailedValidation = namaMarketing.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -133,7 +134,7 @@ const UbahMarketing = () => {
         <Button
           variant="contained"
           startIcon={<EditIcon />}
-          onClick={updateUser}
+          onClick={updateMarketing}
         >
           Ubah
         </Button>

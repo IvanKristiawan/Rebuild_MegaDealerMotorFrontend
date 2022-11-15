@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableMarketing } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableMarketing } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -43,8 +42,9 @@ const TampilMarketing = () => {
   const [namaMarketing, setNamaMarketing] = useState("");
   const [teleponMarketing, setTeleponMarketing] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [marketingsData, setMarketingsData] = useState([]);
   const navigate = useNavigate();
+  let isMarketingExist = kodeMarketing.length !== 0;
 
   const columns = [
     { title: "Kode", field: "_id" },
@@ -59,7 +59,7 @@ const TampilMarketing = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = marketingsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -73,7 +73,7 @@ const TampilMarketing = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(marketingsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -81,46 +81,45 @@ const TampilMarketing = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getMarketingsData();
+    id && getMarketingById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getMarketingsData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/marketings`, {
+      const allMarketings = await axios.post(`${tempUrl}/marketings`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setMarketingsData(allMarketings.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getMarketingById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/marketings/${id}`, {
+      const pickedMarketing = await axios.post(`${tempUrl}/marketings/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeMarketing(response.data._id);
-      setNamaMarketing(response.data.namaMarketing);
-      setTeleponMarketing(response.data.teleponMarketing);
+      setKodeMarketing(pickedMarketing.data._id);
+      setNamaMarketing(pickedMarketing.data.namaMarketing);
+      setTeleponMarketing(pickedMarketing.data.teleponMarketing);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteMarketing = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteMarketing/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeMarketing("");
       setNamaMarketing("");
       setTeleponMarketing("");
@@ -153,7 +152,7 @@ const TampilMarketing = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: marketingsData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -163,7 +162,7 @@ const TampilMarketing = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(marketingsData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Marketing`);
     // Buffer
@@ -204,12 +203,12 @@ const TampilMarketing = () => {
           kode={kodeMarketing}
           addLink={`/marketing/tambahMarketing`}
           editLink={`/marketing/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteMarketing}
           nameUser={kodeMarketing}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeMarketing.length !== 0 && (
+      {isMarketingExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>

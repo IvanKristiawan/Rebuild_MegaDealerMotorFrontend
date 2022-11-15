@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { Loader } from "../../../components";
 import {
@@ -38,26 +38,27 @@ const UbahDealer = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getDealerById();
   }, []);
 
-  const getUserById = async () => {
+  const getDealerById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/dealers/${id}`, {
+    const pickedDealer = await axios.post(`${tempUrl}/dealers/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeDealer(response.data._id);
-    setNamaDealer(response.data.namaDealer);
-    setAlamatDealer(response.data.alamatDealer);
-    setTeleponDealer(response.data.teleponDealer);
-    setPICDealer(response.data.PICDealer);
+    setKodeDealer(pickedDealer.data._id);
+    setNamaDealer(pickedDealer.data.namaDealer);
+    setAlamatDealer(pickedDealer.data.alamatDealer);
+    setTeleponDealer(pickedDealer.data.teleponDealer);
+    setPICDealer(pickedDealer.data.PICDealer);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateDealer = async (e) => {
     e.preventDefault();
-    if (namaDealer.length === 0 || PICDealer.length === 0) {
+    let isFailedValidation = namaDealer.length === 0 || PICDealer.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -167,7 +168,7 @@ const UbahDealer = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateDealer}
           >
             Ubah
           </Button>

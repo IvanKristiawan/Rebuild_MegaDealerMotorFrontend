@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
 const TambahKolektor = () => {
   const { user } = useContext(AuthContext);
@@ -35,24 +35,25 @@ const TambahKolektor = () => {
   };
 
   useEffect(() => {
-    getNextLength();
+    getNextKodeKolektor();
   }, []);
 
-  const getNextLength = async () => {
+  const getNextKodeKolektor = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kolektorsNextLength`, {
+    const nextKodeKolektor = await axios.post(`${tempUrl}/kolektorsNextKode`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKodeKolektor(response.data);
+    setKodeKolektor(nextKodeKolektor.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveKolektor = async (e) => {
     e.preventDefault();
-    if (namaKolektor.length === 0) {
+    let isFailedValidation = namaKolektor.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -138,7 +139,7 @@ const TambahKolektor = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveKolektor}
           >
             Simpan
           </Button>

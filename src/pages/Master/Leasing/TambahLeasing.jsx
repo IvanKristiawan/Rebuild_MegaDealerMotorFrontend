@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
 const TambahLeasing = () => {
   const { user } = useContext(AuthContext);
@@ -37,12 +37,12 @@ const TambahLeasing = () => {
   };
 
   useEffect(() => {
-    getNextLength();
+    getNextKodeLeasing();
   }, []);
 
-  const getNextLength = async () => {
+  const getNextKodeLeasing = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/leasingsNextLength`, {
+    const response = await axios.post(`${tempUrl}/leasingsNextKode`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
@@ -52,9 +52,11 @@ const TambahLeasing = () => {
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveLeasing = async (e) => {
     e.preventDefault();
-    if (namaLeasing.length === 0 || picLeasing.length === 0) {
+    let isFailedValidation =
+      namaLeasing.length === 0 || picLeasing.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -160,7 +162,7 @@ const TambahLeasing = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveLeasing}
           >
             Simpan
           </Button>

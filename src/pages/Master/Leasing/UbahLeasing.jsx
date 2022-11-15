@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahLeasing = () => {
   const { user } = useContext(AuthContext);
@@ -38,26 +38,28 @@ const UbahLeasing = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getLeasingById();
   }, []);
 
-  const getUserById = async () => {
+  const getLeasingById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/leasings/${id}`, {
+    const pickedLeasing = await axios.post(`${tempUrl}/leasings/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeLeasing(response.data._id);
-    setNamaLeasing(response.data.namaLeasing);
-    setAlamatLeasing(response.data.alamatLeasing);
-    setTeleponLeasing(response.data.teleponLeasing);
-    setPicLeasing(response.data.picLeasing);
+    setKodeLeasing(pickedLeasing.data._id);
+    setNamaLeasing(pickedLeasing.data.namaLeasing);
+    setAlamatLeasing(pickedLeasing.data.alamatLeasing);
+    setTeleponLeasing(pickedLeasing.data.teleponLeasing);
+    setPicLeasing(pickedLeasing.data.picLeasing);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateLeasing = async (e) => {
     e.preventDefault();
-    if (namaLeasing.length === 0 || picLeasing.length === 0) {
+    let isFailedValidation =
+      namaLeasing.length === 0 || picLeasing.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -167,7 +169,7 @@ const UbahLeasing = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateLeasing}
           >
             Ubah
           </Button>

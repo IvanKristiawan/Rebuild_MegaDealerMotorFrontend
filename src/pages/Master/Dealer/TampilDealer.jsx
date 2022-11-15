@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableDealer } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableDealer } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +32,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilDealer = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -45,8 +44,9 @@ const TampilDealer = () => {
   const [teleponDealer, setTeleponDealer] = useState("");
   const [PICDealer, setPICDealer] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [dealersData, setDealersData] = useState([]);
   const navigate = useNavigate();
+  let isDealerExist = kodeDealer.length !== 0;
 
   const columns = [
     { title: "Kode", field: "_id" },
@@ -63,7 +63,7 @@ const TampilDealer = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = dealersData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -79,7 +79,7 @@ const TampilDealer = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(dealersData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -87,48 +87,47 @@ const TampilDealer = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getDealersData();
+    id && getDealerById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getDealersData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/dealers`, {
+      const allDealers = await axios.post(`${tempUrl}/dealers`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setDealersData(allDealers.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getDealerById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/dealers/${id}`, {
+      const pickedDealer = await axios.post(`${tempUrl}/dealers/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeDealer(response.data._id);
-      setNamaDealer(response.data.namaDealer);
-      setAlamatDealer(response.data.alamatDealer);
-      setTeleponDealer(response.data.teleponDealer);
-      setPICDealer(response.data.PICDealer);
+      setKodeDealer(pickedDealer.data._id);
+      setNamaDealer(pickedDealer.data.namaDealer);
+      setAlamatDealer(pickedDealer.data.alamatDealer);
+      setTeleponDealer(pickedDealer.data.teleponDealer);
+      setPICDealer(pickedDealer.data.PICDealer);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteDealer = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteDealer/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeDealer("");
       setNamaDealer("");
       setAlamatDealer("");
@@ -163,7 +162,7 @@ const TampilDealer = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: dealersData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -173,7 +172,7 @@ const TampilDealer = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(dealersData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Dealer`);
     // Buffer
@@ -214,12 +213,12 @@ const TampilDealer = () => {
           kode={kodeDealer}
           addLink={`/dealer/tambahDealer`}
           editLink={`/dealer/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteDealer}
           nameUser={kodeDealer}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeDealer.length !== 0 && (
+      {isDealerExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>

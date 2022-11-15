@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahKolektor = () => {
   const { user } = useContext(AuthContext);
@@ -36,24 +36,25 @@ const UbahKolektor = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getKolektorById();
   }, []);
 
-  const getUserById = async () => {
+  const getKolektorById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kolektors/${id}`, {
+    const pickedKolektor = await axios.post(`${tempUrl}/kolektors/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeKolektor(response.data._id);
-    setNamaKolektor(response.data.namaKolektor);
-    setTeleponKolektor(response.data.teleponKolektor);
+    setKodeKolektor(pickedKolektor.data._id);
+    setNamaKolektor(pickedKolektor.data.namaKolektor);
+    setTeleponKolektor(pickedKolektor.data.teleponKolektor);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateKolektor = async (e) => {
     e.preventDefault();
-    if (namaKolektor.length === 0) {
+    let isFailedValidation = namaKolektor.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -143,7 +144,7 @@ const UbahKolektor = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateKolektor}
           >
             Ubah
           </Button>

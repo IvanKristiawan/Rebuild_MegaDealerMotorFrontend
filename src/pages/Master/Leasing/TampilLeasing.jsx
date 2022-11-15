@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableLeasing } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableLeasing } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -45,8 +44,9 @@ const TampilLeasing = () => {
   const [teleponLeasing, setTeleponLeasing] = useState("");
   const [picLeasing, setPicLeasing] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [leasingsData, setLeasingsData] = useState([]);
   const navigate = useNavigate();
+  let isLeasingExist = kodeLeasing.length !== 0;
 
   const columns = [
     { title: "Kode", field: "_id" },
@@ -63,7 +63,7 @@ const TampilLeasing = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = leasingsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -79,7 +79,7 @@ const TampilLeasing = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(leasingsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -87,48 +87,47 @@ const TampilLeasing = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getLeasingsData();
+    id && getLeasingById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getLeasingsData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/leasings`, {
+      const allLeasings = await axios.post(`${tempUrl}/leasings`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setLeasingsData(allLeasings.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getLeasingById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/leasings/${id}`, {
+      const pickedLeasing = await axios.post(`${tempUrl}/leasings/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeLeasing(response.data._id);
-      setNamaLeasing(response.data.namaLeasing);
-      setAlamatLeasing(response.data.alamatLeasing);
-      setTeleponLeasing(response.data.teleponLeasing);
-      setPicLeasing(response.data.picLeasing);
+      setKodeLeasing(pickedLeasing.data._id);
+      setNamaLeasing(pickedLeasing.data.namaLeasing);
+      setAlamatLeasing(pickedLeasing.data.alamatLeasing);
+      setTeleponLeasing(pickedLeasing.data.teleponLeasing);
+      setPicLeasing(pickedLeasing.data.picLeasing);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteLeasing = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteLeasing/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeLeasing("");
       setNamaLeasing("");
       setAlamatLeasing("");
@@ -163,7 +162,7 @@ const TampilLeasing = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: leasingsData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -173,7 +172,7 @@ const TampilLeasing = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(leasingsData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Leasing`);
     // Buffer
@@ -214,12 +213,12 @@ const TampilLeasing = () => {
           kode={kodeLeasing}
           addLink={`/leasing/tambahLeasing`}
           editLink={`/leasing/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteLeasing}
           nameUser={kodeLeasing}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeLeasing.length !== 0 && (
+      {isLeasingExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
@@ -338,11 +337,6 @@ const showDataWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const searchBarContainer = {

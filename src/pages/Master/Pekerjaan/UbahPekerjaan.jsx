@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -14,7 +15,6 @@ import {
   Alert
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahPekerjaan = () => {
   const { user } = useContext(AuthContext);
@@ -34,23 +34,25 @@ const UbahPekerjaan = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getPekerjaanById();
   }, []);
 
-  const getUserById = async () => {
+  const getPekerjaanById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/pekerjaans/${id}`, {
+    const allPekerjaans = await axios.post(`${tempUrl}/pekerjaans/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodePekerjaan(response.data._id);
-    setNamaPekerjaan(response.data.namaPekerjaan);
+    setKodePekerjaan(allPekerjaans.data._id);
+    setNamaPekerjaan(allPekerjaans.data.namaPekerjaan);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updatePekerjaan = async (e) => {
     e.preventDefault();
-    if (kodePekerjaan.length === 0 || namaPekerjaan.length === 0) {
+    let isFailedValidation =
+      kodePekerjaan.length === 0 || namaPekerjaan.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -127,7 +129,7 @@ const UbahPekerjaan = () => {
         <Button
           variant="contained"
           startIcon={<EditIcon />}
-          onClick={updateUser}
+          onClick={updatePekerjaan}
         >
           Ubah
         </Button>

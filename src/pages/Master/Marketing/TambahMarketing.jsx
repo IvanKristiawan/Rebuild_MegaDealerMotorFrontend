@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
 const TambahMarketing = () => {
   const { user } = useContext(AuthContext);
@@ -35,24 +35,28 @@ const TambahMarketing = () => {
   };
 
   useEffect(() => {
-    getNextLength();
+    getNextKodeMarketing();
   }, []);
 
-  const getNextLength = async () => {
+  const getNextKodeMarketing = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/marketingsNextLength`, {
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setKodeMarketing(response.data);
+    const nextKodeMarketing = await axios.post(
+      `${tempUrl}/marketingsNextKode`,
+      {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setKodeMarketing(nextKodeMarketing.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveMarketing = async (e) => {
     e.preventDefault();
-    if (namaMarketing.length === 0) {
+    let isFailedValidation = namaMarketing.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -140,7 +144,7 @@ const TambahMarketing = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveMarketing}
           >
             Simpan
           </Button>
@@ -208,14 +212,4 @@ const contentContainer = {
   pt: 1,
   mt: 2,
   backgroundColor: Colors.grey100
-};
-
-const secondWrapper = {
-  marginLeft: {
-    md: 4
-  },
-  marginTop: {
-    md: 0,
-    xs: 4
-  }
 };

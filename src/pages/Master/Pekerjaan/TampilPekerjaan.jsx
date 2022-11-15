@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTablePekerjaan } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTablePekerjaan } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +32,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilPekerjaan = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -42,8 +41,9 @@ const TampilPekerjaan = () => {
   const [kodePekerjaan, setKodePekerjaan] = useState("");
   const [namaPekerjaan, setNamaPekerjaan] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [pekerjaansData, setPekerjaansData] = useState([]);
   const navigate = useNavigate();
+  let isPekerjaanExist = kodePekerjaan.length !== 0;
 
   const columns = [
     { title: "Kode", field: "_id" },
@@ -57,7 +57,7 @@ const TampilPekerjaan = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = pekerjaansData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -70,7 +70,7 @@ const TampilPekerjaan = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(pekerjaansData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -78,45 +78,44 @@ const TampilPekerjaan = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getPekerjaansData();
+    id && getPekerjaanById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getPekerjaansData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/pekerjaans`, {
+      const allPekerjaans = await axios.post(`${tempUrl}/pekerjaans`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setPekerjaansData(allPekerjaans.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getPekerjaanById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/pekerjaans/${id}`, {
+      const pickedPekerjaan = await axios.post(`${tempUrl}/pekerjaans/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodePekerjaan(response.data._id);
-      setNamaPekerjaan(response.data.namaPekerjaan);
+      setKodePekerjaan(pickedPekerjaan.data._id);
+      setNamaPekerjaan(pickedPekerjaan.data.namaPekerjaan);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deletePekerjaan = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deletePekerjaan/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodePekerjaan("");
       setNamaPekerjaan("");
       setLoading(false);
@@ -148,7 +147,7 @@ const TampilPekerjaan = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: pekerjaansData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -158,7 +157,7 @@ const TampilPekerjaan = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(pekerjaansData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Pekerjaan`);
     // Buffer
@@ -199,12 +198,12 @@ const TampilPekerjaan = () => {
           kode={kodePekerjaan}
           addLink={`/pekerjaan/tambahPekerjaan`}
           editLink={`/pekerjaan/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deletePekerjaan}
           nameUser={kodePekerjaan}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodePekerjaan.length !== 0 && (
+      {isPekerjaanExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
@@ -315,16 +314,6 @@ const labelInput = {
 
 const spacingTop = {
   mt: 4
-};
-
-const secondWrapper = {
-  marginLeft: {
-    md: 4
-  },
-  marginTop: {
-    md: 0,
-    xs: 4
-  }
 };
 
 const downloadButtons = {
