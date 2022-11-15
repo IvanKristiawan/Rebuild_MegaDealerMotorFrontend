@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -16,7 +17,6 @@ import {
   Autocomplete
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahCabang = () => {
   const { user } = useContext(AuthContext);
@@ -46,37 +46,38 @@ const UbahCabang = () => {
 
   useEffect(() => {
     getUnitBisnis();
-    getUserById();
+    getCabangById();
   }, []);
 
   const getUnitBisnis = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/unitBisnis`, {
+    const allUnitBisnis = await axios.post(`${tempUrl}/unitBisnis`, {
       id: user._id,
       token: user.token
     });
-    setUnitBisnis(response.data);
+    setUnitBisnis(allUnitBisnis.data);
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getCabangById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/cabangs/${id}`, {
+    const pickedCabang = await axios.post(`${tempUrl}/cabangs/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeCabang(response.data._id);
-    setNamaCabang(response.data.namaCabang);
-    setAlamatCabang(response.data.alamatCabang);
-    setTeleponCabang(response.data.teleponCabang);
-    setPicCabang(response.data.picCabang);
-    setKodeUnitBisnis(response.data.unitBisnis._id);
+    setKodeCabang(pickedCabang.data._id);
+    setNamaCabang(pickedCabang.data.namaCabang);
+    setAlamatCabang(pickedCabang.data.alamatCabang);
+    setTeleponCabang(pickedCabang.data.teleponCabang);
+    setPicCabang(pickedCabang.data.picCabang);
+    setKodeUnitBisnis(pickedCabang.data.unitBisnis._id);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateCabang = async (e) => {
     e.preventDefault();
-    if (namaCabang.length === 0 || picCabang.length === 0) {
+    let isFailedValidation = namaCabang.length === 0 || picCabang.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -210,7 +211,7 @@ const UbahCabang = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateCabang}
           >
             Ubah
           </Button>

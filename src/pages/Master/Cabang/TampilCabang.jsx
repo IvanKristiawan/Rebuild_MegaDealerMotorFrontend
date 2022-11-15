@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl } from "../../../contexts/ContextProvider";
+import { useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableCabang } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +26,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableCabang } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -46,9 +46,10 @@ const TampilCabang = () => {
   const [picCabang, setPicCabang] = useState("");
   const [unitBisnis, setUnitBisnis] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [cabangsData, setCabangsData] = useState([]);
   const [cabangForDoc, setCabangForDoc] = useState([]);
   const navigate = useNavigate();
+  let isCabangExist = kodeCabang.length !== 0;
 
   const columns = [
     { title: "Kode", field: "_id" },
@@ -66,7 +67,7 @@ const TampilCabang = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = cabangsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -86,7 +87,7 @@ const TampilCabang = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(cabangsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -94,58 +95,57 @@ const TampilCabang = () => {
   };
 
   useEffect(() => {
-    getUsersForDoc();
-    getUsers();
-    id && getUserById();
+    getCabangsForDoc();
+    getCabangsData();
+    id && getCabangById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getCabangsData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/cabangs`, {
+      const allCabangs = await axios.post(`${tempUrl}/cabangs`, {
         id: user._id,
         token: user.token
       });
-      setUser(response.data);
+      setCabangsData(allCabangs.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUsersForDoc = async () => {
+  const getCabangsForDoc = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/cabangsForDoc`, {
+    const allCabangForDoc = await axios.post(`${tempUrl}/cabangsForDoc`, {
       id: user._id,
       token: user.token
     });
-    setCabangForDoc(response.data);
+    setCabangForDoc(allCabangForDoc.data);
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getCabangById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/cabangs/${id}`, {
+      const pickedCabang = await axios.post(`${tempUrl}/cabangs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeCabang(response.data._id);
-      setNamaCabang(response.data.namaCabang);
-      setAlamatCabang(response.data.alamatCabang);
-      setTeleponCabang(response.data.teleponCabang);
-      setPicCabang(response.data.picCabang);
-      setUnitBisnis(response.data.unitBisnis);
+      setKodeCabang(pickedCabang.data._id);
+      setNamaCabang(pickedCabang.data.namaCabang);
+      setAlamatCabang(pickedCabang.data.alamatCabang);
+      setTeleponCabang(pickedCabang.data.teleponCabang);
+      setPicCabang(pickedCabang.data.picCabang);
+      setUnitBisnis(pickedCabang.data.unitBisnis);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteCabang = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteCabang/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeCabang("");
       setNamaCabang("");
       setAlamatCabang("");
@@ -232,12 +232,12 @@ const TampilCabang = () => {
           kode={kodeCabang}
           addLink={`/cabang/tambahCabang`}
           editLink={`/cabang/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteCabang}
           nameUser={kodeCabang}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeCabang.length !== 0 && (
+      {isCabangExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>

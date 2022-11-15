@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -16,7 +17,6 @@ import {
   Autocomplete
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
 const TambahCabang = () => {
   const { user } = useContext(AuthContext);
@@ -45,32 +45,34 @@ const TambahCabang = () => {
 
   useEffect(() => {
     getUnitBisnis();
-    getNextLength();
+    getNextKodeCabang();
   }, []);
 
   const getUnitBisnis = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/unitBisnis`, {
+    const allUnitBisnis = await axios.post(`${tempUrl}/unitBisnis`, {
       id: user._id,
       token: user.token
     });
-    setUnitBisnis(response.data);
+    setUnitBisnis(allUnitBisnis.data);
     setLoading(false);
   };
 
-  const getNextLength = async () => {
+  const getNextKodeCabang = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/cabangsNextLength`, {
+    const nextKodeCabang = await axios.post(`${tempUrl}/cabangNextKode`, {
+      kodeUnitBisnis: user.unitBisnis._id,
       id: user._id,
       token: user.token
     });
-    setKodeCabang(response.data);
+    setKodeCabang(nextKodeCabang.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveCabang = async (e) => {
     e.preventDefault();
-    if (namaCabang.length === 0 || picCabang.length === 0) {
+    let isFailedValidation = namaCabang.length === 0 || picCabang.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -199,7 +201,7 @@ const TambahCabang = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveCabang}
           >
             Simpan
           </Button>
