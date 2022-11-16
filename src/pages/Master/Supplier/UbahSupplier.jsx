@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahSupplier = () => {
   const { user } = useContext(AuthContext);
@@ -40,28 +40,30 @@ const UbahSupplier = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getSupplierById();
   }, []);
 
-  const getUserById = async () => {
+  const getSupplierById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/suppliers/${id}`, {
+    const pickedSupplier = await axios.post(`${tempUrl}/suppliers/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeSupplier(response.data._id);
-    setNamaSupplier(response.data.namaSupplier);
-    setAlamatSupplier(response.data.alamatSupplier);
-    setKotaSupplier(response.data.kotaSupplier);
-    setTeleponSupplier(response.data.teleponSupplier);
-    setPicSupplier(response.data.picSupplier);
-    setNpwpSupplier(response.data.npwpSupplier);
+    setKodeSupplier(pickedSupplier.data._id);
+    setNamaSupplier(pickedSupplier.data.namaSupplier);
+    setAlamatSupplier(pickedSupplier.data.alamatSupplier);
+    setKotaSupplier(pickedSupplier.data.kotaSupplier);
+    setTeleponSupplier(pickedSupplier.data.teleponSupplier);
+    setPicSupplier(pickedSupplier.data.picSupplier);
+    setNpwpSupplier(pickedSupplier.data.npwpSupplier);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateSupplier = async (e) => {
     e.preventDefault();
-    if (namaSupplier.length === 0 || picSupplier.length === 0) {
+    let isFailedValidation =
+      namaSupplier.length === 0 || picSupplier.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -192,7 +194,7 @@ const UbahSupplier = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateSupplier}
           >
             Ubah
           </Button>

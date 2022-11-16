@@ -60,7 +60,7 @@ const TampilDaftarBeli = () => {
 
   const getSupplier = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/supplierMainInfo`, {
+    const response = await axios.post(`${tempUrl}/suppliersMainInfo`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,

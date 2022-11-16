@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableSupplier } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableSupplier } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +32,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilSupplier = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -47,8 +46,9 @@ const TampilSupplier = () => {
   const [picSupplier, setPicSupplier] = useState("");
   const [npwpSupplier, setNpwpSupplier] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [suppliersData, setSuppliersData] = useState([]);
   const navigate = useNavigate();
+  let isSupplierExist = kodeSupplier.length !== 0;
 
   const columns = [
     { title: "Kode", field: "_id" },
@@ -67,7 +67,7 @@ const TampilSupplier = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = suppliersData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -85,7 +85,7 @@ const TampilSupplier = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(suppliersData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -93,50 +93,49 @@ const TampilSupplier = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getSuppliersData();
+    id && getSupplierById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getSuppliersData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/suppliers`, {
+      const allSuppliers = await axios.post(`${tempUrl}/suppliers`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setSuppliersData(allSuppliers.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getSupplierById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/suppliers/${id}`, {
+      const pickedSupplier = await axios.post(`${tempUrl}/suppliers/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeSupplier(response.data._id);
-      setNamaSupplier(response.data.namaSupplier);
-      setAlamatSupplier(response.data.alamatSupplier);
-      setKotaSupplier(response.data.kotaSupplier);
-      setTeleponSupplier(response.data.teleponSupplier);
-      setPicSupplier(response.data.picSupplier);
-      setNpwpSupplier(response.data.npwpSupplier);
+      setKodeSupplier(pickedSupplier.data._id);
+      setNamaSupplier(pickedSupplier.data.namaSupplier);
+      setAlamatSupplier(pickedSupplier.data.alamatSupplier);
+      setKotaSupplier(pickedSupplier.data.kotaSupplier);
+      setTeleponSupplier(pickedSupplier.data.teleponSupplier);
+      setPicSupplier(pickedSupplier.data.picSupplier);
+      setNpwpSupplier(pickedSupplier.data.npwpSupplier);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteSupplier = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteSupplier/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeSupplier("");
       setNamaSupplier("");
       setAlamatSupplier("");
@@ -173,7 +172,7 @@ const TampilSupplier = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: suppliersData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -183,7 +182,7 @@ const TampilSupplier = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(suppliersData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Supplier`);
     // Buffer
@@ -224,12 +223,12 @@ const TampilSupplier = () => {
           kode={kodeSupplier}
           addLink={`/supplier/tambahSupplier`}
           editLink={`/supplier/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteSupplier}
           nameUser={kodeSupplier}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeSupplier.length !== 0 && (
+      {isSupplierExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
@@ -371,11 +370,6 @@ const showDataWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const searchBarContainer = {

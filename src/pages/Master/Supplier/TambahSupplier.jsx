@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
 const TambahSupplier = () => {
   const { user } = useContext(AuthContext);
@@ -39,24 +39,26 @@ const TambahSupplier = () => {
   };
 
   useEffect(() => {
-    getNextLength();
+    getNextKodeSupplier();
   }, []);
 
-  const getNextLength = async () => {
+  const getNextKodeSupplier = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/suppliersNextLength`, {
+    const nextKodeSupplier = await axios.post(`${tempUrl}/suppliersNextKode`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKodeSupplier(response.data);
+    setKodeSupplier(nextKodeSupplier.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveSupplier = async (e) => {
     e.preventDefault();
-    if (namaSupplier.length === 0 || picSupplier.length === 0) {
+    let isFailedValidation =
+      namaSupplier.length === 0 || picSupplier.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -184,7 +186,7 @@ const TambahSupplier = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveSupplier}
           >
             Simpan
           </Button>
