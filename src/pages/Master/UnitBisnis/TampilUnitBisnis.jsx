@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableUnitBisnis } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableUnitBisnis } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +32,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilUnitBisnis = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -42,8 +41,9 @@ const TampilUnitBisnis = () => {
   const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
   const [namaUnitBisnis, setNamaUnitBisnis] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [unitBisnisData, setUnitBisnisData] = useState([]);
   const navigate = useNavigate();
+  let isUnitBisnisExist = kodeUnitBisnis.length !== 0;
 
   const columns = [
     { title: "Kode", field: "_id" },
@@ -57,7 +57,7 @@ const TampilUnitBisnis = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = unitBisnisData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -70,7 +70,7 @@ const TampilUnitBisnis = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(unitBisnisData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -78,43 +78,42 @@ const TampilUnitBisnis = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getUnitBisnisData();
+    id && getUnitBisnisById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getUnitBisnisData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/unitBisnis`, {
+      const allUnitBisnis = await axios.post(`${tempUrl}/unitBisnis`, {
         id: user._id,
         token: user.token
       });
-      setUser(response.data);
+      setUnitBisnisData(allUnitBisnis.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getUnitBisnisById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/unitBisnis/${id}`, {
+      const pickedUnitBisnis = await axios.post(`${tempUrl}/unitBisnis/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeUnitBisnis(response.data._id);
-      setNamaUnitBisnis(response.data.namaUnitBisnis);
+      setKodeUnitBisnis(pickedUnitBisnis.data._id);
+      setNamaUnitBisnis(pickedUnitBisnis.data.namaUnitBisnis);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteUnitBisnis = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteUnitBisnis/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeUnitBisnis("");
       setNamaUnitBisnis("");
       setLoading(false);
@@ -146,7 +145,7 @@ const TampilUnitBisnis = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: unitBisnisData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -156,7 +155,7 @@ const TampilUnitBisnis = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(unitBisnisData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Unit Bisnis`);
     // Buffer
@@ -197,12 +196,12 @@ const TampilUnitBisnis = () => {
           kode={kodeUnitBisnis}
           addLink={`/unitBisnis/tambahUnitBisnis`}
           editLink={`/unitBisnis/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteUnitBisnis}
           nameUser={kodeUnitBisnis}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeUnitBisnis.length !== 0 && (
+      {isUnitBisnisExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>

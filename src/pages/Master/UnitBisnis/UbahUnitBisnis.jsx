@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahUnitBisnis = () => {
   const { user } = useContext(AuthContext);
@@ -35,23 +35,24 @@ const UbahUnitBisnis = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getUnitBisnisById();
   }, []);
 
-  const getUserById = async () => {
+  const getUnitBisnisById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/unitBisnis/${id}`, {
+    const pickedUnitBisnis = await axios.post(`${tempUrl}/unitBisnis/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeUnitBisnis(response.data._id);
-    setNamaUnitBisnis(response.data.namaUnitBisnis);
+    setKodeUnitBisnis(pickedUnitBisnis.data._id);
+    setNamaUnitBisnis(pickedUnitBisnis.data.namaUnitBisnis);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateUnitBisnis = async (e) => {
     e.preventDefault();
-    if (namaUnitBisnis.length === 0) {
+    let isFailedValidation = namaUnitBisnis.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -131,7 +132,7 @@ const UbahUnitBisnis = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateUnitBisnis}
           >
             Ubah
           </Button>

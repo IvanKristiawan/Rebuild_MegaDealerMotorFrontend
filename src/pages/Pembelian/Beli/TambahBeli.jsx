@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -16,10 +17,26 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
+
+let getNowDate = () => {
+  let date = new Date();
+  return (
+    date.getDate().toLocaleString("en-US", {
+      minimumIntegerDigits: 2,
+      useGrouping: false
+    }) +
+    "-" +
+    (date.getMonth() + 1).toLocaleString("en-US", {
+      minimumIntegerDigits: 2,
+      useGrouping: false
+    }) +
+    "-" +
+    date.getFullYear()
+  );
+};
 
 const TambahBeli = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [kodeBeli, setKodeBeli] = useState("");
   const [kodeSupplier, setKodeSupplier] = useState("");
@@ -33,20 +50,8 @@ const TambahBeli = () => {
   const [suppliers, setSuppliers] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  var date = new Date();
-  var now_date =
-    date.getDate().toLocaleString("en-US", {
-      minimumIntegerDigits: 2,
-      useGrouping: false
-    }) +
-    "-" +
-    (date.getMonth() + 1).toLocaleString("en-US", {
-      minimumIntegerDigits: 2,
-      useGrouping: false
-    }) +
-    "-" +
-    date.getFullYear();
-  const [tanggalBeli, setTanggalBeli] = useState(`${now_date}`);
+  let nowDate = getNowDate();
+  const [tanggalBeli, setTanggalBeli] = useState(`${nowDate}`);
 
   const supplierOptions = suppliers.map((supplier) => ({
     label: `${supplier._id} - ${supplier.namaSupplier}`
@@ -62,44 +67,43 @@ const TambahBeli = () => {
   };
 
   useEffect(() => {
-    getSupplier();
-    getNextLength();
+    getSuppliersData();
+    getNextKodeBeli();
   }, []);
 
-  const getNextLength = async () => {
+  const getNextKodeBeli = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/belisNextLength`, {
+    const nextKodeBeli = await axios.post(`${tempUrl}/belisNextKode`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKodeBeli(response.data);
+    setKodeBeli(nextKodeBeli.data);
     setLoading(false);
   };
 
-  const getSupplier = async () => {
+  const getSuppliersData = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/suppliers`, {
+    const allSuppliers = await axios.post(`${tempUrl}/suppliers`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setSuppliers(response.data);
+    setSuppliers(allSuppliers.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveBeli = async (e) => {
     e.preventDefault();
-
-    if (
+    let isFailedValidation =
       tanggalBeli.length === 0 ||
       kodeSupplier.length === 0 ||
       jenisBeli.length === 0 ||
       lama.length === 0 ||
-      jatuhTempo.length === 0
-    ) {
+      jatuhTempo.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -127,45 +131,45 @@ const TambahBeli = () => {
     }
   };
 
-  const lamaFunction = (e, value) => {
-    var tempShit1 = tanggalBeli.toString().split("-", 1)[0];
-    var tempShit2 = tanggalBeli.toString().split("-")[1];
-    var tempShit3 = tanggalBeli.toString().split("-")[2];
-    var combineShit = `${tempShit3}-${tempShit2}-${tempShit1}`;
-    var someDate = new Date(combineShit);
+  const countDateDuration = (e, value) => {
+    var splitedDay = tanggalBeli.toString().split("-", 1)[0];
+    var splitedMonth = tanggalBeli.toString().split("-")[1];
+    var splitedYear = tanggalBeli.toString().split("-")[2];
+    var combineDate = `${splitedYear}-${splitedMonth}-${splitedDay}`;
+    var tempDate = new Date(combineDate);
     var numberOfDaysToAdd =
       e.target.value !== "" ? parseInt(e.target.value) : 0;
-    var result = someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-    var finalize = new Date(result);
-    var now_final =
-      finalize.getDate().toLocaleString("en-US", {
+    var result = tempDate.setDate(tempDate.getDate() + numberOfDaysToAdd);
+    var finalDate = new Date(result);
+    var calculatedDateResult =
+      finalDate.getDate().toLocaleString("en-US", {
         minimumIntegerDigits: 2,
         useGrouping: false
       }) +
       "-" +
-      (finalize.getMonth() + 1).toLocaleString("en-US", {
+      (finalDate.getMonth() + 1).toLocaleString("en-US", {
         minimumIntegerDigits: 2,
         useGrouping: false
       }) +
       "-" +
-      finalize.getFullYear();
-    setJatuhTempo(now_final);
+      finalDate.getFullYear();
+    setJatuhTempo(calculatedDateResult);
     setLama(e.target.value.toUpperCase());
   };
 
   const jatuhTempoFunction = (e) => {
-    var tempTanggalBeli1 = tanggalBeli.toString().split("-", 1)[0];
-    var tempTanggalBeli2 = tanggalBeli.toString().split("-")[1];
-    var tempTanggalBeli3 = tanggalBeli.toString().split("-")[2];
-    var combineTanggalBeli = `${tempTanggalBeli3}-${tempTanggalBeli2}-${tempTanggalBeli1}`;
-    var tempTanggalBeli = new Date(combineTanggalBeli);
-    var tempJatuhTempo1 = e.target.value.toString().split("-", 1)[0];
-    var tempJatuhTempo2 = e.target.value.toString().split("-")[1];
-    var tempJatuhTempo3 = e.target.value.toString().split("-")[2];
-    var combineJatuhTempo = `${tempJatuhTempo3}-${tempJatuhTempo2}-${tempJatuhTempo1}`;
-    var tempJatuhTempo = new Date(combineJatuhTempo);
+    var splitedDayTanggalBeli = tanggalBeli.toString().split("-", 1)[0];
+    var splitedMonthTanggalBeli = tanggalBeli.toString().split("-")[1];
+    var splitedYearTanggalBeli = tanggalBeli.toString().split("-")[2];
+    var combineDateTanggalBeli = `${splitedYearTanggalBeli}-${splitedMonthTanggalBeli}-${splitedDayTanggalBeli}`;
+    var tempDateTanggalBeli = new Date(combineDateTanggalBeli);
+    var splitedDayInputDate = e.target.value.toString().split("-", 1)[0];
+    var splitedMonthInputDate = e.target.value.toString().split("-")[1];
+    var splitedYearInputDate = e.target.value.toString().split("-")[2];
+    var combineDateInput = `${splitedYearInputDate}-${splitedMonthInputDate}-${splitedDayInputDate}`;
+    var tempDateInput = new Date(combineDateInput);
 
-    const diffTime = Math.abs(tempJatuhTempo - tempTanggalBeli);
+    const diffTime = Math.abs(tempDateInput - tempDateTanggalBeli);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     setLama(diffDays);
@@ -296,7 +300,7 @@ const TambahBeli = () => {
               id="outlined-basic"
               variant="outlined"
               value={lama}
-              onChange={(e, value) => lamaFunction(e, value)}
+              onChange={(e, value) => countDateDuration(e, value)}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Jatuh Tempo (hari-bulan-tahun)
@@ -326,7 +330,7 @@ const TambahBeli = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveBeli}
           >
             Simpan
           </Button>

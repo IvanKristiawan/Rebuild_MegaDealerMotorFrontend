@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
 const TambahUnitBisnis = () => {
   const { user } = useContext(AuthContext);
@@ -34,22 +34,26 @@ const TambahUnitBisnis = () => {
   };
 
   useEffect(() => {
-    getNextLength();
+    getNextKodeUnitBisnis();
   }, []);
 
-  const getNextLength = async () => {
+  const getNextKodeUnitBisnis = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/unitBisnisNextLength`, {
-      id: user._id,
-      token: user.token
-    });
-    setKodeUnitBisnis(response.data);
+    const nextKodeUnitBisnis = await axios.post(
+      `${tempUrl}/unitBisnisNextKode`,
+      {
+        id: user._id,
+        token: user.token
+      }
+    );
+    setKodeUnitBisnis(nextKodeUnitBisnis.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveUnitBisnis = async (e) => {
     e.preventDefault();
-    if (namaUnitBisnis.length === 0) {
+    let isFailedValidation = namaUnitBisnis.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -125,7 +129,7 @@ const TambahUnitBisnis = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveUnitBisnis}
           >
             Simpan
           </Button>
@@ -193,14 +197,4 @@ const contentContainer = {
   pt: 1,
   mt: 2,
   backgroundColor: Colors.grey100
-};
-
-const secondWrapper = {
-  marginLeft: {
-    md: 4
-  },
-  marginTop: {
-    md: 0,
-    xs: 4
-  }
 };

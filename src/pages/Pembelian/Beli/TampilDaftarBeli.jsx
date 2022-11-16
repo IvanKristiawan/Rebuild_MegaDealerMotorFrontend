@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { Box, Typography, Divider, Pagination } from "@mui/material";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import { ShowTableDaftarBeli } from "../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
@@ -10,15 +10,14 @@ import {
   usePagination,
   ButtonModifier
 } from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
+import { Box, Typography, Divider, Pagination } from "@mui/material";
 
 const TampilDaftarBeli = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { screenSize } = useStateContext();
   const [isFetchError, setIsFetchError] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [belisData, setBelisData] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const kode = null;
 
@@ -29,7 +28,7 @@ const TampilDaftarBeli = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = belisData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -46,7 +45,7 @@ const TampilDaftarBeli = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(belisData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -54,32 +53,32 @@ const TampilDaftarBeli = () => {
   };
 
   useEffect(() => {
-    getSupplier();
-    getUsers();
+    getSuppliersData();
+    getBelisData();
   }, []);
 
-  const getSupplier = async () => {
+  const getSuppliersData = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/suppliersMainInfo`, {
+    const allSuppliers = await axios.post(`${tempUrl}/suppliersMainInfo`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setSuppliers(response.data);
+    setSuppliers(allSuppliers.data);
     setLoading(false);
   };
 
-  const getUsers = async () => {
+  const getBelisData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/belis`, {
+      const allBelis = await axios.post(`${tempUrl}/belis`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setBelisData(allBelis.data);
     } catch (err) {
       setIsFetchError(true);
     }
