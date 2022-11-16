@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -16,7 +17,6 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahSurveyor = () => {
   const { user } = useContext(AuthContext);
@@ -38,25 +38,27 @@ const UbahSurveyor = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getSurveyorById();
   }, []);
 
-  const getUserById = async () => {
+  const getSurveyorById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/surveyors/${id}`, {
+    const pickedSurveyor = await axios.post(`${tempUrl}/surveyors/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeSurveyor(response.data._id);
-    setNamaSurveyor(response.data.namaSurveyor);
-    setJenisSurveyor(response.data.jenisSurveyor);
-    setTeleponSurveyor(response.data.teleponSurveyor);
+    setKodeSurveyor(pickedSurveyor.data._id);
+    setNamaSurveyor(pickedSurveyor.data.namaSurveyor);
+    setJenisSurveyor(pickedSurveyor.data.jenisSurveyor);
+    setTeleponSurveyor(pickedSurveyor.data.teleponSurveyor);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateSurveyor = async (e) => {
     e.preventDefault();
-    if (namaSurveyor.length === 0 || jenisSurveyor.length === 0) {
+    let isFailedValidation =
+      namaSurveyor.length === 0 || jenisSurveyor.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -170,7 +172,7 @@ const UbahSurveyor = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateSurveyor}
           >
             Ubah
           </Button>

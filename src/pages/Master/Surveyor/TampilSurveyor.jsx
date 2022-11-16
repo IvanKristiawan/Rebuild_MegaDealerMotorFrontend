@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableSurveyor } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableSurveyor } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +32,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilSurveyor = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -44,8 +43,9 @@ const TampilSurveyor = () => {
   const [jenisSurveyor, setJenisSurveyor] = useState("");
   const [teleponSurveyor, setTeleponSurveyor] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [surveyorsData, setSurveyorsData] = useState([]);
   const navigate = useNavigate();
+  let isSurveyorExist = kodeSurveyor.length !== 0;
 
   const columns = [
     { title: "Kode", field: "_id" },
@@ -61,7 +61,7 @@ const TampilSurveyor = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = surveyorsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -76,7 +76,7 @@ const TampilSurveyor = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(surveyorsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -84,47 +84,46 @@ const TampilSurveyor = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getSurveyorsData();
+    id && getSurveyorById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getSurveyorsData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/surveyors`, {
+      const allSurveyors = await axios.post(`${tempUrl}/surveyors`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setSurveyorsData(allSurveyors.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getSurveyorById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/surveyors/${id}`, {
+      const pickedSurveyor = await axios.post(`${tempUrl}/surveyors/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeSurveyor(response.data._id);
-      setNamaSurveyor(response.data.namaSurveyor);
-      setJenisSurveyor(response.data.jenisSurveyor);
-      setTeleponSurveyor(response.data.teleponSurveyor);
+      setKodeSurveyor(pickedSurveyor.data._id);
+      setNamaSurveyor(pickedSurveyor.data.namaSurveyor);
+      setJenisSurveyor(pickedSurveyor.data.jenisSurveyor);
+      setTeleponSurveyor(pickedSurveyor.data.teleponSurveyor);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteSurveyor = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteSurveyor/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setKodeSurveyor("");
       setNamaSurveyor("");
       setJenisSurveyor("");
@@ -158,7 +157,7 @@ const TampilSurveyor = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: surveyorsData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -168,7 +167,7 @@ const TampilSurveyor = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(surveyorsData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Surveyor`);
     // Buffer
@@ -209,12 +208,12 @@ const TampilSurveyor = () => {
           kode={kodeSurveyor}
           addLink={`/surveyor/tambahSurveyor`}
           editLink={`/surveyor/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteSurveyor}
           nameUser={kodeSurveyor}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeSurveyor.length !== 0 && (
+      {isSurveyorExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
