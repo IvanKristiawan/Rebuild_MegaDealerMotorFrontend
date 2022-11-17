@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableJual } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifierJual
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -17,16 +26,6 @@ import {
   ButtonGroup,
   Paper
 } from "@mui/material";
-import { ShowTableJual } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifierJual
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -34,7 +33,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilJual = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -89,13 +88,14 @@ const TampilJual = () => {
   const [kodeAngsuran, setKodeAngsuran] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState([]);
+  const [jualsData, setJualsData] = useState([]);
   const [jualsForTable, setJualsForTable] = useState([]);
   const [jualsForDoc, setJualsForDoc] = useState([]);
   const [leasings, setLeasings] = useState([]);
   const [tipes, setTipes] = useState([]);
   const [kecamatans, setKecamatans] = useState([]);
   const navigate = useNavigate();
+  let isJualExist = noJual.length !== 0;
 
   const columns = [
     { title: "No. Jual", field: "noJual" },
@@ -112,7 +112,7 @@ const TampilJual = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = jualsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -135,7 +135,7 @@ const TampilJual = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(jualsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -146,45 +146,48 @@ const TampilJual = () => {
     getJualsForTable();
     getKecamatan();
     getTipe();
-    getUsers();
+    getJualsData();
     getJualsForDoc();
-    id && getUserById();
+    id && getJualById();
   }, [id]);
 
   const getKecamatan = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kecamatansForTable`, {
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setKecamatans(response.data);
+    const allKecamatansForTable = await axios.post(
+      `${tempUrl}/kecamatansForTable`,
+      {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setKecamatans(allKecamatansForTable.data);
     setLoading(false);
   };
 
   const getTipe = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/tipesMainInfo`, {
+    const allTipesMainInfo = await axios.post(`${tempUrl}/tipesMainInfo`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setTipes(response.data);
+    setTipes(allTipesMainInfo.data);
     setLoading(false);
   };
 
-  const getUsers = async () => {
+  const getJualsData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/juals`, {
+      const allJuals = await axios.post(`${tempUrl}/juals`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUsers(response.data);
+      setJualsData(allJuals.data);
     } catch (err) {
       setIsFetchError(true);
     }
@@ -193,29 +196,29 @@ const TampilJual = () => {
 
   const getJualsForTable = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/jualsForTable`, {
+    const allJualsForTable = await axios.post(`${tempUrl}/jualsForTable`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setJualsForTable(response.data);
+    setJualsForTable(allJualsForTable.data);
     setLoading(false);
   };
 
   const getJualsForDoc = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/jualsForDoc`, {
+    const allJualsForDoc = await axios.post(`${tempUrl}/jualsForDoc`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setJualsForDoc(response.data);
+    setJualsForDoc(allJualsForDoc.data);
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getJualById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/juals/${id}`, {
         id: user._id,
@@ -271,7 +274,7 @@ const TampilJual = () => {
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteJual = async (id) => {
     try {
       setLoading(true);
       const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
@@ -297,7 +300,6 @@ const TampilJual = () => {
         id: user._id,
         token: user.token
       });
-      getUsers();
       // Data Register/Pembeli
       setNoRegister("");
       setNamaRegister("");
@@ -382,7 +384,7 @@ const TampilJual = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(users);
+    const workSheet = XLSX.utils.json_to_sheet(jualsData);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Jual`);
     // Buffer
@@ -426,14 +428,14 @@ const TampilJual = () => {
           editLink={
             nopol.length > 0 ? `/jual/${id}/editBekas` : `/jual/${id}/editBaru`
           }
-          deleteUser={deleteUser}
+          deleteUser={deleteJual}
           nameUser={noJual}
           addTambahText=" Bekas"
           editable={tenor - sisaBulan === 0}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {noJual.length !== 0 && (
+      {isJualExist && (
         <>
           <Box sx={contentContainer}>
             {/* Data Penjualan */}

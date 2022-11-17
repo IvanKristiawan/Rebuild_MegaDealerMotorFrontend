@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
-  kotaPerusahaan,
+  kotaPerusahaan
 } from "../../../constants/GeneralSetting";
 import {
   Box,
@@ -14,7 +14,7 @@ import {
   Divider,
   Pagination,
   Button,
-  ButtonGroup,
+  ButtonGroup
 } from "@mui/material";
 import { ShowTableAngsuran } from "../../../components/ShowTable";
 import { Loader, usePagination } from "../../../components";
@@ -68,7 +68,7 @@ const TampilAngsuran = () => {
     { title: "Ke", field: "_id" },
     { title: "Keterangan", field: "keterangan" },
     { title: "Bayar", field: "angPerBulan" },
-    { title: "Saldo", field: "saldo" },
+    { title: "Saldo", field: "saldo" }
   ];
 
   const columnsRinci = [
@@ -81,7 +81,7 @@ const TampilAngsuran = () => {
     { title: "A. Bunga", field: "angBunga" },
     { title: "Saldo", field: "bunga" },
     { title: "Bayar", field: "angPerBulan" },
-    { title: "Saldo", field: "saldo" },
+    { title: "Saldo", field: "saldo" }
   ];
 
   const [loading, setLoading] = useState(false);
@@ -115,7 +115,7 @@ const TampilAngsuran = () => {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id,
+      kodeCabang: user.cabang._id
     });
     setAngsurans(response.data.angsuran);
     setModal(response.data.angsuran[0].angModal * response.data.tenor);
@@ -130,7 +130,7 @@ const TampilAngsuran = () => {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id,
+      kodeCabang: user.cabang._id
     });
     setAngsuranTableRekap(response.data);
     setLoading(false);
@@ -143,7 +143,7 @@ const TampilAngsuran = () => {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id,
+      kodeCabang: user.cabang._id
     });
     setAngsuranTableRinci(response.data);
     setLoading(false);
@@ -156,7 +156,7 @@ const TampilAngsuran = () => {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id,
+        kodeCabang: user.cabang._id
       });
       setNamaRegister(response.data.namaRegister);
       setNoJual(response.data.noJual);
@@ -226,8 +226,8 @@ const TampilAngsuran = () => {
       body: angsuranTableRekap,
       headStyles: {
         fillColor: [117, 117, 117],
-        color: [0, 0, 0],
-      },
+        color: [0, 0, 0]
+      }
     });
     doc.save(`kartuKreditRekap.pdf`);
   };
@@ -278,8 +278,8 @@ const TampilAngsuran = () => {
       body: angsuranTableRinci,
       headStyles: {
         fillColor: [117, 117, 117],
-        color: [0, 0, 0],
-      },
+        color: [0, 0, 0]
+      }
     });
     doc.save(`kartuKreditRinci.pdf`);
   };
@@ -325,7 +325,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={namaRegister}
             />
@@ -335,7 +335,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={noJual}
             />
@@ -345,7 +345,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={tanggalJual}
             />
@@ -355,7 +355,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={nopol}
             />
@@ -365,7 +365,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={almRegister}
             />
@@ -375,7 +375,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={tipe}
             />
@@ -387,7 +387,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={tglSpTerakhir}
             />
@@ -399,7 +399,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={tglMdTerakhir}
             />
@@ -409,7 +409,7 @@ const TampilAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={spKe}
             />
@@ -436,30 +436,30 @@ const TampilAngsuran = () => {
 export default TampilAngsuran;
 
 const container = {
-  p: 4,
+  p: 4
 };
 
 const subTitleText = {
-  fontWeight: "900",
+  fontWeight: "900"
 };
 
 const buttonModifierContainer = {
   mt: 4,
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "center",
+  justifyContent: "center"
 };
 
 const dividerStyle = {
-  pt: 4,
+  pt: 4
 };
 
 const textFieldContainer = {
   display: "flex",
   flexDirection: {
     xs: "column",
-    sm: "row",
-  },
+    sm: "row"
+  }
 };
 
 const textFieldWrapper = {
@@ -467,38 +467,38 @@ const textFieldWrapper = {
   flex: 1,
   flexDirection: "column",
   maxWidth: {
-    md: "40vw",
-  },
+    md: "40vw"
+  }
 };
 
 const tableContainer = {
   pt: 4,
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "center"
 };
 
 const labelInput = {
   fontWeight: "600",
-  marginLeft: 1,
+  marginLeft: 1
 };
 
 const spacingTop = {
-  mt: 4,
+  mt: 4
 };
 
 const secondWrapper = {
   marginLeft: {
-    md: 4,
+    md: 4
   },
   marginTop: {
     md: 0,
-    xs: 4,
-  },
+    xs: 4
+  }
 };
 
 const downloadButtons = {
   mt: 4,
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "center",
+  justifyContent: "center"
 };

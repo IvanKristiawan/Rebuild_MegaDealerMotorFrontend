@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader, SearchBar } from "../../../components";
 import {
   Box,
@@ -26,7 +27,6 @@ import {
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { makeStyles } from "@mui/styles";
-import { Colors } from "../../../constants/styles";
 
 const useStyles = makeStyles({
   root: {
@@ -172,114 +172,120 @@ const TambahJualBekas = () => {
   }, []);
 
   const getStoksByNopol = async (nopol) => {
-    const response = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
-      nopol,
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    if (response.data) {
-      setNoRangka(response.data.noRangka);
-      setNoMesin(response.data.noMesin);
-      setTipe(response.data.tipe);
-      setNamaWarna(response.data.namaWarna);
-      setTahun(response.data.tahun);
+    const allDaftarStoksByNopol = await axios.post(
+      `${tempUrl}/daftarStoksByNopol`,
+      {
+        nopol,
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    if (allDaftarStoksByNopol.data) {
+      setNoRangka(allDaftarStoksByNopol.data.noRangka);
+      setNoMesin(allDaftarStoksByNopol.data.noMesin);
+      setTipe(allDaftarStoksByNopol.data.tipe);
+      setNamaWarna(allDaftarStoksByNopol.data.namaWarna);
+      setTahun(allDaftarStoksByNopol.data.tahun);
     }
     setNopol(nopol);
   };
 
   const getStok = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/daftarStoksNopol`, {
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setStoks(response.data);
+    const allDaftarStokHasNopol = await axios.post(
+      `${tempUrl}/daftarStoksNopol`,
+      {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setStoks(allDaftarStokHasNopol.data);
     setLoading(false);
   };
 
   const getRegister = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/registers`, {
+    const allRegisters = await axios.post(`${tempUrl}/registers`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setRegisters(response.data);
+    setRegisters(allRegisters.data);
     setLoading(false);
   };
 
   const getMarketing = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/marketings`, {
+    const allMarketings = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setMarketings(response.data);
+    setMarketings(allMarketings.data);
     setLoading(false);
   };
 
   const getSurveyor = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/surveyors`, {
+    const allSurveyors = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setSurveyors(response.data);
+    setSurveyors(allSurveyors.data);
     setLoading(false);
   };
 
   const getPekerjaan = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/pekerjaans`, {
+    const allPekerjaans = await axios.post(`${tempUrl}/pekerjaans`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setPekerjaans(response.data);
+    setPekerjaans(allPekerjaans.data);
     setLoading(false);
   };
 
   const getKecamatan = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kecamatans`, {
+    const allKecamatans = await axios.post(`${tempUrl}/kecamatans`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKecamatans(response.data);
+    setKecamatans(allKecamatans.data);
     setLoading(false);
   };
 
   const getLeasing = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/leasingsForTable`, {
+    const allLeasings = await axios.post(`${tempUrl}/leasingsForTable`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setLeasings(response.data);
+    setLeasings(allLeasings.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveJual = async (e) => {
     e.preventDefault();
     let tempDateAng = tglAng.split("-")[2];
     if (tempDateAng > 28) {
       alert(`Tanggal Angsuran I tidak boleh lebih dari 28!`);
     } else {
-      if (
+      let isFailedValidation =
         noJual.length === 0 ||
         tglJual.length === 0 ||
         jenisJual.length === 0 ||
@@ -296,8 +302,8 @@ const TambahJualBekas = () => {
         sisaPiutang.length === 0 ||
         angPerBulan.length === 0 ||
         tenor.length === 0 ||
-        jumlahPiutang.length === 0
-      ) {
+        jumlahPiutang.length === 0;
+      if (isFailedValidation) {
         setError(true);
         setOpen(!open);
       } else {
@@ -1113,7 +1119,7 @@ const TambahJualBekas = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveJual}
           >
             Simpan
           </Button>
