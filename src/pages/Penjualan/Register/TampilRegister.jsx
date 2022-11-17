@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Colors } from "../../../constants/styles";
+import { ShowTableRegister } from "../../../components/ShowTable";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
 import {
   Box,
   TextField,
@@ -16,25 +26,14 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import DownloadIcon from "@mui/icons-material/Download";
-import html2canvas from "html2canvas";
 import PrintIcon from "@mui/icons-material/Print";
-import { Colors } from "../../../constants/styles";
 
 const TampilRegister = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -58,9 +57,19 @@ const TampilRegister = () => {
   const [almRefRegister, setAlmRefRegister] = useState("");
   const [tlpRefRegister, setTlpRefRegister] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [registersData, setRegistersData] = useState([]);
   const [registersForDoc, setRegistersForDoc] = useState([]);
   const navigate = useNavigate();
+  let isRegisterExist = noRegister.length !== 0;
+
+  const columns = [
+    { title: "No", field: "noRegister" },
+    { title: "Tanggal", field: "tanggalRegister" },
+    { title: "Nama", field: "namaRegister" },
+    { title: "Alamat", field: "almRegister" },
+    { title: "Telepon", field: "tlpRegister" },
+    { title: "No. KTP", field: "noKtpRegister" }
+  ];
 
   const [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
@@ -69,7 +78,7 @@ const TampilRegister = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = registersData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -78,18 +87,7 @@ const TampilRegister = () => {
       val.namaRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.almRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.tlpRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.noKtpRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.almKtpRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.noKKRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.namaPjmRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.almPjmRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.tlpPjmRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.hubunganRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.noKtpPjmRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.pkjRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.namaRefRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.almRefRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.tlpRefRegister.toUpperCase().includes(searchTerm.toUpperCase())
+      val.noKtpRegister.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -97,7 +95,7 @@ const TampilRegister = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(registersData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -105,21 +103,21 @@ const TampilRegister = () => {
   };
 
   useEffect(() => {
-    getUsers();
+    getRegistersData();
     getRegistersForDoc();
     id && getUserById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getRegistersData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/registers`, {
+      const allRegisters = await axios.post(`${tempUrl}/registers`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setRegistersData(allRegisters.data);
     } catch (err) {
       setIsFetchError(true);
     }
@@ -128,50 +126,49 @@ const TampilRegister = () => {
 
   const getRegistersForDoc = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/registersForDoc`, {
+    const allRegisterForDoc = await axios.post(`${tempUrl}/registersForDoc`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setRegistersForDoc(response.data);
+    setRegistersForDoc(allRegisterForDoc.data);
     setLoading(false);
   };
 
   const getUserById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/registers/${id}`, {
+      const pickedRegister = await axios.post(`${tempUrl}/registers/${id}`, {
         id: user._id,
         token: user.token
       });
-      setNoRegister(response.data.noRegister);
-      setTanggalRegister(response.data.tanggalRegister);
-      setNamaRegister(response.data.namaRegister);
-      setAlmRegister(response.data.almRegister);
-      setTlpRegister(response.data.tlpRegister);
-      setNoKtpRegister(response.data.noKtpRegister);
-      setAlmKtpRegister(response.data.almKtpRegister);
-      setNoKKRegister(response.data.noKKRegister);
-      setNamaPjmRegister(response.data.namaPjmRegister);
-      setAlmPjmRegister(response.data.almPjmRegister);
-      setTlpPjmRegister(response.data.tlpPjmRegister);
-      setHubunganRegister(response.data.hubunganRegister);
-      setNoKtpPjmRegister(response.data.noKtpPjmRegister);
-      setPkjRegister(response.data.pkjRegister);
-      setNamaRefRegister(response.data.namaRefRegister);
-      setAlmRefRegister(response.data.almRefRegister);
-      setTlpRefRegister(response.data.tlpRefRegister);
+      setNoRegister(pickedRegister.data.noRegister);
+      setTanggalRegister(pickedRegister.data.tanggalRegister);
+      setNamaRegister(pickedRegister.data.namaRegister);
+      setAlmRegister(pickedRegister.data.almRegister);
+      setTlpRegister(pickedRegister.data.tlpRegister);
+      setNoKtpRegister(pickedRegister.data.noKtpRegister);
+      setAlmKtpRegister(pickedRegister.data.almKtpRegister);
+      setNoKKRegister(pickedRegister.data.noKKRegister);
+      setNamaPjmRegister(pickedRegister.data.namaPjmRegister);
+      setAlmPjmRegister(pickedRegister.data.almPjmRegister);
+      setTlpPjmRegister(pickedRegister.data.tlpPjmRegister);
+      setHubunganRegister(pickedRegister.data.hubunganRegister);
+      setNoKtpPjmRegister(pickedRegister.data.noKtpPjmRegister);
+      setPkjRegister(pickedRegister.data.pkjRegister);
+      setNamaRefRegister(pickedRegister.data.namaRefRegister);
+      setAlmRefRegister(pickedRegister.data.almRefRegister);
+      setTlpRefRegister(pickedRegister.data.tlpRefRegister);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteRegister = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteRegister/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setNoRegister("");
       setTanggalRegister("");
       setNamaRegister("");
@@ -202,25 +199,29 @@ const TampilRegister = () => {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const quality = 1; // Higher the better but larger file
-    html2canvas(document.querySelector("#content"), { scale: quality }).then(
-      (canvas) => {
-        const pdf = new jsPDF("p", "mm", "a4");
-        pdf.setFontSize(12);
-        pdf.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
-        pdf.text(`${lokasiPerusahaan}`, 15, 15);
-        pdf.setFontSize(16);
-        pdf.text(`Daftar Register Penjualan`, 80, 30);
-        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 10, 40, 190, 170);
-        pdf.setFontSize(10);
-        pdf.text(
-          `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
-          15,
-          280
-        );
-        pdf.save("daftarRegisterPenjualan.pdf");
-      }
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
+    doc.text(`${lokasiPerusahaan}`, 15, 15);
+    doc.setFontSize(16);
+    doc.text(`Daftar Register`, 90, 30);
+    doc.setFontSize(10);
+    doc.text(
+      `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
+      15,
+      280
     );
+    doc.setFontSize(12);
+    doc.autoTable({
+      margin: { top: 45 },
+      columns: columns.map((col) => ({ ...col, dataKey: col.field })),
+      body: registersData,
+      headStyles: {
+        fillColor: [117, 117, 117],
+        color: [0, 0, 0]
+      }
+    });
+    doc.save(`daftarRegister.pdf`);
   };
 
   const downloadExcel = () => {
@@ -265,11 +266,11 @@ const TampilRegister = () => {
           kode={noRegister}
           addLink={`/register/tambahRegister`}
           editLink={`/register/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteRegister}
           nameUser={noRegister}
         />
       </Box>
-      {noRegister.length !== 0 && (
+      {isRegisterExist && (
         <>
           <Divider sx={dividerStyle} />
           <Box sx={showDataContainer}>
@@ -482,135 +483,11 @@ const TampilRegister = () => {
       <Box sx={searchBarContainer}>
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
-      <Box sx={[tableContainer]}>
-        <table id="content">
-          <tr>
-            <th style={thTable}>No</th>
-            <th style={thTable}>Tanggal</th>
-            <th style={thTable}>Nama</th>
-            <th style={thTable}>Alamat</th>
-            <th style={thTable}>Telepon</th>
-            <th style={thTable}>No. KTP</th>
-            <th style={thTable}>Alm. KTP</th>
-            <th style={thTable}>No. KK</th>
-            <th style={thTable}>Nama Penjamin</th>
-          </tr>
-          <tr>
-            <th style={thTable}></th>
-            <th style={thTable}>Alm. Penjamin</th>
-            <th style={thTable}>Tlp. Penjamin</th>
-            <th style={thTable}>Hubungan</th>
-            <th style={thTable}>No. KTP Penjamin</th>
-            <th style={thTable}>Pekerjaan Penjamin</th>
-            <th style={thTable}>Nama Ref.</th>
-            <th style={thTable}>Alm. Ref.</th>
-            <th style={thTable}>Tlp. Ref.</th>
-          </tr>
-          {currentPosts
-            .filter((val) => {
-              if (searchTerm === "") {
-                return val;
-              } else if (
-                val.noRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.tanggalRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.namaRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.almRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.tlpRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.noKtpRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.almKtpRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.noKKRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.namaPjmRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.almPjmRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.tlpPjmRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.hubunganRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.noKtpPjmRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.pkjRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.namaRefRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.almRefRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase()) ||
-                val.tlpRefRegister
-                  .toUpperCase()
-                  .includes(searchTerm.toUpperCase())
-              ) {
-                return val;
-              }
-            })
-            .map((user, index) => (
-              <>
-                <tr
-                  style={{
-                    cursor: "pointer",
-                    height: "100px",
-                    backgroundColor: index % 2 === 0 && "#dddddd"
-                  }}
-                  onClick={() => {
-                    navigate(`/register/${user._id}`);
-                  }}
-                >
-                  <td style={tdTable}>{user.noRegister}</td>
-                  <td style={tdTable}>{user.tanggalRegister}</td>
-                  <td style={tdTable}>{user.namaRegister}</td>
-                  <td style={tdTable}>{user.almRegister}</td>
-                  <td style={tdTable}>{user.tlpRegister}</td>
-                  <td style={tdTable}>{user.noKtpRegister}</td>
-                  <td style={tdTable}>{user.almKtpRegister}</td>
-                  <td style={tdTable}>{user.noKKRegister}</td>
-                  <td style={tdTable}>{user.namaPjmRegister}</td>
-                </tr>
-                <tr
-                  style={{
-                    cursor: "pointer",
-                    height: "100px",
-                    backgroundColor: index % 2 === 0 && "#dddddd"
-                  }}
-                  onClick={() => {
-                    navigate(`/register/${user._id}`);
-                  }}
-                >
-                  <td style={tdTable}></td>
-                  <td style={tdTable}>{user.almPjmRegister}</td>
-                  <td style={tdTable}>{user.tlpPjmRegister}</td>
-                  <td style={tdTable}>{user.hubunganRegister}</td>
-                  <td style={tdTable}>{user.noKtpPjmRegister}</td>
-                  <td style={tdTable}>{user.pkjRegister}</td>
-                  <td style={tdTable}>{user.namaRefRegister}</td>
-                  <td style={tdTable}>{user.almRefRegister}</td>
-                  <td style={tdTable}>{user.tlpRefRegister}</td>
-                </tr>
-              </>
-            ))}
-        </table>
+      <Box sx={tableContainer}>
+        <ShowTableRegister
+          currentPosts={currentPosts}
+          searchTerm={searchTerm}
+        />
       </Box>
       <Box sx={tableContainer}>
         <Pagination
@@ -674,20 +551,6 @@ const tableContainer = {
   pt: 4,
   display: "flex",
   justifyContent: "center"
-};
-
-const tdTable = {
-  border: "1px solid #dddddd",
-  textAlign: "left",
-  padding: "8px"
-};
-
-const thTable = {
-  border: "1px solid #dddddd",
-  textAlign: "left",
-  padding: "8px",
-  backgroundColor: Colors.blue700,
-  color: "white"
 };
 
 const labelInput = {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahRegister = () => {
   const { user } = useContext(AuthContext);
@@ -49,44 +49,44 @@ const UbahRegister = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getRegisterById();
   }, []);
 
-  const getUserById = async () => {
+  const getRegisterById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/registers/${id}`, {
+    const pickedRegister = await axios.post(`${tempUrl}/registers/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeRegister(response.data.noRegister);
-    setNamaRegister(response.data.namaRegister);
-    setAlmRegister(response.data.almRegister);
-    setTlpRegister(response.data.tlpRegister);
-    setNoKtpRegister(response.data.noKtpRegister);
-    setAlmKtpRegister(response.data.almKtpRegister);
-    setNoKKRegister(response.data.noKKRegister);
-    setNamaPjmRegister(response.data.namaPjmRegister);
-    setAlmPjmRegister(response.data.almPjmRegister);
-    setTlpPjmRegister(response.data.tlpPjmRegister);
-    setHubunganRegister(response.data.hubunganRegister);
-    setNoKtpPjmRegister(response.data.noKtpPjmRegister);
-    setPkjRegister(response.data.pkjRegister);
-    setNamaRefRegister(response.data.namaRefRegister);
-    setAlmRefRegister(response.data.almRefRegister);
-    setTlpRefRegister(response.data.tlpRefRegister);
+    setKodeRegister(pickedRegister.data.noRegister);
+    setNamaRegister(pickedRegister.data.namaRegister);
+    setAlmRegister(pickedRegister.data.almRegister);
+    setTlpRegister(pickedRegister.data.tlpRegister);
+    setNoKtpRegister(pickedRegister.data.noKtpRegister);
+    setAlmKtpRegister(pickedRegister.data.almKtpRegister);
+    setNoKKRegister(pickedRegister.data.noKKRegister);
+    setNamaPjmRegister(pickedRegister.data.namaPjmRegister);
+    setAlmPjmRegister(pickedRegister.data.almPjmRegister);
+    setTlpPjmRegister(pickedRegister.data.tlpPjmRegister);
+    setHubunganRegister(pickedRegister.data.hubunganRegister);
+    setNoKtpPjmRegister(pickedRegister.data.noKtpPjmRegister);
+    setPkjRegister(pickedRegister.data.pkjRegister);
+    setNamaRefRegister(pickedRegister.data.namaRefRegister);
+    setAlmRefRegister(pickedRegister.data.almRefRegister);
+    setTlpRefRegister(pickedRegister.data.tlpRefRegister);
     setLoading(false);
   };
 
   const updateUser = async (e) => {
     e.preventDefault();
-    if (
+    let isFailedValidation =
       namaRegister.length === 0 ||
       almRegister.length === 0 ||
       tlpRegister.length === 0 ||
       noKtpRegister.length === 0 ||
       almKtpRegister.length === 0 ||
-      noKKRegister.length === 0
-    ) {
+      noKKRegister.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -176,6 +176,7 @@ const UbahRegister = () => {
               Telepon Register
             </Typography>
             <TextField
+              type="number"
               size="small"
               error={error && tlpRegister.length === 0 && true}
               helperText={
@@ -232,9 +233,9 @@ const UbahRegister = () => {
               value={namaPjmRegister}
               onChange={(e) => setNamaPjmRegister(e.target.value.toUpperCase())}
             />
-            <Typography sx={[labelInput, spacingTop]}>
-              Alamat Penjamin
-            </Typography>
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Alamat Penjamin</Typography>
             <TextField
               size="small"
               id="outlined-basic"
@@ -242,10 +243,11 @@ const UbahRegister = () => {
               value={almPjmRegister}
               onChange={(e) => setAlmPjmRegister(e.target.value.toUpperCase())}
             />
-          </Box>
-          <Box sx={[showDataWrapper, secondWrapper]}>
-            <Typography sx={labelInput}>Telepon Penjamin</Typography>
+            <Typography sx={[labelInput, spacingTop]}>
+              Telepon Penjamin
+            </Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"
@@ -309,6 +311,7 @@ const UbahRegister = () => {
               Telepon Referensi
             </Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"

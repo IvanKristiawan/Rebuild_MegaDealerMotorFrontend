@@ -371,6 +371,98 @@ export function ShowTableDealer({ currentPosts, searchTerm }) {
   );
 }
 
+export function ShowTableRegister({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tanggal
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Alamat
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Telepon</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Ktp</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.noRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.tanggalRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.namaRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.almRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.tlpRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.noKtpRegister
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/register/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.noRegister}
+                </TableCell>
+                <TableCell>{user.tanggalRegister}</TableCell>
+                <TableCell>{user.namaRegister}</TableCell>
+                <TableCell>{user.almRegister}</TableCell>
+                <TableCell>{user.tlpRegister}</TableCell>
+                <TableCell>{user.noKtpRegister}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
 export function ShowTableKolektor({ currentPosts, searchTerm }) {
   let navigate = useNavigate();
   const classes = useStyles();

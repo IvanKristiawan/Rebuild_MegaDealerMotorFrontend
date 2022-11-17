@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
 const TambahRegister = () => {
   const { user } = useContext(AuthContext);
@@ -48,31 +48,31 @@ const TambahRegister = () => {
   };
 
   useEffect(() => {
-    getNextLength();
+    getNextKodeRegister();
   }, []);
 
-  const getNextLength = async () => {
+  const getNextKodeRegister = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/registersNextLength`, {
+    const nextKodeRegister = await axios.post(`${tempUrl}/registersNextKode`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKodeRegister(response.data);
+    setKodeRegister(nextKodeRegister.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveRegister = async (e) => {
     e.preventDefault();
-    if (
+    let isFailedValidation =
       namaRegister.length === 0 ||
       almRegister.length === 0 ||
       tlpRegister.length === 0 ||
       noKtpRegister.length === 0 ||
       almKtpRegister.length === 0 ||
-      noKKRegister.length === 0
-    ) {
+      noKKRegister.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -233,6 +233,7 @@ const TambahRegister = () => {
               Telepon Penjamin
             </Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"
@@ -296,6 +297,7 @@ const TambahRegister = () => {
               Telepon Referensi
             </Typography>
             <TextField
+              type="number"
               size="small"
               id="outlined-basic"
               variant="outlined"
@@ -316,7 +318,7 @@ const TambahRegister = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveRegister}
           >
             Simpan
           </Button>
