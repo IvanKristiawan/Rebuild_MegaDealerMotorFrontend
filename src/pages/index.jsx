@@ -97,3 +97,6 @@ export { default as TambahSuratPemberitahuan } from "./Piutang/SuratPemberitahua
 // Surat Penarikan
 export { default as TampilSuratPenarikan } from "./Piutang/SuratPenarikan/TampilSuratPenarikan";
 export { default as TambahSuratPenarikan } from "./Piutang/SuratPenarikan/TambahSuratPenarikan";
+// Biaya Perawatan
+export { default as TampilBiayaPerawatan } from "./Perawatan/BiayaPerawatan/TampilBiayaPerawatan";
+export { default as TambahBiayaPerawatan } from "./Perawatan/BiayaPerawatan/TambahBiayaPerawatan";

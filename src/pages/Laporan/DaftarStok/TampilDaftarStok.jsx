@@ -53,6 +53,7 @@ const TampilDaftarStok = () => {
   const [noJual, setNoJual] = useState("");
   const [namaWarna, setNamaWarna] = useState("");
   const [tahun, setTahun] = useState("");
+  const [totalBiayaPerawatan, setTotalBiayaPerawatan] = useState("");
   const [daftarStoksLength, setDaftarStoksLength] = useState("");
   const [value, setValue] = useState("semua");
   const [searchTerm, setSearchTerm] = useState("");
@@ -291,6 +292,7 @@ const TampilDaftarStok = () => {
       setHargaSatuan(response.data.hargaSatuan);
       setTanggalJual(response.data.tanggalJual);
       setNoJual(response.data.noJual);
+      setTotalBiayaPerawatan(response.data.totalBiayaPerawatan);
     }
   };
 
@@ -578,6 +580,18 @@ const TampilDaftarStok = () => {
                   readOnly: true
                 }}
                 value={tahun}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
+                Total Biaya Perawatan
+              </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={totalBiayaPerawatan.toLocaleString()}
               />
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>

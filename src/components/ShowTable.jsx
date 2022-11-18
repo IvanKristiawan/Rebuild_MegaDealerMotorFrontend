@@ -2063,3 +2063,81 @@ export function ShowTableSuratPenarikan({ currentPosts, searchTerm }) {
     </TableContainer>
   );
 }
+
+export function ShowTableBiayaPerawatan({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Bukti
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nopol
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tanggal
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Keterangan
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Biaya</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.noBukti.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tglPerawatan
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.keterangan.toUpperCase().includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/biayaPerawatan/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.noBukti}
+                </TableCell>
+                <TableCell>{user.nopol}</TableCell>
+                <TableCell>{user.tglPerawatan}</TableCell>
+                <TableCell>{user.keterangan}</TableCell>
+                <TableCell>{user.biayaPerawatan.toLocaleString()}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}

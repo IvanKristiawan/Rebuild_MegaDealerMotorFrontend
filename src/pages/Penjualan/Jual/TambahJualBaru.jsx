@@ -1036,6 +1036,7 @@ const TambahJualBaru = () => {
                   ` : Rp ${parseInt(angPerBulan).toLocaleString()}`}
               </Typography>
               <TextField
+                type="number"
                 size="small"
                 id="outlined-basic"
                 error={error && angPerBulan.length === 0 && true}
@@ -1059,6 +1060,7 @@ const TambahJualBaru = () => {
                   ` : ${parseInt(tenor).toLocaleString()}`}
               </Typography>
               <TextField
+                type="number"
                 size="small"
                 id="outlined-basic"
                 error={error && tenor.length === 0 && true}

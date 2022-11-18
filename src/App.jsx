@@ -41,6 +41,8 @@ import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
 import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+import ConstructionIcon from "@mui/icons-material/Construction";
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -115,7 +117,9 @@ import {
   TampilSuratPemberitahuan,
   TambahSuratPemberitahuan,
   TampilSuratPenarikan,
-  TambahSuratPenarikan
+  TambahSuratPenarikan,
+  TampilBiayaPerawatan,
+  TambahBiayaPerawatan
 } from "./pages/index";
 
 const App = () => {
@@ -389,6 +393,21 @@ const App = () => {
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<CompareArrowsIcon name="sp-icon" />}>
                         ST
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                </SubMenu>
+                <Divider />
+                <SubMenu
+                  label="Perawatan"
+                  icon={<ConstructionIcon name="Perawatan-icon" />}
+                >
+                  <Link to="/biayaPerawatan" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<RequestQuoteIcon name="biaya-perawatan-icon" />}
+                      >
+                        Biaya Perawatan
                       </MenuItem>
                     </Box>
                   </Link>
@@ -1161,6 +1180,31 @@ const App = () => {
                   element={
                     <USERRoute>
                       <TampilSuratPenarikan />
+                    </USERRoute>
+                  }
+                />
+                {/* Biaya Perawatan */}
+                <Route
+                  path="/biayaPerawatan"
+                  element={
+                    <USERRoute>
+                      <TampilBiayaPerawatan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/biayaPerawatan/:id"
+                  element={
+                    <USERRoute>
+                      <TampilBiayaPerawatan />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/biayaPerawatan/tambahBiayaPerawatan"
+                  element={
+                    <USERRoute>
+                      <TambahBiayaPerawatan />
                     </USERRoute>
                   }
                 />
