@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader, SearchBar } from "../../../components";
 import {
   Box,
@@ -28,7 +29,6 @@ import {
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { makeStyles } from "@mui/styles";
-import { Colors } from "../../../constants/styles";
 
 const useStyles = makeStyles({
   root: {
@@ -147,35 +147,36 @@ const TambahSuratPemberitahuan = () => {
 
   const getKolektor = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kolektors`, {
+    const allKolektors = await axios.post(`${tempUrl}/kolektors`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKolektors(response.data);
+    setKolektors(allKolektors.data);
     setLoading(false);
   };
 
   const getJual = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/jualsForAngsuran`, {
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setJuals(response.data);
+    const allJualsForAngsuran = await axios.post(
+      `${tempUrl}/jualsForAngsuran`,
+      {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setJuals(allJualsForAngsuran.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveSp = async (e) => {
     e.preventDefault();
-    if (
-      noJual.length === 0 ||
-      kodeKolektor.length === 0 ||
-      tglSp.length === 0
-    ) {
+    let isFailedValidation =
+      noJual.length === 0 || kodeKolektor.length === 0 || tglSp.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -187,7 +188,7 @@ const TambahSuratPemberitahuan = () => {
         try {
           setLoading(true);
           // Find Jual
-          const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
+          const response = await axios.post(`${tempUrl}/jualByNoJual`, {
             noJual,
             id: user._id,
             token: user.token,
@@ -454,7 +455,7 @@ const TambahSuratPemberitahuan = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveSp}
             disabled={tglSp < tglMdTerakhir && tglSp < tglAng ? true : false}
           >
             Simpan
@@ -697,12 +698,6 @@ const secondWrapper = {
   }
 };
 
-const mainContainer = {
-  padding: 3,
-  borderRadius: "20px",
-  margin: 4
-};
-
 const dialogContainer = {
   display: "flex",
   flexDirection: "column",
@@ -713,9 +708,4 @@ const dialogContainer = {
 const dialogWrapper = {
   width: "100%",
   marginTop: 2
-};
-
-const titleStyle = {
-  textAlign: "center",
-  fontWeight: "600"
 };

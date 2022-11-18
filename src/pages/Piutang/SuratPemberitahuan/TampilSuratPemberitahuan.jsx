@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import { lokasiSP } from "../../../constants/GeneralSetting";
-import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
+import { lokasiSP } from "../../../constants/GeneralSetting";
+import { Colors } from "../../../constants/styles";
+import { ShowTableSuratPemberitahuan } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -12,23 +22,12 @@ import {
   ButtonGroup,
   Button
 } from "@mui/material";
-import { ShowTableSuratPemberitahuan } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
-import { Colors } from "../../../constants/styles";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilSuratPemberitahuan = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -53,8 +52,9 @@ const TampilSuratPemberitahuan = () => {
   const [nopol, setNopol] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [spsData, setSpsData] = useState([]);
   const navigate = useNavigate();
+  let isSpsExist = noJual.length !== 0;
 
   const [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
@@ -63,7 +63,7 @@ const TampilSuratPemberitahuan = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = spsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -82,7 +82,7 @@ const TampilSuratPemberitahuan = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(spsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -90,27 +90,27 @@ const TampilSuratPemberitahuan = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getSpsData();
+    id && getSpById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getSpsData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/sps`, {
+      const allSps = await axios.post(`${tempUrl}/sps`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setSpsData(allSps.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getSpById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/sps/${id}`, {
         id: user._id,
@@ -138,7 +138,7 @@ const TampilSuratPemberitahuan = () => {
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteSp = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteSp/${id}`, {
@@ -146,15 +146,15 @@ const TampilSuratPemberitahuan = () => {
         token: user.token
       });
       // Find Jual
-      const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
+      const findJualByNoJual = await axios.post(`${tempUrl}/jualByNoJual`, {
         noJual,
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      await axios.post(`${tempUrl}/updateJual/${response.data._id}`, {
-        spKe: response.data.spKe - 1,
+      await axios.post(`${tempUrl}/updateJual/${findJualByNoJual.data._id}`, {
+        spKe: findJualByNoJual.data.spKe - 1,
         tglSpTerakhir: "",
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
@@ -352,7 +352,7 @@ const TampilSuratPemberitahuan = () => {
       <Typography variant="h4" sx={subTitleText}>
         Surat Pemberitahuan
       </Typography>
-      {noJual.length !== 0 && (
+      {isSpsExist && (
         <Box sx={downloadButtons}>
           <ButtonGroup variant="outlined" color="secondary">
             <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
@@ -366,12 +366,12 @@ const TampilSuratPemberitahuan = () => {
           id={id}
           kode={noJual}
           addLink={`/suratPemberitahuan/tambahSuratPemberitahuan`}
-          deleteUser={deleteUser}
+          deleteUser={deleteSp}
           nameUser={noJual}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {noJual.length !== 0 && (
+      {isSpsExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
