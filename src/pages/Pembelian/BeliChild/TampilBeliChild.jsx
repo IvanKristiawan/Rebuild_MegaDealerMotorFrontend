@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { tempUrl } from "../../../contexts/ContextProvider";
+import { Loader } from "../../../components";
 import {
   Box,
   TextField,
@@ -14,13 +16,11 @@ import {
   DialogContentText,
   DialogActions
 } from "@mui/material";
-import { Loader } from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-const TampilABeli = () => {
-  const { user, dispatch } = useContext(AuthContext);
-  const { id, idABeli } = useParams();
+const TampilBeliChild = () => {
+  const { user } = useContext(AuthContext);
+  const { id, idBeliChild } = useParams();
   const navigate = useNavigate();
   const [idStok, setIdStok] = useState("");
   const [noBeli, setNoBeli] = useState("");
@@ -55,10 +55,13 @@ const TampilABeli = () => {
 
   const getUserById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/daftarStoks/${idABeli}`, {
-        id: user._id,
-        token: user.token
-      });
+      const response = await axios.post(
+        `${tempUrl}/daftarStoks/${idBeliChild}`,
+        {
+          id: user._id,
+          token: user.token
+        }
+      );
       setIdStok(response.data._id);
       setNoBeli(response.data.noBeli);
       setKodeTipe(response.data.tipe);
@@ -85,7 +88,7 @@ const TampilABeli = () => {
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteBeliChild = async (id) => {
     try {
       setLoading(true);
       // Get Beli
@@ -163,7 +166,7 @@ const TampilABeli = () => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => deleteUser(id)}>Ok</Button>
+              <Button onClick={() => deleteBeliChild(id)}>Ok</Button>
               <Button onClick={handleClose}>Cancel</Button>
             </DialogActions>
           </Dialog>
@@ -329,7 +332,7 @@ const TampilABeli = () => {
   );
 };
 
-export default TampilABeli;
+export default TampilBeliChild;
 
 const container = {
   p: 4
@@ -365,11 +368,6 @@ const textFieldWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const labelInput = {

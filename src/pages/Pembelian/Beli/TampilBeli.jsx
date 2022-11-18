@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { tempUrl } from "../../../contexts/ContextProvider";
+import { useStateContext } from "../../../contexts/ContextProvider";
+import { ShowTableBeli } from "../../../components/ShowTable";
+import { Loader, usePagination, ButtonModifier } from "../../../components";
 import {
   Box,
   TextField,
@@ -13,13 +17,9 @@ import {
   FormControlLabel,
   Checkbox
 } from "@mui/material";
-import { ShowTableBeli } from "../../../components/ShowTable";
-import { Loader, usePagination, ButtonModifier } from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 
 const TampilBeli = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[3];
   const { screenSize } = useStateContext();
@@ -28,12 +28,12 @@ const TampilBeli = () => {
   const [kodeSupplier, setKodeSupplier] = useState("");
   const [jumlahBeli, setJumlahBeli] = useState(0);
   const [ppnBeli, setPpnBeli] = useState(0);
-  const [isPpnBeli, setIsPpnBeli] = useState();
+  const [isPpnBeli, setIsPpnBeli] = useState(false);
   const [potongan, setPotongan] = useState(0);
   const [lama, setLama] = useState("");
   const [jenisBeli, setJenisBeli] = useState("");
   const [jatuhTempo, setJatuhTempo] = useState("");
-  const [aBelis, setABelis] = useState([]);
+  const [daftarStoksData, setDaftarStoksData] = useState([]);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -43,10 +43,10 @@ const TampilBeli = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const currentPosts = aBelis.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = daftarStoksData.slice(indexOfFirstPost, indexOfLastPost);
 
-  const count = Math.ceil(aBelis.length / PER_PAGE);
-  const _DATA = usePagination(aBelis, PER_PAGE);
+  const count = Math.ceil(daftarStoksData.length / PER_PAGE);
+  const _DATA = usePagination(daftarStoksData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -54,10 +54,10 @@ const TampilBeli = () => {
   };
 
   useEffect(() => {
-    id && getUserById();
+    id && getBeliById();
   }, [id, isPpnBeli]);
 
-  const getUserById = async () => {
+  const getBeliById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/belis/${id}`, {
         kodeUnitBisnis: user.unitBisnis._id,
@@ -82,15 +82,15 @@ const TampilBeli = () => {
         id: user._id,
         token: user.token
       });
-      setABelis(response2.data);
+      setDaftarStoksData(response2.data);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteBeli = async (id) => {
     try {
       setLoading(true);
-      for (let aBeli of aBelis) {
-        await axios.post(`${tempUrl}/deleteDaftarStok/${aBeli._id}`, {
+      for (let daftarStok of daftarStoksData) {
+        await axios.post(`${tempUrl}/deleteDaftarStok/${daftarStok._id}`, {
           id: user._id,
           token: user.token
         });
@@ -138,9 +138,9 @@ const TampilBeli = () => {
           <ButtonModifier
             id={id}
             kode={"test"}
-            addLink={`/daftarBeli/beli/${id}/tambahABeli`}
+            addLink={`/daftarBeli/beli/${id}/tambahBeliChild`}
             editLink={`/daftarBeli/beli/${id}/edit`}
-            deleteUser={deleteUser}
+            deleteUser={deleteBeli}
             nameUser={noBeli}
           />
         </Box>

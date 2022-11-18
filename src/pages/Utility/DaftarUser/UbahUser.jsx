@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -16,7 +17,6 @@ import {
   Autocomplete
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../constants/styles";
 
 const UbahUser = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -95,14 +95,14 @@ const UbahUser = () => {
 
   const updateUser = async (e) => {
     e.preventDefault();
-    if (
+    let isFailedValidation =
       username.length === 0 ||
       tipeUser.length === 0 ||
       periode.length === 0 ||
       kodeKwitansi.length === 0 ||
       kodeUnitBisnis.length === 0 ||
-      kodeCabang.length === 0
-    ) {
+      kodeCabang.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {

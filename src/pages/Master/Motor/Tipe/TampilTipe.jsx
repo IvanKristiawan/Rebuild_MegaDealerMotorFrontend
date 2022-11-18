@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../../../contexts/AuthContext";
+import { tempUrl } from "../../../../contexts/ContextProvider";
+import { useStateContext } from "../../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { AuthContext } from "../../../../contexts/AuthContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableTipe } from "../../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +26,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableTipe } from "../../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../../components";
-import { tempUrl } from "../../../../contexts/ContextProvider";
-import { useStateContext } from "../../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +33,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilTipe = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -46,9 +46,10 @@ const TampilTipe = () => {
   const [isi, setIsi] = useState("");
   const [merk, setMerk] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [tipesData, setTipesData] = useState([]);
   const [tipesForDoc, setTipesForDoc] = useState([]);
   const navigate = useNavigate();
+  let isTipesExist = kodeTipe.length !== 0;
 
   const columns = [
     { title: "Kode", field: "kodeTipe" },
@@ -66,7 +67,7 @@ const TampilTipe = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = tipesData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -83,7 +84,7 @@ const TampilTipe = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(tipesData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -91,21 +92,21 @@ const TampilTipe = () => {
   };
 
   useEffect(() => {
-    getUsers();
+    getTipesData();
     getTipesForDoc();
-    id && getUserById();
+    id && getTipeById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getTipesData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/tipes`, {
+      const allTipes = await axios.post(`${tempUrl}/tipes`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setTipesData(allTipes.data);
     } catch (err) {
       setIsFetchError(true);
     }
@@ -114,38 +115,37 @@ const TampilTipe = () => {
 
   const getTipesForDoc = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/tipesForDoc`, {
+    const allTipesForDoc = await axios.post(`${tempUrl}/tipesForDoc`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setTipesForDoc(response.data);
+    setTipesForDoc(allTipesForDoc.data);
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getTipeById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/tipes/${id}`, {
+      const pickedTipe = await axios.post(`${tempUrl}/tipes/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeTipe(response.data.kodeTipe);
-      setNamaTipe(response.data.namaTipe);
-      setNoRangka(response.data.noRangka);
-      setNoMesin(response.data.noMesin);
-      setIsi(response.data.isi);
-      setMerk(response.data.merk);
+      setKodeTipe(pickedTipe.data.kodeTipe);
+      setNamaTipe(pickedTipe.data.namaTipe);
+      setNoRangka(pickedTipe.data.noRangka);
+      setNoMesin(pickedTipe.data.noMesin);
+      setIsi(pickedTipe.data.isi);
+      setMerk(pickedTipe.data.merk);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteTipe = async (id) => {
     setLoading(true);
     await axios.post(`${tempUrl}/deleteTipe/${id}`, {
       id: user._id,
       token: user.token
     });
-    getUsers();
     setKodeTipe("");
     setNamaTipe("");
     setNoRangka("");
@@ -178,7 +178,7 @@ const TampilTipe = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: tipesData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -229,12 +229,12 @@ const TampilTipe = () => {
           kode={kodeTipe}
           addLink={`/tipe/tambahTipe`}
           editLink={`/tipe/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteTipe}
           nameUser={kodeTipe}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {kodeTipe.length !== 0 && (
+      {isTipesExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>

@@ -103,8 +103,8 @@ import {
   TambahBeli,
   TampilBeli,
   UbahBeli,
-  TampilABeli,
-  TambahABeli,
+  TambahBeliChild,
+  TampilBeliChild,
   TampilDaftarStok,
   CariTotalPiutang,
   CariTunggakan,
@@ -898,18 +898,18 @@ const App = () => {
                 />
                 {/* A Beli */}
                 <Route
-                  path="/daftarBeli/beli/:id/tambahABeli"
+                  path="/daftarBeli/beli/:id/tambahBeliChild"
                   element={
                     <USERRoute>
-                      <TambahABeli />
+                      <TambahBeliChild />
                     </USERRoute>
                   }
                 />
                 <Route
-                  path="/daftarBeli/beli/:id/:idABeli"
+                  path="/daftarBeli/beli/:id/:idBeliChild"
                   element={
                     <USERRoute>
-                      <TampilABeli />
+                      <TampilBeliChild />
                     </USERRoute>
                   }
                 />

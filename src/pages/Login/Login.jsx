@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { tempUrl } from "../../contexts/ContextProvider";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   Box,
   Typography,
@@ -12,7 +13,6 @@ import {
   Alert
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
   const {

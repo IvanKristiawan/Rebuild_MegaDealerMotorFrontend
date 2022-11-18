@@ -83,8 +83,8 @@ export { default as TampilDaftarStok } from "./Laporan/DaftarStok/TampilDaftarSt
 export { default as CariTotalPiutang } from "./Laporan/TotalPiutang/CariTotalPiutang";
 export { default as CariTunggakan } from "./Laporan/Tunggakan/CariTunggakan";
 // A Beli Page
-export { default as TampilABeli } from "./Pembelian/ABeli/TampilABeli";
-export { default as TambahABeli } from "./Pembelian/ABeli/TambahABeli";
+export { default as TambahBeliChild } from "./Pembelian/BeliChild/TambahBeliChild";
+export { default as TampilBeliChild } from "./Pembelian/BeliChild/TampilBeliChild";
 // PIUTANG
 // Angsuran Page
 export { default as TambahAngsuran } from "./Piutang/Angsuran/TambahAngsuran";

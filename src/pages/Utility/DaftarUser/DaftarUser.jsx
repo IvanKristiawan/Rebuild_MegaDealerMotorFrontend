@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableUser } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import { SearchBar, Loader, usePagination } from "../../../components";
 import {
   Box,
   TextField,
@@ -21,11 +25,6 @@ import {
   DialogContentText,
   DialogActions
 } from "@mui/material";
-import { ShowTableUser } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
-import { SearchBar, Loader, usePagination } from "../../../components";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -36,7 +35,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const DaftarUser = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -53,6 +52,7 @@ const DaftarUser = () => {
   const [users, setUser] = useState([]);
   const [usersForDoc, setUsersForDoc] = useState([]);
   const navigate = useNavigate();
+  let isUserExist = username.length !== 0;
 
   const columns = [
     { title: "Username", field: "username" },
@@ -305,7 +305,7 @@ const DaftarUser = () => {
         )}
       </Box>
       <Divider sx={dividerStyle} />
-      {username.length !== 0 && (
+      {isUserExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
@@ -442,11 +442,6 @@ const showDataWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const searchBarContainer = {

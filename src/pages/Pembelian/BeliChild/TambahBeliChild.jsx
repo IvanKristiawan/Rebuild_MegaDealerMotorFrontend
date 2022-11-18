@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { PPN } from "../../../constants/GeneralSetting";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
+import { PPN } from "../../../constants/GeneralSetting";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -22,10 +23,9 @@ import {
   DialogActions
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
-const TambahABeli = () => {
-  const { user, dispatch } = useContext(AuthContext);
+const TambahBeliChild = () => {
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
   const [open, setOpen] = useState(false);
   const [kodeTipe, setKodeTipe] = useState("");
@@ -83,70 +83,70 @@ const TambahABeli = () => {
 
   const getTipes = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/tipes`, {
+    const allTipes = await axios.post(`${tempUrl}/tipes`, {
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
-    setTipes(response.data);
+    setTipes(allTipes.data);
     setLoading(false);
   };
 
   const getTipe = async (idTipe) => {
-    const response = await axios.post(`${tempUrl}/tipesByKode`, {
+    const allTipesByKode = await axios.post(`${tempUrl}/tipesByKode`, {
       kodeTipe: idTipe,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
-    if (response.data) {
-      setNoRangka(response.data.noRangka);
-      setNoMesin(response.data.noMesin);
+    if (allTipesByKode.data) {
+      setNoRangka(allTipesByKode.data.noRangka);
+      setNoMesin(allTipesByKode.data.noMesin);
     }
     setKodeTipe(idTipe);
   };
 
   const getTipeBeli = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/belis/${id}`, {
+    const allBelis = await axios.post(`${tempUrl}/belis/${id}`, {
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
-    setJenisABeli(response.data.jenisBeli);
-    setTanggalBeli(response.data.tanggalBeli);
-    setKodeSupplier(response.data.supplier._id);
+    setJenisABeli(allBelis.data.jenisBeli);
+    setTanggalBeli(allBelis.data.tanggalBeli);
+    setKodeSupplier(allBelis.data.supplier._id);
     setLoading(false);
   };
 
   const getWarnas = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/warnas`, {
+    const allWarnas = await axios.post(`${tempUrl}/warnas`, {
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
-    setWarnas(response.data);
+    setWarnas(allWarnas.data);
     setLoading(false);
   };
 
   const getBelis = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/belis/${id}`, {
+    const pickedBeli = await axios.post(`${tempUrl}/belis/${id}`, {
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
-    setBelis(response.data);
+    setBelis(pickedBeli.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveBeliChild = async (e) => {
     e.preventDefault();
     // Set Tgl Stnk
     if (tglStnk !== undefined) {
@@ -585,7 +585,7 @@ const TambahABeli = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveBeliChild}
           >
             Simpan
           </Button>
@@ -603,7 +603,7 @@ const TambahABeli = () => {
   );
 };
 
-export default TambahABeli;
+export default TambahBeliChild;
 
 const container = {
   p: 4

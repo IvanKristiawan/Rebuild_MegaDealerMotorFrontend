@@ -1,8 +1,9 @@
-import axios from "axios";
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -16,10 +17,9 @@ import {
   Autocomplete
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../constants/styles";
 
 const TambahUser = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
   const [kodeCabang, setKodeCabang] = useState("");
@@ -75,19 +75,19 @@ const TambahUser = () => {
   };
 
   const saveUser = async (e) => {
-    if (
+    let isFailedValidation =
       username.length === 0 ||
       password.length === 0 ||
       tipeUser.length === 0 ||
       periode.length === 0 ||
       kodeUnitBisnis.length === 0 ||
-      kodeCabang.length === 0
-    ) {
+      kodeCabang.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
       try {
-        const res = await axios.post(`${tempUrl}/auth/register`, {
+        const response = await axios.post(`${tempUrl}/auth/register`, {
           username,
           password,
           tipeUser,

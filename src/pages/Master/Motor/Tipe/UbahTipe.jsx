@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import { tempUrl } from "../../../../contexts/ContextProvider";
+import { Colors } from "../../../../constants/styles";
 import { Loader } from "../../../../components";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { Colors } from "../../../../constants/styles";
 
 const UbahTipe = () => {
   const { user } = useContext(AuthContext);
@@ -39,27 +39,29 @@ const UbahTipe = () => {
   };
 
   useEffect(() => {
-    getUserById();
+    getTipeById();
   }, []);
 
-  const getUserById = async () => {
+  const getTipeById = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/tipes/${id}`, {
+    const pickedTipe = await axios.post(`${tempUrl}/tipes/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeTipe(response.data.kodeTipe);
-    setNamaTipe(response.data.namaTipe);
-    setNoRangka(response.data.noRangka);
-    setNoMesin(response.data.noMesin);
-    setIsi(response.data.isi);
-    setMerk(response.data.merk);
+    setKodeTipe(pickedTipe.data.kodeTipe);
+    setNamaTipe(pickedTipe.data.namaTipe);
+    setNoRangka(pickedTipe.data.noRangka);
+    setNoMesin(pickedTipe.data.noMesin);
+    setIsi(pickedTipe.data.isi);
+    setMerk(pickedTipe.data.merk);
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateTipe = async (e) => {
     e.preventDefault();
-    if (kodeTipe.length === 0 || namaTipe.length === 0 || merk.length === 0) {
+    let isFailedValidation =
+      kodeTipe.length === 0 || namaTipe.length === 0 || merk.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -177,7 +179,7 @@ const UbahTipe = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateTipe}
           >
             Ubah
           </Button>

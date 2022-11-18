@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ShowTableWarna } from "../../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../../components";
 import {
   Box,
   TextField,
@@ -16,16 +25,6 @@ import {
   Button,
   ButtonGroup
 } from "@mui/material";
-import { ShowTableWarna } from "../../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../../components";
-import { tempUrl } from "../../../../contexts/ContextProvider";
-import { useStateContext } from "../../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +32,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
 const TampilWarna = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -41,9 +40,10 @@ const TampilWarna = () => {
   const [isFetchError, setIsFetchError] = useState(false);
   const [namaWarna, setNamaWarna] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [warnasData, setWarnasData] = useState([]);
   const [warnasForDoc, setWarnasForDoc] = useState([]);
   const navigate = useNavigate();
+  let isWarnaExist = namaWarna.length !== 0;
 
   const columns = [{ title: "Nama Warna", field: "namaWarna" }];
 
@@ -54,7 +54,7 @@ const TampilWarna = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = warnasData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (val.namaWarna.toUpperCase().includes(searchTerm.toUpperCase())) {
@@ -64,7 +64,7 @@ const TampilWarna = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(warnasData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -72,21 +72,21 @@ const TampilWarna = () => {
   };
 
   useEffect(() => {
-    getUsers();
+    getWarnasData();
     getWarnasForDoc();
-    id && getUserById();
+    id && getWarnaById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getWarnasData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/warnas`, {
+      const allWarnas = await axios.post(`${tempUrl}/warnas`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setWarnasData(allWarnas.data);
     } catch (err) {
       setIsFetchError(true);
     }
@@ -95,34 +95,33 @@ const TampilWarna = () => {
 
   const getWarnasForDoc = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/warnasForDoc`, {
+    const allWarnasForDoc = await axios.post(`${tempUrl}/warnasForDoc`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setWarnasForDoc(response.data);
+    setWarnasForDoc(allWarnasForDoc.data);
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getWarnaById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/warnas/${id}`, {
+      const pickedWarna = await axios.post(`${tempUrl}/warnas/${id}`, {
         id: user._id,
         token: user.token
       });
-      setNamaWarna(response.data.namaWarna);
+      setNamaWarna(pickedWarna.data.namaWarna);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteWarna = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteWarna/${id}`, {
         id: user._id,
         token: user.token
       });
-      getUsers();
       setNamaWarna("");
       setLoading(false);
       navigate("/warna");
@@ -153,7 +152,7 @@ const TampilWarna = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
+      body: warnasData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -204,12 +203,12 @@ const TampilWarna = () => {
           kode={namaWarna}
           addLink={`/warna/tambahWarna`}
           editLink={`/warna/${id}/edit`}
-          deleteUser={deleteUser}
+          deleteUser={deleteWarna}
           nameUser={namaWarna}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {namaWarna.length !== 0 && (
+      {isWarnaExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>

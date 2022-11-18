@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../../contexts/ContextProvider";
+import { Colors } from "../../../../constants/styles";
 import { Loader } from "../../../../components";
 import {
   Box,
@@ -20,7 +21,6 @@ import {
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import { Colors } from "../../../../constants/styles";
 
 const TambahWarna = () => {
   const { user } = useContext(AuthContext);
@@ -46,9 +46,10 @@ const TambahWarna = () => {
     setOpen(false);
   };
 
-  const saveUser = async (e) => {
+  const saveWarna = async (e) => {
     e.preventDefault();
-    if (namaWarna.length === 0) {
+    let isFailedValidation = namaWarna.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -134,7 +135,7 @@ const TambahWarna = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveWarna}
           >
             Simpan
           </Button>
