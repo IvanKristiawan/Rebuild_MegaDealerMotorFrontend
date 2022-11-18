@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { tempUrl } from "../../../contexts/ContextProvider";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -60,25 +60,25 @@ const CariTotalPiutang = () => {
 
   const getMarketing = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/marketings`, {
+    const allMarketings = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setMarketings(response.data);
+    setMarketings(allMarketings.data);
     setLoading(false);
   };
 
   const getSurveyor = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/surveyors`, {
+    const allSurveyors = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setSurveyors(response.data);
+    setSurveyors(allSurveyors.data);
     setLoading(false);
   };
 

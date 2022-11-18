@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl } from "../../../contexts/ContextProvider";
 import {
   biayaTarikSetting,
   dendaSetting
 } from "../../../constants/GeneralSetting";
-import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader, SearchBar } from "../../../components";
 import {
   Box,
@@ -30,7 +31,6 @@ import {
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { makeStyles } from "@mui/styles";
-import { Colors } from "../../../constants/styles";
 
 const useStyles = makeStyles({
   root: {
@@ -150,55 +150,58 @@ const TambahSuratPenarikan = () => {
   });
 
   useEffect(() => {
-    getSuratPenarikanNextLength();
+    getStNextKode();
     getJual();
     getKolektor();
   }, []);
 
-  const getSuratPenarikanNextLength = async () => {
+  const getStNextKode = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/stsNextLength`, {
+    const nextKodeSt = await axios.post(`${tempUrl}/stsNextKode`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setNoSt(response.data);
+    setNoSt(nextKodeSt.data);
     setLoading(false);
   };
 
   const getKolektor = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kolektors`, {
+    const allKolektors = await axios.post(`${tempUrl}/kolektors`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKolektors(response.data);
+    setKolektors(allKolektors.data);
     setLoading(false);
   };
 
   const getJual = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/jualsForAngsuran`, {
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setJuals(response.data);
+    const allJualsForAngsuran = await axios.post(
+      `${tempUrl}/jualsForAngsuran`,
+      {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setJuals(allJualsForAngsuran.data);
     setLoading(false);
   };
 
-  const saveUser = async (e) => {
+  const saveSt = async (e) => {
     e.preventDefault();
-    if (
+    let isFailedValidation =
       noSt.length === 0 ||
       tglSt.length === 0 ||
       noJual.length === 0 ||
-      kodeKolektor.length === 0
-    ) {
+      kodeKolektor.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -608,11 +611,7 @@ const TambahSuratPenarikan = () => {
           >
             {"< Kembali"}
           </Button>
-          <Button
-            variant="contained"
-            startIcon={<SaveIcon />}
-            onClick={saveUser}
-          >
+          <Button variant="contained" startIcon={<SaveIcon />} onClick={saveSt}>
             Simpan
           </Button>
         </Box>

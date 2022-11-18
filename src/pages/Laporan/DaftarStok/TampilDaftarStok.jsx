@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../constants/GeneralSetting";
-import { useLocation } from "react-router-dom";
+import { ShowTableDaftarStok } from "../../../components/ShowTable";
+import { SearchBar, Loader, usePagination } from "../../../components";
 import {
   Box,
   TextField,
@@ -21,10 +24,6 @@ import {
   FormControl,
   FormLabel
 } from "@mui/material";
-import { ShowTableDaftarStok } from "../../../components/ShowTable";
-import { SearchBar, Loader, usePagination } from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -33,7 +32,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 const TampilDaftarStok = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -57,11 +56,12 @@ const TampilDaftarStok = () => {
   const [daftarStoksLength, setDaftarStoksLength] = useState("");
   const [value, setValue] = useState("semua");
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [daftarStoksData, setDaftarStoksData] = useState([]);
   const [daftarStoksForDoc, setDaftarStoksForDoc] = useState([]);
   const [daftarStoksForPdf, setDaftarStoksForPdf] = useState([]);
   const [rekapStoks, setRekapStoks] = useState([]);
   const [tipes, setTipes] = useState([]);
+  let isDaftarStoksExist = noBeli.length !== 0;
 
   const columns = [
     { title: "No Beli", field: "noBeli" },
@@ -97,7 +97,7 @@ const TampilDaftarStok = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = daftarStoksData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -123,7 +123,7 @@ const TampilDaftarStok = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(daftarStoksData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -136,22 +136,22 @@ const TampilDaftarStok = () => {
 
   useEffect(() => {
     getTipe();
-    getUsers();
+    getDaftarStoksData();
     getRekapStoks();
     getDaftarStoksLength();
     getDaftarStoksForDoc();
-    id && getUserById();
+    id && getDaftarStokById();
   }, [id, value]);
 
   const getTipe = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/tipesMainInfo`, {
+    const allTipesMainInfo = await axios.post(`${tempUrl}/tipesMainInfo`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setTipes(response.data);
+    setTipes(allTipesMainInfo.data);
     setLoading(false);
   };
 
@@ -187,7 +187,7 @@ const TampilDaftarStok = () => {
     setLoading(false);
   };
 
-  const getUsers = async () => {
+  const getDaftarStoksData = async () => {
     setLoading(true);
     let response;
     switch (value) {
@@ -198,7 +198,7 @@ const TampilDaftarStok = () => {
           kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
-        setUser(response.data);
+        setDaftarStoksData(response.data);
         break;
       case "belum":
         response = await axios.post(`${tempUrl}/daftarStoksBelumTerjual`, {
@@ -207,7 +207,7 @@ const TampilDaftarStok = () => {
           kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
-        setUser(response.data);
+        setDaftarStoksData(response.data);
         break;
       default:
         response = await axios.post(`${tempUrl}/daftarStoks`, {
@@ -216,20 +216,20 @@ const TampilDaftarStok = () => {
           kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
-        setUser(response.data);
+        setDaftarStoksData(response.data);
     }
     setLoading(false);
   };
 
   const getDaftarStoksLength = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/daftarStoksLength`, {
+    const daftarStoksLength = await axios.post(`${tempUrl}/daftarStoksLength`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setDaftarStoksLength(response.data);
+    setDaftarStoksLength(daftarStoksLength.data);
     setLoading(false);
   };
 
@@ -269,7 +269,7 @@ const TampilDaftarStok = () => {
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getDaftarStokById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/daftarStoks/${id}`, {
         id: user._id,
@@ -499,7 +499,7 @@ const TampilDaftarStok = () => {
         </RadioGroup>
       </FormControl>
       <Divider sx={{ marginTop: 1 }} />
-      {noBeli.length !== 0 && (
+      {isDaftarStoksExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>

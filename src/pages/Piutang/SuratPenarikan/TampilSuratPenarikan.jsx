@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import { lokasiSP } from "../../../constants/GeneralSetting";
-import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { tempUrl } from "../../../contexts/ContextProvider";
+import { useStateContext } from "../../../contexts/ContextProvider";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { lokasiSP } from "../../../constants/GeneralSetting";
+import { ShowTableSuratPenarikan } from "../../../components/ShowTable";
+import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
+import {
+  SearchBar,
+  Loader,
+  usePagination,
+  ButtonModifier
+} from "../../../components";
 import {
   Box,
   TextField,
@@ -12,23 +22,13 @@ import {
   ButtonGroup,
   Button
 } from "@mui/material";
-import { ShowTableSuratPenarikan } from "../../../components/ShowTable";
-import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import PrintIcon from "@mui/icons-material/Print";
 import angkaTerbilang from "@develoka/angka-terbilang-js";
 
 const TampilSuratPenarikan = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
@@ -51,8 +51,9 @@ const TampilSuratPenarikan = () => {
   const [tglJatuhTempo, setTglJatuhTempo] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUser] = useState([]);
+  const [stsData, setStsData] = useState([]);
   const navigate = useNavigate();
+  let isStsExist = noJual.length !== 0;
 
   const [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
@@ -61,7 +62,7 @@ const TampilSuratPenarikan = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = users.filter((val) => {
+  const tempPosts = stsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
@@ -75,7 +76,7 @@ const TampilSuratPenarikan = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(users, PER_PAGE);
+  const _DATA = usePagination(stsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -83,27 +84,27 @@ const TampilSuratPenarikan = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    id && getUserById();
+    getStsData();
+    id && getStById();
   }, [id]);
 
-  const getUsers = async () => {
+  const getStsData = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${tempUrl}/sts`, {
+      const allSts = await axios.post(`${tempUrl}/sts`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setUser(response.data);
+      setStsData(allSts.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getStById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/sts/${id}`, {
         id: user._id,
@@ -140,7 +141,7 @@ const TampilSuratPenarikan = () => {
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteSt = async (id) => {
     try {
       setLoading(true);
       await axios.post(`${tempUrl}/deleteSt/${id}`, {
@@ -262,7 +263,7 @@ const TampilSuratPenarikan = () => {
       <Typography variant="h4" sx={subTitleText}>
         Surat Penarikan
       </Typography>
-      {noJual.length !== 0 && (
+      {isStsExist && (
         <Box sx={downloadButtons}>
           <ButtonGroup variant="outlined" color="secondary">
             <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
@@ -276,12 +277,12 @@ const TampilSuratPenarikan = () => {
           id={id}
           kode={noJual}
           addLink={`/suratPenarikan/tambahSuratPenarikan`}
-          deleteUser={deleteUser}
+          deleteUser={deleteSt}
           nameUser={noJual}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {noJual.length !== 0 && (
+      {isStsExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
