@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
 import { Loader, SearchBar } from "../../../components";
 import {
   Box,
@@ -27,11 +28,9 @@ import {
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { makeStyles } from "@mui/styles";
-import { Colors } from "../../../constants/styles";
 import {
   dendaSetting,
-  toleransiSetting,
-  jemputanSetting
+  toleransiSetting
 } from "../../../constants/GeneralSetting";
 
 const useStyles = makeStyles({
@@ -81,9 +80,9 @@ const TambahAngsuran = () => {
   const [dari, setDari] = useState("");
   const [tglJatuhTempo, setTglJatuhTempo] = useState("");
   const [tglJatuhTempoNext, setTglJatuhTempoNext] = useState("");
-  var curr = new Date();
-  var date = curr.toISOString().substring(0, 10);
-  const [tglBayar, setTglBayar] = useState(date); // Input
+  let findNowDate = new Date();
+  let nowDate = findNowDate.toISOString().substring(0, 10);
+  const [tglBayar, setTglBayar] = useState(nowDate); // Input
   const [angModal, setAngModal] = useState("");
   const [angBunga, setAngBunga] = useState("");
   const [angPerBulan, setAngPerBulan] = useState("");
@@ -182,25 +181,28 @@ const TambahAngsuran = () => {
 
   const getKolektor = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/kolektors`, {
+    const allKolektors = await axios.post(`${tempUrl}/kolektors`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setKolektors(response.data);
+    setKolektors(allKolektors.data);
     setLoading(false);
   };
 
   const getJual = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/jualsForAngsuran`, {
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setJuals(response.data);
+    const allJualsForAngsuran = await axios.post(
+      `${tempUrl}/jualsForAngsuran`,
+      {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setJuals(allJualsForAngsuran.data);
     setLoading(false);
   };
 
@@ -279,14 +281,14 @@ const TambahAngsuran = () => {
     );
   };
 
-  const saveUser = async (e) => {
+  const saveAngsuran = async (e) => {
     e.preventDefault();
-    if (
+    let isFailedValidation =
       noJual.length === 0 ||
       tglBayar.length === 0 ||
       kodeKolektor.length === 0 ||
-      bayar.length === 0
-    ) {
+      bayar.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
@@ -913,7 +915,7 @@ const TambahAngsuran = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveAngsuran}
           >
             Simpan
           </Button>

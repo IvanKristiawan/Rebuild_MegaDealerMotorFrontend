@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
-import { Box, TextField, Typography, Divider, Button } from "@mui/material";
-import { Loader } from "../../../components";
 import { tempUrl } from "../../../contexts/ContextProvider";
-import SaveIcon from "@mui/icons-material/Save";
 import { Colors } from "../../../constants/styles";
+import { Loader } from "../../../components";
+import { Box, TextField, Typography, Divider, Button } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
 
-const TampilAAngsuran = () => {
-  const { user, dispatch } = useContext(AuthContext);
-  const { id, idAAngsuran } = useParams();
+const TampilAngsuranChild = () => {
+  const { user } = useContext(AuthContext);
+  const { id, idAngsuranChild } = useParams();
   const navigate = useNavigate();
 
   // Data Angsuran
@@ -49,23 +49,23 @@ const TampilAAngsuran = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getUserById();
+    getAngsuranChildById();
   }, []);
 
-  const getUserById = async () => {
+  const getAngsuranChildById = async () => {
     if (id) {
       const findAngsuranId = await axios.post(`${tempUrl}/angsuransByNoJual`, {
         noJual: id,
-        ke: idAAngsuran,
+        ke: idAngsuranChild,
         id: user._id,
-        token: user.token,
+        token: user.token
       });
       setMainId(findAngsuranId.data._id);
       const response = await axios.post(`${tempUrl}/angsuransFindChild`, {
         noJual: id,
-        ke: idAAngsuran,
+        ke: idAngsuranChild,
         id: user._id,
-        token: user.token,
+        token: user.token
       });
       setIdAngsuran(response.data._id);
       setTglJatuhTempo(response.data.tglJatuhTempo);
@@ -96,27 +96,26 @@ const TampilAAngsuran = () => {
       setSp(response.data.sp);
       setSt(response.data.st);
 
-      if (
-        response.data.tglBayar.length === 0 &&
-        response.data.md1.length === 0
-      ) {
-        setIsDisabledMd1(false);
-      } else if (
-        response.data.md1.length > 0 &&
-        response.data.md2.length === 0
-      ) {
-        setIsDisabledMd2(false);
-      } else if (
+      let isMd1Active =
+        response.data.tglBayar.length === 0 && response.data.md1.length === 0;
+      let isMd2Active =
+        response.data.md1.length > 0 && response.data.md2.length === 0;
+      let isMd3Active =
         response.data.md1.length > 0 &&
         response.data.md2.length > 0 &&
-        response.data.md3.length === 0
-      ) {
+        response.data.md3.length === 0;
+
+      if (isMd1Active) {
+        setIsDisabledMd1(false);
+      } else if (isMd2Active) {
+        setIsDisabledMd2(false);
+      } else if (isMd3Active) {
         setIsDisabledMd3(false);
       }
     }
   };
 
-  const saveUser = async (e) => {
+  const saveAngsuran = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
@@ -126,19 +125,19 @@ const TampilAAngsuran = () => {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id,
+        kodeCabang: user.cabang._id
       });
       await axios.post(`${tempUrl}/updateJual/${response.data._id}`, {
         tglMdTerakhir: mdTerakhir,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
-        token: user.token,
+        token: user.token
       });
       // Update Angsuran
       await axios.post(`${tempUrl}/updateAngsuran/${mainId}`, {
-        angsuranKe: idAAngsuran - 1,
-        _id: idAAngsuran,
+        angsuranKe: idAngsuranChild - 1,
+        _id: idAngsuranChild,
         tglJatuhTempo,
         angModal,
         angBunga,
@@ -161,7 +160,7 @@ const TampilAAngsuran = () => {
         sp,
         st,
         id: user._id,
-        token: user.token,
+        token: user.token
       });
       setLoading(false);
       navigate(`/daftarAngsuran/angsuran/${id}`);
@@ -198,7 +197,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={idAngsuran}
             />
@@ -210,7 +209,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={tglJatuhTempo}
             />
@@ -222,7 +221,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={angModal.toLocaleString()}
             />
@@ -234,7 +233,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={angBunga.toLocaleString()}
             />
@@ -246,7 +245,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={angPerBulan.toLocaleString()}
             />
@@ -261,7 +260,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={tglBayar}
             />
@@ -271,7 +270,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={noKwitansi}
             />
@@ -281,7 +280,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={keterangan}
             />
@@ -291,7 +290,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={kodeKolektor}
             />
@@ -301,7 +300,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={denda.toLocaleString()}
             />
@@ -311,7 +310,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={potongan.toLocaleString()}
             />
@@ -323,7 +322,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={jemputan.toLocaleString()}
             />
@@ -333,7 +332,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={biayaTarik.toLocaleString()}
             />
@@ -343,7 +342,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={hutangDenda.toLocaleString()}
             />
@@ -353,7 +352,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={totalPiutang.toLocaleString()}
             />
@@ -363,7 +362,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={totalBayar.toLocaleString()}
             />
@@ -373,7 +372,7 @@ const TampilAAngsuran = () => {
               id="outlined-basic"
               variant="filled"
               InputProps={{
-                readOnly: true,
+                readOnly: true
               }}
               value={bayar.toLocaleString()}
             />
@@ -447,7 +446,7 @@ const TampilAAngsuran = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveUser}
+            onClick={saveAngsuran}
           >
             Simpan
           </Button>
@@ -457,27 +456,27 @@ const TampilAAngsuran = () => {
   );
 };
 
-export default TampilAAngsuran;
+export default TampilAngsuranChild;
 
 const container = {
-  p: 4,
+  p: 4
 };
 
 const subTitleText = {
-  fontWeight: "900",
+  fontWeight: "900"
 };
 
 const dividerStyle = {
   pt: 4,
-  mb: 2,
+  mb: 2
 };
 
 const textFieldContainer = {
   display: "flex",
   flexDirection: {
     xs: "column",
-    sm: "row",
-  },
+    sm: "row"
+  }
 };
 
 const textFieldWrapper = {
@@ -485,25 +484,25 @@ const textFieldWrapper = {
   flex: 1,
   flexDirection: "column",
   maxWidth: {
-    md: "40vw",
-  },
+    md: "40vw"
+  }
 };
 
 const labelInput = {
   fontWeight: "600",
-  marginLeft: 1,
+  marginLeft: 1
 };
 
 const spacingTop = {
-  mt: 4,
+  mt: 4
 };
 
 const secondWrapper = {
   marginLeft: {
-    md: 4,
+    md: 4
   },
   marginTop: {
     md: 0,
-    xs: 4,
-  },
+    xs: 4
+  }
 };

@@ -111,7 +111,7 @@ import {
   TampilDaftarAngsuran,
   TambahAngsuran,
   TampilAngsuran,
-  TampilAAngsuran,
+  TampilAngsuranChild,
   TampilSuratPemberitahuan,
   TambahSuratPemberitahuan,
   TampilSuratPenarikan,
@@ -1107,10 +1107,10 @@ const App = () => {
                   }
                 />
                 <Route
-                  path="/daftarAngsuran/angsuran/:id/:idAAngsuran"
+                  path="/daftarAngsuran/angsuran/:id/:idAngsuranChild"
                   element={
                     <USERRoute>
-                      <TampilAAngsuran />
+                      <TampilAngsuranChild />
                     </USERRoute>
                   }
                 />

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
@@ -18,15 +19,13 @@ import {
 } from "@mui/material";
 import { ShowTableAngsuran } from "../../../components/ShowTable";
 import { Loader, usePagination } from "../../../components";
-import { tempUrl } from "../../../contexts/ContextProvider";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 const TampilAngsuran = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[3];
   const { screenSize } = useStateContext();
@@ -102,54 +101,66 @@ const TampilAngsuran = () => {
   };
 
   useEffect(() => {
-    getAngsuran();
-    getAngsuranRekap();
-    getAngsuranRinci();
-    id && getUserById();
+    id && getJualById();
   }, [id]);
 
   const getAngsuran = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/angsuransByNoJual`, {
-      noJual: id,
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setAngsurans(response.data.angsuran);
-    setModal(response.data.angsuran[0].angModal * response.data.tenor);
-    setBunga(response.data.angsuran[0].angBunga * response.data.tenor);
+    const allAngsuransByNoJual = await axios.post(
+      `${tempUrl}/angsuransByNoJual`,
+      {
+        noJual: id,
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setAngsurans(allAngsuransByNoJual.data.angsuran);
+    setModal(
+      allAngsuransByNoJual.data.angsuran[0].angModal *
+        allAngsuransByNoJual.data.tenor
+    );
+    setBunga(
+      allAngsuransByNoJual.data.angsuran[0].angBunga *
+        allAngsuransByNoJual.data.tenor
+    );
     setLoading(false);
   };
 
   const getAngsuranRekap = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/angsuransByNoJualRekap`, {
-      noJual: id,
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setAngsuranTableRekap(response.data);
+    const allAngsuransByNoJualRekap = await axios.post(
+      `${tempUrl}/angsuransByNoJualRekap`,
+      {
+        noJual: id,
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setAngsuranTableRekap(allAngsuransByNoJualRekap.data);
     setLoading(false);
   };
 
   const getAngsuranRinci = async () => {
     setLoading(true);
-    const response = await axios.post(`${tempUrl}/angsuransByNoJualRinci`, {
-      noJual: id,
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setAngsuranTableRinci(response.data);
+    const allAngsuransByNoJualRinci = await axios.post(
+      `${tempUrl}/angsuransByNoJualRinci`,
+      {
+        noJual: id,
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setAngsuranTableRinci(allAngsuransByNoJualRinci.data);
     setLoading(false);
   };
 
-  const getUserById = async () => {
+  const getJualById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
         noJual: id,
@@ -158,6 +169,11 @@ const TampilAngsuran = () => {
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
+      if (response.data.tglAng.length !== 0) {
+        getAngsuran();
+        getAngsuranRekap();
+        getAngsuranRinci();
+      }
       setNamaRegister(response.data.namaRegister);
       setNoJual(response.data.noJual);
       setTanggalJual(response.data.tglAng);
@@ -441,13 +457,6 @@ const container = {
 
 const subTitleText = {
   fontWeight: "900"
-};
-
-const buttonModifierContainer = {
-  mt: 4,
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "center"
 };
 
 const dividerStyle = {
