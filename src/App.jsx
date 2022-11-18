@@ -59,6 +59,9 @@ import {
   TampilGroupCOA,
   TambahGroupCOA,
   UbahGroupCOA,
+  TampilSubGroupCOA,
+  TambahSubGroupCOA,
+  UbahSubGroupCOA,
   TampilWilayah,
   TambahWilayah,
   UbahWilayah,
@@ -246,7 +249,7 @@ const App = () => {
                           variant="body2"
                           sx={{ paddingLeft: "70px" }}
                         >
-                          GroupCOA
+                          Group COA
                         </Typography>
                       </MenuItem>
                     </Link>
@@ -257,7 +260,7 @@ const App = () => {
                           variant="body2"
                           sx={{ paddingLeft: "70px" }}
                         >
-                          SubGroupCOA
+                          Sub Group COA
                         </Typography>
                       </MenuItem>
                     </Link>
@@ -591,6 +594,39 @@ const App = () => {
                   element={
                     <USERRoute>
                       <UbahGroupCOA />
+                    </USERRoute>
+                  }
+                />
+                {/* Sub Group COA */}
+                <Route
+                  path="/subGroupCOA"
+                  element={
+                    <USERRoute>
+                      <TampilSubGroupCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/subGroupCOA/:id"
+                  element={
+                    <USERRoute>
+                      <TampilSubGroupCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/subGroupCOA/tambahSubGroupCOA"
+                  element={
+                    <USERRoute>
+                      <TambahSubGroupCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/subGroupCOA/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahSubGroupCOA />
                     </USERRoute>
                   }
                 />

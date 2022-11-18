@@ -215,6 +215,68 @@ export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
   );
 }
 
+export function ShowTableSubGroupCOA({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kode Group
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Kode Sub Group</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Nama</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.kodeGroupCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.kodeSubGroupCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.namaSubGroupCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/subGroupCOA/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.kodeGroupCOA}
+                </TableCell>
+                <TableCell>{user.kodeSubGroupCOA}</TableCell>
+                <TableCell>{user.namaSubGroupCOA}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
 export function ShowTableWilayah({ currentPosts, searchTerm }) {
   let navigate = useNavigate();
   const classes = useStyles();
