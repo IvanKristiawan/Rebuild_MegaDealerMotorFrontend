@@ -9,6 +9,10 @@ export { default as UbahTipe } from "./Master/Motor/Tipe/UbahTipe";
 export { default as TampilWarna } from "./Master/Motor/Warna/TampilWarna";
 export { default as TambahWarna } from "./Master/Motor/Warna/TambahWarna";
 export { default as UbahWarna } from "./Master/Motor/Warna/UbahWarna";
+// Group COA Page
+export { default as TampilGroupCOA } from "./Master/BukuBesar/GroupCOA/TampilGroupCOA";
+export { default as TambahGroupCOA } from "./Master/BukuBesar/GroupCOA/TambahGroupCOA";
+export { default as UbahGroupCOA } from "./Master/BukuBesar/GroupCOA/UbahGroupCOA";
 // Wilayah Page
 export { default as TampilWilayah } from "./Master/Area/Wilayah/TampilWilayah";
 export { default as TambahWilayah } from "./Master/Area/Wilayah/TambahWilayah";

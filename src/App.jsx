@@ -43,6 +43,7 @@ import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -55,6 +56,9 @@ import {
   TampilWarna,
   TambahWarna,
   UbahWarna,
+  TampilGroupCOA,
+  TambahGroupCOA,
+  UbahGroupCOA,
   TampilWilayah,
   TambahWilayah,
   UbahWilayah,
@@ -226,6 +230,45 @@ const App = () => {
                           sx={{ paddingLeft: "70px" }}
                         >
                           Kecamatan
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Divider />
+                  </SubMenu>
+                  <SubMenu
+                    label="Buku Besar"
+                    icon={<MenuBookIcon name="buku-besar-icon" />}
+                  >
+                    <Divider />
+                    <Link to="/groupCOA" style={linkText}>
+                      <MenuItem>
+                        <Typography
+                          variant="body2"
+                          sx={{ paddingLeft: "70px" }}
+                        >
+                          GroupCOA
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Divider />
+                    <Link to="/subGroupCOA" style={linkText}>
+                      <MenuItem>
+                        <Typography
+                          variant="body2"
+                          sx={{ paddingLeft: "70px" }}
+                        >
+                          SubGroupCOA
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Divider />
+                    <Link to="/coa" style={linkText}>
+                      <MenuItem>
+                        <Typography
+                          variant="body2"
+                          sx={{ paddingLeft: "70px" }}
+                        >
+                          COA
                         </Typography>
                       </MenuItem>
                     </Link>
@@ -515,6 +558,39 @@ const App = () => {
                   element={
                     <USERRoute>
                       <UbahWarna />
+                    </USERRoute>
+                  }
+                />
+                {/* Group COA */}
+                <Route
+                  path="/groupCOA"
+                  element={
+                    <USERRoute>
+                      <TampilGroupCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/groupCOA/:id"
+                  element={
+                    <USERRoute>
+                      <TampilGroupCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/groupCOA/tambahGroupCOA"
+                  element={
+                    <USERRoute>
+                      <TambahGroupCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/groupCOA/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahGroupCOA />
                     </USERRoute>
                   }
                 />
