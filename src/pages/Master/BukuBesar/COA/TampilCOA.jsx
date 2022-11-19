@@ -8,7 +8,7 @@ import {
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { ShowTableSubGroupCOA } from "../../../../components/ShowTable";
+import { ShowTableCOA } from "../../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
 import {
   SearchBar,
@@ -31,27 +31,32 @@ import * as XLSX from "xlsx";
 import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
-const TampilSubGroupCOA = () => {
+const TampilCOA = () => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
   const [isFetchError, setIsFetchError] = useState(false);
-  const [kodeGroupCOA, setKodeGroupCOA] = useState("");
-  const [kodeSubGroupCOA, setKodeSubGroupCOA] = useState("");
-  const [namaGroupCOA, setNamaGroupCOA] = useState("");
-  const [namaSubGroupCOA, setNamaSubGroupCOA] = useState("");
+  const [kodeCOA, setKodeCOA] = useState("");
+  const [namaCOA, setNamaCOA] = useState("");
+  const [subGroupCOA, setSubGroupCOA] = useState("");
+  const [groupCOA, setGroupCOA] = useState("");
+  const [jenisSaldo, setJenisSaldo] = useState("");
+  const [kasBank, setKasBank] = useState("");
+  const [COAsData, setCOAsData] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [subGroupCOAsData, setSubGroupCOAsData] = useState([]);
   const navigate = useNavigate();
-  let isSubGroupCOAExist = kodeSubGroupCOA.length !== 0;
+  let isCOAExist = kodeCOA.length !== 0;
 
   const columns = [
-    { title: "Kode Group", field: "kodeGroupCOA" },
-    { title: "Kode Group COA", field: "kodeSubGroupCOA" },
-    { title: "Nama Sub Group COA", field: "namaSubGroupCOA" }
+    { title: "Kode", field: "kodeCOA" },
+    { title: "Nama COA", field: "namaCOA" },
+    { title: "Sub Group COA", field: "subGroupCOA" },
+    { title: "Group COA", field: "groupCOA" },
+    { title: "Jenis Saldo", field: "jenisSaldo" },
+    { title: "Kas/Bank", field: "kasBank" }
   ];
 
   const [loading, setLoading] = useState(false);
@@ -61,14 +66,16 @@ const TampilSubGroupCOA = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = subGroupCOAsData.filter((val) => {
+  const tempPosts = COAsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeGroupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.namaGroupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.kodeSubGroupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.namaSubGroupCOA.toUpperCase().includes(searchTerm.toUpperCase())
+      val.kodeCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.namaCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.subGroupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.groupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.jenisSaldo.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kasBank.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -76,7 +83,7 @@ const TampilSubGroupCOA = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(subGroupCOAsData, PER_PAGE);
+  const _DATA = usePagination(COAsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -84,51 +91,56 @@ const TampilSubGroupCOA = () => {
   };
 
   useEffect(() => {
-    getSubGroupCOAsData();
-    id && getSubGroupCOAById();
+    getCOAsData();
+    id && getGroupCOAById();
   }, [id]);
 
-  const getSubGroupCOAsData = async () => {
+  const getCOAsData = async () => {
     setLoading(true);
     try {
-      const allSubGroupCOAs = await axios.post(`${tempUrl}/subGroupCOAs`, {
+      const allCOAs = await axios.post(`${tempUrl}/COAsForDoc`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setSubGroupCOAsData(allSubGroupCOAs.data);
+      setCOAsData(allCOAs.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getSubGroupCOAById = async () => {
+  const getGroupCOAById = async () => {
     if (id) {
-      const pickedWilayah = await axios.post(`${tempUrl}/subGroupCOAs/${id}`, {
+      const pickedWilayah = await axios.post(`${tempUrl}/COAs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeGroupCOA(pickedWilayah.data.kodeGroupCOA);
-      setKodeSubGroupCOA(pickedWilayah.data.kodeSubGroupCOA);
-      setNamaGroupCOA(pickedWilayah.data.namaGroupCOA);
-      setNamaSubGroupCOA(pickedWilayah.data.namaSubGroupCOA);
+      setKodeCOA(pickedWilayah.data.kodeCOA);
+      setNamaCOA(pickedWilayah.data.namaCOA);
+      setSubGroupCOA(pickedWilayah.data.subGroupCOA);
+      setGroupCOA(pickedWilayah.data.groupCOA);
+      setJenisSaldo(pickedWilayah.data.jenisSaldo);
+      setKasBank(pickedWilayah.data.kasBank);
     }
   };
 
-  const deleteSubGroupCOA = async (id) => {
+  const deleteCOA = async (id) => {
     try {
       setLoading(true);
-      await axios.post(`${tempUrl}/deleteSubGroupCOA/${id}`, {
+      await axios.post(`${tempUrl}/deleteCOA/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeGroupCOA("");
-      setKodeSubGroupCOA("");
-      setNamaSubGroupCOA("");
+      setKodeCOA("");
+      setNamaCOA("");
+      setSubGroupCOA("");
+      setGroupCOA("");
+      setJenisSaldo("");
+      setKasBank("");
       setLoading(false);
-      navigate("/subGroupCOA");
+      navigate("/COA");
     } catch (error) {
       console.log(error);
     }
@@ -145,7 +157,7 @@ const TampilSubGroupCOA = () => {
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Daftar Sub Group COA`, 90, 30);
+    doc.text(`Daftar COA`, 90, 30);
     doc.setFontSize(10);
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
@@ -156,25 +168,25 @@ const TampilSubGroupCOA = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: subGroupCOAsData,
+      body: COAsData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
       }
     });
-    doc.save(`daftarSubGroupCOA.pdf`);
+    doc.save(`daftarCOA.pdf`);
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(subGroupCOAsData);
+    const workSheet = XLSX.utils.json_to_sheet(COAsData);
     const workBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, `Sub Group COA`);
+    XLSX.utils.book_append_sheet(workBook, workSheet, `COA`);
     // Buffer
     let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
     // Binary String
     XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
     // Download
-    XLSX.writeFile(workBook, `daftarSubGroupCOA.xlsx`);
+    XLSX.writeFile(workBook, `daftarCOA.xlsx`);
   };
 
   if (loading) {
@@ -189,7 +201,7 @@ const TampilSubGroupCOA = () => {
     <Box sx={container}>
       <Typography color="#757575">Master</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Sub Group COA
+        COA
       </Typography>
       <Box sx={downloadButtons}>
         <ButtonGroup variant="outlined" color="secondary">
@@ -204,19 +216,19 @@ const TampilSubGroupCOA = () => {
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
           id={id}
-          kode={kodeSubGroupCOA}
-          addLink={`/subGroupCOA/tambahSubGroupCOA`}
-          editLink={`/subGroupCOA/${id}/edit`}
-          deleteUser={deleteSubGroupCOA}
-          nameUser={kodeSubGroupCOA}
+          kode={kodeCOA}
+          addLink={`/COA/tambahCOA`}
+          editLink={`/COA/${id}/edit`}
+          deleteUser={deleteCOA}
+          nameUser={kodeCOA}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {isSubGroupCOAExist && (
+      {isCOAExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
-              <Typography sx={labelInput}>Kode Group</Typography>
+              <Typography sx={labelInput}>Kode COA</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -224,10 +236,20 @@ const TampilSubGroupCOA = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={`${kodeGroupCOA} - ${namaGroupCOA}`}
+                value={kodeCOA}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Nama COA</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaCOA}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Kode Sub Group
+                Sub Group COA
               </Typography>
               <TextField
                 size="small"
@@ -236,11 +258,11 @@ const TampilSubGroupCOA = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={kodeSubGroupCOA}
+                value={subGroupCOA}
               />
-              <Typography sx={[labelInput, spacingTop]}>
-                Nama Sub Group COA
-              </Typography>
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Group COA</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -248,7 +270,27 @@ const TampilSubGroupCOA = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={namaSubGroupCOA}
+                value={groupCOA}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Jenis Saldo</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={jenisSaldo}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Kas/Bank</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={kasBank}
               />
             </Box>
           </Box>
@@ -259,10 +301,7 @@ const TampilSubGroupCOA = () => {
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
       <Box sx={tableContainer}>
-        <ShowTableSubGroupCOA
-          currentPosts={currentPosts}
-          searchTerm={searchTerm}
-        />
+        <ShowTableCOA currentPosts={currentPosts} searchTerm={searchTerm} />
       </Box>
       <Box sx={tableContainer}>
         <Pagination
@@ -277,7 +316,7 @@ const TampilSubGroupCOA = () => {
   );
 };
 
-export default TampilSubGroupCOA;
+export default TampilCOA;
 
 const container = {
   p: 4
@@ -339,4 +378,14 @@ const downloadButtons = {
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center"
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
 };

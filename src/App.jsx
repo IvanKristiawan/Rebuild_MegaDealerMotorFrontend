@@ -62,6 +62,9 @@ import {
   TampilSubGroupCOA,
   TambahSubGroupCOA,
   UbahSubGroupCOA,
+  TampilCOA,
+  TambahCOA,
+  UbahCOA,
   TampilWilayah,
   TambahWilayah,
   UbahWilayah,
@@ -627,6 +630,39 @@ const App = () => {
                   element={
                     <USERRoute>
                       <UbahSubGroupCOA />
+                    </USERRoute>
+                  }
+                />
+                {/* COA */}
+                <Route
+                  path="/COA"
+                  element={
+                    <USERRoute>
+                      <TampilCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/COA/:id"
+                  element={
+                    <USERRoute>
+                      <TampilCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/COA/tambahCOA"
+                  element={
+                    <USERRoute>
+                      <TambahCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/COA/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahCOA />
                     </USERRoute>
                   }
                 />

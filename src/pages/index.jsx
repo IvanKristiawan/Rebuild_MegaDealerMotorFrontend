@@ -17,6 +17,10 @@ export { default as UbahGroupCOA } from "./Master/BukuBesar/GroupCOA/UbahGroupCO
 export { default as TampilSubGroupCOA } from "./Master/BukuBesar/SubGroupCOA/TampilSubGroupCOA";
 export { default as TambahSubGroupCOA } from "./Master/BukuBesar/SubGroupCOA/TambahSubGroupCOA";
 export { default as UbahSubGroupCOA } from "./Master/BukuBesar/SubGroupCOA/UbahSubGroupCOA";
+// COA Page
+export { default as TampilCOA } from "./Master/BukuBesar/COA/TampilCOA";
+export { default as TambahCOA } from "./Master/BukuBesar/COA/TambahCOA";
+export { default as UbahCOA } from "./Master/BukuBesar/COA/UbahCOA";
 // Wilayah Page
 export { default as TampilWilayah } from "./Master/Area/Wilayah/TampilWilayah";
 export { default as TambahWilayah } from "./Master/Area/Wilayah/TambahWilayah";

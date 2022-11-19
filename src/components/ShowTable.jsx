@@ -160,6 +160,75 @@ export function ShowTableWarna({ currentPosts, searchTerm }) {
   );
 }
 
+export function ShowTableCOA({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kode COA
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Nama COA</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Sub Group COA</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Group COA</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Jenis Saldo</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Kas/Bank</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.kodeCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.namaCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.subGroupCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.groupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.jenisSaldo
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.kasBank.toUpperCase().includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/COA/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.kodeCOA}
+                </TableCell>
+                <TableCell>{user.namaCOA}</TableCell>
+                <TableCell>{user.subGroupCOA}</TableCell>
+                <TableCell>{user.groupCOA}</TableCell>
+                <TableCell>{user.jenisSaldo}</TableCell>
+                <TableCell>{user.kasBank}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
 export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
   let navigate = useNavigate();
   const classes = useStyles();
@@ -242,6 +311,9 @@ export function ShowTableSubGroupCOA({ currentPosts, searchTerm }) {
                 val.kodeGroupCOA
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
+                val.namaGroupCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
                 val.kodeSubGroupCOA
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -265,7 +337,7 @@ export function ShowTableSubGroupCOA({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user.kodeGroupCOA}
+                  {`${user.kodeGroupCOA} - ${user.namaGroupCOA}`}
                 </TableCell>
                 <TableCell>{user.kodeSubGroupCOA}</TableCell>
                 <TableCell>{user.namaSubGroupCOA}</TableCell>
