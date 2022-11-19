@@ -112,3 +112,10 @@ export { default as TambahSuratPenarikan } from "./Piutang/SuratPenarikan/Tambah
 // Biaya Perawatan
 export { default as TampilBiayaPerawatan } from "./Perawatan/BiayaPerawatan/TampilBiayaPerawatan";
 export { default as TambahBiayaPerawatan } from "./Perawatan/BiayaPerawatan/TambahBiayaPerawatan";
+// Kas Masuk
+export { default as TampilDaftarKasMasuk } from "./Finance/KasMasuk/TampilDaftarKasMasuk";
+export { default as TambahKasMasuk } from "./Finance/KasMasuk/TambahKasMasuk";
+export { default as TampilKasMasuk } from "./Finance/KasMasuk/TampilKasMasuk";
+// Kas Masuk Child
+export { default as TambahKasMasukChild } from "./Finance/KasMasukChild/TambahKasMasukChild";
+export { default as TampilKasMasukChild } from "./Finance/KasMasukChild/TampilKasMasukChild";

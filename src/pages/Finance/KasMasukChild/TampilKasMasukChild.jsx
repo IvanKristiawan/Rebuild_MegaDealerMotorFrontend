@@ -1,0 +1,269 @@
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { tempUrl } from "../../../contexts/ContextProvider";
+import { Colors } from "../../../constants/styles";
+import { Loader } from "../../../components";
+import {
+  Box,
+  TextField,
+  Typography,
+  Divider,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  TextareaAutosize
+} from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+
+const TampilKasMasukChild = () => {
+  const { user } = useContext(AuthContext);
+  const { id, idKasMasukChild } = useParams();
+  const navigate = useNavigate();
+  const [tempIdKasMasukChild, setTempIdKasMasukChild] = useState("");
+  const [noBukti, setNoBukti] = useState("");
+  const [tglKasMasuk, setTglKasMasuk] = useState("");
+  const [kodeCOA, setKodeCOA] = useState("");
+  const [keterangan, setKeterangan] = useState("");
+  const [jumlah, setJumlah] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    getKasMasukChildById();
+  }, []);
+
+  const getKasMasukChildById = async () => {
+    if (id) {
+      const response = await axios.post(
+        `${tempUrl}/kasMasuksChild/${idKasMasukChild}`,
+        {
+          id: user._id,
+          token: user.token
+        }
+      );
+      setTempIdKasMasukChild(response.data._id);
+      setNoBukti(response.data.noBukti);
+      setTglKasMasuk(response.data.tglKasMasuk);
+      setKodeCOA(response.data.COA);
+      setKeterangan(response.data.keterangan);
+      setJumlah(response.data.jumlah);
+    }
+  };
+
+  const deleteBeliChild = async (id) => {
+    try {
+      setLoading(true);
+      const pickedKasMasuk = await axios.post(`${tempUrl}/kasMasuks/${id}`, {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      });
+      let tempJumlahKasMasuk =
+        parseInt(pickedKasMasuk.data.jumlah) - parseInt(jumlah);
+      await axios.post(`${tempUrl}/updateKasMasuk/${id}`, {
+        jumlah: tempJumlahKasMasuk,
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      });
+      // Delete Kas Masuk
+      await axios.post(
+        `${tempUrl}/deleteKasMasukChild/${tempIdKasMasukChild}`,
+        {
+          id: user._id,
+          token: user.token
+        }
+      );
+      setNoBukti("");
+      setTglKasMasuk("");
+      setKodeCOA("");
+      setKeterangan("");
+      setJumlah("");
+      setLoading(false);
+      navigate(`/daftarKasMasuk/kasMasuk/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  return (
+    <>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => navigate(`/daftarKasMasuk/kasMasuk/${id}`)}
+        sx={{ marginLeft: 2, marginTop: 4 }}
+      >
+        {"< Kembali"}
+      </Button>
+      <Box sx={container}>
+        <Typography color="#757575">Finance</Typography>
+        <Typography variant="h4" sx={subTitleText}>
+          Unit Kas Masuk
+        </Typography>
+        <Box sx={deleteButtonContainer}>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{`Hapus Data`}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-slide-description">
+                {`Yakin ingin menghapus data ${noBukti}?`}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => deleteBeliChild(id)}>Ok</Button>
+              <Button onClick={handleClose}>Cancel</Button>
+            </DialogActions>
+          </Dialog>
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<DeleteOutlineIcon />}
+            sx={{ textTransform: "none" }}
+            onClick={handleClickOpen}
+          >
+            Hapus
+          </Button>
+        </Box>
+        <Divider sx={dividerStyle} />
+        <Box sx={[textFieldContainer, spacingTop]}>
+          <Box sx={textFieldWrapper}>
+            <Typography sx={labelInput}>No Bukti</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="filled"
+              InputProps={{
+                readOnly: true
+              }}
+              value={noBukti}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Tgl. Kas Masuk
+            </Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="filled"
+              InputProps={{
+                readOnly: true
+              }}
+              value={tglKasMasuk}
+            />
+            <Typography sx={[labelInput, spacingTop]}>COA</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="filled"
+              InputProps={{
+                readOnly: true
+              }}
+              value={`${kodeCOA.kodeCOA} - ${kodeCOA.namaCOA}`}
+            />
+            <Typography sx={[labelInput, spacingTop]}>Jumlah</Typography>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              variant="filled"
+              InputProps={{
+                readOnly: true
+              }}
+              value={jumlah.toLocaleString()}
+            />
+          </Box>
+          <Box sx={[textFieldWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Keterangan</Typography>
+            <TextareaAutosize
+              maxRows={1}
+              aria-label="maximum height"
+              style={{ height: 360, backgroundColor: Colors.grey200 }}
+              value={keterangan}
+              disabled
+            />
+          </Box>
+        </Box>
+      </Box>
+    </>
+  );
+};
+
+export default TampilKasMasukChild;
+
+const container = {
+  p: 4
+};
+
+const subTitleText = {
+  fontWeight: "900"
+};
+
+const deleteButtonContainer = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
+};
+
+const dividerStyle = {
+  pt: 4
+};
+
+const textFieldContainer = {
+  display: "flex",
+  flexDirection: {
+    xs: "column",
+    sm: "row"
+  }
+};
+
+const textFieldWrapper = {
+  display: "flex",
+  flex: 1,
+  flexDirection: "column",
+  maxWidth: {
+    md: "40vw"
+  }
+};
+
+const labelInput = {
+  fontWeight: "600",
+  marginLeft: 1
+};
+
+const spacingTop = {
+  mt: 4
+};
+
+const secondWrapper = {
+  marginLeft: {
+    md: 4
+  },
+  marginTop: {
+    md: 0,
+    xs: 4
+  }
+};

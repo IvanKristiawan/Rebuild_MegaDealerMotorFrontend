@@ -106,7 +106,6 @@ const TampilBeliChild = () => {
         id: user._id,
         token: user.token
       });
-      alert(idStok);
       // Delete Daftar Stok
       await axios.post(`${tempUrl}/deleteDaftarStok/${idStok}`, {
         id: user._id,

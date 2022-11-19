@@ -102,7 +102,7 @@ const TambahJualBaru = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [searchTermRegister, setSearchTermRegister] = useState("");
-  const [openRegister, setOpenRegister] = React.useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
 
   const classes = useStyles();
 

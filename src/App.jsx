@@ -44,6 +44,11 @@ import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import AddCardIcon from "@mui/icons-material/AddCard";
+import CardMembershipIcon from "@mui/icons-material/CardMembership";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
+import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -129,7 +134,12 @@ import {
   TampilSuratPenarikan,
   TambahSuratPenarikan,
   TampilBiayaPerawatan,
-  TambahBiayaPerawatan
+  TambahBiayaPerawatan,
+  TampilDaftarKasMasuk,
+  TambahKasMasuk,
+  TampilKasMasuk,
+  TambahKasMasukChild,
+  TampilKasMasukChild
 } from "./pages/index";
 
 const App = () => {
@@ -457,6 +467,46 @@ const App = () => {
                         icon={<RequestQuoteIcon name="biaya-perawatan-icon" />}
                       >
                         Biaya Perawatan
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                </SubMenu>
+                <Divider />
+                <SubMenu
+                  label="Finance"
+                  icon={<MonetizationOnIcon name="Finance-icon" />}
+                >
+                  <Link to="/daftarKasMasuk" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<AddCardIcon name="kas-masuk-icon" />}>
+                        Kas Masuk
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/daftarKasKeluar" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<CardMembershipIcon name="kas-keluar-icon" />}
+                      >
+                        Kas Keluar
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/daftarBankMasuk" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem icon={<FileOpenIcon name="bank-masuk-icon" />}>
+                        Bank Masuk
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/daftarBankKeluar" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={
+                          <IndeterminateCheckBoxIcon name="bank-keluar-icon" />
+                        }
+                      >
+                        Bank Keluar
                       </MenuItem>
                     </Box>
                   </Link>
@@ -1353,6 +1403,48 @@ const App = () => {
                   element={
                     <USERRoute>
                       <TambahBiayaPerawatan />
+                    </USERRoute>
+                  }
+                />
+                {/* Kas Masuk */}
+                <Route
+                  path="/daftarKasMasuk"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarKasMasuk />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarKasMasuk/kasMasuk/tambahKasMasuk"
+                  element={
+                    <USERRoute>
+                      <TambahKasMasuk />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarKasMasuk/kasMasuk/:id"
+                  element={
+                    <USERRoute>
+                      <TampilKasMasuk />
+                    </USERRoute>
+                  }
+                />
+                {/* Kas Masuk Child */}
+                <Route
+                  path="/daftarKasMasuk/kasMasuk/:id/tambahKasMasukChild"
+                  element={
+                    <USERRoute>
+                      <TambahKasMasukChild />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarKasMasuk/kasMasuk/:id/:idKasMasukChild"
+                  element={
+                    <USERRoute>
+                      <TampilKasMasukChild />
                     </USERRoute>
                   }
                 />
