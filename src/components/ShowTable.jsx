@@ -2638,3 +2638,158 @@ export function ShowTableKasKeluar({ id, currentPosts }) {
     </TableContainer>
   );
 }
+
+export function ShowTableDaftarBankMasuk({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Bukti
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. Bank Masuk
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              COA
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Keterangan
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Jumlah
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.noBukti.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tglBankMasuk.toString().includes(searchTerm) ||
+                val.COA.kodeCOA.toString().includes(searchTerm) ||
+                val.COA.namaCOA.toString().includes(searchTerm) ||
+                val.keterangan
+                  .toString()
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/daftarBankMasuk/bankMasuk/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.noBukti}
+                </TableCell>
+                <TableCell>{user.tglBankMasuk}</TableCell>
+                <TableCell>{`${user.COA.kodeCOA} - ${user.COA.namaCOA}`}</TableCell>
+                <TableCell>{user.keterangan}</TableCell>
+                <TableCell>{user.jumlah.toLocaleString()}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export function ShowTableBankMasuk({ id, currentPosts }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Bukti
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. Bank Masuk
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              COA
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Keterangan
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Jumlah
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts.map((bankMasukChild, index) => (
+            <TableRow
+              key={bankMasukChild.kodeStok}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                "&:hover": { bgcolor: Colors.grey300 },
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                navigate(
+                  `/daftarBankMasuk/bankMasuk/${id}/${bankMasukChild._id}`
+                );
+              }}
+            >
+              <TableCell component="th" scope="row">
+                {bankMasukChild.noBukti}
+              </TableCell>
+              <TableCell>{bankMasukChild.tglBankMasuk}</TableCell>
+              <TableCell>{`${bankMasukChild.COA.kodeCOA} - ${bankMasukChild.COA.namaCOA}`}</TableCell>
+              <TableCell>{bankMasukChild.keterangan}</TableCell>
+              <TableCell>{bankMasukChild.jumlah.toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
