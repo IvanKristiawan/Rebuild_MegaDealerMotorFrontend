@@ -2483,3 +2483,158 @@ export function ShowTableKasMasuk({ id, currentPosts }) {
     </TableContainer>
   );
 }
+
+export function ShowTableDaftarKasKeluar({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Bukti
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. Kas Keluar
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              COA
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Keterangan
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Jumlah
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.noBukti.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tglKasKeluar.toString().includes(searchTerm) ||
+                val.COA.kodeCOA.toString().includes(searchTerm) ||
+                val.COA.namaCOA.toString().includes(searchTerm) ||
+                val.keterangan
+                  .toString()
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/daftarKasKeluar/kasKeluar/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.noBukti}
+                </TableCell>
+                <TableCell>{user.tglKasKeluar}</TableCell>
+                <TableCell>{`${user.COA.kodeCOA} - ${user.COA.namaCOA}`}</TableCell>
+                <TableCell>{user.keterangan}</TableCell>
+                <TableCell>{user.jumlah.toLocaleString()}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export function ShowTableKasKeluar({ id, currentPosts }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              No. Bukti
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Tgl. Kas Keluar
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              COA
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Keterangan
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Jumlah
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts.map((kasKeluarChild, index) => (
+            <TableRow
+              key={kasKeluarChild.kodeStok}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                "&:hover": { bgcolor: Colors.grey300 },
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                navigate(
+                  `/daftarKasKeluar/kasKeluar/${id}/${kasKeluarChild._id}`
+                );
+              }}
+            >
+              <TableCell component="th" scope="row">
+                {kasKeluarChild.noBukti}
+              </TableCell>
+              <TableCell>{kasKeluarChild.tglKasKeluar}</TableCell>
+              <TableCell>{`${kasKeluarChild.COA.kodeCOA} - ${kasKeluarChild.COA.namaCOA}`}</TableCell>
+              <TableCell>{kasKeluarChild.keterangan}</TableCell>
+              <TableCell>{kasKeluarChild.jumlah.toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}

@@ -20,13 +20,13 @@ import {
 } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-const TampilKasMasukChild = () => {
+const TampilKasKeluarChild = () => {
   const { user } = useContext(AuthContext);
-  const { id, idKasMasukChild } = useParams();
+  const { id, idKasKeluarChild } = useParams();
   const navigate = useNavigate();
   const [tempIdKasMasukChild, setTempIdKasMasukChild] = useState("");
   const [noBukti, setNoBukti] = useState("");
-  const [tglKasMasuk, setTglKasMasuk] = useState("");
+  const [tglKasKeluar, setTglKasKeluar] = useState("");
   const [kodeCOA, setKodeCOA] = useState("");
   const [keterangan, setKeterangan] = useState("");
   const [jumlah, setJumlah] = useState("");
@@ -43,13 +43,13 @@ const TampilKasMasukChild = () => {
   };
 
   useEffect(() => {
-    getKasMasukChildById();
+    getKasKeluarChildById();
   }, []);
 
-  const getKasMasukChildById = async () => {
+  const getKasKeluarChildById = async () => {
     if (id) {
       const response = await axios.post(
-        `${tempUrl}/kasMasuksChild/${idKasMasukChild}`,
+        `${tempUrl}/kasKeluarsChild/${idKasKeluarChild}`,
         {
           id: user._id,
           token: user.token
@@ -57,46 +57,46 @@ const TampilKasMasukChild = () => {
       );
       setTempIdKasMasukChild(response.data._id);
       setNoBukti(response.data.noBukti);
-      setTglKasMasuk(response.data.tglKasMasuk);
+      setTglKasKeluar(response.data.tglKasKeluar);
       setKodeCOA(response.data.COA);
       setKeterangan(response.data.keterangan);
       setJumlah(response.data.jumlah);
     }
   };
 
-  const deleteKasMasukChild = async (id) => {
+  const deleteKasKeluarChild = async (id) => {
     try {
       setLoading(true);
-      const pickedKasMasuk = await axios.post(`${tempUrl}/kasMasuks/${id}`, {
+      const pickedKasKeluar = await axios.post(`${tempUrl}/kasKeluars/${id}`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      let tempJumlahKasMasuk =
-        parseInt(pickedKasMasuk.data.jumlah) - parseInt(jumlah);
-      await axios.post(`${tempUrl}/updateKasMasuk/${id}`, {
-        jumlah: tempJumlahKasMasuk,
+      let tempJumlahKasKeluar =
+        parseInt(pickedKasKeluar.data.jumlah) - parseInt(jumlah);
+      await axios.post(`${tempUrl}/updateKasKeluar/${id}`, {
+        jumlah: tempJumlahKasKeluar,
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      // Delete Kas Masuk
+      // Delete Kas Keluar
       await axios.post(
-        `${tempUrl}/deleteKasMasukChild/${tempIdKasMasukChild}`,
+        `${tempUrl}/deleteKasKeluarChild/${tempIdKasMasukChild}`,
         {
           id: user._id,
           token: user.token
         }
       );
       setNoBukti("");
-      setTglKasMasuk("");
+      setTglKasKeluar("");
       setKodeCOA("");
       setKeterangan("");
       setJumlah("");
       setLoading(false);
-      navigate(`/daftarKasMasuk/kasMasuk/${id}`);
+      navigate(`/daftarKasKeluar/kasKeluar/${id}`);
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +111,7 @@ const TampilKasMasukChild = () => {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={() => navigate(`/daftarKasMasuk/kasMasuk/${id}`)}
+        onClick={() => navigate(`/daftarKasKeluar/kasKeluar/${id}`)}
         sx={{ marginLeft: 2, marginTop: 4 }}
       >
         {"< Kembali"}
@@ -119,7 +119,7 @@ const TampilKasMasukChild = () => {
       <Box sx={container}>
         <Typography color="#757575">Finance</Typography>
         <Typography variant="h4" sx={subTitleText}>
-          Unit Kas Masuk
+          Unit Kas Keluar
         </Typography>
         <Box sx={deleteButtonContainer}>
           <Dialog
@@ -135,7 +135,7 @@ const TampilKasMasukChild = () => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => deleteKasMasukChild(id)}>Ok</Button>
+              <Button onClick={() => deleteKasKeluarChild(id)}>Ok</Button>
               <Button onClick={handleClose}>Cancel</Button>
             </DialogActions>
           </Dialog>
@@ -163,7 +163,7 @@ const TampilKasMasukChild = () => {
               value={noBukti}
             />
             <Typography sx={[labelInput, spacingTop]}>
-              Tgl. Kas Masuk
+              Tgl. Kas Keluar
             </Typography>
             <TextField
               size="small"
@@ -172,7 +172,7 @@ const TampilKasMasukChild = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={tglKasMasuk}
+              value={tglKasKeluar}
             />
             <Typography sx={[labelInput, spacingTop]}>COA</Typography>
             <TextField
@@ -211,7 +211,7 @@ const TampilKasMasukChild = () => {
   );
 };
 
-export default TampilKasMasukChild;
+export default TampilKasKeluarChild;
 
 const container = {
   p: 4

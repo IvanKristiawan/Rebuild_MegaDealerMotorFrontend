@@ -139,7 +139,12 @@ import {
   TambahKasMasuk,
   TampilKasMasuk,
   TambahKasMasukChild,
-  TampilKasMasukChild
+  TampilKasMasukChild,
+  TampilDaftarKasKeluar,
+  TambahKasKeluar,
+  TampilKasKeluar,
+  TambahKasKeluarChild,
+  TampilKasKeluarChild
 } from "./pages/index";
 
 const App = () => {
@@ -1445,6 +1450,48 @@ const App = () => {
                   element={
                     <USERRoute>
                       <TampilKasMasukChild />
+                    </USERRoute>
+                  }
+                />
+                {/* Kas Keluar */}
+                <Route
+                  path="/daftarKasKeluar"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarKasKeluar />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarKasKeluar/kasKeluar/tambahKasKeluar"
+                  element={
+                    <USERRoute>
+                      <TambahKasKeluar />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarKasKeluar/kasKeluar/:id"
+                  element={
+                    <USERRoute>
+                      <TampilKasKeluar />
+                    </USERRoute>
+                  }
+                />
+                {/* Kas Keluar Child */}
+                <Route
+                  path="/daftarKasKeluar/kasKeluar/:id/tambahKasKeluarChild"
+                  element={
+                    <USERRoute>
+                      <TambahKasKeluarChild />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarKasKeluar/kasKeluar/:id/:idKasKeluarChild"
+                  element={
+                    <USERRoute>
+                      <TampilKasKeluarChild />
                     </USERRoute>
                   }
                 />

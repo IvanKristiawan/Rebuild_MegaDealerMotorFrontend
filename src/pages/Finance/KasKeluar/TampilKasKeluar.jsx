@@ -1,102 +1,105 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { useStateContext } from "../../../contexts/ContextProvider";
 import { Colors } from "../../../constants/styles";
-import { Loader } from "../../../components";
+import { ShowTableKasKeluar } from "../../../components/ShowTable";
+import { Loader, usePagination, ButtonModifier } from "../../../components";
 import {
   Box,
   TextField,
   Typography,
   Divider,
+  Pagination,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   TextareaAutosize
 } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-const TampilKasMasukChild = () => {
+const TampilKasKeluar = () => {
   const { user } = useContext(AuthContext);
-  const { id, idKasMasukChild } = useParams();
-  const navigate = useNavigate();
-  const [tempIdKasMasukChild, setTempIdKasMasukChild] = useState("");
+  const location = useLocation();
+  const id = location.pathname.split("/")[3];
+  const { screenSize } = useStateContext();
   const [noBukti, setNoBukti] = useState("");
-  const [tglKasMasuk, setTglKasMasuk] = useState("");
+  const [tglKasKeluar, setTglKasKeluar] = useState("");
   const [kodeCOA, setKodeCOA] = useState("");
   const [keterangan, setKeterangan] = useState("");
   const [jumlah, setJumlah] = useState("");
 
+  const [kasKeluarsChildData, setKasKeluarsChildData] = useState([]);
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  let [page, setPage] = useState(1);
+  const PER_PAGE = 20;
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // Get current posts
+  const indexOfLastPost = page * PER_PAGE;
+  const indexOfFirstPost = indexOfLastPost - PER_PAGE;
+  const currentPosts = kasKeluarsChildData.slice(
+    indexOfFirstPost,
+    indexOfLastPost
+  );
 
-  const handleClose = () => {
-    setOpen(false);
+  const count = Math.ceil(kasKeluarsChildData.length / PER_PAGE);
+  const _DATA = usePagination(kasKeluarsChildData, PER_PAGE);
+
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
   };
 
   useEffect(() => {
-    getKasMasukChildById();
-  }, []);
+    id && getKasKeluarById();
+  }, [id]);
 
-  const getKasMasukChildById = async () => {
+  const getKasKeluarById = async () => {
     if (id) {
-      const response = await axios.post(
-        `${tempUrl}/kasMasuksChild/${idKasMasukChild}`,
-        {
-          id: user._id,
-          token: user.token
-        }
-      );
-      setTempIdKasMasukChild(response.data._id);
+      const response = await axios.post(`${tempUrl}/kasKeluars/${id}`, {
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
+        id: user._id,
+        token: user.token
+      });
       setNoBukti(response.data.noBukti);
-      setTglKasMasuk(response.data.tglKasMasuk);
+      setTglKasKeluar(response.data.tglKasKeluar);
       setKodeCOA(response.data.COA);
       setKeterangan(response.data.keterangan);
       setJumlah(response.data.jumlah);
-    }
-  };
-
-  const deleteKasMasukChild = async (id) => {
-    try {
-      setLoading(true);
-      const pickedKasMasuk = await axios.post(`${tempUrl}/kasMasuks/${id}`, {
-        id: user._id,
-        token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id
-      });
-      let tempJumlahKasMasuk =
-        parseInt(pickedKasMasuk.data.jumlah) - parseInt(jumlah);
-      await axios.post(`${tempUrl}/updateKasMasuk/${id}`, {
-        jumlah: tempJumlahKasMasuk,
-        id: user._id,
-        token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id
-      });
-      // Delete Kas Masuk
-      await axios.post(
-        `${tempUrl}/deleteKasMasukChild/${tempIdKasMasukChild}`,
+      const response2 = await axios.post(
+        `${tempUrl}/kasKeluarsChildByNoBukti`,
         {
+          noBukti: response.data.noBukti,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         }
       );
-      setNoBukti("");
-      setTglKasMasuk("");
-      setKodeCOA("");
-      setKeterangan("");
-      setJumlah("");
+      setKasKeluarsChildData(response2.data);
+    }
+  };
+
+  const deleteKasKeluar = async (id) => {
+    try {
+      setLoading(true);
+      for (let kasKeluarsChild of kasKeluarsChildData) {
+        await axios.post(
+          `${tempUrl}/deleteKasKeluarChild/${kasKeluarsChild._id}`,
+          {
+            id: user._id,
+            token: user.token
+          }
+        );
+      }
+      await axios.post(`${tempUrl}/deleteKasKeluar/${id}`, {
+        id: user._id,
+        token: user.token
+      });
       setLoading(false);
-      navigate(`/daftarKasMasuk/kasMasuk/${id}`);
+      navigate("/daftarKasKeluar");
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +114,7 @@ const TampilKasMasukChild = () => {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={() => navigate(`/daftarKasMasuk/kasMasuk/${id}`)}
+        onClick={() => navigate("/daftarKasKeluar")}
         sx={{ marginLeft: 2, marginTop: 4 }}
       >
         {"< Kembali"}
@@ -119,40 +122,22 @@ const TampilKasMasukChild = () => {
       <Box sx={container}>
         <Typography color="#757575">Finance</Typography>
         <Typography variant="h4" sx={subTitleText}>
-          Unit Kas Masuk
+          Kas Keluar
         </Typography>
-        <Box sx={deleteButtonContainer}>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{`Hapus Data`}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-slide-description">
-                {`Yakin ingin menghapus data ${noBukti}?`}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => deleteKasMasukChild(id)}>Ok</Button>
-              <Button onClick={handleClose}>Cancel</Button>
-            </DialogActions>
-          </Dialog>
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<DeleteOutlineIcon />}
-            sx={{ textTransform: "none" }}
-            onClick={handleClickOpen}
-          >
-            Hapus
-          </Button>
+        <Box sx={buttonModifierContainer}>
+          <ButtonModifier
+            id={id}
+            kode={"test"}
+            addLink={`/daftarKasKeluar/kasKeluar/${id}/tambahKasKeluarChild`}
+            deleteUser={deleteKasKeluar}
+            nameUser={noBukti}
+          />
         </Box>
         <Divider sx={dividerStyle} />
-        <Box sx={[textFieldContainer, spacingTop]}>
+        <Divider sx={{ marginBottom: 2 }} />
+        <Box sx={textFieldContainer}>
           <Box sx={textFieldWrapper}>
-            <Typography sx={labelInput}>No Bukti</Typography>
+            <Typography sx={labelInput}>No. Bukti</Typography>
             <TextField
               size="small"
               id="outlined-basic"
@@ -163,7 +148,7 @@ const TampilKasMasukChild = () => {
               value={noBukti}
             />
             <Typography sx={[labelInput, spacingTop]}>
-              Tgl. Kas Masuk
+              Tgl. Kas Keluar
             </Typography>
             <TextField
               size="small"
@@ -172,9 +157,9 @@ const TampilKasMasukChild = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={tglKasMasuk}
+              value={tglKasKeluar}
             />
-            <Typography sx={[labelInput, spacingTop]}>COA</Typography>
+            <Typography sx={[labelInput, spacingTop]}>Kode COA</Typography>
             <TextField
               size="small"
               id="outlined-basic"
@@ -206,12 +191,25 @@ const TampilKasMasukChild = () => {
             />
           </Box>
         </Box>
+        <Divider sx={dividerStyle} />
+        <Box sx={tableContainer}>
+          <ShowTableKasKeluar id={id} currentPosts={currentPosts} />
+        </Box>
+        <Box sx={tableContainer}>
+          <Pagination
+            count={count}
+            page={page}
+            onChange={handleChange}
+            color="primary"
+            size={screenSize <= 600 ? "small" : "large"}
+          />
+        </Box>
       </Box>
     </>
   );
 };
 
-export default TampilKasMasukChild;
+export default TampilKasKeluar;
 
 const container = {
   p: 4
@@ -221,7 +219,7 @@ const subTitleText = {
   fontWeight: "900"
 };
 
-const deleteButtonContainer = {
+const buttonModifierContainer = {
   mt: 4,
   display: "flex",
   flexWrap: "wrap",
@@ -247,6 +245,12 @@ const textFieldWrapper = {
   maxWidth: {
     md: "40vw"
   }
+};
+
+const tableContainer = {
+  pt: 4,
+  display: "flex",
+  justifyContent: "center"
 };
 
 const labelInput = {
