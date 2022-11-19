@@ -1,102 +1,105 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { tempUrl } from "../../../contexts/ContextProvider";
+import { useStateContext } from "../../../contexts/ContextProvider";
 import { Colors } from "../../../constants/styles";
-import { Loader } from "../../../components";
+import { ShowTableBankKeluar } from "../../../components/ShowTable";
+import { Loader, usePagination, ButtonModifier } from "../../../components";
 import {
   Box,
   TextField,
   Typography,
   Divider,
+  Pagination,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   TextareaAutosize
 } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-const TampilKasKeluarChild = () => {
+const TampilBankKeluar = () => {
   const { user } = useContext(AuthContext);
-  const { id, idKasKeluarChild } = useParams();
-  const navigate = useNavigate();
-  const [tempIdKasKeluarChild, setTempIdKasKeluarChild] = useState("");
+  const location = useLocation();
+  const id = location.pathname.split("/")[3];
+  const { screenSize } = useStateContext();
   const [noBukti, setNoBukti] = useState("");
-  const [tglKasKeluar, setTglKasKeluar] = useState("");
+  const [tglBankKeluar, setTglBankKeluar] = useState("");
   const [kodeCOA, setKodeCOA] = useState("");
   const [keterangan, setKeterangan] = useState("");
   const [jumlah, setJumlah] = useState("");
 
+  const [bankKeluarsChildData, setBankKeluarsChildData] = useState([]);
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  let [page, setPage] = useState(1);
+  const PER_PAGE = 20;
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // Get current posts
+  const indexOfLastPost = page * PER_PAGE;
+  const indexOfFirstPost = indexOfLastPost - PER_PAGE;
+  const currentPosts = bankKeluarsChildData.slice(
+    indexOfFirstPost,
+    indexOfLastPost
+  );
 
-  const handleClose = () => {
-    setOpen(false);
+  const count = Math.ceil(bankKeluarsChildData.length / PER_PAGE);
+  const _DATA = usePagination(bankKeluarsChildData, PER_PAGE);
+
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
   };
 
   useEffect(() => {
-    getKasKeluarChildById();
-  }, []);
+    id && getBankKeluarById();
+  }, [id]);
 
-  const getKasKeluarChildById = async () => {
+  const getBankKeluarById = async () => {
     if (id) {
-      const response = await axios.post(
-        `${tempUrl}/kasKeluarsChild/${idKasKeluarChild}`,
-        {
-          id: user._id,
-          token: user.token
-        }
-      );
-      setTempIdKasKeluarChild(response.data._id);
+      const response = await axios.post(`${tempUrl}/bankKeluars/${id}`, {
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id,
+        id: user._id,
+        token: user.token
+      });
       setNoBukti(response.data.noBukti);
-      setTglKasKeluar(response.data.tglKasKeluar);
+      setTglBankKeluar(response.data.tglBankKeluar);
       setKodeCOA(response.data.COA);
       setKeterangan(response.data.keterangan);
       setJumlah(response.data.jumlah);
-    }
-  };
-
-  const deleteKasKeluarChild = async (id) => {
-    try {
-      setLoading(true);
-      const pickedKasKeluar = await axios.post(`${tempUrl}/kasKeluars/${id}`, {
-        id: user._id,
-        token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id
-      });
-      let tempJumlahKasKeluar =
-        parseInt(pickedKasKeluar.data.jumlah) - parseInt(jumlah);
-      await axios.post(`${tempUrl}/updateKasKeluar/${id}`, {
-        jumlah: tempJumlahKasKeluar,
-        id: user._id,
-        token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id
-      });
-      // Delete Kas Keluar
-      await axios.post(
-        `${tempUrl}/deleteKasKeluarChild/${tempIdKasKeluarChild}`,
+      const response2 = await axios.post(
+        `${tempUrl}/bankKeluarsChildByNoBukti`,
         {
+          noBukti: response.data.noBukti,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         }
       );
-      setNoBukti("");
-      setTglKasKeluar("");
-      setKodeCOA("");
-      setKeterangan("");
-      setJumlah("");
+      setBankKeluarsChildData(response2.data);
+    }
+  };
+
+  const deleteBankKeluar = async (id) => {
+    try {
+      setLoading(true);
+      for (let bankKeluarsChild of bankKeluarsChildData) {
+        await axios.post(
+          `${tempUrl}/deleteBankKeluarChild/${bankKeluarsChild._id}`,
+          {
+            id: user._id,
+            token: user.token
+          }
+        );
+      }
+      await axios.post(`${tempUrl}/deleteBankKeluar/${id}`, {
+        id: user._id,
+        token: user.token
+      });
       setLoading(false);
-      navigate(`/daftarKasKeluar/kasKeluar/${id}`);
+      navigate("/daftarBankKeluar");
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +114,7 @@ const TampilKasKeluarChild = () => {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={() => navigate(`/daftarKasKeluar/kasKeluar/${id}`)}
+        onClick={() => navigate("/daftarBankKeluar")}
         sx={{ marginLeft: 2, marginTop: 4 }}
       >
         {"< Kembali"}
@@ -119,40 +122,22 @@ const TampilKasKeluarChild = () => {
       <Box sx={container}>
         <Typography color="#757575">Finance</Typography>
         <Typography variant="h4" sx={subTitleText}>
-          Unit Kas Keluar
+          Bank Keluar
         </Typography>
-        <Box sx={deleteButtonContainer}>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{`Hapus Data`}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-slide-description">
-                {`Yakin ingin menghapus data ${noBukti}?`}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => deleteKasKeluarChild(id)}>Ok</Button>
-              <Button onClick={handleClose}>Cancel</Button>
-            </DialogActions>
-          </Dialog>
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<DeleteOutlineIcon />}
-            sx={{ textTransform: "none" }}
-            onClick={handleClickOpen}
-          >
-            Hapus
-          </Button>
+        <Box sx={buttonModifierContainer}>
+          <ButtonModifier
+            id={id}
+            kode={"test"}
+            addLink={`/daftarBankKeluar/bankKeluar/${id}/tambahBankKeluarChild`}
+            deleteUser={deleteBankKeluar}
+            nameUser={noBukti}
+          />
         </Box>
         <Divider sx={dividerStyle} />
-        <Box sx={[textFieldContainer, spacingTop]}>
+        <Divider sx={{ marginBottom: 2 }} />
+        <Box sx={textFieldContainer}>
           <Box sx={textFieldWrapper}>
-            <Typography sx={labelInput}>No Bukti</Typography>
+            <Typography sx={labelInput}>No. Bukti</Typography>
             <TextField
               size="small"
               id="outlined-basic"
@@ -172,9 +157,9 @@ const TampilKasKeluarChild = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={tglKasKeluar}
+              value={tglBankKeluar}
             />
-            <Typography sx={[labelInput, spacingTop]}>COA</Typography>
+            <Typography sx={[labelInput, spacingTop]}>Kode COA</Typography>
             <TextField
               size="small"
               id="outlined-basic"
@@ -206,12 +191,25 @@ const TampilKasKeluarChild = () => {
             />
           </Box>
         </Box>
+        <Divider sx={dividerStyle} />
+        <Box sx={tableContainer}>
+          <ShowTableBankKeluar id={id} currentPosts={currentPosts} />
+        </Box>
+        <Box sx={tableContainer}>
+          <Pagination
+            count={count}
+            page={page}
+            onChange={handleChange}
+            color="primary"
+            size={screenSize <= 600 ? "small" : "large"}
+          />
+        </Box>
       </Box>
     </>
   );
 };
 
-export default TampilKasKeluarChild;
+export default TampilBankKeluar;
 
 const container = {
   p: 4
@@ -221,7 +219,7 @@ const subTitleText = {
   fontWeight: "900"
 };
 
-const deleteButtonContainer = {
+const buttonModifierContainer = {
   mt: 4,
   display: "flex",
   flexWrap: "wrap",
@@ -247,6 +245,12 @@ const textFieldWrapper = {
   maxWidth: {
     md: "40vw"
   }
+};
+
+const tableContainer = {
+  pt: 4,
+  display: "flex",
+  justifyContent: "center"
 };
 
 const labelInput = {

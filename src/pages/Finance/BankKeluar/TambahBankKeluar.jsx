@@ -43,13 +43,13 @@ const useStyles = makeStyles({
   }
 });
 
-const TambahKasKeluar = () => {
+const TambahBankKeluar = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [noBukti, setNoBukti] = useState("");
   let findNowDate = new Date();
   let nowDate = findNowDate.toISOString().substring(0, 10);
-  const [tglKasKeluar, setTglKasKeluar] = useState(nowDate);
+  const [tglBankKeluar, setTglBankKeluar] = useState(nowDate);
   const [kodeCOA, setKodeCOA] = useState("");
   const [keterangan, setKeterangan] = useState("");
 
@@ -89,19 +89,22 @@ const TambahKasKeluar = () => {
   });
 
   useEffect(() => {
-    getNextKodeKasKeluar();
+    getNextKodeBankKeluar();
     getCOAsData();
   }, []);
 
-  const getNextKodeKasKeluar = async () => {
+  const getNextKodeBankKeluar = async () => {
     setLoading(true);
-    const nextKodeKasMasuk = await axios.post(`${tempUrl}/kasKeluarsNextKode`, {
-      id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
-      kodeCabang: user.cabang._id
-    });
-    setNoBukti(nextKodeKasMasuk.data);
+    const nextKodeBankMasuk = await axios.post(
+      `${tempUrl}/bankKeluarsNextKode`,
+      {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      }
+    );
+    setNoBukti(nextKodeBankMasuk.data);
     setLoading(false);
   };
 
@@ -117,10 +120,12 @@ const TambahKasKeluar = () => {
     setLoading(false);
   };
 
-  const saveKasKeluar = async (e) => {
+  const saveBankKeluar = async (e) => {
     e.preventDefault();
     let isFailedValidation =
-      noBukti.length === 0 || tglKasKeluar.length === 0 || kodeCOA.length === 0;
+      noBukti.length === 0 ||
+      tglBankKeluar.length === 0 ||
+      kodeCOA.length === 0;
     if (isFailedValidation) {
       setError(true);
       setOpen(!open);
@@ -134,9 +139,9 @@ const TambahKasKeluar = () => {
           id: user._id,
           token: user.token
         });
-        await axios.post(`${tempUrl}/saveKasKeluar`, {
+        await axios.post(`${tempUrl}/saveBankKeluar`, {
           noBukti,
-          tglKasKeluar,
+          tglBankKeluar,
           COA: tempCOA.data._id,
           keterangan,
           kodeUnitBisnis: user.unitBisnis._id,
@@ -145,7 +150,7 @@ const TambahKasKeluar = () => {
           token: user.token
         });
         setLoading(false);
-        navigate("/daftarKasKeluar");
+        navigate("/daftarBankKeluar");
       } catch (error) {
         console.log(error);
       }
@@ -160,7 +165,7 @@ const TambahKasKeluar = () => {
     <Box sx={container}>
       <Typography color="#757575">Finance</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Tambah Kas Keluar
+        Tambah Bank Keluar
       </Typography>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
@@ -198,14 +203,14 @@ const TambahKasKeluar = () => {
             <TextField
               type="date"
               size="small"
-              error={error && tglKasKeluar.length === 0 && true}
+              error={error && tglBankKeluar.length === 0 && true}
               helperText={
-                error && tglKasKeluar.length === 0 && "Tanggal harus diisi!"
+                error && tglBankKeluar.length === 0 && "Tanggal harus diisi!"
               }
               id="outlined-basic"
               variant="outlined"
-              value={tglKasKeluar}
-              onChange={(e) => setTglKasKeluar(e.target.value.toUpperCase())}
+              value={tglBankKeluar}
+              onChange={(e) => setTglBankKeluar(e.target.value.toUpperCase())}
             />
           </Box>
           <Box sx={[textFieldWrapper, secondWrapper]}>
@@ -225,7 +230,7 @@ const TambahKasKeluar = () => {
           <Button
             variant="outlined"
             color="secondary"
-            onClick={() => navigate("/daftarKasKeluar")}
+            onClick={() => navigate("/daftarBankKeluar")}
             sx={{ marginRight: 2 }}
           >
             {"< Kembali"}
@@ -233,7 +238,7 @@ const TambahKasKeluar = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveKasKeluar}
+            onClick={saveBankKeluar}
           >
             Simpan
           </Button>
@@ -320,7 +325,7 @@ const TambahKasKeluar = () => {
   );
 };
 
-export default TambahKasKeluar;
+export default TambahBankKeluar;
 
 const container = {
   p: 4

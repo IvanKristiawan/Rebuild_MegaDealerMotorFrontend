@@ -20,13 +20,13 @@ import {
 } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-const TampilKasKeluarChild = () => {
+const TampilBankKeluarChild = () => {
   const { user } = useContext(AuthContext);
-  const { id, idKasKeluarChild } = useParams();
+  const { id, idBankKeluarChild } = useParams();
   const navigate = useNavigate();
-  const [tempIdKasKeluarChild, setTempIdKasKeluarChild] = useState("");
+  const [tempIdBankKeluarChild, setTempIdBankKeluarChild] = useState("");
   const [noBukti, setNoBukti] = useState("");
-  const [tglKasKeluar, setTglKasKeluar] = useState("");
+  const [tglBankKeluar, setTglBankKeluar] = useState("");
   const [kodeCOA, setKodeCOA] = useState("");
   const [keterangan, setKeterangan] = useState("");
   const [jumlah, setJumlah] = useState("");
@@ -43,40 +43,43 @@ const TampilKasKeluarChild = () => {
   };
 
   useEffect(() => {
-    getKasKeluarChildById();
+    getBankKeluarChildById();
   }, []);
 
-  const getKasKeluarChildById = async () => {
+  const getBankKeluarChildById = async () => {
     if (id) {
       const response = await axios.post(
-        `${tempUrl}/kasKeluarsChild/${idKasKeluarChild}`,
+        `${tempUrl}/bankKeluarsChild/${idBankKeluarChild}`,
         {
           id: user._id,
           token: user.token
         }
       );
-      setTempIdKasKeluarChild(response.data._id);
+      setTempIdBankKeluarChild(response.data._id);
       setNoBukti(response.data.noBukti);
-      setTglKasKeluar(response.data.tglKasKeluar);
+      setTglBankKeluar(response.data.tglBankKeluar);
       setKodeCOA(response.data.COA);
       setKeterangan(response.data.keterangan);
       setJumlah(response.data.jumlah);
     }
   };
 
-  const deleteKasKeluarChild = async (id) => {
+  const deleteBankKeluarChild = async (id) => {
     try {
       setLoading(true);
-      const pickedKasKeluar = await axios.post(`${tempUrl}/kasKeluars/${id}`, {
-        id: user._id,
-        token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
-        kodeCabang: user.cabang._id
-      });
-      let tempJumlahKasKeluar =
-        parseInt(pickedKasKeluar.data.jumlah) - parseInt(jumlah);
-      await axios.post(`${tempUrl}/updateKasKeluar/${id}`, {
-        jumlah: tempJumlahKasKeluar,
+      const pickedBankKeluar = await axios.post(
+        `${tempUrl}/bankKeluars/${id}`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      let tempJumlahBankKeluar =
+        parseInt(pickedBankKeluar.data.jumlah) - parseInt(jumlah);
+      await axios.post(`${tempUrl}/updateBankKeluar/${id}`, {
+        jumlah: tempJumlahBankKeluar,
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
@@ -84,19 +87,19 @@ const TampilKasKeluarChild = () => {
       });
       // Delete Kas Keluar
       await axios.post(
-        `${tempUrl}/deleteKasKeluarChild/${tempIdKasKeluarChild}`,
+        `${tempUrl}/deleteBankKeluarChild/${tempIdBankKeluarChild}`,
         {
           id: user._id,
           token: user.token
         }
       );
       setNoBukti("");
-      setTglKasKeluar("");
+      setTglBankKeluar("");
       setKodeCOA("");
       setKeterangan("");
       setJumlah("");
       setLoading(false);
-      navigate(`/daftarKasKeluar/kasKeluar/${id}`);
+      navigate(`/daftarBankKeluar/bankKeluar/${id}`);
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +114,7 @@ const TampilKasKeluarChild = () => {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={() => navigate(`/daftarKasKeluar/kasKeluar/${id}`)}
+        onClick={() => navigate(`/daftarBankKeluar/bankKeluar/${id}`)}
         sx={{ marginLeft: 2, marginTop: 4 }}
       >
         {"< Kembali"}
@@ -119,7 +122,7 @@ const TampilKasKeluarChild = () => {
       <Box sx={container}>
         <Typography color="#757575">Finance</Typography>
         <Typography variant="h4" sx={subTitleText}>
-          Unit Kas Keluar
+          Unit Bank Keluar
         </Typography>
         <Box sx={deleteButtonContainer}>
           <Dialog
@@ -135,7 +138,7 @@ const TampilKasKeluarChild = () => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => deleteKasKeluarChild(id)}>Ok</Button>
+              <Button onClick={() => deleteBankKeluarChild(id)}>Ok</Button>
               <Button onClick={handleClose}>Cancel</Button>
             </DialogActions>
           </Dialog>
@@ -172,7 +175,7 @@ const TampilKasKeluarChild = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={tglKasKeluar}
+              value={tglBankKeluar}
             />
             <Typography sx={[labelInput, spacingTop]}>COA</Typography>
             <TextField
@@ -211,7 +214,7 @@ const TampilKasKeluarChild = () => {
   );
 };
 
-export default TampilKasKeluarChild;
+export default TampilBankKeluarChild;
 
 const container = {
   p: 4

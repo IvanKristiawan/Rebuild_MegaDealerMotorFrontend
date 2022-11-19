@@ -149,7 +149,12 @@ import {
   TambahBankMasuk,
   TampilBankMasuk,
   TambahBankMasukChild,
-  TampilBankMasukChild
+  TampilBankMasukChild,
+  TampilDaftarBankKeluar,
+  TambahBankKeluar,
+  TampilBankKeluar,
+  TambahBankKeluarChild,
+  TampilBankKeluarChild
 } from "./pages/index";
 
 const App = () => {
@@ -1539,6 +1544,48 @@ const App = () => {
                   element={
                     <USERRoute>
                       <TampilBankMasukChild />
+                    </USERRoute>
+                  }
+                />
+                {/* Bank Keluar */}
+                <Route
+                  path="/daftarBankKeluar"
+                  element={
+                    <USERRoute>
+                      <TampilDaftarBankKeluar />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarBankKeluar/bankKeluar/tambahBankKeluar"
+                  element={
+                    <USERRoute>
+                      <TambahBankKeluar />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarBankKeluar/bankKeluar/:id"
+                  element={
+                    <USERRoute>
+                      <TampilBankKeluar />
+                    </USERRoute>
+                  }
+                />
+                {/* Bank Keluar Child */}
+                <Route
+                  path="/daftarBankKeluar/bankKeluar/:id/tambahBankKeluarChild"
+                  element={
+                    <USERRoute>
+                      <TambahBankKeluarChild />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarBankKeluar/bankKeluar/:id/:idBankKeluarChild"
+                  element={
+                    <USERRoute>
+                      <TampilBankKeluarChild />
                     </USERRoute>
                   }
                 />

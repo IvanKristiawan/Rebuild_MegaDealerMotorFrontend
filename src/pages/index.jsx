@@ -133,3 +133,10 @@ export { default as TampilBankMasuk } from "./Finance/BankMasuk/TampilBankMasuk"
 // Bank Masuk Child
 export { default as TambahBankMasukChild } from "./Finance/BankMasukChild/TambahBankMasukChild";
 export { default as TampilBankMasukChild } from "./Finance/BankMasukChild/TampilBankMasukChild";
+// Bank Keluar
+export { default as TampilDaftarBankKeluar } from "./Finance/BankKeluar/TampilDaftarBankKeluar";
+export { default as TambahBankKeluar } from "./Finance/BankKeluar/TambahBankKeluar";
+export { default as TampilBankKeluar } from "./Finance/BankKeluar/TampilBankKeluar";
+// Bank Keluar Child
+export { default as TambahBankKeluarChild } from "./Finance/BankKeluarChild/TambahBankKeluarChild";
+export { default as TampilBankKeluarChild } from "./Finance/BankKeluarChild/TampilBankKeluarChild";
