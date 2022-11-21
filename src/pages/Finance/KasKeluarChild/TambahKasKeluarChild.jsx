@@ -48,9 +48,7 @@ const TambahKasKeluarChild = () => {
   const { id } = useParams();
   const [open, setOpen] = useState(false);
   const [noBukti, setNoBukti] = useState("");
-  let findNowDate = new Date();
-  let nowDate = findNowDate.toISOString().substring(0, 10);
-  const [tglKasKeluar, setTglKasKeluar] = useState(nowDate);
+  const [tglKasKeluar, setTglKasKeluar] = useState("");
   const [kodeCOA, setKodeCOA] = useState("");
   const [keterangan, setKeterangan] = useState("");
   const [jumlah, setJumlah] = useState("");
@@ -104,6 +102,7 @@ const TambahKasKeluarChild = () => {
       kodeCabang: user.cabang._id
     });
     setNoBukti(pickedKasKeluar.data.noBukti);
+    setTglKasKeluar(pickedKasKeluar.data.tglKasKeluar);
     setLoading(false);
   };
 
@@ -121,8 +120,7 @@ const TambahKasKeluarChild = () => {
 
   const saveKasKeluarChild = async (e) => {
     e.preventDefault();
-    let isFailedValidation =
-      tglKasKeluar.length === 0 || kodeCOA.length === 0 || jumlah.length === 0;
+    let isFailedValidation = kodeCOA.length === 0 || jumlah.length === 0;
     if (isFailedValidation) {
       setError(true);
       setOpen(!open);
@@ -222,14 +220,13 @@ const TambahKasKeluarChild = () => {
             <TextField
               type="date"
               size="small"
-              error={error && tglKasKeluar.length === 0 && true}
-              helperText={
-                error && tglKasKeluar.length === 0 && "Tanggal harus diisi!"
-              }
               id="outlined-basic"
               variant="outlined"
               value={tglKasKeluar}
-              onChange={(e) => setTglKasKeluar(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Jumlah

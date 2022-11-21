@@ -104,6 +104,7 @@ const TambahBankKeluarChild = () => {
       kodeCabang: user.cabang._id
     });
     setNoBukti(pickedBankKeluar.data.noBukti);
+    setTglBankKeluar(pickedBankKeluar.data.tglBankKeluar);
     setLoading(false);
   };
 
@@ -121,8 +122,7 @@ const TambahBankKeluarChild = () => {
 
   const saveKasKeluarChild = async (e) => {
     e.preventDefault();
-    let isFailedValidation =
-      tglBankKeluar.length === 0 || kodeCOA.length === 0 || jumlah.length === 0;
+    let isFailedValidation = kodeCOA.length === 0 || jumlah.length === 0;
     if (isFailedValidation) {
       setError(true);
       setOpen(!open);
@@ -222,14 +222,13 @@ const TambahBankKeluarChild = () => {
             <TextField
               type="date"
               size="small"
-              error={error && tglBankKeluar.length === 0 && true}
-              helperText={
-                error && tglBankKeluar.length === 0 && "Tanggal harus diisi!"
-              }
               id="outlined-basic"
               variant="outlined"
               value={tglBankKeluar}
-              onChange={(e) => setTglBankKeluar(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Jumlah
