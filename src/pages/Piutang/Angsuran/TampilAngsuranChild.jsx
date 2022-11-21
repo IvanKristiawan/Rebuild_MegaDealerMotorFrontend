@@ -120,7 +120,7 @@ const TampilAngsuranChild = () => {
     try {
       setLoading(true);
       // Update Jual
-      const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
+      const response = await axios.post(`${tempUrl}/jualByNoJual`, {
         noJual: id,
         id: user._id,
         token: user.token,

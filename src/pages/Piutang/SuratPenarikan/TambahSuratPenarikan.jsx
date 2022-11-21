@@ -208,7 +208,7 @@ const TambahSuratPenarikan = () => {
       try {
         setLoading(true);
         // Find Jual
-        const response = await axios.post(`${tempUrl}/jualsByNoJual`, {
+        const response = await axios.post(`${tempUrl}/jualByNoJual`, {
           noJual,
           id: user._id,
           token: user.token,
