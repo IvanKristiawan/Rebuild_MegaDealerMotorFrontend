@@ -84,7 +84,7 @@ const TambahBiayaPerawatan = () => {
   const getStok = async () => {
     setLoading(true);
     const allDaftarStokHasNopol = await axios.post(
-      `${tempUrl}/daftarStoksNopolAll`,
+      `${tempUrl}/daftarStoksNopolAllBlmTerjual`,
       {
         id: user._id,
         token: user.token,
@@ -115,7 +115,6 @@ const TambahBiayaPerawatan = () => {
     e.preventDefault();
     let tempTotalBiayaPerawatan = 0;
     let isFailedValidation =
-      noBukti.length === 0 ||
       nopol.length === 0 ||
       tglPerawatan.length === 0 ||
       biayaPerawatan.length === 0;
@@ -146,7 +145,6 @@ const TambahBiayaPerawatan = () => {
           }
         );
         await axios.post(`${tempUrl}/saveBiayaPerawatan`, {
-          noBukti,
           nopol,
           tglPerawatan,
           keterangan,
@@ -284,14 +282,13 @@ const TambahBiayaPerawatan = () => {
               <Typography sx={labelInput}>No Bukti</Typography>
               <TextField
                 size="small"
-                error={error && noBukti.length === 0 && true}
-                helperText={
-                  error && noBukti.length === 0 && "Nama Dealer harus diisi!"
-                }
                 id="outlined-basic"
                 variant="outlined"
                 value={noBukti}
-                onChange={(e) => setNoBukti(e.target.value.toUpperCase())}
+                InputProps={{
+                  readOnly: true
+                }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tgl. Perawatan
