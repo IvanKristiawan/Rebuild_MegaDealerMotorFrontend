@@ -107,7 +107,7 @@ const TambahKasKeluar = () => {
 
   const getCOAsData = async () => {
     setLoading(true);
-    const allCOAs = await axios.post(`${tempUrl}/COAs`, {
+    const allCOAs = await axios.post(`${tempUrl}/COAsKas`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,

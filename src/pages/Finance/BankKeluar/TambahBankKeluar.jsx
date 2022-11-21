@@ -110,7 +110,7 @@ const TambahBankKeluar = () => {
 
   const getCOAsData = async () => {
     setLoading(true);
-    const allCOAs = await axios.post(`${tempUrl}/COAs`, {
+    const allCOAs = await axios.post(`${tempUrl}/COAsBank`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
