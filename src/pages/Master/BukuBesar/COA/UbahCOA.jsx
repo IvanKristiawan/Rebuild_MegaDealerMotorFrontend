@@ -106,6 +106,7 @@ const UbahCOA = () => {
   const updateTipe = async (e) => {
     e.preventDefault();
     let isFailedValidation =
+      kodeCOA.length === 0 ||
       namaCOA.length === 0 ||
       kodeGroupCOA.length === 0 ||
       kodeSubGroupCOA.length === 0 ||
@@ -126,6 +127,7 @@ const UbahCOA = () => {
         });
         await axios.post(`${tempUrl}/updateCOA/${id}`, {
           namaCOA,
+          kodeCOA,
           kodeSubGroupCOA: kodeSubGroupCOA.split(" ", 1)[0],
           subGroupCOA: tempSubGroupCOA.data._id,
           groupCOA: kodeGroupCOA.split(" ", 1)[0],
@@ -209,13 +211,14 @@ const UbahCOA = () => {
             <Typography sx={[labelInput, spacingTop]}>Kode COA</Typography>
             <TextField
               size="small"
+              error={error && kodeCOA.length === 0 && true}
+              helperText={
+                error && kodeCOA.length === 0 && "Kode COA harus diisi!"
+              }
               id="outlined-basic"
               variant="outlined"
               value={kodeCOA}
-              InputProps={{
-                readOnly: true
-              }}
-              sx={{ backgroundColor: Colors.grey400 }}
+              onChange={(e) => setKodeCOA(e.target.value.toUpperCase())}
             />
           </Box>
           <Box sx={[showDataWrapper, secondWrapper]}>
@@ -229,6 +232,7 @@ const UbahCOA = () => {
               id="outlined-basic"
               variant="outlined"
               value={namaCOA}
+              onChange={(e) => setNamaCOA(e.target.value.toUpperCase())}
             />
             <Typography sx={[labelInput, spacingTop]}>Jenis Saldo</Typography>
             <Autocomplete

@@ -121,6 +121,7 @@ const TambahCOA = () => {
         setLoading(true);
         await axios.post(`${tempUrl}/saveCOA`, {
           namaCOA,
+          kodeCOA,
           kodeSubGroupCOA,
           subGroupCOA: tempSubGroupCOA.data._id,
           groupCOA: kodeGroupCOA,
@@ -209,10 +210,6 @@ const TambahCOA = () => {
               variant="outlined"
               value={kodeCOA}
               onChange={(e) => setKodeCOA(e.target.value.toUpperCase())}
-              InputProps={{
-                readOnly: true
-              }}
-              sx={{ backgroundColor: Colors.grey400 }}
             />
           </Box>
           <Box sx={[showDataWrapper, secondWrapper]}>
