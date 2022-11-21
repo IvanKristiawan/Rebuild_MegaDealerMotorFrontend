@@ -279,6 +279,49 @@ const TambahAngsuran = () => {
         response.data.hutangDenda +
         tempAng
     );
+
+    var d1 = new Date(tglBayar); //"now"
+    var d2 = new Date(response.data.tglJatuhTempo); // some date
+    var diff = Math.abs(d1 - d2); // difference in milliseconds
+    var total = dhm(diff);
+    if (d1 > d2 && total > toleransiSetting) {
+      setDenda(dendaSetting * total);
+      setTotalPiutang(
+        response.data.angPerBulan +
+          response.data.denda +
+          response.data.hutangDenda +
+          tempAng +
+          dendaSetting * total
+      );
+      setTotalBayar(
+        response.data.angPerBulan +
+          response.data.denda +
+          response.data.hutangDenda +
+          tempAng +
+          dendaSetting * total
+      );
+      setBayar(
+        response.data.angPerBulan +
+          response.data.denda +
+          response.data.hutangDenda +
+          tempAng +
+          dendaSetting * total
+      );
+    } else {
+      setDenda(0);
+      setTotalPiutang(
+        response.data.angPerBulan +
+          response.data.denda +
+          response.data.hutangDenda +
+          tempAng
+      );
+      setTotalBayar(
+        response.data.angPerBulan +
+          response.data.denda +
+          response.data.hutangDenda +
+          tempAng
+      );
+    }
   };
 
   const saveAngsuran = async (e) => {
@@ -666,10 +709,12 @@ const TambahAngsuran = () => {
                           tempTotalPiutang + dendaSetting * total
                         );
                         setTotalBayar(tempTotalBayar + dendaSetting * total);
+                        setBayar(tempTotalBayar + dendaSetting * total);
                       } else {
                         setDenda(0);
                         setTotalPiutang(tempTotalPiutang);
                         setTotalBayar(tempTotalBayar);
+                        setBayar(tempTotalBayar);
                       }
                     }}
                   />
@@ -1020,6 +1065,7 @@ const TambahAngsuran = () => {
                           setNamaWarna(user.namaWarna);
                           setTahun(user.tahun);
                           getAngsuranKe(user.noJual);
+
                           handleCloseJual();
                         }}
                       >
