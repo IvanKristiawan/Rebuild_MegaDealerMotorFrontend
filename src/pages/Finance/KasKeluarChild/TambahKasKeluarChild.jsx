@@ -181,7 +181,7 @@ const TambahKasKeluarChild = () => {
     <Box sx={container}>
       <Typography color="#757575">Finance</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Unit Kas Keluar
+        Detail Kas Keluar
       </Typography>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>

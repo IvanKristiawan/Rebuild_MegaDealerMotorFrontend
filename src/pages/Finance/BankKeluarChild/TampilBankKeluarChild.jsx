@@ -122,7 +122,7 @@ const TampilBankKeluarChild = () => {
       <Box sx={container}>
         <Typography color="#757575">Finance</Typography>
         <Typography variant="h4" sx={subTitleText}>
-          Unit Bank Keluar
+          Detail Bank Keluar
         </Typography>
         <Box sx={deleteButtonContainer}>
           <Dialog
