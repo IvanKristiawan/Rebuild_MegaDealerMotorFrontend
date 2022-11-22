@@ -328,12 +328,12 @@ const TambahJualBekas = () => {
             let tempAngsuran = await axios.post(`${tempUrl}/saveAngsuran`, {
               tenor,
               noJual,
-              kodeUnitBisnis: user.unitBisnis._id,
-              kodeCabang: user.cabang._id,
               tglAng,
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
               angPerBulan,
+              kodeUnitBisnis: user.unitBisnis._id,
+              kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token
             });
@@ -386,6 +386,7 @@ const TambahJualBekas = () => {
               tglAng,
               tglAngAkhir,
               tglInput,
+              userInput: user.username,
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
               kodeAngsuran: tempAngsuran.data._id,
@@ -435,6 +436,7 @@ const TambahJualBekas = () => {
               tglInput,
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
+              userInput: user.username,
               kodeUnitBisnis: user.unitBisnis._id,
               kodeCabang: user.cabang._id,
               id: user._id,

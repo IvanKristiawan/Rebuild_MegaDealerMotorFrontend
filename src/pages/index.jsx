@@ -94,6 +94,7 @@ export { default as UbahBeli } from "./Pembelian/Beli/UbahBeli";
 export { default as TampilDaftarStok } from "./Laporan/DaftarStok/TampilDaftarStok";
 export { default as CariTotalPiutang } from "./Laporan/TotalPiutang/CariTotalPiutang";
 export { default as CariTunggakan } from "./Laporan/Tunggakan/CariTunggakan";
+export { default as CariPenerimaanKas } from "./Laporan/PenerimaanKas/CariPenerimaanKas";
 // A Beli Page
 export { default as TambahBeliChild } from "./Pembelian/BeliChild/TambahBeliChild";
 export { default as TampilBeliChild } from "./Pembelian/BeliChild/TampilBeliChild";

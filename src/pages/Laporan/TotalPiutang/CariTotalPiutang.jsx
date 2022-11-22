@@ -133,7 +133,7 @@ const CariTotalPiutang = () => {
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
-      280
+      200
     );
     doc.setFontSize(12);
     doc.autoTable({
@@ -169,12 +169,17 @@ const CariTotalPiutang = () => {
       tempPBunga += val.pBunga;
       tempTotal += val.pModal + val.pBunga;
     });
+    doc.setDrawColor(0, 0, 0);
     doc.setFontSize(10);
-    doc.line(15, tempHeight + 2, 320, tempHeight + 2);
-    doc.text(`TOTAL : `, 15, tempHeight + 6);
-    doc.text(`${tempPModal.toLocaleString()}`, 200, tempHeight + 6);
-    doc.text(`${tempPBunga.toLocaleString()}`, 230, tempHeight + 6);
-    doc.text(`${tempTotal.toLocaleString()}`, 260, tempHeight + 6);
+    tempHeight += 2;
+    doc.line(15, tempHeight, 310, tempHeight);
+    tempHeight += 6;
+    doc.text(`TOTAL : `, 15, tempHeight);
+    doc.text(`${tempPModal.toLocaleString()}`, 200, tempHeight);
+    doc.text(`${tempPBunga.toLocaleString()}`, 230, tempHeight);
+    doc.text(`${tempTotal.toLocaleString()}`, 260, tempHeight);
+    tempHeight += 4;
+    doc.line(15, tempHeight, 310, tempHeight);
     doc.save(`totalPiutang.pdf`);
   };
 

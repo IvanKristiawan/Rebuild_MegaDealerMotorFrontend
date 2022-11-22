@@ -363,6 +363,7 @@ const TambahAngsuran = () => {
           totalPiutang,
           totalBayar,
           bayar,
+          userInput: user.username,
           id: user._id,
           token: user.token
         });

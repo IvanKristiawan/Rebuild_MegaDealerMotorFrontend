@@ -552,12 +552,14 @@ const TampilSuratPemberitahuan = () => {
       <Box sx={searchBarContainer}>
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
-      <Box sx={tableContainer}>
-        <ShowTableSuratPemberitahuan
-          currentPosts={currentPosts}
-          searchTerm={searchTerm}
-        />
-      </Box>
+      {spsData && (
+        <Box sx={tableContainer}>
+          <ShowTableSuratPemberitahuan
+            currentPosts={currentPosts}
+            searchTerm={searchTerm}
+          />
+        </Box>
+      )}
       <Box sx={tableContainer}>
         <Pagination
           count={count}
