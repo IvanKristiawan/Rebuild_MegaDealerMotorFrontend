@@ -119,8 +119,7 @@ const TambahKasKeluar = () => {
 
   const saveKasKeluar = async (e) => {
     e.preventDefault();
-    let isFailedValidation =
-      noBukti.length === 0 || tglKasKeluar.length === 0 || kodeCOA.length === 0;
+    let isFailedValidation = tglKasKeluar.length === 0 || kodeCOA.length === 0;
     if (isFailedValidation) {
       setError(true);
       setOpen(!open);
@@ -135,7 +134,6 @@ const TambahKasKeluar = () => {
           token: user.token
         });
         await axios.post(`${tempUrl}/saveKasKeluar`, {
-          noBukti,
           tglKasKeluar,
           COA: tempCOA.data._id,
           keterangan,
@@ -185,14 +183,13 @@ const TambahKasKeluar = () => {
             <Typography sx={[labelInput, spacingTop]}>No. Bukti</Typography>
             <TextField
               size="small"
-              error={error && noBukti.length === 0 && true}
-              helperText={
-                error && noBukti.length === 0 && "No. Bukti harus diisi!"
-              }
               id="outlined-basic"
               variant="outlined"
               value={noBukti}
-              onChange={(e) => setNoBukti(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>Tanggal</Typography>
             <TextField
