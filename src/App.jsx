@@ -130,6 +130,7 @@ import {
   CariPenerimaanKas,
   CariLapPenjualanPerTipe,
   CariLapPenjualanPerMarketing,
+  CariLapPenjualanPerSurveyor,
   TampilDaftarAngsuran,
   TambahAngsuran,
   TampilAngsuran,
@@ -1257,6 +1258,15 @@ const App = () => {
                   element={
                     <USERRoute>
                       <CariLapPenjualanPerMarketing />
+                    </USERRoute>
+                  }
+                />
+                {/* Laporan Penjualan Per Surveyor */}
+                <Route
+                  path="/lapPenjualanPerSurveyor"
+                  element={
+                    <USERRoute>
+                      <CariLapPenjualanPerSurveyor />
                     </USERRoute>
                   }
                 />
