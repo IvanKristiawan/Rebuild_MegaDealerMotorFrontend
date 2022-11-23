@@ -131,6 +131,7 @@ import {
   CariLapPenjualanPerTipe,
   CariLapPenjualanPerMarketing,
   CariLapPenjualanPerSurveyor,
+  CariLapPenjualanKreditTunai,
   TampilDaftarAngsuran,
   TambahAngsuran,
   TampilAngsuran,
@@ -492,6 +493,17 @@ const App = () => {
                           sx={{ paddingLeft: "70px" }}
                         >
                           Per Surveyor
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Divider />
+                    <Link to="/lapPenjualanKreditTunai" style={linkText}>
+                      <MenuItem>
+                        <Typography
+                          variant="body2"
+                          sx={{ paddingLeft: "70px" }}
+                        >
+                          Kredit & Tunai
                         </Typography>
                       </MenuItem>
                     </Link>
@@ -1267,6 +1279,15 @@ const App = () => {
                   element={
                     <USERRoute>
                       <CariLapPenjualanPerSurveyor />
+                    </USERRoute>
+                  }
+                />
+                {/* Laporan Penjualan Kredit Tunai */}
+                <Route
+                  path="/lapPenjualanKreditTunai"
+                  element={
+                    <USERRoute>
+                      <CariLapPenjualanKreditTunai />
                     </USERRoute>
                   }
                 />

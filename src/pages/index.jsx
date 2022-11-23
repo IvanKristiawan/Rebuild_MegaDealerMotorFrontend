@@ -101,6 +101,8 @@ export { default as CariLapPenjualanPerTipe } from "./Laporan/LapPenjualan/PerTi
 export { default as CariLapPenjualanPerMarketing } from "./Laporan/LapPenjualan/PerMarketing/CariLapPenjualanPerMarketing";
 // Laporan Penjualan Per Surveyor
 export { default as CariLapPenjualanPerSurveyor } from "./Laporan/LapPenjualan/PerSurveyor/CariLapPenjualanPerSurveyor";
+// Laporan Penjualan Kredit Tunai
+export { default as CariLapPenjualanKreditTunai } from "./Laporan/LapPenjualan/KreditTunai/CariLapPenjualanKreditTunai";
 // A Beli Page
 export { default as TambahBeliChild } from "./Pembelian/BeliChild/TambahBeliChild";
 export { default as TampilBeliChild } from "./Pembelian/BeliChild/TampilBeliChild";
