@@ -50,6 +50,7 @@ import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import PaymentsIcon from "@mui/icons-material/Payments";
+import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -127,6 +128,7 @@ import {
   CariTotalPiutang,
   CariTunggakan,
   CariPenerimaanKas,
+  CariLapPenjualanPerTipe,
   TampilDaftarAngsuran,
   TambahAngsuran,
   TampilAngsuran,
@@ -454,6 +456,45 @@ const App = () => {
                       </MenuItem>
                     </Box>
                   </Link>
+                  <SubMenu
+                    label="Lap. Penjualan"
+                    icon={<PointOfSaleIcon name="lap-penjualan-icon" />}
+                  >
+                    <Divider />
+                    <Link to="/lapPenjualanPerTipe" style={linkText}>
+                      <MenuItem>
+                        <Typography
+                          variant="body2"
+                          sx={{ paddingLeft: "70px" }}
+                        >
+                          Per Tipe
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Divider />
+                    <Link to="/lapPenjualanPerMarketing" style={linkText}>
+                      <MenuItem>
+                        <Typography
+                          variant="body2"
+                          sx={{ paddingLeft: "70px" }}
+                        >
+                          Per Marketing
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Divider />
+                    <Link to="/lapPenjualanPerSurveyor" style={linkText}>
+                      <MenuItem>
+                        <Typography
+                          variant="body2"
+                          sx={{ paddingLeft: "70px" }}
+                        >
+                          Per Surveyor
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <Divider />
+                  </SubMenu>
                 </SubMenu>
                 <Divider />
                 <SubMenu
@@ -1197,6 +1238,15 @@ const App = () => {
                   element={
                     <USERRoute>
                       <CariPenerimaanKas />
+                    </USERRoute>
+                  }
+                />
+                {/* Laporan Penjualan Per Tipe */}
+                <Route
+                  path="/lapPenjualanPerTipe"
+                  element={
+                    <USERRoute>
+                      <CariLapPenjualanPerTipe />
                     </USERRoute>
                   }
                 />
