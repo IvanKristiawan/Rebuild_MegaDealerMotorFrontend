@@ -97,6 +97,8 @@ export { default as CariTunggakan } from "./Laporan/Tunggakan/CariTunggakan";
 export { default as CariPenerimaanKas } from "./Laporan/PenerimaanKas/CariPenerimaanKas";
 // Laporan Penjualan Per Tipe
 export { default as CariLapPenjualanPerTipe } from "./Laporan/LapPenjualan/PerTipe/CariLapPenjualanPerTipe";
+// Laporan Penjualan Per Marketing
+export { default as CariLapPenjualanPerMarketing } from "./Laporan/LapPenjualan/PerMarketing/CariLapPenjualanPerMarketing";
 // A Beli Page
 export { default as TambahBeliChild } from "./Pembelian/BeliChild/TambahBeliChild";
 export { default as TampilBeliChild } from "./Pembelian/BeliChild/TampilBeliChild";
