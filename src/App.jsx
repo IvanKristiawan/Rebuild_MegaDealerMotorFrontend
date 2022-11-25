@@ -145,21 +145,25 @@ import {
   TampilDaftarKasMasuk,
   TambahKasMasuk,
   TampilKasMasuk,
+  UbahKasMasuk,
   TambahKasMasukChild,
   TampilKasMasukChild,
   TampilDaftarKasKeluar,
   TambahKasKeluar,
   TampilKasKeluar,
+  UbahKasKeluar,
   TambahKasKeluarChild,
   TampilKasKeluarChild,
   TampilDaftarBankMasuk,
   TambahBankMasuk,
   TampilBankMasuk,
+  UbahBankMasuk,
   TambahBankMasukChild,
   TampilBankMasukChild,
   TampilDaftarBankKeluar,
   TambahBankKeluar,
   TampilBankKeluar,
+  UbahBankKeluar,
   TambahBankKeluarChild,
   TampilBankKeluarChild
 } from "./pages/index";
@@ -1557,6 +1561,14 @@ const App = () => {
                     </USERRoute>
                   }
                 />
+                <Route
+                  path="/daftarKasMasuk/kasMasuk/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahKasMasuk />
+                    </USERRoute>
+                  }
+                />
                 {/* Kas Masuk Child */}
                 <Route
                   path="/daftarKasMasuk/kasMasuk/:id/tambahKasMasukChild"
@@ -1596,6 +1608,14 @@ const App = () => {
                   element={
                     <USERRoute>
                       <TampilKasKeluar />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarKasKeluar/kasKeluar/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahKasKeluar />
                     </USERRoute>
                   }
                 />
@@ -1641,6 +1661,14 @@ const App = () => {
                     </USERRoute>
                   }
                 />
+                <Route
+                  path="/daftarBankMasuk/bankMasuk/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahBankMasuk />
+                    </USERRoute>
+                  }
+                />
                 {/* Bank Masuk Child */}
                 <Route
                   path="/daftarBankMasuk/bankMasuk/:id/tambahBankMasukChild"
@@ -1680,6 +1708,14 @@ const App = () => {
                   element={
                     <USERRoute>
                       <TampilBankKeluar />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/daftarBankKeluar/bankKeluar/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahBankKeluar />
                     </USERRoute>
                   }
                 />

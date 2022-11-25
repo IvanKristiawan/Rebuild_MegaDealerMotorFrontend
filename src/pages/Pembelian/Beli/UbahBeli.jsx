@@ -85,7 +85,7 @@ const UbahBeli = () => {
     setLoading(false);
   };
 
-  const updateUser = async (e) => {
+  const updateBeli = async (e) => {
     e.preventDefault();
     let isFailedValidation =
       tanggalBeli.length === 0 ||
@@ -338,7 +338,7 @@ const UbahBeli = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateUser}
+            onClick={updateBeli}
           >
             Ubah
           </Button>

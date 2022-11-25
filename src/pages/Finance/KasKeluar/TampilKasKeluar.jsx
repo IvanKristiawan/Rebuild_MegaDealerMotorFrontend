@@ -129,6 +129,7 @@ const TampilKasKeluar = () => {
             id={id}
             kode={"test"}
             addLink={`/daftarKasKeluar/kasKeluar/${id}/tambahKasKeluarChild`}
+            editLink={`/daftarKasKeluar/kasKeluar/${id}/edit`}
             deleteUser={deleteKasKeluar}
             nameUser={noBukti}
           />

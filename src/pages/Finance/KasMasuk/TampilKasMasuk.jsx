@@ -126,6 +126,7 @@ const TampilKasMasuk = () => {
             id={id}
             kode={"test"}
             addLink={`/daftarKasMasuk/kasMasuk/${id}/tambahKasMasukChild`}
+            editLink={`/daftarKasMasuk/kasMasuk/${id}/edit`}
             deleteUser={deleteKasMasuk}
             nameUser={noBukti}
           />

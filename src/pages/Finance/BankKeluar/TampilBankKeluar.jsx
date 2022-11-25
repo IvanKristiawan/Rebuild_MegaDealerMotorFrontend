@@ -129,6 +129,7 @@ const TampilBankKeluar = () => {
             id={id}
             kode={"test"}
             addLink={`/daftarBankKeluar/bankKeluar/${id}/tambahBankKeluarChild`}
+            editLink={`/daftarBankKeluar/bankKeluar/${id}/edit`}
             deleteUser={deleteBankKeluar}
             nameUser={noBukti}
           />
