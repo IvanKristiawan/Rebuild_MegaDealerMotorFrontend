@@ -129,6 +129,7 @@ export { default as UbahKasMasuk } from "./Finance/KasMasuk/UbahKasMasuk";
 // Kas Masuk Child
 export { default as TambahKasMasukChild } from "./Finance/KasMasukChild/TambahKasMasukChild";
 export { default as TampilKasMasukChild } from "./Finance/KasMasukChild/TampilKasMasukChild";
+export { default as UbahKasMasukChild } from "./Finance/KasMasukChild/UbahKasMasukChild";
 // Kas Keluar
 export { default as TampilDaftarKasKeluar } from "./Finance/KasKeluar/TampilDaftarKasKeluar";
 export { default as TambahKasKeluar } from "./Finance/KasKeluar/TambahKasKeluar";
@@ -137,6 +138,7 @@ export { default as UbahKasKeluar } from "./Finance/KasKeluar/UbahKasKeluar";
 // Kas Keluar Child
 export { default as TambahKasKeluarChild } from "./Finance/KasKeluarChild/TambahKasKeluarChild";
 export { default as TampilKasKeluarChild } from "./Finance/KasKeluarChild/TampilKasKeluarChild";
+export { default as UbahKasKeluarChild } from "./Finance/KasKeluarChild/UbahKasKeluarChild";
 // Bank Masuk
 export { default as TampilDaftarBankMasuk } from "./Finance/BankMasuk/TampilDaftarBankMasuk";
 export { default as TambahBankMasuk } from "./Finance/BankMasuk/TambahBankMasuk";
@@ -145,6 +147,7 @@ export { default as UbahBankMasuk } from "./Finance/BankMasuk/UbahBankMasuk";
 // Bank Masuk Child
 export { default as TambahBankMasukChild } from "./Finance/BankMasukChild/TambahBankMasukChild";
 export { default as TampilBankMasukChild } from "./Finance/BankMasukChild/TampilBankMasukChild";
+export { default as UbahBankMasukChild } from "./Finance/BankMasukChild/UbahBankMasukChild";
 // Bank Keluar
 export { default as TampilDaftarBankKeluar } from "./Finance/BankKeluar/TampilDaftarBankKeluar";
 export { default as TambahBankKeluar } from "./Finance/BankKeluar/TambahBankKeluar";
@@ -153,3 +156,4 @@ export { default as UbahBankKeluar } from "./Finance/BankKeluar/UbahBankKeluar";
 // Bank Keluar Child
 export { default as TambahBankKeluarChild } from "./Finance/BankKeluarChild/TambahBankKeluarChild";
 export { default as TampilBankKeluarChild } from "./Finance/BankKeluarChild/TampilBankKeluarChild";
+export { default as UbahBankKeluarChild } from "./Finance/BankKeluarChild/UbahBankKeluarChild";

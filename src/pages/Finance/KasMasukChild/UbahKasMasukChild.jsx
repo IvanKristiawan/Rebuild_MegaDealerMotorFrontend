@@ -43,20 +43,22 @@ const useStyles = makeStyles({
   }
 });
 
-const UbahBankKeluar = () => {
+const UbahKasMasukChild = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [noBukti, setNoBukti] = useState("");
-  const [tglBankKeluar, setTglBankKeluar] = useState("");
+  const [tglKasMasuk, setTglKasMasuk] = useState("");
   const [kodeCOA, setKodeCOA] = useState("");
   const [keterangan, setKeterangan] = useState("");
+  const [jumlah, setJumlah] = useState("");
+  const [jumlahBaru, setJumlahBaru] = useState("");
   const [openCOA, setOpenCOA] = useState(false);
   const [searchTermCOA, setSearchTermCOA] = useState("");
   const [COAsData, setCOAsData] = useState([]);
 
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, idKasMasukChild } = useParams();
   const [loading, setLoading] = useState(false);
 
   const classes = useStyles();
@@ -88,26 +90,31 @@ const UbahBankKeluar = () => {
   });
 
   useEffect(() => {
-    getBankKeluarById();
+    getKasMasukChildById();
     getCOAsData();
   }, []);
 
-  const getBankKeluarById = async () => {
+  const getKasMasukChildById = async () => {
     setLoading(true);
-    const pickedBankKeluar = await axios.post(`${tempUrl}/bankKeluars/${id}`, {
-      id: user._id,
-      token: user.token
-    });
-    setNoBukti(pickedBankKeluar.data.noBukti);
-    setTglBankKeluar(pickedBankKeluar.data.tglBankKeluar);
-    setKodeCOA(pickedBankKeluar.data.COA.kodeCOA);
-    setKeterangan(pickedBankKeluar.data.keterangan);
+    const pickedKasMasukChild = await axios.post(
+      `${tempUrl}/kasMasuksChild/${idKasMasukChild}`,
+      {
+        id: user._id,
+        token: user.token
+      }
+    );
+    setNoBukti(pickedKasMasukChild.data.noBukti);
+    setTglKasMasuk(pickedKasMasukChild.data.tglKasMasuk);
+    setKodeCOA(pickedKasMasukChild.data.COA.kodeCOA);
+    setKeterangan(pickedKasMasukChild.data.keterangan);
+    setJumlah(pickedKasMasukChild.data.jumlah);
+    setJumlahBaru(pickedKasMasukChild.data.jumlah);
     setLoading(false);
   };
 
   const getCOAsData = async () => {
     setLoading(true);
-    const allCOAs = await axios.post(`${tempUrl}/COAsBank`, {
+    const allCOAs = await axios.post(`${tempUrl}/COAsKas`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
@@ -117,15 +124,35 @@ const UbahBankKeluar = () => {
     setLoading(false);
   };
 
-  const updateBankKeluar = async (e) => {
+  const updateKasMasukChild = async (e) => {
     e.preventDefault();
-    let isFailedValidation = tglBankKeluar.length === 0 || kodeCOA.length === 0;
+    let isFailedValidation =
+      tglKasMasuk.length === 0 ||
+      kodeCOA.length === 0 ||
+      jumlahBaru.length === 0;
     if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
       try {
         setLoading(true);
+        const pickedKasMasuk = await axios.post(`${tempUrl}/kasMasuks/${id}`, {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
+        let tempJumlahKasMasuk =
+          parseInt(pickedKasMasuk.data.jumlah) -
+          parseInt(jumlah) +
+          parseInt(jumlahBaru);
+        await axios.post(`${tempUrl}/updateKasMasuk/${id}`, {
+          jumlah: tempJumlahKasMasuk,
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
         let tempCOA = await axios.post(`${tempUrl}/COAByKode`, {
           kodeCOA,
           kodeUnitBisnis: user.unitBisnis._id,
@@ -133,17 +160,18 @@ const UbahBankKeluar = () => {
           id: user._id,
           token: user.token
         });
-        await axios.post(`${tempUrl}/updateBankKeluar/${id}`, {
-          tglBankKeluar,
+        await axios.post(`${tempUrl}/updateKasMasukChild/${idKasMasukChild}`, {
+          tglKasMasuk,
           COA: tempCOA.data._id,
           keterangan,
+          jumlah: jumlahBaru,
           kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });
         setLoading(false);
-        navigate(`/daftarBankKeluar/bankKeluar/${id}`);
+        navigate(`/daftarKasMasuk/kasMasuk/${id}`);
       } catch (error) {
         console.log(error);
       }
@@ -158,7 +186,7 @@ const UbahBankKeluar = () => {
     <Box sx={container}>
       <Typography color="#757575">Finance</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Ubah Bank Keluar
+        Ubah Detail Kas Masuk
       </Typography>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
@@ -195,14 +223,31 @@ const UbahBankKeluar = () => {
             <TextField
               type="date"
               size="small"
-              error={error && tglBankKeluar.length === 0 && true}
+              id="outlined-basic"
+              variant="outlined"
+              value={tglKasMasuk}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Jumlah
+              {jumlahBaru !== 0 &&
+                !isNaN(parseInt(jumlahBaru)) &&
+                ` : Rp ${parseInt(jumlahBaru).toLocaleString()}`}
+            </Typography>
+            <TextField
+              type="number"
+              size="small"
+              error={error && jumlahBaru.length === 0 && true}
               helperText={
-                error && tglBankKeluar.length === 0 && "Tanggal harus diisi!"
+                error && jumlahBaru.length === 0 && "Jumlah harus diisi!"
               }
               id="outlined-basic"
               variant="outlined"
-              value={tglBankKeluar}
-              onChange={(e) => setTglBankKeluar(e.target.value.toUpperCase())}
+              value={jumlahBaru}
+              onChange={(e) => setJumlahBaru(e.target.value.toUpperCase())}
             />
           </Box>
           <Box sx={[textFieldWrapper, secondWrapper]}>
@@ -211,7 +256,7 @@ const UbahBankKeluar = () => {
               <TextareaAutosize
                 maxRows={1}
                 aria-label="maximum height"
-                style={{ height: 230 }}
+                style={{ height: 330 }}
                 value={keterangan}
                 onChange={(e) => {
                   setKeterangan(e.target.value);
@@ -224,7 +269,9 @@ const UbahBankKeluar = () => {
           <Button
             variant="outlined"
             color="secondary"
-            onClick={() => navigate(`/daftarBankKeluar/bankKeluar/${id}`)}
+            onClick={() =>
+              navigate(`/daftarKasMasuk/kasMasuk/${id}/${idKasMasukChild}`)
+            }
             sx={{ marginRight: 2 }}
           >
             {"< Kembali"}
@@ -232,7 +279,7 @@ const UbahBankKeluar = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={updateBankKeluar}
+            onClick={updateKasMasukChild}
           >
             Ubah
           </Button>
@@ -319,7 +366,7 @@ const UbahBankKeluar = () => {
   );
 };
 
-export default UbahBankKeluar;
+export default UbahKasMasukChild;
 
 const container = {
   p: 4

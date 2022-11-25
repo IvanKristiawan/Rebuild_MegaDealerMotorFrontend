@@ -11,6 +11,7 @@ import {
   Typography,
   Divider,
   Button,
+  ButtonGroup,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -19,6 +20,7 @@ import {
   TextareaAutosize
 } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditIcon from "@mui/icons-material/Edit";
 
 const TampilBankKeluarChild = () => {
   const { user } = useContext(AuthContext);
@@ -142,15 +144,29 @@ const TampilBankKeluarChild = () => {
               <Button onClick={handleClose}>Cancel</Button>
             </DialogActions>
           </Dialog>
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<DeleteOutlineIcon />}
-            sx={{ textTransform: "none" }}
-            onClick={handleClickOpen}
-          >
-            Hapus
-          </Button>
+          <ButtonGroup variant="contained">
+            <Button
+              color="primary"
+              startIcon={<EditIcon />}
+              sx={{ textTransform: "none" }}
+              onClick={() => {
+                navigate(
+                  `/daftarBankKeluar/bankKeluar/${id}/${idBankKeluarChild}/edit`
+                );
+              }}
+            >
+              Ubah
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              startIcon={<DeleteOutlineIcon />}
+              sx={{ textTransform: "none" }}
+              onClick={handleClickOpen}
+            >
+              Hapus
+            </Button>
+          </ButtonGroup>
         </Box>
         <Divider sx={dividerStyle} />
         <Box sx={[textFieldContainer, spacingTop]}>
