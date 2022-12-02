@@ -325,10 +325,10 @@ const contentContainer = {
 
 const secondWrapper = {
   marginLeft: {
-    md: 4
+    sm: 4
   },
   marginTop: {
-    md: 0,
+    sm: 0,
     xs: 4
   }
 };

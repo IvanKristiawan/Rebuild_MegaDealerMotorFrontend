@@ -1025,10 +1025,10 @@ const spacingTop = {
 
 const secondWrapper = {
   marginLeft: {
-    md: 4
+    sm: 4
   },
   marginTop: {
-    md: 0,
+    sm: 0,
     xs: 4
   }
 };
@@ -1043,7 +1043,14 @@ const downloadButtons = {
 const mainContainer = {
   padding: 3,
   borderRadius: "20px",
-  margin: 4
+  margin: {
+    sm: 0,
+    md: 4
+  },
+  marginTop: {
+    xs: 4,
+    md: 0
+  }
 };
 
 const titleStyle = {
@@ -1052,7 +1059,16 @@ const titleStyle = {
 };
 
 const contentContainer = {
-  p: 3,
-  pt: 1,
-  mt: 2
+  p: {
+    sm: 0,
+    md: 3
+  },
+  pt: {
+    sm: 0,
+    md: 1
+  },
+  mt: {
+    sm: 0,
+    md: 2
+  }
 };

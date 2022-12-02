@@ -18,7 +18,7 @@ const CariPenerimaanKas = () => {
   const { user } = useContext(AuthContext);
   let curr = new Date();
   let date = curr.toISOString().substring(0, 10);
-  const [userInput, setUserInput] = useState("");
+  const [userInput, setUserInput] = useState(user.username);
   const [dariTgl, setDariTgl] = useState(date);
   const [sampaiTgl, setSampaiTgl] = useState(date);
 

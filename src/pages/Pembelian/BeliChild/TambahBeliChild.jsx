@@ -674,19 +674,10 @@ const contentContainer = {
 
 const secondWrapper = {
   marginLeft: {
-    md: 4
+    sm: 4
   },
   marginTop: {
-    md: 0,
+    sm: 0,
     xs: 4
   }
-};
-
-const inputDateStyle = {
-  height: "40px",
-  border: "1px solid gray",
-  borderColor: Colors.grey400,
-  borderRadius: "5px",
-  paddingLeft: 8,
-  backgroundColor: Colors.grey100
 };

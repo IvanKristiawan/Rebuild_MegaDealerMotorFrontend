@@ -204,7 +204,7 @@ const App = () => {
 
   const contentWrapper = {
     minHeight: "100vh",
-    width: open ? "80vw" : "100vw"
+    width: open && screenSize >= 650 ? "80vw" : "100vw"
   };
 
   useEffect(() => {
