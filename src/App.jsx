@@ -63,6 +63,9 @@ import {
   TampilWarna,
   TambahWarna,
   UbahWarna,
+  TampilJenisCOA,
+  TambahJenisCOA,
+  UbahJenisCOA,
   TampilGroupCOA,
   TambahGroupCOA,
   UbahGroupCOA,
@@ -285,6 +288,17 @@ const App = () => {
                     label="Buku Besar"
                     icon={<MenuBookIcon name="buku-besar-icon" />}
                   >
+                    <Divider />
+                    <Link to="/jenisCOA" style={linkText}>
+                      <MenuItem>
+                        <Typography
+                          variant="body2"
+                          sx={{ paddingLeft: "70px" }}
+                        >
+                          Jenis COA
+                        </Typography>
+                      </MenuItem>
+                    </Link>
                     <Divider />
                     <Link to="/groupCOA" style={linkText}>
                       <MenuItem>
@@ -703,6 +717,39 @@ const App = () => {
                   element={
                     <USERRoute>
                       <UbahWarna />
+                    </USERRoute>
+                  }
+                />
+                {/* Jenis COA */}
+                <Route
+                  path="/jenisCOA"
+                  element={
+                    <USERRoute>
+                      <TampilJenisCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jenisCOA/:id"
+                  element={
+                    <USERRoute>
+                      <TampilJenisCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jenisCOA/tambahJenisCOA"
+                  element={
+                    <USERRoute>
+                      <TambahJenisCOA />
+                    </USERRoute>
+                  }
+                />
+                <Route
+                  path="/jenisCOA/:id/edit"
+                  element={
+                    <USERRoute>
+                      <UbahJenisCOA />
                     </USERRoute>
                   }
                 />

@@ -53,7 +53,7 @@ const TambahSubGroupCOA = () => {
     setLoading(false);
   };
 
-  const saveKecamatan = async (e) => {
+  const saveSubGroupCOA = async (e) => {
     e.preventDefault();
     let isFailValidation =
       kodeGroupCOA.length === 0 || namaSubGroupCOA.length === 0;
@@ -81,7 +81,7 @@ const TambahSubGroupCOA = () => {
   };
 
   const groupCOAOptions = groupCOAsData.map((groupCOA) => ({
-    label: `${groupCOA._id} - ${groupCOA.namaGroupCOA}`
+    label: `${groupCOA.kodeGroupCOA} - ${groupCOA.namaGroupCOA}`
   }));
 
   if (loading) {
@@ -130,7 +130,7 @@ const TambahSubGroupCOA = () => {
               helperText={
                 error &&
                 namaSubGroupCOA.length === 0 &&
-                "Nama Kecamatan harus diisi!"
+                "Nama Sub Group harus diisi!"
               }
               id="outlined-basic"
               variant="outlined"
@@ -151,7 +151,7 @@ const TambahSubGroupCOA = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveKecamatan}
+            onClick={saveSubGroupCOA}
           >
             Simpan
           </Button>

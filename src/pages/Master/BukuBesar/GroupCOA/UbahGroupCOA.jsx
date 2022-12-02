@@ -13,6 +13,7 @@ import {
   Divider,
   Snackbar,
   Alert,
+  Autocomplete,
   Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,8 +21,9 @@ import EditIcon from "@mui/icons-material/Edit";
 const UbahGroupCOA = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const [kodeGroupCOA, setKodeGroupCOA] = useState("");
+  const [kodeJenisCOA, setKodeJenisCOA] = useState("");
   const [namaGroupCOA, setNamaGroupCOA] = useState("");
+  const [jenisCOAsData, setJenisCOAsData] = useState([]);
 
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -36,30 +38,48 @@ const UbahGroupCOA = () => {
   };
 
   useEffect(() => {
-    getGroupCOAById();
+    getGroupById();
+    getJenisCOAsData();
   }, []);
 
-  const getGroupCOAById = async () => {
+  const getJenisCOAsData = async () => {
+    setLoading(true);
+    const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
+    setJenisCOAsData(allJenisCOAs.data);
+    setLoading(false);
+  };
+
+  const getGroupById = async () => {
     setLoading(true);
     const pickedGroupCOA = await axios.post(`${tempUrl}/groupCOAs/${id}`, {
       id: user._id,
       token: user.token
     });
-    setKodeGroupCOA(pickedGroupCOA.data._id);
+    setKodeJenisCOA(
+      `${pickedGroupCOA.data.kodeJenisCOA} - ${pickedGroupCOA.data.namaJenisCOA}`
+    );
     setNamaGroupCOA(pickedGroupCOA.data.namaGroupCOA);
     setLoading(false);
   };
 
   const updateGroupCOA = async (e) => {
     e.preventDefault();
-    let isFailedValidation = namaGroupCOA.length === 0;
-    if (isFailedValidation) {
+    let isFailValidation =
+      kodeJenisCOA.length === 0 || namaGroupCOA.length === 0;
+    if (isFailValidation) {
       setError(true);
       setOpen(!open);
     } else {
       try {
         setLoading(true);
         await axios.post(`${tempUrl}/updateGroupCOA/${id}`, {
+          kodeJenisCOA: kodeJenisCOA.split(" ", 1)[0],
+          namaJenisCOA: kodeJenisCOA.split("- ")[1],
           namaGroupCOA,
           kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
@@ -73,6 +93,10 @@ const UbahGroupCOA = () => {
       }
     }
   };
+
+  const jenisCOAOptions = jenisCOAsData.map((groupCOA) => ({
+    label: `${groupCOA._id} - ${groupCOA.namaJenisCOA}`
+  }));
 
   if (loading) {
     return <Loader />;
@@ -88,20 +112,28 @@ const UbahGroupCOA = () => {
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={showDataContainer}>
           <Box sx={showDataWrapper}>
-            <Typography sx={labelInput}>Kode Group COA</Typography>
-            <TextField
+            <Typography sx={labelInput}>Kode Jenis COA</Typography>
+            <Autocomplete
               size="small"
-              error={error && kodeGroupCOA.length === 0 && true}
-              helperText={
-                error && kodeGroupCOA.length === 0 && "Kode harus diisi!"
-              }
-              id="outlined-basic"
-              variant="outlined"
-              value={kodeGroupCOA}
-              InputProps={{
-                readOnly: true
+              disablePortal
+              id="combo-box-demo"
+              options={jenisCOAOptions}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && kodeJenisCOA.length === 0 && true}
+                  helperText={
+                    error &&
+                    kodeJenisCOA.length === 0 &&
+                    "Kode Jenis COA harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => {
+                setKodeJenisCOA(value);
               }}
-              sx={{ backgroundColor: Colors.grey400 }}
+              value={{ label: kodeJenisCOA }}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Nama Group COA

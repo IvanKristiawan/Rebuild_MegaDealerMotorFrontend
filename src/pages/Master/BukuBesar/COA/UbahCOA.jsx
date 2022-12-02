@@ -25,8 +25,10 @@ const UbahCOA = () => {
   const [namaCOA, setNamaCOA] = useState("");
   const [jenisSaldo, setJenisSaldo] = useState("");
   const [kasBank, setKasBank] = useState("");
+  const [kodeJenisCOA, setKodeJenisCOA] = useState("");
   const [kodeGroupCOA, setKodeGroupCOA] = useState("");
   const [kodeSubGroupCOA, setKodeSubGroupCOA] = useState("");
+  const [jenisCOAsData, setJenisCOAsData] = useState([]);
   const [groupCOAsData, setGroupCOAsData] = useState([]);
   const [subGroupCOAsData, setSubGroupCOAsData] = useState([]);
 
@@ -35,8 +37,12 @@ const UbahCOA = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
 
+  const jenisCOAOptions = jenisCOAsData.map((jenisCOA) => ({
+    label: `${jenisCOA._id} - ${jenisCOA.namaJenisCOA}`
+  }));
+
   const groupCOAOptions = groupCOAsData.map((groupCOA) => ({
-    label: `${groupCOA._id} - ${groupCOA.namaGroupCOA}`
+    label: `${groupCOA.kodeGroupCOA} - ${groupCOA.namaGroupCOA}`
   }));
 
   const subGroupCOAOptions = subGroupCOAsData.map((subGroupCOA) => ({
@@ -61,6 +67,7 @@ const UbahCOA = () => {
   useEffect(() => {
     getSubGroupCOAsData();
     getGroupCOAsData();
+    getJenisCOAsData();
     getCOAById();
   }, []);
 
@@ -88,6 +95,18 @@ const UbahCOA = () => {
     setLoading(false);
   };
 
+  const getJenisCOAsData = async () => {
+    setLoading(true);
+    const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
+    setJenisCOAsData(allJenisCOAs.data);
+    setLoading(false);
+  };
+
   const getCOAById = async () => {
     setLoading(true);
     const pickedTipe = await axios.post(`${tempUrl}/COAs/${id}`, {
@@ -98,6 +117,7 @@ const UbahCOA = () => {
     setNamaCOA(pickedTipe.data.namaCOA);
     setJenisSaldo(pickedTipe.data.jenisSaldo);
     setKasBank(pickedTipe.data.kasBank);
+    setKodeJenisCOA(pickedTipe.data.jenisCOA);
     setKodeGroupCOA(pickedTipe.data.groupCOA);
     setKodeSubGroupCOA(pickedTipe.data.subGroupCOA);
     setLoading(false);
@@ -108,6 +128,7 @@ const UbahCOA = () => {
     let isFailedValidation =
       kodeCOA.length === 0 ||
       namaCOA.length === 0 ||
+      kodeJenisCOA.length === 0 ||
       kodeGroupCOA.length === 0 ||
       kodeSubGroupCOA.length === 0 ||
       jenisSaldo.length === 0 ||
@@ -118,6 +139,13 @@ const UbahCOA = () => {
     } else {
       try {
         setLoading(true);
+        let tempGroupCOA = await axios.post(`${tempUrl}/groupCOAByKode`, {
+          kodeGroupCOA: kodeGroupCOA.split(" ", 1)[0],
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
+          id: user._id,
+          token: user.token
+        });
         let tempSubGroupCOA = await axios.post(`${tempUrl}/subGroupCOAByKode`, {
           kodeSubGroupCOA: kodeSubGroupCOA.split(" ", 1)[0],
           kodeUnitBisnis: user.unitBisnis._id,
@@ -130,7 +158,8 @@ const UbahCOA = () => {
           kodeCOA,
           kodeSubGroupCOA: kodeSubGroupCOA.split(" ", 1)[0],
           subGroupCOA: tempSubGroupCOA.data._id,
-          groupCOA: kodeGroupCOA.split(" ", 1)[0],
+          groupCOA: tempGroupCOA.data._id,
+          jenisCOA: kodeJenisCOA.split(" ", 1)[0],
           jenisSaldo,
           kasBank,
           kodeUnitBisnis: user.unitBisnis._id,
@@ -154,13 +183,38 @@ const UbahCOA = () => {
     <Box sx={container}>
       <Typography color="#757575">Master</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Ubah Tipe
+        Ubah COA
       </Typography>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={showDataContainer}>
           <Box sx={showDataWrapper}>
-            <Typography sx={labelInput}>Kode Group COA</Typography>
+            <Typography sx={labelInput}>Kode Jenis COA</Typography>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={jenisCOAOptions}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && kodeJenisCOA.length === 0 && true}
+                  helperText={
+                    error &&
+                    kodeJenisCOA.length === 0 &&
+                    "Kode Jenis COA harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => {
+                setKodeJenisCOA(value);
+              }}
+              value={{ label: kodeJenisCOA }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Kode Group COA
+            </Typography>
             <Autocomplete
               size="small"
               disablePortal

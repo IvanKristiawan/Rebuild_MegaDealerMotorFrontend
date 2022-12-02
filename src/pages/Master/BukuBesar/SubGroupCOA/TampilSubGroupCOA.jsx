@@ -39,8 +39,8 @@ const TampilSubGroupCOA = () => {
 
   const [isFetchError, setIsFetchError] = useState(false);
   const [kodeGroupCOA, setKodeGroupCOA] = useState("");
-  const [kodeSubGroupCOA, setKodeSubGroupCOA] = useState("");
   const [namaGroupCOA, setNamaGroupCOA] = useState("");
+  const [kodeSubGroupCOA, setKodeSubGroupCOA] = useState("");
   const [namaSubGroupCOA, setNamaSubGroupCOA] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,7 +50,7 @@ const TampilSubGroupCOA = () => {
 
   const columns = [
     { title: "Kode Group", field: "kodeGroupCOA" },
-    { title: "Kode Group COA", field: "kodeSubGroupCOA" },
+    { title: "Kode Sub Group COA", field: "kodeSubGroupCOA" },
     { title: "Nama Sub Group COA", field: "namaSubGroupCOA" }
   ];
 
@@ -106,14 +106,17 @@ const TampilSubGroupCOA = () => {
 
   const getSubGroupCOAById = async () => {
     if (id) {
-      const pickedWilayah = await axios.post(`${tempUrl}/subGroupCOAs/${id}`, {
-        id: user._id,
-        token: user.token
-      });
-      setKodeGroupCOA(pickedWilayah.data.kodeGroupCOA);
-      setKodeSubGroupCOA(pickedWilayah.data.kodeSubGroupCOA);
-      setNamaGroupCOA(pickedWilayah.data.namaGroupCOA);
-      setNamaSubGroupCOA(pickedWilayah.data.namaSubGroupCOA);
+      const pickedSubGroupCOA = await axios.post(
+        `${tempUrl}/subGroupCOAs/${id}`,
+        {
+          id: user._id,
+          token: user.token
+        }
+      );
+      setKodeGroupCOA(pickedSubGroupCOA.data.kodeGroupCOA);
+      setNamaGroupCOA(pickedSubGroupCOA.data.namaGroupCOA);
+      setKodeSubGroupCOA(pickedSubGroupCOA.data.kodeSubGroupCOA);
+      setNamaSubGroupCOA(pickedSubGroupCOA.data.namaSubGroupCOA);
     }
   };
 
@@ -126,6 +129,7 @@ const TampilSubGroupCOA = () => {
       });
       setKodeGroupCOA("");
       setKodeSubGroupCOA("");
+      setNamaGroupCOA("");
       setNamaSubGroupCOA("");
       setLoading(false);
       navigate("/subGroupCOA");
@@ -145,7 +149,7 @@ const TampilSubGroupCOA = () => {
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Daftar Sub Group COA`, 90, 30);
+    doc.text(`Daftar Sub Group COA`, 85, 30);
     doc.setFontSize(10);
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
@@ -216,7 +220,7 @@ const TampilSubGroupCOA = () => {
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
-              <Typography sx={labelInput}>Kode Group</Typography>
+              <Typography sx={labelInput}>Kode Group COA</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -239,7 +243,7 @@ const TampilSubGroupCOA = () => {
                 value={kodeSubGroupCOA}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Nama Sub Group COA
+                Nama Sub Group
               </Typography>
               <TextField
                 size="small"

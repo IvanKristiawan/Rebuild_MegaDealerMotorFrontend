@@ -56,14 +56,14 @@ const UbahSubGroupCOA = () => {
 
   const getSubGroupById = async () => {
     setLoading(true);
-    const pickedKecamatan = await axios.post(`${tempUrl}/subGroupCOAs/${id}`, {
+    const pickedGroupCOA = await axios.post(`${tempUrl}/subGroupCOAs/${id}`, {
       id: user._id,
       token: user.token
     });
     setKodeGroupCOA(
-      `${pickedKecamatan.data.kodeGroupCOA} - ${pickedKecamatan.data.namaGroupCOA}`
+      `${pickedGroupCOA.data.kodeGroupCOA} - ${pickedGroupCOA.data.namaGroupCOA}`
     );
-    setNamaSubGroupCOA(pickedKecamatan.data.namaSubGroupCOA);
+    setNamaSubGroupCOA(pickedGroupCOA.data.namaSubGroupCOA);
     setLoading(false);
   };
 
@@ -95,7 +95,7 @@ const UbahSubGroupCOA = () => {
   };
 
   const groupCOAOptions = groupCOAsData.map((groupCOA) => ({
-    label: `${groupCOA._id} - ${groupCOA.namaGroupCOA}`
+    label: `${groupCOA.kodeGroupCOA} - ${groupCOA.namaGroupCOA}`
   }));
 
   if (loading) {

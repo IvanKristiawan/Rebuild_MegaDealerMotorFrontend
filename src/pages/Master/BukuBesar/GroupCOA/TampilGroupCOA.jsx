@@ -8,7 +8,7 @@ import {
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { ShowTableGroupCOA } from "../../../../components/ShowTable";
+import { ShowTableSubGroupCOA } from "../../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
 import {
   SearchBar,
@@ -38,6 +38,8 @@ const TampilGroupCOA = () => {
   const { screenSize } = useStateContext();
 
   const [isFetchError, setIsFetchError] = useState(false);
+  const [kodeJenisCOA, setKodeJenisCOA] = useState("");
+  const [namaJenisCOA, setNamaJenisCOA] = useState("");
   const [kodeGroupCOA, setKodeGroupCOA] = useState("");
   const [namaGroupCOA, setNamaGroupCOA] = useState("");
 
@@ -47,7 +49,8 @@ const TampilGroupCOA = () => {
   let isGroupCOAExist = kodeGroupCOA.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode Jenis", field: "kodeJenisCOA" },
+    { title: "Kode Group COA", field: "kodeGroupCOA" },
     { title: "Nama Group COA", field: "namaGroupCOA" }
   ];
 
@@ -62,7 +65,9 @@ const TampilGroupCOA = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeJenisCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.namaJenisCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeGroupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaGroupCOA.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
@@ -101,12 +106,14 @@ const TampilGroupCOA = () => {
 
   const getGroupCOAById = async () => {
     if (id) {
-      const pickedWilayah = await axios.post(`${tempUrl}/groupCOAs/${id}`, {
+      const pickedGroupCOA = await axios.post(`${tempUrl}/groupCOAs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeGroupCOA(pickedWilayah.data._id);
-      setNamaGroupCOA(pickedWilayah.data.namaGroupCOA);
+      setKodeJenisCOA(pickedGroupCOA.data.kodeJenisCOA);
+      setNamaJenisCOA(pickedGroupCOA.data.namaJenisCOA);
+      setKodeGroupCOA(pickedGroupCOA.data.kodeGroupCOA);
+      setNamaGroupCOA(pickedGroupCOA.data.namaGroupCOA);
     }
   };
 
@@ -117,6 +124,7 @@ const TampilGroupCOA = () => {
         id: user._id,
         token: user.token
       });
+      setKodeJenisCOA("");
       setKodeGroupCOA("");
       setNamaGroupCOA("");
       setLoading(false);
@@ -137,7 +145,7 @@ const TampilGroupCOA = () => {
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Daftar Group COA`, 90, 30);
+    doc.text(`Daftar Group COA`, 85, 30);
     doc.setFontSize(10);
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
@@ -208,7 +216,17 @@ const TampilGroupCOA = () => {
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
-              <Typography sx={labelInput}>Kode</Typography>
+              <Typography sx={labelInput}>Kode Jenis</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={`${kodeJenisCOA} - ${namaJenisCOA}`}
+              />
+              <Typography sx={[labelInput, spacingTop]}>Kode Group</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -239,7 +257,7 @@ const TampilGroupCOA = () => {
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
       <Box sx={tableContainer}>
-        <ShowTableGroupCOA
+        <ShowTableSubGroupCOA
           currentPosts={currentPosts}
           searchTerm={searchTerm}
         />
@@ -291,11 +309,6 @@ const showDataWrapper = {
   maxWidth: {
     md: "40vw"
   }
-};
-
-const textFieldStyle = {
-  display: "flex",
-  mt: 4
 };
 
 const searchBarContainer = {

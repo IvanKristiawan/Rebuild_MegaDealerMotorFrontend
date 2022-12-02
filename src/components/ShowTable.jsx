@@ -174,10 +174,36 @@ export function ShowTableCOA({ currentPosts, searchTerm }) {
             >
               Kode COA
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Nama COA</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Sub Group COA</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Group COA</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Jenis Saldo</TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama COA
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Sub Group COA
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Group COA
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Jenis COA
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Jenis Saldo
+            </TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Kas/Bank</TableCell>
           </TableRow>
         </TableHead>
@@ -189,6 +215,7 @@ export function ShowTableCOA({ currentPosts, searchTerm }) {
               } else if (
                 val.kodeCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.namaCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.jenisCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
                 val.subGroupCOA
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -219,6 +246,7 @@ export function ShowTableCOA({ currentPosts, searchTerm }) {
                 <TableCell>{user.namaCOA}</TableCell>
                 <TableCell>{user.subGroupCOA}</TableCell>
                 <TableCell>{user.groupCOA}</TableCell>
+                <TableCell>{user.jenisCOA}</TableCell>
                 <TableCell>{user.jenisSaldo}</TableCell>
                 <TableCell>{user.kasBank}</TableCell>
               </TableRow>
@@ -243,7 +271,7 @@ export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
             >
               Kode
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Nama Group COA</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Nama Jenis COA</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -253,7 +281,7 @@ export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
                 return val;
               } else if (
                 val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.namaGroupCOA
+                val.namaJenisCOA
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase())
               ) {
@@ -269,13 +297,13 @@ export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
                   cursor: "pointer"
                 }}
                 onClick={() => {
-                  navigate(`/groupCOA/${user._id}`);
+                  navigate(`/jenisCOA/${user._id}`);
                 }}
               >
                 <TableCell component="th" scope="row">
                   {user._id}
                 </TableCell>
-                <TableCell>{user.namaGroupCOA}</TableCell>
+                <TableCell>{user.namaJenisCOA}</TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -298,8 +326,13 @@ export function ShowTableSubGroupCOA({ currentPosts, searchTerm }) {
             >
               Kode Group
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Kode Sub Group</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Nama</TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kode Sub Group
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Nama Sub Group</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

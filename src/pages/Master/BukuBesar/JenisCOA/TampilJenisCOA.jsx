@@ -8,7 +8,7 @@ import {
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { ShowTableCOA } from "../../../../components/ShowTable";
+import { ShowTableGroupCOA } from "../../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
 import {
   SearchBar,
@@ -31,34 +31,24 @@ import * as XLSX from "xlsx";
 import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 
-const TampilCOA = () => {
+const TampilJenisCOA = () => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { screenSize } = useStateContext();
 
   const [isFetchError, setIsFetchError] = useState(false);
-  const [kodeCOA, setKodeCOA] = useState("");
-  const [namaCOA, setNamaCOA] = useState("");
-  const [jenisCOA, setJenisCOA] = useState("");
-  const [subGroupCOA, setSubGroupCOA] = useState("");
-  const [groupCOA, setGroupCOA] = useState("");
-  const [jenisSaldo, setJenisSaldo] = useState("");
-  const [kasBank, setKasBank] = useState("");
-  const [COAsData, setCOAsData] = useState([]);
+  const [kodeJenisCOA, setKodeJenisCOA] = useState("");
+  const [namaJenisCOA, setNamaJenisCOA] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [jenisCOAsData, setJenisCOAsData] = useState([]);
   const navigate = useNavigate();
-  let isCOAExist = kodeCOA.length !== 0;
+  let isJenisCOAExist = kodeJenisCOA.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "kodeCOA" },
-    { title: "Nama COA", field: "namaCOA" },
-    { title: "Jenis COA", field: "setJenisCOA" },
-    { title: "Sub Group COA", field: "subGroupCOA" },
-    { title: "Group COA", field: "groupCOA" },
-    { title: "Jenis Saldo", field: "jenisSaldo" },
-    { title: "Kas/Bank", field: "kasBank" }
+    { title: "Kode", field: "_id" },
+    { title: "Nama Jenis COA", field: "namaJenisCOA" }
   ];
 
   const [loading, setLoading] = useState(false);
@@ -68,17 +58,12 @@ const TampilCOA = () => {
   // Get current posts
   const indexOfLastPost = page * PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - PER_PAGE;
-  const tempPosts = COAsData.filter((val) => {
+  const tempPosts = jenisCOAsData.filter((val) => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val.kodeCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.namaCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.jenisCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.subGroupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.groupCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.jenisSaldo.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.kasBank.toUpperCase().includes(searchTerm.toUpperCase())
+      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.namaJenisCOA.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -86,7 +71,7 @@ const TampilCOA = () => {
   const currentPosts = tempPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const count = Math.ceil(tempPosts.length / PER_PAGE);
-  const _DATA = usePagination(COAsData, PER_PAGE);
+  const _DATA = usePagination(jenisCOAsData, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -94,57 +79,48 @@ const TampilCOA = () => {
   };
 
   useEffect(() => {
-    getCOAsData();
-    id && getGroupCOAById();
+    getJenisCOAsData();
+    id && getJenisCOAById();
   }, [id]);
 
-  const getCOAsData = async () => {
+  const getJenisCOAsData = async () => {
     setLoading(true);
     try {
-      const allCOAs = await axios.post(`${tempUrl}/COAsForDoc`, {
+      const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
-      setCOAsData(allCOAs.data);
+      setJenisCOAsData(allJenisCOAs.data);
     } catch (err) {
       setIsFetchError(true);
     }
     setLoading(false);
   };
 
-  const getGroupCOAById = async () => {
+  const getJenisCOAById = async () => {
     if (id) {
-      const pickedWilayah = await axios.post(`${tempUrl}/COAs/${id}`, {
+      const pickedJenisCOA = await axios.post(`${tempUrl}/jenisCOAs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeCOA(pickedWilayah.data.kodeCOA);
-      setNamaCOA(pickedWilayah.data.namaCOA);
-      setJenisCOA(pickedWilayah.data.jenisCOA);
-      setSubGroupCOA(pickedWilayah.data.subGroupCOA);
-      setGroupCOA(pickedWilayah.data.groupCOA);
-      setJenisSaldo(pickedWilayah.data.jenisSaldo);
-      setKasBank(pickedWilayah.data.kasBank);
+      setKodeJenisCOA(pickedJenisCOA.data._id);
+      setNamaJenisCOA(pickedJenisCOA.data.namaJenisCOA);
     }
   };
 
-  const deleteCOA = async (id) => {
+  const deleteJenisCOA = async (id) => {
     try {
       setLoading(true);
-      await axios.post(`${tempUrl}/deleteCOA/${id}`, {
+      await axios.post(`${tempUrl}/deleteJenisCOA/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeCOA("");
-      setNamaCOA("");
-      setSubGroupCOA("");
-      setGroupCOA("");
-      setJenisSaldo("");
-      setKasBank("");
+      setKodeJenisCOA("");
+      setNamaJenisCOA("");
       setLoading(false);
-      navigate("/COA");
+      navigate("/jenisCOA");
     } catch (error) {
       console.log(error);
     }
@@ -161,7 +137,7 @@ const TampilCOA = () => {
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
     doc.text(`${lokasiPerusahaan}`, 15, 15);
     doc.setFontSize(16);
-    doc.text(`Daftar COA`, 90, 30);
+    doc.text(`Daftar Jenis COA`, 90, 30);
     doc.setFontSize(10);
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
@@ -172,25 +148,25 @@ const TampilCOA = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: COAsData,
+      body: jenisCOAsData,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
       }
     });
-    doc.save(`daftarCOA.pdf`);
+    doc.save(`daftarJenisCOA.pdf`);
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(COAsData);
+    const workSheet = XLSX.utils.json_to_sheet(jenisCOAsData);
     const workBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, `COA`);
+    XLSX.utils.book_append_sheet(workBook, workSheet, `Jenis COA`);
     // Buffer
     let buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
     // Binary String
     XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
     // Download
-    XLSX.writeFile(workBook, `daftarCOA.xlsx`);
+    XLSX.writeFile(workBook, `daftarJenisCOA.xlsx`);
   };
 
   if (loading) {
@@ -205,7 +181,7 @@ const TampilCOA = () => {
     <Box sx={container}>
       <Typography color="#757575">Master</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        COA
+        Jenis COA
       </Typography>
       <Box sx={downloadButtons}>
         <ButtonGroup variant="outlined" color="secondary">
@@ -220,19 +196,19 @@ const TampilCOA = () => {
       <Box sx={buttonModifierContainer}>
         <ButtonModifier
           id={id}
-          kode={kodeCOA}
-          addLink={`/COA/tambahCOA`}
-          editLink={`/COA/${id}/edit`}
-          deleteUser={deleteCOA}
-          nameUser={kodeCOA}
+          kode={kodeJenisCOA}
+          addLink={`/jenisCOA/tambahJenisCOA`}
+          editLink={`/jenisCOA/${id}/edit`}
+          deleteUser={deleteJenisCOA}
+          nameUser={kodeJenisCOA}
         />
       </Box>
       <Divider sx={dividerStyle} />
-      {isCOAExist && (
+      {isJenisCOAExist && (
         <>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
-              <Typography sx={labelInput}>Kode COA</Typography>
+              <Typography sx={labelInput}>Kode</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -240,62 +216,10 @@ const TampilCOA = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={kodeCOA}
-              />
-              <Typography sx={[labelInput, spacingTop]}>Nama COA</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true
-                }}
-                value={namaCOA}
-              />
-              <Typography sx={[labelInput, spacingTop]}>Jenis Saldo</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true
-                }}
-                value={jenisSaldo}
-              />
-              <Typography sx={[labelInput, spacingTop]}>Kas/Bank</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true
-                }}
-                value={kasBank}
-              />
-            </Box>
-            <Box sx={[showDataWrapper, secondWrapper]}>
-              <Typography sx={labelInput}>Jenis COA</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true
-                }}
-                value={jenisCOA}
-              />
-              <Typography sx={[labelInput, spacingTop]}>Group COA</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true
-                }}
-                value={groupCOA}
+                value={kodeJenisCOA}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Sub Group COA
+                Nama Group COA
               </Typography>
               <TextField
                 size="small"
@@ -304,7 +228,7 @@ const TampilCOA = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={subGroupCOA}
+                value={namaJenisCOA}
               />
             </Box>
           </Box>
@@ -315,7 +239,10 @@ const TampilCOA = () => {
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
       <Box sx={tableContainer}>
-        <ShowTableCOA currentPosts={currentPosts} searchTerm={searchTerm} />
+        <ShowTableGroupCOA
+          currentPosts={currentPosts}
+          searchTerm={searchTerm}
+        />
       </Box>
       <Box sx={tableContainer}>
         <Pagination
@@ -330,7 +257,7 @@ const TampilCOA = () => {
   );
 };
 
-export default TampilCOA;
+export default TampilJenisCOA;
 
 const container = {
   p: 4
@@ -366,6 +293,11 @@ const showDataWrapper = {
   }
 };
 
+const textFieldStyle = {
+  display: "flex",
+  mt: 4
+};
+
 const searchBarContainer = {
   pt: 6,
   display: "flex",
@@ -392,14 +324,4 @@ const downloadButtons = {
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center"
-};
-
-const secondWrapper = {
-  marginLeft: {
-    sm: 4
-  },
-  marginTop: {
-    sm: 0,
-    xs: 4
-  }
 };

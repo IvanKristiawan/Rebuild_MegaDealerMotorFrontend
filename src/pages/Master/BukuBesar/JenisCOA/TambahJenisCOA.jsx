@@ -13,18 +13,15 @@ import {
   Divider,
   Snackbar,
   Alert,
-  Autocomplete,
   Paper
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 
-const TambahGroupCOA = () => {
+const TambahJenisCOA = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [kodeJenisCOA, setKodeJenisCOA] = useState("");
   const [namaJenisCOA, setNamaJenisCOA] = useState("");
-  const [namaGroupCOA, setNamaGroupCOA] = useState("");
-  const [jenisCOAsData, setJenisCOAsData] = useState([]);
 
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -38,51 +35,44 @@ const TambahGroupCOA = () => {
   };
 
   useEffect(() => {
-    getJenisCOAsData();
+    getNextKodeJenisCOA();
   }, []);
 
-  const getJenisCOAsData = async () => {
+  const getNextKodeJenisCOA = async () => {
     setLoading(true);
-    const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
+    const nextKodeJenisCOA = await axios.post(`${tempUrl}/jenisCOAsNextKode`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
-    setJenisCOAsData(allJenisCOAs.data);
+    setKodeJenisCOA(nextKodeJenisCOA.data);
     setLoading(false);
   };
 
-  const saveGroupCOA = async (e) => {
+  const saveJenisCOA = async (e) => {
     e.preventDefault();
-    let isFailValidation =
-      kodeJenisCOA.length === 0 || namaGroupCOA.length === 0;
-    if (isFailValidation) {
+    let isFailedValidation = namaJenisCOA.length === 0;
+    if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
       try {
         setLoading(true);
-        await axios.post(`${tempUrl}/saveGroupCOA`, {
-          kodeJenisCOA,
+        await axios.post(`${tempUrl}/saveJenisCOA`, {
           namaJenisCOA,
-          namaGroupCOA,
           kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });
         setLoading(false);
-        navigate("/groupCOA");
+        navigate("/jenisCOA");
       } catch (error) {
         console.log(error);
       }
     }
   };
-
-  const jenisCOAOptions = jenisCOAsData.map((groupCOA) => ({
-    label: `${groupCOA._id} - ${groupCOA.namaJenisCOA}`
-  }));
 
   if (loading) {
     return <Loader />;
@@ -92,48 +82,38 @@ const TambahGroupCOA = () => {
     <Box sx={container}>
       <Typography color="#757575">Master</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Tambah Group COA
+        Tambah Jenis COA
       </Typography>
       <Divider sx={dividerStyle} />
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={showDataContainer}>
           <Box sx={showDataWrapper}>
             <Typography sx={labelInput}>Kode Jenis COA</Typography>
-            <Autocomplete
+            <TextField
               size="small"
-              disablePortal
-              id="combo-box-demo"
-              options={jenisCOAOptions}
-              renderInput={(params) => (
-                <TextField
-                  size="small"
-                  error={error && kodeJenisCOA.length === 0 && true}
-                  helperText={
-                    error &&
-                    kodeJenisCOA.length === 0 &&
-                    "Kode Jenis harus diisi!"
-                  }
-                  {...params}
-                />
-              )}
-              onInputChange={(e, value) => {
-                setKodeJenisCOA(value.split(" ", 1)[0]);
-                setNamaJenisCOA(value.split("- ")[1]);
+              id="outlined-basic"
+              variant="outlined"
+              value={kodeJenisCOA}
+              InputProps={{
+                readOnly: true
               }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
             <Typography sx={[labelInput, spacingTop]}>
-              Nama Group COA
+              Nama Jenis COA
             </Typography>
             <TextField
               size="small"
-              error={error && namaGroupCOA.length === 0 && true}
+              error={error && namaJenisCOA.length === 0 && true}
               helperText={
-                error && namaGroupCOA.length === 0 && "Nama Group harus diisi!"
+                error &&
+                namaJenisCOA.length === 0 &&
+                "Nama Jenis COA harus diisi!"
               }
               id="outlined-basic"
               variant="outlined"
-              value={namaGroupCOA}
-              onChange={(e) => setNamaGroupCOA(e.target.value.toUpperCase())}
+              value={namaJenisCOA}
+              onChange={(e) => setNamaJenisCOA(e.target.value.toUpperCase())}
             />
           </Box>
         </Box>
@@ -141,7 +121,7 @@ const TambahGroupCOA = () => {
           <Button
             variant="outlined"
             color="secondary"
-            onClick={() => navigate("/groupCOA")}
+            onClick={() => navigate("/jenisCOA")}
             sx={{ marginRight: 2 }}
           >
             {"< Kembali"}
@@ -149,7 +129,7 @@ const TambahGroupCOA = () => {
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            onClick={saveGroupCOA}
+            onClick={saveJenisCOA}
           >
             Simpan
           </Button>
@@ -167,7 +147,7 @@ const TambahGroupCOA = () => {
   );
 };
 
-export default TambahGroupCOA;
+export default TambahJenisCOA;
 
 const container = {
   p: 4

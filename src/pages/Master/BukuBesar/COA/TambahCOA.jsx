@@ -25,8 +25,10 @@ const TambahCOA = () => {
   const [namaCOA, setNamaCOA] = useState("");
   const [jenisSaldo, setJenisSaldo] = useState("");
   const [kasBank, setKasBank] = useState("");
+  const [kodeJenisCOA, setKodeJenisCOA] = useState("");
   const [kodeGroupCOA, setKodeGroupCOA] = useState("");
   const [kodeSubGroupCOA, setKodeSubGroupCOA] = useState("");
+  const [jenisCOAsData, setJenisCOAsData] = useState([]);
   const [groupCOAsData, setGroupCOAsData] = useState([]);
   const [subGroupCOAsData, setSubGroupCOAsData] = useState([]);
 
@@ -34,8 +36,12 @@ const TambahCOA = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  const jenisCOAOptions = jenisCOAsData.map((jenisCOA) => ({
+    label: `${jenisCOA._id} - ${jenisCOA.namaJenisCOA}`
+  }));
+
   const groupCOAOptions = groupCOAsData.map((groupCOA) => ({
-    label: `${groupCOA._id} - ${groupCOA.namaGroupCOA}`
+    label: `${groupCOA.kodeGroupCOA} - ${groupCOA.namaGroupCOA}`
   }));
 
   const subGroupCOAOptions = subGroupCOAsData.map((subGroupCOA) => ({
@@ -60,6 +66,7 @@ const TambahCOA = () => {
   useEffect(() => {
     getSubGroupCOAsData();
     getGroupCOAsData();
+    getJenisCOAsData();
   }, []);
 
   const getNextKodeCOA = async (tempKodeSubGroupCOA) => {
@@ -97,11 +104,24 @@ const TambahCOA = () => {
     setLoading(false);
   };
 
+  const getJenisCOAsData = async () => {
+    setLoading(true);
+    const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
+    setJenisCOAsData(allJenisCOAs.data);
+    setLoading(false);
+  };
+
   const saveTipe = async (e) => {
     e.preventDefault();
     let isFailedValidation =
       kodeCOA.length === 0 ||
       namaCOA.length === 0 ||
+      kodeJenisCOA.length === 0 ||
       kodeGroupCOA.length === 0 ||
       kodeSubGroupCOA.length === 0 ||
       jenisSaldo.length === 0 ||
@@ -111,6 +131,13 @@ const TambahCOA = () => {
       setOpen(!open);
     } else {
       try {
+        let tempGroupCOA = await axios.post(`${tempUrl}/groupCOAByKode`, {
+          kodeGroupCOA,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
+          id: user._id,
+          token: user.token
+        });
         let tempSubGroupCOA = await axios.post(`${tempUrl}/subGroupCOAByKode`, {
           kodeSubGroupCOA,
           kodeUnitBisnis: user.unitBisnis._id,
@@ -124,7 +151,8 @@ const TambahCOA = () => {
           kodeCOA,
           kodeSubGroupCOA,
           subGroupCOA: tempSubGroupCOA.data._id,
-          groupCOA: kodeGroupCOA,
+          groupCOA: tempGroupCOA.data._id,
+          jenisCOA: kodeJenisCOA,
           jenisSaldo,
           kasBank,
           kodeUnitBisnis: user.unitBisnis._id,
@@ -154,7 +182,31 @@ const TambahCOA = () => {
       <Paper sx={contentContainer} elevation={12}>
         <Box sx={showDataContainer}>
           <Box sx={showDataWrapper}>
-            <Typography sx={labelInput}>Kode Group COA</Typography>
+            <Typography sx={labelInput}>Kode Jenis COA</Typography>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={jenisCOAOptions}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && kodeJenisCOA.length === 0 && true}
+                  helperText={
+                    error &&
+                    kodeJenisCOA.length === 0 &&
+                    "Kode Jenis harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => {
+                setKodeJenisCOA(value.split(" ", 1)[0]);
+              }}
+            />
+            <Typography sx={[labelInput, spacingTop]}>
+              Kode Group COA
+            </Typography>
             <Autocomplete
               size="small"
               disablePortal

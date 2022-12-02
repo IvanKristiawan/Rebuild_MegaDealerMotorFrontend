@@ -10,10 +10,14 @@ export { default as TampilWarna } from "./Master/Motor/Warna/TampilWarna";
 export { default as TambahWarna } from "./Master/Motor/Warna/TambahWarna";
 export { default as UbahWarna } from "./Master/Motor/Warna/UbahWarna";
 // Group COA Page
+export { default as TampilJenisCOA } from "./Master/BukuBesar/JenisCOA/TampilJenisCOA";
+export { default as TambahJenisCOA } from "./Master/BukuBesar/JenisCOA/TambahJenisCOA";
+export { default as UbahJenisCOA } from "./Master/BukuBesar/JenisCOA/UbahJenisCOA";
+// Group COA Page
 export { default as TampilGroupCOA } from "./Master/BukuBesar/GroupCOA/TampilGroupCOA";
 export { default as TambahGroupCOA } from "./Master/BukuBesar/GroupCOA/TambahGroupCOA";
 export { default as UbahGroupCOA } from "./Master/BukuBesar/GroupCOA/UbahGroupCOA";
-// Sub Group COA Page
+// Group Sub COA Page
 export { default as TampilSubGroupCOA } from "./Master/BukuBesar/SubGroupCOA/TampilSubGroupCOA";
 export { default as TambahSubGroupCOA } from "./Master/BukuBesar/SubGroupCOA/TambahSubGroupCOA";
 export { default as UbahSubGroupCOA } from "./Master/BukuBesar/SubGroupCOA/UbahSubGroupCOA";
