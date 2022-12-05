@@ -57,7 +57,9 @@ const TambahWarna = () => {
         let tempNamaWarna = await axios.post(`${tempUrl}/getNamaWarna`, {
           namaWarna,
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         if (tempNamaWarna.data.length > 0) {
           handleClickOpenAlert();

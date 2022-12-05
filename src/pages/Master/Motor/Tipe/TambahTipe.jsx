@@ -72,12 +72,16 @@ const TambahTipe = () => {
         let tempNoRangka = await axios.post(`${tempUrl}/tipesNoRangka`, {
           noRangka,
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         let tempNoMesin = await axios.post(`${tempUrl}/tipesNoMesin`, {
           noMesin,
           id: user._id,
-          token: user.token
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
         });
         if (tempNoRangka.data.length > 0) {
           handleClickOpenAlertRangka();
