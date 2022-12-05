@@ -13,10 +13,13 @@ import {
   Divider,
   Pagination,
   Button,
+  ButtonGroup,
   FormGroup,
   FormControlLabel,
   Checkbox
 } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import EditIcon from "@mui/icons-material/Edit";
 
 const TampilBeli = () => {
   const { user } = useContext(AuthContext);
@@ -33,6 +36,7 @@ const TampilBeli = () => {
   const [lama, setLama] = useState("");
   const [jenisBeli, setJenisBeli] = useState("");
   const [jatuhTempo, setJatuhTempo] = useState("");
+  const [isPost, setIsPost] = useState("");
   const [daftarStoksData, setDaftarStoksData] = useState([]);
   const navigate = useNavigate();
 
@@ -75,6 +79,7 @@ const TampilBeli = () => {
       setLama(response.data.lama);
       setJenisBeli(response.data.jenisBeli);
       setJatuhTempo(response.data.jatuhTempo);
+      setIsPost(response.data.isPost);
       const response2 = await axios.post(`${tempUrl}/daftarStoksByNoBeli`, {
         noBeli: response.data.noBeli,
         kodeUnitBisnis: user.unitBisnis._id,
@@ -134,16 +139,44 @@ const TampilBeli = () => {
         <Typography variant="h4" sx={subTitleText}>
           Beli
         </Typography>
-        <Box sx={buttonModifierContainer}>
-          <ButtonModifier
-            id={id}
-            kode={"test"}
-            addLink={`/daftarBeli/beli/${id}/tambahBeliChild`}
-            editLink={`/daftarBeli/beli/${id}/edit`}
-            deleteUser={deleteBeli}
-            nameUser={noBeli}
-          />
-        </Box>
+        {isPost === false ? (
+          <Box sx={buttonModifierContainer}>
+            <ButtonModifier
+              id={id}
+              kode={"test"}
+              addLink={`/daftarBeli/beli/${id}/tambahBeliChild`}
+              editLink={`/daftarBeli/beli/${id}/edit`}
+              deleteUser={deleteBeli}
+              nameUser={noBeli}
+            />
+          </Box>
+        ) : (
+          <Box sx={buttonModifierContainer}>
+            <ButtonGroup variant="contained">
+              <Button
+                color="success"
+                sx={{ bgcolor: "success.light", textTransform: "none" }}
+                startIcon={<AddCircleOutlineIcon />}
+                size="small"
+                onClick={() => {
+                  navigate(`/daftarBeli/beli/${id}/tambahBeliChild`);
+                }}
+              >
+                Tambah
+              </Button>
+              <Button
+                color="primary"
+                startIcon={<EditIcon />}
+                sx={{ textTransform: "none" }}
+                onClick={() => {
+                  navigate(`/daftarBeli/beli/${id}/edit`);
+                }}
+              >
+                Ubah
+              </Button>
+            </ButtonGroup>
+          </Box>
+        )}
         <Divider sx={dividerStyle} />
         <Box sx={textFieldContainer}>
           <FormGroup>

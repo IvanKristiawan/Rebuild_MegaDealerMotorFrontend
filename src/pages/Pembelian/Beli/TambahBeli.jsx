@@ -109,6 +109,7 @@ const TambahBeli = () => {
     } else {
       try {
         setLoading(true);
+        alert(tanggalBeli);
         await axios.post(`${tempUrl}/saveBeli`, {
           kodeSupplier,
           tanggalBeli,

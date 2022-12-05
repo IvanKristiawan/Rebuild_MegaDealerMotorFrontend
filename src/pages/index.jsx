@@ -161,3 +161,5 @@ export { default as UbahBankKeluar } from "./Finance/BankKeluar/UbahBankKeluar";
 export { default as TambahBankKeluarChild } from "./Finance/BankKeluarChild/TambahBankKeluarChild";
 export { default as TampilBankKeluarChild } from "./Finance/BankKeluarChild/TampilBankKeluarChild";
 export { default as UbahBankKeluarChild } from "./Finance/BankKeluarChild/UbahBankKeluarChild";
+// Posting
+export { default as Posting } from "./Finance/Posting/Posting";

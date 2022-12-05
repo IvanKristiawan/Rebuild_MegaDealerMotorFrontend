@@ -4,7 +4,7 @@ import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { Colors } from "../../../constants/styles";
-import { PPN, refCOA } from "../../../constants/GeneralSetting";
+import { PPN } from "../../../constants/GeneralSetting";
 import { Loader } from "../../../components";
 import {
   Box,
@@ -221,49 +221,6 @@ const TambahBeliChild = () => {
             id: user._id,
             token: user.token
           });
-          // Jurnal Posting Beli Baru
-          // Jurnal Persediaan Barang
-          await axios.post(`${tempUrl}/saveJurnalPosting`, {
-            noBukti: belis.noBeli,
-            tglJurnal: tanggalBeli,
-            keterangan: `PEMBELIAN 1 UNIT MOTOR BARU / ${getTipe.data.kodeTipe}`,
-            jenis: "D",
-            jumlah: hargaSatuan,
-            kodeRefCOA: refCOA["COA PERSEDIAAN MOTOR BARU"].kodeRefCOA,
-            kategori: "BL",
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            id: user._id,
-            token: user.token
-          });
-          // Jurnal PPN Masukkan
-          await axios.post(`${tempUrl}/saveJurnalPosting`, {
-            noBukti: belis.noBeli,
-            tglJurnal: tanggalBeli,
-            keterangan: `PPN MASUKKAN 1 UNIT MOTOR BARU / ${getTipe.data.kodeTipe}`,
-            jenis: "D",
-            jumlah: ppnABeli,
-            kodeRefCOA: refCOA["PPN MASUKKAN"].kodeRefCOA,
-            kategori: "BL",
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            id: user._id,
-            token: user.token
-          });
-          // Jurnal HUTANG DAGANG
-          await axios.post(`${tempUrl}/saveJurnalPosting`, {
-            noBukti: belis.noBeli,
-            tglJurnal: tanggalBeli,
-            keterangan: `PEMBELIAN 1 UNIT MOTOR BARU / ${getTipe.data.kodeTipe}`,
-            jenis: "K",
-            jumlah: hargaSatuan,
-            kodeRefCOA: refCOA["HUTANG DAGANG"].kodeRefCOA,
-            kategori: "BL",
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            id: user._id,
-            token: user.token
-          });
           setLoading(false);
           navigate(`/daftarBeli/beli/${id}`);
         } catch (error) {
@@ -318,49 +275,6 @@ const TambahBeliChild = () => {
           await axios.post(`${tempUrl}/updateBeli/${id}`, {
             jumlahBeli:
               parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            id: user._id,
-            token: user.token
-          });
-          // Jurnal Posting Beli Bekas
-          // Jurnal Persediaan Barang
-          await axios.post(`${tempUrl}/saveJurnalPosting`, {
-            noBukti: belis.noBeli,
-            tglJurnal: tanggalBeli,
-            keterangan: `PEMBELIAN 1 UNIT MOTOR BEKAS / ${getTipe.data.kodeTipe} / ${nopol}`,
-            jenis: "D",
-            jumlah: hargaSatuan,
-            kodeRefCOA: refCOA["COA PERSEDIAAN MOTOR BEKAS"].kodeRefCOA,
-            kategori: "BL",
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            id: user._id,
-            token: user.token
-          });
-          // Jurnal PPN Masukkan
-          await axios.post(`${tempUrl}/saveJurnalPosting`, {
-            noBukti: belis.noBeli,
-            tglJurnal: tanggalBeli,
-            keterangan: `PPN MASUKKAN 1 UNIT MOTOR BEKAS / ${getTipe.data.kodeTipe}`,
-            jenis: "D",
-            jumlah: ppnABeli,
-            kodeRefCOA: refCOA["PPN MASUKKAN"].kodeRefCOA,
-            kategori: "BL",
-            kodeUnitBisnis: user.unitBisnis._id,
-            kodeCabang: user.cabang._id,
-            id: user._id,
-            token: user.token
-          });
-          // Jurnal HUTANG DAGANG
-          await axios.post(`${tempUrl}/saveJurnalPosting`, {
-            noBukti: belis.noBeli,
-            tglJurnal: tanggalBeli,
-            keterangan: `PEMBELIAN 1 UNIT MOTOR BARU / ${getTipe.data.kodeTipe}`,
-            jenis: "K",
-            jumlah: hargaSatuan,
-            kodeRefCOA: refCOA["HUTANG DAGANG"].kodeRefCOA,
-            kategori: "BL",
             kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,

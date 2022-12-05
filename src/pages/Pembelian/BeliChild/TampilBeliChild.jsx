@@ -38,6 +38,7 @@ const TampilBeliChild = () => {
   const [ppnABeli, setPpnABeli] = useState("");
   const [tanggalJual, setTanggalJual] = useState("");
   const [noJual, setNoJual] = useState("");
+  const [isPost, setIsPost] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -77,6 +78,7 @@ const TampilBeliChild = () => {
       setPpnABeli(response.data.ppnABeli);
       setTanggalJual(response.data.tanggalJual);
       setNoJual(response.data.noJual);
+      setIsPost(response.data.isPost);
       const findTipe = await axios.post(`${tempUrl}/tipesByKode`, {
         kodeTipe: response.data.tipe,
         kodeUnitBisnis: user.unitBisnis._id,
@@ -151,34 +153,36 @@ const TampilBeliChild = () => {
         <Typography variant="h4" sx={subTitleText}>
           Barang Beli
         </Typography>
-        <Box sx={deleteButtonContainer}>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{`Hapus Data`}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-slide-description">
-                {`Yakin ingin menghapus data ${kodeTipe}?`}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => deleteBeliChild(id)}>Ok</Button>
-              <Button onClick={handleClose}>Cancel</Button>
-            </DialogActions>
-          </Dialog>
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<DeleteOutlineIcon />}
-            sx={{ textTransform: "none" }}
-            onClick={handleClickOpen}
-          >
-            Hapus
-          </Button>
-        </Box>
+        {isPost === false && (
+          <Box sx={deleteButtonContainer}>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{`Hapus Data`}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  {`Yakin ingin menghapus data ${kodeTipe}?`}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => deleteBeliChild(id)}>Ok</Button>
+                <Button onClick={handleClose}>Cancel</Button>
+              </DialogActions>
+            </Dialog>
+            <Button
+              variant="contained"
+              color="error"
+              startIcon={<DeleteOutlineIcon />}
+              sx={{ textTransform: "none" }}
+              onClick={handleClickOpen}
+            >
+              Hapus
+            </Button>
+          </Box>
+        )}
         <Divider sx={dividerStyle} />
         <Box sx={textFieldContainer}>
           <Box sx={textFieldWrapper}>
