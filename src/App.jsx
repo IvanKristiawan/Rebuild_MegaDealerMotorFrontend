@@ -52,6 +52,7 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import PaymentsIcon from "@mui/icons-material/Payments";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import AddchartIcon from "@mui/icons-material/Addchart";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -136,6 +137,7 @@ import {
   CariLapPenjualanPerMarketing,
   CariLapPenjualanPerSurveyor,
   CariLapPenjualanKreditTunai,
+  PenjualanPerCabang,
   TampilDaftarAngsuran,
   TambahAngsuran,
   TampilAngsuran,
@@ -480,6 +482,15 @@ const App = () => {
                         icon={<PaymentsIcon name="penerimaan-kas-icon" />}
                       >
                         Penerimaan Kas
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/penjualanPerCabang" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<AddchartIcon name="penjualan-per-cabang-icon" />}
+                      >
+                        Penjualan/Cabang
                       </MenuItem>
                     </Box>
                   </Link>
@@ -1352,6 +1363,15 @@ const App = () => {
                     element={
                       <USERRoute>
                         <CariLapPenjualanKreditTunai />
+                      </USERRoute>
+                    }
+                  />
+                  {/* Laporan Penjualan Per Cabang */}
+                  <Route
+                    path="/penjualanPerCabang"
+                    element={
+                      <USERRoute>
+                        <PenjualanPerCabang />
                       </USERRoute>
                     }
                   />
