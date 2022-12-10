@@ -44,7 +44,7 @@ const UbahMarketing = () => {
       id: user._id,
       token: user.token
     });
-    setKodeMarketing(pickedMarketing.data._id);
+    setKodeMarketing(pickedMarketing.data.kodeMarketing);
     setNamaMarketing(pickedMarketing.data.namaMarketing);
     setTeleponMarketing(pickedMarketing.data.teleponMarketing);
     setLoading(false);

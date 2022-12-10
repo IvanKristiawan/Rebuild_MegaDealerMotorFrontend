@@ -49,7 +49,7 @@ const UbahSupplier = () => {
       id: user._id,
       token: user.token
     });
-    setKodeSupplier(pickedSupplier.data._id);
+    setKodeSupplier(pickedSupplier.data.kodeSupplier);
     setNamaSupplier(pickedSupplier.data.namaSupplier);
     setAlamatSupplier(pickedSupplier.data.alamatSupplier);
     setKotaSupplier(pickedSupplier.data.kotaSupplier);

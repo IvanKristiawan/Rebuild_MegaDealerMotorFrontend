@@ -47,7 +47,7 @@ const UbahSurveyor = () => {
       id: user._id,
       token: user.token
     });
-    setKodeSurveyor(pickedSurveyor.data._id);
+    setKodeSurveyor(pickedSurveyor.data.kodeSurveyor);
     setNamaSurveyor(pickedSurveyor.data.namaSurveyor);
     setJenisSurveyor(pickedSurveyor.data.jenisSurveyor);
     setTeleponSurveyor(pickedSurveyor.data.teleponSurveyor);

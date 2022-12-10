@@ -47,7 +47,7 @@ const UbahLeasing = () => {
       id: user._id,
       token: user.token
     });
-    setKodeLeasing(pickedLeasing.data._id);
+    setKodeLeasing(pickedLeasing.data.kodeLeasing);
     setNamaLeasing(pickedLeasing.data.namaLeasing);
     setAlamatLeasing(pickedLeasing.data.alamatLeasing);
     setTeleponLeasing(pickedLeasing.data.teleponLeasing);

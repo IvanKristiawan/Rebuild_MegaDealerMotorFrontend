@@ -44,11 +44,12 @@ const TampilSurveyor = () => {
   const [teleponSurveyor, setTeleponSurveyor] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [surveyorsData, setSurveyorsData] = useState([]);
+  const [surveyorsForDoc, setSurveyorsForDoc] = useState([]);
   const navigate = useNavigate();
   let isSurveyorExist = kodeSurveyor.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode", field: "kodeSurveyor" },
     { title: "Nama Surveyor", field: "namaSurveyor" },
     { title: "Jenis Surveyor", field: "jenisSurveyor" },
     { title: "Telepon Surveyor", field: "teleponSurveyor" }
@@ -65,7 +66,7 @@ const TampilSurveyor = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeSurveyor.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaSurveyor.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jenisSurveyor.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponSurveyor.toUpperCase().includes(searchTerm.toUpperCase())
@@ -84,6 +85,7 @@ const TampilSurveyor = () => {
   };
 
   useEffect(() => {
+    getSurveyorsForDoc();
     getSurveyorsData();
     id && getSurveyorById();
   }, [id]);
@@ -104,13 +106,32 @@ const TampilSurveyor = () => {
     setLoading(false);
   };
 
+  const getSurveyorsForDoc = async () => {
+    setLoading(true);
+    try {
+      const allSurveyorsForDoc = await axios.post(
+        `${tempUrl}/surveyorsForDoc`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      setSurveyorsForDoc(allSurveyorsForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getSurveyorById = async () => {
     if (id) {
       const pickedSurveyor = await axios.post(`${tempUrl}/surveyors/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeSurveyor(pickedSurveyor.data._id);
+      setKodeSurveyor(pickedSurveyor.data.kodeSurveyor);
       setNamaSurveyor(pickedSurveyor.data.namaSurveyor);
       setJenisSurveyor(pickedSurveyor.data.jenisSurveyor);
       setTeleponSurveyor(pickedSurveyor.data.teleponSurveyor);
@@ -157,7 +178,7 @@ const TampilSurveyor = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: surveyorsData,
+      body: surveyorsForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -167,7 +188,7 @@ const TampilSurveyor = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(surveyorsData);
+    const workSheet = XLSX.utils.json_to_sheet(surveyorsForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Surveyor`);
     // Buffer

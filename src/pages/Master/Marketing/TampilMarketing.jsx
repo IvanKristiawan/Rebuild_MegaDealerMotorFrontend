@@ -43,11 +43,12 @@ const TampilMarketing = () => {
   const [teleponMarketing, setTeleponMarketing] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [marketingsData, setMarketingsData] = useState([]);
+  const [marketingsForDoc, setMarketingsForDoc] = useState([]);
   const navigate = useNavigate();
   let isMarketingExist = kodeMarketing.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode", field: "kodeMarketing" },
     { title: "Nama Marketing", field: "namaMarketing" },
     { title: "Telepon Marketing", field: "teleponMarketing" }
   ];
@@ -63,7 +64,7 @@ const TampilMarketing = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeMarketing.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaMarketing.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponMarketing.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
@@ -81,6 +82,7 @@ const TampilMarketing = () => {
   };
 
   useEffect(() => {
+    getMarketingsForDoc();
     getMarketingsData();
     id && getMarketingById();
   }, [id]);
@@ -101,13 +103,32 @@ const TampilMarketing = () => {
     setLoading(false);
   };
 
+  const getMarketingsForDoc = async () => {
+    setLoading(true);
+    try {
+      const allMarketingsForDoc = await axios.post(
+        `${tempUrl}/marketingsForDoc`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      setMarketingsForDoc(allMarketingsForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getMarketingById = async () => {
     if (id) {
       const pickedMarketing = await axios.post(`${tempUrl}/marketings/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeMarketing(pickedMarketing.data._id);
+      setKodeMarketing(pickedMarketing.data.kodeMarketing);
       setNamaMarketing(pickedMarketing.data.namaMarketing);
       setTeleponMarketing(pickedMarketing.data.teleponMarketing);
     }
@@ -152,7 +173,7 @@ const TampilMarketing = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: marketingsData,
+      body: marketingsForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -162,7 +183,7 @@ const TampilMarketing = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(marketingsData);
+    const workSheet = XLSX.utils.json_to_sheet(marketingsForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Marketing`);
     // Buffer

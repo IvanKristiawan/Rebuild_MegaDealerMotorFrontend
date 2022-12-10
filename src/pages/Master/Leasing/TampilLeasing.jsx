@@ -45,11 +45,12 @@ const TampilLeasing = () => {
   const [picLeasing, setPicLeasing] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [leasingsData, setLeasingsData] = useState([]);
+  const [leasingsForDoc, setLeasingsForDoc] = useState([]);
   const navigate = useNavigate();
   let isLeasingExist = kodeLeasing.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode", field: "kodeLeasing" },
     { title: "Nama Leasing", field: "namaLeasing" },
     { title: "Alamat", field: "alamatLeasing" },
     { title: "Telepon", field: "teleponLeasing" },
@@ -87,6 +88,7 @@ const TampilLeasing = () => {
   };
 
   useEffect(() => {
+    getLeasingsForDoc();
     getLeasingsData();
     id && getLeasingById();
   }, [id]);
@@ -107,13 +109,29 @@ const TampilLeasing = () => {
     setLoading(false);
   };
 
+  const getLeasingsForDoc = async () => {
+    setLoading(true);
+    try {
+      const allLeasingsForDoc = await axios.post(`${tempUrl}/leasingsForDoc`, {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      });
+      setLeasingsForDoc(allLeasingsForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getLeasingById = async () => {
     if (id) {
       const pickedLeasing = await axios.post(`${tempUrl}/leasings/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeLeasing(pickedLeasing.data._id);
+      setKodeLeasing(pickedLeasing.data.kodeLeasing);
       setNamaLeasing(pickedLeasing.data.namaLeasing);
       setAlamatLeasing(pickedLeasing.data.alamatLeasing);
       setTeleponLeasing(pickedLeasing.data.teleponLeasing);
@@ -162,7 +180,7 @@ const TampilLeasing = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: leasingsData,
+      body: leasingsForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -172,7 +190,7 @@ const TampilLeasing = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(leasingsData);
+    const workSheet = XLSX.utils.json_to_sheet(leasingsForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Leasing`);
     // Buffer

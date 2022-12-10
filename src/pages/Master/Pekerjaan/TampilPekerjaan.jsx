@@ -42,11 +42,12 @@ const TampilPekerjaan = () => {
   const [namaPekerjaan, setNamaPekerjaan] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [pekerjaansData, setPekerjaansData] = useState([]);
+  const [pekerjaansForDoc, setPekerjaansForDoc] = useState([]);
   const navigate = useNavigate();
   let isPekerjaanExist = kodePekerjaan.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode", field: "kodePekerjaan" },
     { title: "Nama Pekerjaan", field: "namaPekerjaan" }
   ];
 
@@ -61,7 +62,7 @@ const TampilPekerjaan = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodePekerjaan.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaPekerjaan.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
@@ -78,6 +79,7 @@ const TampilPekerjaan = () => {
   };
 
   useEffect(() => {
+    getPekerjaansForDoc();
     getPekerjaansData();
     id && getPekerjaanById();
   }, [id]);
@@ -98,13 +100,32 @@ const TampilPekerjaan = () => {
     setLoading(false);
   };
 
+  const getPekerjaansForDoc = async () => {
+    setLoading(true);
+    try {
+      const allPekerjaansForDoc = await axios.post(
+        `${tempUrl}/pekerjaansForDoc`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      setPekerjaansForDoc(allPekerjaansForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getPekerjaanById = async () => {
     if (id) {
       const pickedPekerjaan = await axios.post(`${tempUrl}/pekerjaans/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodePekerjaan(pickedPekerjaan.data._id);
+      setKodePekerjaan(pickedPekerjaan.data.kodePekerjaan);
       setNamaPekerjaan(pickedPekerjaan.data.namaPekerjaan);
     }
   };
@@ -147,7 +168,7 @@ const TampilPekerjaan = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: pekerjaansData,
+      body: pekerjaansForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -157,7 +178,7 @@ const TampilPekerjaan = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(pekerjaansData);
+    const workSheet = XLSX.utils.json_to_sheet(pekerjaansForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Pekerjaan`);
     // Buffer

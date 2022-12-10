@@ -47,11 +47,12 @@ const TampilSupplier = () => {
   const [npwpSupplier, setNpwpSupplier] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [suppliersData, setSuppliersData] = useState([]);
+  const [suppliersForDoc, setSuppliersForDoc] = useState([]);
   const navigate = useNavigate();
   let isSupplierExist = kodeSupplier.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode", field: "kodeSupplier" },
     { title: "Nama Supplier", field: "namaSupplier" },
     { title: "Alamat", field: "alamatSupplier" },
     { title: "Kota", field: "kotaSupplier" },
@@ -71,7 +72,7 @@ const TampilSupplier = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.alamatSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.kotaSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -93,6 +94,7 @@ const TampilSupplier = () => {
   };
 
   useEffect(() => {
+    getSuppliersForDoc();
     getSuppliersData();
     id && getSupplierById();
   }, [id]);
@@ -113,13 +115,32 @@ const TampilSupplier = () => {
     setLoading(false);
   };
 
+  const getSuppliersForDoc = async () => {
+    setLoading(true);
+    try {
+      const allSuppliersForDoc = await axios.post(
+        `${tempUrl}/suppliersForDoc`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      setSuppliersForDoc(allSuppliersForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getSupplierById = async () => {
     if (id) {
       const pickedSupplier = await axios.post(`${tempUrl}/suppliers/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeSupplier(pickedSupplier.data._id);
+      setKodeSupplier(pickedSupplier.data.kodeSupplier);
       setNamaSupplier(pickedSupplier.data.namaSupplier);
       setAlamatSupplier(pickedSupplier.data.alamatSupplier);
       setKotaSupplier(pickedSupplier.data.kotaSupplier);
@@ -172,7 +193,7 @@ const TampilSupplier = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: suppliersData,
+      body: suppliersForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -182,7 +203,7 @@ const TampilSupplier = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(suppliersData);
+    const workSheet = XLSX.utils.json_to_sheet(suppliersForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Supplier`);
     // Buffer
