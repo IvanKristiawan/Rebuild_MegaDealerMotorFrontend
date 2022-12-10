@@ -47,7 +47,7 @@ const UbahDealer = () => {
       id: user._id,
       token: user.token
     });
-    setKodeDealer(pickedDealer.data._id);
+    setKodeDealer(pickedDealer.data.kodeDealer);
     setNamaDealer(pickedDealer.data.namaDealer);
     setAlamatDealer(pickedDealer.data.alamatDealer);
     setTeleponDealer(pickedDealer.data.teleponDealer);
@@ -99,10 +99,6 @@ const UbahDealer = () => {
             <Typography sx={labelInput}>Kode Dealer</Typography>
             <TextField
               size="small"
-              error={error && kodeDealer.length === 0 && true}
-              helperText={
-                error && kodeDealer.length === 0 && "Kode harus diisi!"
-              }
               id="outlined-basic"
               variant="outlined"
               value={kodeDealer}

@@ -8,7 +8,7 @@ import {
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { ShowTableSubGroupCOA } from "../../../../components/ShowTable";
+import { ShowTableGroupCOA } from "../../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
 import {
   SearchBar,
@@ -45,11 +45,13 @@ const TampilGroupCOA = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [groupCOAsData, setGroupCOAsData] = useState([]);
+  const [groupCOAsDataForDoc, setGroupCOAsDataForDoc] = useState([]);
   const navigate = useNavigate();
   let isGroupCOAExist = kodeGroupCOA.length !== 0;
 
   const columns = [
     { title: "Kode Jenis", field: "kodeJenisCOA" },
+    { title: "Nama Jenis", field: "namaJenisCOA" },
     { title: "Kode Group COA", field: "kodeGroupCOA" },
     { title: "Nama Group COA", field: "namaGroupCOA" }
   ];
@@ -84,6 +86,7 @@ const TampilGroupCOA = () => {
   };
 
   useEffect(() => {
+    getGroupCOAsForDoc();
     getGroupCOAsData();
     id && getGroupCOAById();
   }, [id]);
@@ -98,6 +101,25 @@ const TampilGroupCOA = () => {
         kodeCabang: user.cabang._id
       });
       setGroupCOAsData(allGroupCOAs.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
+  const getGroupCOAsForDoc = async () => {
+    setLoading(true);
+    try {
+      const allGroupCOAsForDoc = await axios.post(
+        `${tempUrl}/groupCOAsForDoc`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      setGroupCOAsDataForDoc(allGroupCOAsForDoc.data);
     } catch (err) {
       setIsFetchError(true);
     }
@@ -156,7 +178,7 @@ const TampilGroupCOA = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: groupCOAsData,
+      body: groupCOAsDataForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -166,7 +188,7 @@ const TampilGroupCOA = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(groupCOAsData);
+    const workSheet = XLSX.utils.json_to_sheet(groupCOAsDataForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Group COA`);
     // Buffer
@@ -226,7 +248,19 @@ const TampilGroupCOA = () => {
                 }}
                 value={`${kodeJenisCOA} - ${namaJenisCOA}`}
               />
-              <Typography sx={[labelInput, spacingTop]}>Kode Group</Typography>
+              <Typography sx={[labelInput, spacingTop]}>NamaJenis</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={namaJenisCOA}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Kode Group</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -257,7 +291,7 @@ const TampilGroupCOA = () => {
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
       <Box sx={tableContainer}>
-        <ShowTableSubGroupCOA
+        <ShowTableGroupCOA
           currentPosts={currentPosts}
           searchTerm={searchTerm}
         />
@@ -337,4 +371,14 @@ const downloadButtons = {
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center"
+};
+
+const secondWrapper = {
+  marginLeft: {
+    sm: 4
+  },
+  marginTop: {
+    sm: 0,
+    xs: 4
+  }
 };

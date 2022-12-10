@@ -44,7 +44,7 @@ const UbahWilayah = () => {
       id: user._id,
       token: user.token
     });
-    setKodeWilayah(pickedWilayah.data._id);
+    setKodeWilayah(pickedWilayah.data.kodeWilayah);
     setNamaWilayah(pickedWilayah.data.namaWilayah);
     setLoading(false);
   };

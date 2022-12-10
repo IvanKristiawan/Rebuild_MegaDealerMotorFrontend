@@ -44,11 +44,12 @@ const TampilKolektor = () => {
   const [teleponKolektor, setTeleponKolektor] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [kolektorsData, setKolektorsData] = useState([]);
+  const [kolektorsForDoc, setKolektorsForDoc] = useState([]);
   const navigate = useNavigate();
   let isKolektorExist = kodeKolektor.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode", field: "kodeKolektor" },
     { title: "Nama Kolektor", field: "namaKolektor" },
     { title: "Telepon", field: "teleponKolektor" }
   ];
@@ -64,7 +65,7 @@ const TampilKolektor = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeKolektor.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaKolektor.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponKolektor.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
@@ -82,6 +83,7 @@ const TampilKolektor = () => {
   };
 
   useEffect(() => {
+    getKolektorsForDoc();
     getKolektorsData();
     id && getKolektorById();
   }, [id]);
@@ -102,13 +104,32 @@ const TampilKolektor = () => {
     setLoading(false);
   };
 
+  const getKolektorsForDoc = async () => {
+    setLoading(true);
+    try {
+      const allKolektorsForDoc = await axios.post(
+        `${tempUrl}/kolektorsForDoc`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      setKolektorsForDoc(allKolektorsForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getKolektorById = async () => {
     if (id) {
       const pickedKolektor = await axios.post(`${tempUrl}/kolektors/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeKolektor(pickedKolektor.data._id);
+      setKodeKolektor(pickedKolektor.data.kodeKolektor);
       setNamaKolektor(pickedKolektor.data.namaKolektor);
       setTeleponKolektor(pickedKolektor.data.teleponKolektor);
     }
@@ -153,7 +174,7 @@ const TampilKolektor = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: kolektorsData,
+      body: kolektorsForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -163,7 +184,7 @@ const TampilKolektor = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(kolektorsData);
+    const workSheet = XLSX.utils.json_to_sheet(kolektorsForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Kolektor`);
     // Buffer

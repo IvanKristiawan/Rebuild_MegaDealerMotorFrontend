@@ -42,11 +42,12 @@ const TampilWilayah = () => {
   const [namaWilayah, setNamaWilayah] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [wilayahsData, setWilayahsData] = useState([]);
+  const [wilayahsDataForDoc, setWilayahsDataForDoc] = useState([]);
   const navigate = useNavigate();
   let isWilayahExist = kodeWilayah.length !== 0;
 
   const columns = [
-    { title: "Kode Wilayah", field: "_id" },
+    { title: "Kode Wilayah", field: "kodeWilayah" },
     { title: "Nama Wilayah", field: "namaWilayah" }
   ];
 
@@ -61,7 +62,7 @@ const TampilWilayah = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeWilayah.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaWilayah.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
@@ -78,6 +79,7 @@ const TampilWilayah = () => {
   };
 
   useEffect(() => {
+    getWilayahsDataForDoc();
     getWilayahsData();
     id && getWilayahById();
   }, [id]);
@@ -98,13 +100,29 @@ const TampilWilayah = () => {
     setLoading(false);
   };
 
+  const getWilayahsDataForDoc = async () => {
+    setLoading(true);
+    try {
+      const allWilayahsForDoc = await axios.post(`${tempUrl}/wilayahsForDoc`, {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      });
+      setWilayahsDataForDoc(allWilayahsForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getWilayahById = async () => {
     if (id) {
       const pickedWilayah = await axios.post(`${tempUrl}/wilayahs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeWilayah(pickedWilayah.data._id);
+      setKodeWilayah(pickedWilayah.data.kodeWilayah);
       setNamaWilayah(pickedWilayah.data.namaWilayah);
     }
   };
@@ -147,7 +165,7 @@ const TampilWilayah = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: wilayahsData,
+      body: wilayahsDataForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -157,7 +175,7 @@ const TampilWilayah = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(wilayahsData);
+    const workSheet = XLSX.utils.json_to_sheet(wilayahsDataForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Wilayah`);
     // Buffer

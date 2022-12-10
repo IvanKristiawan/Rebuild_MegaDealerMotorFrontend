@@ -37,7 +37,7 @@ const TambahCOA = () => {
   const [loading, setLoading] = useState(false);
 
   const jenisCOAOptions = jenisCOAsData.map((jenisCOA) => ({
-    label: `${jenisCOA._id} - ${jenisCOA.namaJenisCOA}`
+    label: `${jenisCOA.kodeJenisCOA} - ${jenisCOA.namaJenisCOA}`
   }));
 
   const groupCOAOptions = groupCOAsData.map((groupCOA) => ({
@@ -131,6 +131,13 @@ const TambahCOA = () => {
       setOpen(!open);
     } else {
       try {
+        let tempJenisCOA = await axios.post(`${tempUrl}/jenisCOAByKode`, {
+          kodeJenisCOA,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
+          id: user._id,
+          token: user.token
+        });
         let tempGroupCOA = await axios.post(`${tempUrl}/groupCOAByKode`, {
           kodeGroupCOA,
           kodeUnitBisnis: user.unitBisnis._id,
@@ -152,7 +159,7 @@ const TambahCOA = () => {
           kodeSubGroupCOA,
           subGroupCOA: tempSubGroupCOA.data._id,
           groupCOA: tempGroupCOA.data._id,
-          jenisCOA: kodeJenisCOA,
+          jenisCOA: tempJenisCOA.data._id,
           jenisSaldo,
           kasBank,
           kodeUnitBisnis: user.unitBisnis._id,

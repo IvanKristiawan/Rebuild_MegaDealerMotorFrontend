@@ -45,11 +45,12 @@ const TampilDealer = () => {
   const [PICDealer, setPICDealer] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [dealersData, setDealersData] = useState([]);
+  const [dealersForDoc, setDealersForDoc] = useState([]);
   const navigate = useNavigate();
   let isDealerExist = kodeDealer.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode", field: "kodeDealer" },
     { title: "Nama Dealer", field: "namaDealer" },
     { title: "Alamat", field: "alamatDealer" },
     { title: "Telepon", field: "teleponDealer" },
@@ -67,7 +68,7 @@ const TampilDealer = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeDealer.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaDealer.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.alamatDealer.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponDealer.toUpperCase().includes(searchTerm.toUpperCase()) ||
@@ -87,6 +88,7 @@ const TampilDealer = () => {
   };
 
   useEffect(() => {
+    getDealersForDoc();
     getDealersData();
     id && getDealerById();
   }, [id]);
@@ -107,13 +109,29 @@ const TampilDealer = () => {
     setLoading(false);
   };
 
+  const getDealersForDoc = async () => {
+    setLoading(true);
+    try {
+      const allDealersForDoc = await axios.post(`${tempUrl}/dealersForDoc`, {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      });
+      setDealersForDoc(allDealersForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getDealerById = async () => {
     if (id) {
       const pickedDealer = await axios.post(`${tempUrl}/dealers/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeDealer(pickedDealer.data._id);
+      setKodeDealer(pickedDealer.data.kodeDealer);
       setNamaDealer(pickedDealer.data.namaDealer);
       setAlamatDealer(pickedDealer.data.alamatDealer);
       setTeleponDealer(pickedDealer.data.teleponDealer);
@@ -162,7 +180,7 @@ const TampilDealer = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: dealersData,
+      body: dealersForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -172,7 +190,7 @@ const TampilDealer = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(dealersData);
+    const workSheet = XLSX.utils.json_to_sheet(dealersForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Dealer`);
     // Buffer

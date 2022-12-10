@@ -95,7 +95,7 @@ const UbahGroupCOA = () => {
   };
 
   const jenisCOAOptions = jenisCOAsData.map((groupCOA) => ({
-    label: `${groupCOA._id} - ${groupCOA.namaJenisCOA}`
+    label: `${groupCOA.kodeJenisCOA} - ${groupCOA.namaJenisCOA}`
   }));
 
   if (loading) {

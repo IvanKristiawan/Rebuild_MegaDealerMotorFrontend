@@ -45,7 +45,7 @@ const UbahKolektor = () => {
       id: user._id,
       token: user.token
     });
-    setKodeKolektor(pickedKolektor.data._id);
+    setKodeKolektor(pickedKolektor.data.kodeKolektor);
     setNamaKolektor(pickedKolektor.data.namaKolektor);
     setTeleponKolektor(pickedKolektor.data.teleponKolektor);
     setLoading(false);

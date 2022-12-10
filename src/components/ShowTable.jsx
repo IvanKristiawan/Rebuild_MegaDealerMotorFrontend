@@ -257,7 +257,7 @@ export function ShowTableCOA({ currentPosts, searchTerm }) {
   );
 }
 
-export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
+export function ShowTableJenisCOA({ currentPosts, searchTerm }) {
   let navigate = useNavigate();
   const classes = useStyles();
   return (
@@ -280,7 +280,9 @@ export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.kodeJenisCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
                 val.namaJenisCOA
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase())
@@ -301,9 +303,91 @@ export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user._id}
+                  {user.kodeJenisCOA}
                 </TableCell>
                 <TableCell>{user.namaJenisCOA}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export function ShowTableGroupCOA({ currentPosts, searchTerm }) {
+  let navigate = useNavigate();
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kode Jenis
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama Jenis
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kode Group
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama Group
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts
+            .filter((val) => {
+              if (searchTerm === "") {
+                return val;
+              } else if (
+                val.kodeJenisCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.namaJenisCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.kodeGroupCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
+                val.namaGroupCOA
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase())
+              ) {
+                return val;
+              }
+            })
+            .map((user, index) => (
+              <TableRow
+                key={user._id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": { bgcolor: Colors.grey300 },
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  navigate(`/groupCOA/${user._id}`);
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {user.kodeJenisCOA}
+                </TableCell>
+                <TableCell>{user.namaJenisCOA}</TableCell>
+                <TableCell>{user.kodeGroupCOA}</TableCell>
+                <TableCell>{user.namaGroupCOA}</TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -405,7 +489,9 @@ export function ShowTableWilayah({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.kodeWilayah
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
                 val.namaWilayah.toUpperCase().includes(searchTerm.toUpperCase())
               ) {
                 return val;
@@ -424,7 +510,7 @@ export function ShowTableWilayah({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user._id}
+                  {user.kodeWilayah}
                 </TableCell>
                 <TableCell>{user.namaWilayah}</TableCell>
               </TableRow>
@@ -551,7 +637,9 @@ export function ShowTableDealer({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.kodeDealer
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
                 val.namaDealer
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -579,7 +667,7 @@ export function ShowTableDealer({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user._id}
+                  {user.kodeDealer}
                 </TableCell>
                 <TableCell>{user.namaDealer}</TableCell>
                 <TableCell>{user.alamatDealer}</TableCell>
@@ -719,7 +807,9 @@ export function ShowTableKolektor({ currentPosts, searchTerm }) {
               if (searchTerm === "") {
                 return val;
               } else if (
-                val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.kodeKolektor
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
                 val.namaKolektor
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -743,7 +833,7 @@ export function ShowTableKolektor({ currentPosts, searchTerm }) {
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {user._id}
+                  {user.kodeKolektor}
                 </TableCell>
                 <TableCell>{user.namaKolektor}</TableCell>
                 <TableCell>{user.teleponKolektor}</TableCell>

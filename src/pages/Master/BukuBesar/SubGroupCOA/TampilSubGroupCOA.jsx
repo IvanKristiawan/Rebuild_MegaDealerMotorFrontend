@@ -45,6 +45,7 @@ const TampilSubGroupCOA = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [subGroupCOAsData, setSubGroupCOAsData] = useState([]);
+  const [subGroupCOAsForDoc, setSubGroupCOAsForDoc] = useState([]);
   const navigate = useNavigate();
   let isSubGroupCOAExist = kodeSubGroupCOA.length !== 0;
 
@@ -84,6 +85,7 @@ const TampilSubGroupCOA = () => {
   };
 
   useEffect(() => {
+    getSubGroupCOAsForDoc();
     getSubGroupCOAsData();
     id && getSubGroupCOAById();
   }, [id]);
@@ -98,6 +100,25 @@ const TampilSubGroupCOA = () => {
         kodeCabang: user.cabang._id
       });
       setSubGroupCOAsData(allSubGroupCOAs.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
+  const getSubGroupCOAsForDoc = async () => {
+    setLoading(true);
+    try {
+      const allSubGroupCOAsForDoc = await axios.post(
+        `${tempUrl}/subGroupCOAsForDoc`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      setSubGroupCOAsForDoc(allSubGroupCOAsForDoc.data);
     } catch (err) {
       setIsFetchError(true);
     }
@@ -160,7 +181,7 @@ const TampilSubGroupCOA = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: subGroupCOAsData,
+      body: subGroupCOAsForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -170,7 +191,7 @@ const TampilSubGroupCOA = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(subGroupCOAsData);
+    const workSheet = XLSX.utils.json_to_sheet(subGroupCOAsForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Sub Group COA`);
     // Buffer

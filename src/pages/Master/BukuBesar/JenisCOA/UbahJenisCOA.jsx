@@ -45,7 +45,7 @@ const UbahJenisCOA = () => {
       id: user._id,
       token: user.token
     });
-    setKodeJenisCOA(pickedJenisCOA.data._id);
+    setKodeJenisCOA(pickedJenisCOA.data.kodeJenisCOA);
     setNamaJenisCOA(pickedJenisCOA.data.namaJenisCOA);
     setLoading(false);
   };

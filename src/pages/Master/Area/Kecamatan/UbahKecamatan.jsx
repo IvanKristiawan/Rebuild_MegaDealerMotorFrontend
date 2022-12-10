@@ -94,7 +94,7 @@ const UbahKecamatan = () => {
   };
 
   const wilayahOptions = wilayahsData.map((wil) => ({
-    label: `${wil._id} - ${wil.namaWilayah}`
+    label: `${wil.kodeWilayah} - ${wil.namaWilayah}`
   }));
 
   if (loading) {

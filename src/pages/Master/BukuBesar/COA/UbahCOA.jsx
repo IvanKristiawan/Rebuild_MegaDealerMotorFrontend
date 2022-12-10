@@ -38,7 +38,7 @@ const UbahCOA = () => {
   const [loading, setLoading] = useState(false);
 
   const jenisCOAOptions = jenisCOAsData.map((jenisCOA) => ({
-    label: `${jenisCOA._id} - ${jenisCOA.namaJenisCOA}`
+    label: `${jenisCOA.kodeJenisCOA} - ${jenisCOA.namaJenisCOA}`
   }));
 
   const groupCOAOptions = groupCOAsData.map((groupCOA) => ({
@@ -139,6 +139,13 @@ const UbahCOA = () => {
     } else {
       try {
         setLoading(true);
+        let tempJenisCOA = await axios.post(`${tempUrl}/jenisCOAByKode`, {
+          kodeJenisCOA: kodeJenisCOA.split(" ", 1)[0],
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
+          id: user._id,
+          token: user.token
+        });
         let tempGroupCOA = await axios.post(`${tempUrl}/groupCOAByKode`, {
           kodeGroupCOA: kodeGroupCOA.split(" ", 1)[0],
           kodeUnitBisnis: user.unitBisnis._id,
@@ -159,7 +166,7 @@ const UbahCOA = () => {
           kodeSubGroupCOA: kodeSubGroupCOA.split(" ", 1)[0],
           subGroupCOA: tempSubGroupCOA.data._id,
           groupCOA: tempGroupCOA.data._id,
-          jenisCOA: kodeJenisCOA.split(" ", 1)[0],
+          jenisCOA: tempJenisCOA.data._id,
           jenisSaldo,
           kasBank,
           kodeUnitBisnis: user.unitBisnis._id,
@@ -265,14 +272,13 @@ const UbahCOA = () => {
             <Typography sx={[labelInput, spacingTop]}>Kode COA</Typography>
             <TextField
               size="small"
-              error={error && kodeCOA.length === 0 && true}
-              helperText={
-                error && kodeCOA.length === 0 && "Kode COA harus diisi!"
-              }
               id="outlined-basic"
               variant="outlined"
               value={kodeCOA}
-              onChange={(e) => setKodeCOA(e.target.value.toUpperCase())}
+              InputProps={{
+                readOnly: true
+              }}
+              sx={{ backgroundColor: Colors.grey400 }}
             />
           </Box>
           <Box sx={[showDataWrapper, secondWrapper]}>

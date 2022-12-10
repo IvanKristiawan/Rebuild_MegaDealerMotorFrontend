@@ -46,6 +46,7 @@ const TampilCOA = () => {
   const [jenisSaldo, setJenisSaldo] = useState("");
   const [kasBank, setKasBank] = useState("");
   const [COAsData, setCOAsData] = useState([]);
+  const [COAsForDoc, setCOAsForDoc] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const TampilCOA = () => {
   const columns = [
     { title: "Kode", field: "kodeCOA" },
     { title: "Nama COA", field: "namaCOA" },
-    { title: "Jenis COA", field: "setJenisCOA" },
+    { title: "Jenis COA", field: "jenisCOA" },
     { title: "Sub Group COA", field: "subGroupCOA" },
     { title: "Group COA", field: "groupCOA" },
     { title: "Jenis Saldo", field: "jenisSaldo" },
@@ -94,6 +95,7 @@ const TampilCOA = () => {
   };
 
   useEffect(() => {
+    getCOAsForDoc();
     getCOAsData();
     id && getGroupCOAById();
   }, [id]);
@@ -108,6 +110,22 @@ const TampilCOA = () => {
         kodeCabang: user.cabang._id
       });
       setCOAsData(allCOAs.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
+  const getCOAsForDoc = async () => {
+    setLoading(true);
+    try {
+      const allCOAsForDoc = await axios.post(`${tempUrl}/COAsForDocNoId`, {
+        id: user._id,
+        token: user.token,
+        kodeUnitBisnis: user.unitBisnis._id,
+        kodeCabang: user.cabang._id
+      });
+      setCOAsForDoc(allCOAsForDoc.data);
     } catch (err) {
       setIsFetchError(true);
     }
@@ -182,7 +200,7 @@ const TampilCOA = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(COAsData);
+    const workSheet = XLSX.utils.json_to_sheet(COAsForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `COA`);
     // Buffer

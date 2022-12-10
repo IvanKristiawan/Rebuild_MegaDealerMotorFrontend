@@ -8,7 +8,7 @@ import {
   lokasiPerusahaan,
   kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
-import { ShowTableGroupCOA } from "../../../../components/ShowTable";
+import { ShowTableJenisCOA } from "../../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../../components/FetchErrorHandling";
 import {
   SearchBar,
@@ -43,11 +43,12 @@ const TampilJenisCOA = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [jenisCOAsData, setJenisCOAsData] = useState([]);
+  const [jenisCOAsDataForDoc, setJenisCOAsDataForDoc] = useState([]);
   const navigate = useNavigate();
   let isJenisCOAExist = kodeJenisCOA.length !== 0;
 
   const columns = [
-    { title: "Kode", field: "_id" },
+    { title: "Kode", field: "kodeJenisCOA" },
     { title: "Nama Jenis COA", field: "namaJenisCOA" }
   ];
 
@@ -62,7 +63,7 @@ const TampilJenisCOA = () => {
     if (searchTerm === "") {
       return val;
     } else if (
-      val._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeJenisCOA.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaJenisCOA.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
@@ -79,6 +80,7 @@ const TampilJenisCOA = () => {
   };
 
   useEffect(() => {
+    getJenisCOAsForDoc();
     getJenisCOAsData();
     id && getJenisCOAById();
   }, [id]);
@@ -99,13 +101,32 @@ const TampilJenisCOA = () => {
     setLoading(false);
   };
 
+  const getJenisCOAsForDoc = async () => {
+    setLoading(true);
+    try {
+      const allJenisCOAsForDoc = await axios.post(
+        `${tempUrl}/jenisCOAsForDoc`,
+        {
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        }
+      );
+      setJenisCOAsDataForDoc(allJenisCOAsForDoc.data);
+    } catch (err) {
+      setIsFetchError(true);
+    }
+    setLoading(false);
+  };
+
   const getJenisCOAById = async () => {
     if (id) {
       const pickedJenisCOA = await axios.post(`${tempUrl}/jenisCOAs/${id}`, {
         id: user._id,
         token: user.token
       });
-      setKodeJenisCOA(pickedJenisCOA.data._id);
+      setKodeJenisCOA(pickedJenisCOA.data.kodeJenisCOA);
       setNamaJenisCOA(pickedJenisCOA.data.namaJenisCOA);
     }
   };
@@ -148,7 +169,7 @@ const TampilJenisCOA = () => {
     doc.autoTable({
       margin: { top: 45 },
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: jenisCOAsData,
+      body: jenisCOAsDataForDoc,
       headStyles: {
         fillColor: [117, 117, 117],
         color: [0, 0, 0]
@@ -158,7 +179,7 @@ const TampilJenisCOA = () => {
   };
 
   const downloadExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(jenisCOAsData);
+    const workSheet = XLSX.utils.json_to_sheet(jenisCOAsDataForDoc);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Jenis COA`);
     // Buffer
@@ -239,7 +260,7 @@ const TampilJenisCOA = () => {
         <SearchBar setSearchTerm={setSearchTerm} />
       </Box>
       <Box sx={tableContainer}>
-        <ShowTableGroupCOA
+        <ShowTableJenisCOA
           currentPosts={currentPosts}
           searchTerm={searchTerm}
         />
