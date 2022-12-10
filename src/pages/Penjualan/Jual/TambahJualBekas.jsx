@@ -124,15 +124,15 @@ const TambahJualBekas = () => {
   const jenisJualOption = [{ label: "TUNAI" }, { label: "KREDIT" }];
 
   const marketingOptions = marketings.map((marketing) => ({
-    label: `${marketing._id} - ${marketing.namaMarketing}`
+    label: `${marketing.kodeMarketing} - ${marketing.namaMarketing}`
   }));
 
   const surveyorOptions = surveyors.map((surveyor) => ({
-    label: `${surveyor._id} - ${surveyor.namaSurveyor}`
+    label: `${surveyor.kodeSurveyor} - ${surveyor.namaSurveyor}`
   }));
 
   const pekerjaanOptions = pekerjaans.map((pekerjaan) => ({
-    label: `${pekerjaan._id} - ${pekerjaan.namaPekerjaan}`
+    label: `${pekerjaan.kodePekerjaan} - ${pekerjaan.namaPekerjaan}`
   }));
 
   const kecamatanOptions = kecamatans.map((kecamatan) => ({
@@ -140,7 +140,7 @@ const TambahJualBekas = () => {
   }));
 
   const leasingOptions = leasings.map((leasing) => ({
-    label: `${leasing._id} - ${leasing.namaLeasing}`
+    label: `${leasing.kodeLeasing} - ${leasing.namaLeasing}`
   }));
 
   const nopolOptions = stoks.map((stok) => ({
@@ -269,7 +269,7 @@ const TambahJualBekas = () => {
 
   const getLeasing = async () => {
     setLoading(true);
-    const allLeasings = await axios.post(`${tempUrl}/leasingsForTable`, {
+    const allLeasings = await axios.post(`${tempUrl}/leasings`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
@@ -309,6 +309,41 @@ const TambahJualBekas = () => {
       } else {
         try {
           setLoading(true);
+          const tempMarketing = await axios.post(`${tempUrl}/marketingByKode`, {
+            kodeMarketing,
+            id: user._id,
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
+          });
+          const tempSurveyor = await axios.post(`${tempUrl}/surveyorByKode`, {
+            kodeSurveyor,
+            id: user._id,
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
+          });
+          const tempPekerjaan = await axios.post(`${tempUrl}/pekerjaanByKode`, {
+            kodePekerjaan,
+            id: user._id,
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
+          });
+          const tempKecamatan = await axios.post(`${tempUrl}/kecamatanByKode`, {
+            kodeKecamatan,
+            id: user._id,
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
+          });
+          const tempLeasing = await axios.post(`${tempUrl}/leasingByKode`, {
+            kodeLeasing,
+            id: user._id,
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
+          });
           const tempStok = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
             nopol,
             id: user._id,
@@ -361,11 +396,11 @@ const TambahJualBekas = () => {
               namaRefRegister,
               almRefRegister,
               tlpRefRegister,
-              kodeMarketing,
-              kodeSurveyor,
-              kodePekerjaan,
-              kodeKecamatan,
-              kodeLeasing,
+              kodeMarketing: tempMarketing.data._id,
+              kodeSurveyor: tempSurveyor.data._id,
+              kodePekerjaan: tempPekerjaan.data._id,
+              kodeKecamatan: tempKecamatan.data._id,
+              kodeLeasing: tempLeasing.data._id,
               noRangka,
               noMesin,
               nopol,
@@ -409,11 +444,11 @@ const TambahJualBekas = () => {
               namaRefRegister,
               almRefRegister,
               tlpRefRegister,
-              kodeMarketing,
-              kodeSurveyor,
-              kodePekerjaan,
-              kodeKecamatan,
-              kodeLeasing,
+              kodeMarketing: tempMarketing.data._id,
+              kodeSurveyor: tempSurveyor.data._id,
+              kodePekerjaan: tempPekerjaan.data._id,
+              kodeKecamatan: tempKecamatan.data._id,
+              kodeLeasing: tempLeasing.data._id,
               noRangka,
               noMesin,
               nopol,

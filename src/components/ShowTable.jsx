@@ -2134,7 +2134,7 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
                 val.namaRegister
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.kodeLeasing._id
+                val.kodeLeasing.kodeLeasing
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
                 val.kodeLeasing.namaLeasing
@@ -2167,7 +2167,8 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
                 <TableCell>{user.tglInput}</TableCell>
                 <TableCell>{user.namaRegister}</TableCell>
                 <TableCell>
-                  {user.kodeLeasing._id} - {user.kodeLeasing.namaLeasing}
+                  {user.kodeLeasing.kodeLeasing} -{" "}
+                  {user.kodeLeasing.namaLeasing}
                 </TableCell>
                 <TableCell>
                   {user.tipe} -

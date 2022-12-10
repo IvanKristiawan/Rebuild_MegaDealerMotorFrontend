@@ -125,15 +125,15 @@ const UbahJualBekas = () => {
   };
 
   const marketingOptions = marketings.map((marketing) => ({
-    label: `${marketing._id} - ${marketing.namaMarketing}`
+    label: `${marketing.kodeMarketing} - ${marketing.namaMarketing}`
   }));
 
   const surveyorOptions = surveyors.map((surveyor) => ({
-    label: `${surveyor._id} - ${surveyor.namaSurveyor}`
+    label: `${surveyor.kodeSurveyor} - ${surveyor.namaSurveyor}`
   }));
 
   const pekerjaanOptions = pekerjaans.map((pekerjaan) => ({
-    label: `${pekerjaan._id} - ${pekerjaan.namaPekerjaan}`
+    label: `${pekerjaan.kodePekerjaan} - ${pekerjaan.namaPekerjaan}`
   }));
 
   const kecamatanOptions = kecamatans.map((kecamatan) => ({
@@ -141,7 +141,7 @@ const UbahJualBekas = () => {
   }));
 
   const leasingOptions = leasings.map((leasing) => ({
-    label: `${leasing._id} - ${leasing.namaLeasing}`
+    label: `${leasing.kodeLeasing} - ${leasing.namaLeasing}`
   }));
 
   const nopolOptions = stoks.map((stok) => ({
@@ -271,7 +271,7 @@ const UbahJualBekas = () => {
 
   const getLeasing = async () => {
     setLoading(true);
-    const allLeasings = await axios.post(`${tempUrl}/leasingsForTable`, {
+    const allLeasings = await axios.post(`${tempUrl}/leasings`, {
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
@@ -283,7 +283,7 @@ const UbahJualBekas = () => {
 
   const getJualById = async () => {
     if (id) {
-      const response = await axios.post(`${tempUrl}/jualsNoPopulate/${id}`, {
+      const response = await axios.post(`${tempUrl}/juals/${id}`, {
         id: user._id,
         token: user.token,
         kodeUnitBisnis: user.unitBisnis._id,
@@ -302,11 +302,11 @@ const UbahJualBekas = () => {
       setNamaRefRegister(response.data.namaRefRegister);
       setAlmRefRegister(response.data.almRefRegister);
       setTlpRefRegister(response.data.tlpRefRegister);
-      setKodeMarketing(response.data.kodeMarketing);
-      setKodeSurveyor(response.data.kodeSurveyor);
-      setKodePekerjaan(response.data.kodePekerjaan);
-      setKodeKecamatan(response.data.kodeKecamatan);
-      setKodeLeasing(response.data.kodeLeasing);
+      setKodeMarketing(response.data.kodeMarketing.kodeMarketing);
+      setKodeSurveyor(response.data.kodeSurveyor.kodeSurveyor);
+      setKodePekerjaan(response.data.kodePekerjaan.kodePekerjaan);
+      setKodeKecamatan(response.data.kodeKecamatan.kodeKecamatan);
+      setKodeLeasing(response.data.kodeLeasing.kodeLeasing);
 
       // Data Motor -> Dari Stok
       setNoRangka(response.data.noRangka);
@@ -363,6 +363,41 @@ const UbahJualBekas = () => {
     } else {
       try {
         setLoading(true);
+        const tempMarketing = await axios.post(`${tempUrl}/marketingByKode`, {
+          kodeMarketing: kodeMarketing.split(" -", 1)[0],
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
+        const tempSurveyor = await axios.post(`${tempUrl}/surveyorByKode`, {
+          kodeSurveyor: kodeSurveyor.split(" -", 1)[0],
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
+        const tempPekerjaan = await axios.post(`${tempUrl}/pekerjaanByKode`, {
+          kodePekerjaan: kodePekerjaan.split(" -", 1)[0],
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
+        const tempKecamatan = await axios.post(`${tempUrl}/kecamatanByKode`, {
+          kodeKecamatan: kodeKecamatan.split(" -", 1)[0],
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
+        const tempLeasing = await axios.post(`${tempUrl}/leasingByKode`, {
+          kodeLeasing: kodeLeasing.split(" -", 1)[0],
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
         if (tempNoRangka !== noRangka) {
           const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
             noRangka: tempNoRangka,
@@ -405,11 +440,11 @@ const UbahJualBekas = () => {
           namaRefRegister,
           almRefRegister,
           tlpRefRegister,
-          kodeMarketing: kodeMarketing.split(" -", 1)[0],
-          kodeSurveyor: kodeSurveyor.split(" -", 1)[0],
-          kodePekerjaan: kodePekerjaan.split(" -", 1)[0],
-          kodeKecamatan: kodeKecamatan.split(" -", 1)[0],
-          kodeLeasing: kodeLeasing.split(" -", 1)[0],
+          kodeMarketing: tempMarketing.data._id,
+          kodeSurveyor: tempSurveyor.data._id,
+          kodePekerjaan: tempPekerjaan.data._id,
+          kodeKecamatan: tempKecamatan.data._id,
+          kodeLeasing: tempLeasing.data._id,
           noRangka,
           noMesin,
           nopol,

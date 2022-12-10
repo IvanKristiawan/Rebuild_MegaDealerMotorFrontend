@@ -119,7 +119,9 @@ const TampilJual = () => {
       val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.tglInput.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.kodeLeasing._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.kodeLeasing.kodeLeasing
+        .toUpperCase()
+        .includes(searchTerm.toUpperCase()) ||
       val.kodeLeasing.namaLeasing
         .toUpperCase()
         .includes(searchTerm.toUpperCase()) ||
@@ -687,7 +689,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodeMarketing._id} - ${kodeMarketing.namaMarketing}`}
+                    value={`${kodeMarketing.kodeMarketing} - ${kodeMarketing.namaMarketing}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -699,7 +701,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodeSurveyor._id} - ${kodeSurveyor.namaSurveyor}`}
+                    value={`${kodeSurveyor.kodeSurveyor} - ${kodeSurveyor.namaSurveyor}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -711,7 +713,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodePekerjaan._id} - ${kodePekerjaan.namaPekerjaan}`}
+                    value={`${kodePekerjaan.kodePekerjaan} - ${kodePekerjaan.namaPekerjaan}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -723,11 +725,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodeKecamatan} - ${kecamatans
-                      .filter(
-                        (kecamatan) => kecamatan.kodeKecamatan === kodeKecamatan
-                      )
-                      .map((sup) => `${sup.namaKecamatan}`)}`}
+                    value={`${kodeKecamatan.kodeKecamatan} - ${kodeKecamatan.namaKecamatan}`}
                     InputProps={{
                       readOnly: true
                     }}
@@ -739,7 +737,7 @@ const TampilJual = () => {
                     size="small"
                     id="outlined-basic"
                     variant="filled"
-                    value={`${kodeLeasing._id} - ${kodeLeasing.namaLeasing}`}
+                    value={`${kodeLeasing.kodeLeasing} - ${kodeLeasing.namaLeasing}`}
                     InputProps={{
                       readOnly: true
                     }}
