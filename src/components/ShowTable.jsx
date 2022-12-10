@@ -2378,7 +2378,7 @@ export function ShowTableSuratPenarikan({ currentPosts, searchTerm }) {
                 </TableCell>
                 <TableCell>{user.noSt}</TableCell>
                 <TableCell>{user.tglSt}</TableCell>
-                <TableCell>{`${user.kodeKolektor._id} - ${user.kodeKolektor.namaKolektor}`}</TableCell>
+                <TableCell>{`${user.kodeKolektor.kodeKolektor} - ${user.kodeKolektor.namaKolektor}`}</TableCell>
               </TableRow>
             ))}
         </TableBody>

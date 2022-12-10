@@ -117,7 +117,7 @@ const TambahAngsuran = () => {
   };
 
   const kolektorOptions = kolektors.map((kolektor) => ({
-    label: `${kolektor._id} - ${kolektor.namaKolektor}`
+    label: `${kolektor.kodeKolektor} - ${kolektor.namaKolektor}`
   }));
 
   const handleClose = (event, reason) => {
@@ -337,6 +337,13 @@ const TambahAngsuran = () => {
     } else {
       try {
         setLoading(true);
+        const tempKolektor = await axios.post(`${tempUrl}/kolektorByKode`, {
+          kodeKolektor,
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
         // Update No Kwitansi User
         await axios.post(`${tempUrl}/users/${user._id}`, {
           noTerakhir: noKwitansi,
@@ -352,7 +359,7 @@ const TambahAngsuran = () => {
           angBunga,
           angPerBulan,
           tglBayar,
-          kodeKolektor,
+          kodeKolektor: tempKolektor.data._id,
           noKwitansi,
           keterangan,
           denda,
@@ -1054,12 +1061,14 @@ const TambahAngsuran = () => {
                           setNamaRegister(user.namaRegister);
                           setAlmRegister(user.almRegister);
                           setTglAng(user.tglAng);
-                          setKodeKecamatan(user.kodeKecamatan);
+                          setKodeKecamatan(
+                            `${user.kodeKecamatan.kodeKecamatan} - ${user.kodeKecamatan.namaKecamatan}`
+                          );
                           setKodeSurveyor(
-                            `${user.kodeSurveyor._id} - ${user.kodeSurveyor.namaSurveyor}`
+                            `${user.kodeSurveyor.kodeSurveyor} - ${user.kodeSurveyor.namaSurveyor}`
                           );
                           setKodeMarketing(
-                            `${user.kodeMarketing._id} - ${user.kodeMarketing.namaMarketing}`
+                            `${user.kodeMarketing.kodeMarketing} - ${user.kodeMarketing.namaMarketing}`
                           );
                           setTipe(user.tipe);
                           setNoMesin(user.noMesin);

@@ -128,7 +128,7 @@ const TampilSuratPemberitahuan = () => {
       setSpKe(response.data.spKe);
 
       setKodeKolektor(
-        `${response.data.kodeKolektor._id} - ${response.data.kodeKolektor.namaKolektor}`
+        `${response.data.kodeKolektor.kodeKolektor} - ${response.data.kodeKolektor.namaKolektor}`
       );
       setTipe(response.data.idJual.tipe);
       setNoRangka(response.data.idJual.noRangka);

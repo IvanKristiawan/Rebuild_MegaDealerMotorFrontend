@@ -86,7 +86,7 @@ const TampilAngsuranChild = () => {
       setBayar(response.data.bayar);
       if (response.data.kodeKolektor) {
         setKodeKolektor(
-          `${response.data.kodeKolektor._id} - ${response.data.kodeKolektor.namaKolektor}`
+          `${response.data.kodeKolektor.kodeKolektor} - ${response.data.kodeKolektor.namaKolektor}`
         );
       }
 

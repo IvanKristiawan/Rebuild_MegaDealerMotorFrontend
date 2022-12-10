@@ -125,7 +125,7 @@ const TambahSuratPenarikan = () => {
   }
 
   const kolektorOptions = kolektors.map((kolektor) => ({
-    label: `${kolektor._id} - ${kolektor.namaKolektor}`
+    label: `${kolektor.kodeKolektor} - ${kolektor.namaKolektor}`
   }));
 
   const handleClose = (event, reason) => {
@@ -207,6 +207,13 @@ const TambahSuratPenarikan = () => {
     } else {
       try {
         setLoading(true);
+        const tempKolektor = await axios.post(`${tempUrl}/kolektorByKode`, {
+          kodeKolektor,
+          id: user._id,
+          token: user.token,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id
+        });
         // Find Jual
         const response = await axios.post(`${tempUrl}/jualByNoJual`, {
           noJual,
@@ -221,7 +228,7 @@ const TambahSuratPenarikan = () => {
           tglSt,
           noJual,
           idJual: response.data._id,
-          kodeKolektor,
+          kodeKolektor: tempKolektor.data._id,
           angPerBulan,
           jmlBlnTelat,
           totalDenda,
@@ -701,7 +708,9 @@ const TambahSuratPenarikan = () => {
                           setNamaRegister(user.namaRegister);
                           setAlmRegister(user.almRegister);
                           setTglAng(user.tglJatuhTempo);
-                          setKodeKecamatan(user.kodeKecamatan);
+                          setKodeKecamatan(
+                            `${user.kodeKecamatan.kodeKecamatan} - ${user.kodeKecamatan.namaKecamatan}`
+                          );
                           setAngPerBulan(user.angPerBulan);
                           setTlpRegister(user.tlpRegister);
                           setTipe(user.tipe);

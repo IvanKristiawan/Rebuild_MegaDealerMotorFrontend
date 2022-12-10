@@ -116,7 +116,7 @@ const TambahSuratPemberitahuan = () => {
   };
 
   const kolektorOptions = kolektors.map((kolektor) => ({
-    label: `${kolektor._id} - ${kolektor.namaKolektor}`
+    label: `${kolektor.kodeKolektor} - ${kolektor.namaKolektor}`
   }));
 
   const handleClose = (event, reason) => {
@@ -187,6 +187,13 @@ const TambahSuratPemberitahuan = () => {
       } else {
         try {
           setLoading(true);
+          const tempKolektor = await axios.post(`${tempUrl}/kolektorByKode`, {
+            kodeKolektor,
+            id: user._id,
+            token: user.token,
+            kodeUnitBisnis: user.unitBisnis._id,
+            kodeCabang: user.cabang._id
+          });
           // Find Jual
           const response = await axios.post(`${tempUrl}/jualByNoJual`, {
             noJual,
@@ -208,7 +215,7 @@ const TambahSuratPemberitahuan = () => {
             noJual,
             tglSp,
             spKe,
-            kodeKolektor,
+            kodeKolektor: tempKolektor.data._id,
             idJual: response.data._id,
             id: user._id,
             token: user.token,

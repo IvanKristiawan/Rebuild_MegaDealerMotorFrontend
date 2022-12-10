@@ -114,7 +114,7 @@ const TampilSuratPenarikan = () => {
       setTglSt(response.data.tglSt);
       setNoJual(response.data.noJual);
       setKodeKolektor(
-        `${response.data.kodeKolektor._id} - ${response.data.kodeKolektor.namaKolektor}`
+        `${response.data.kodeKolektor.kodeKolektor} - ${response.data.kodeKolektor.namaKolektor}`
       );
       setAngPerBulan(response.data.angPerBulan);
       setJmlBlnTelat(response.data.jmlBlnTelat);

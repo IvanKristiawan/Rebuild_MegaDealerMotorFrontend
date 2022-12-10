@@ -46,11 +46,11 @@ const CariTotalPiutang = () => {
   ];
 
   const marketingOptions = marketings.map((marketing) => ({
-    label: `${marketing._id} - ${marketing.namaMarketing}`
+    label: `${marketing.kodeMarketing} - ${marketing.namaMarketing}`
   }));
 
   const surveyorOptions = surveyors.map((surveyor) => ({
-    label: `${surveyor._id} - ${surveyor.namaSurveyor}`
+    label: `${surveyor.kodeSurveyor} - ${surveyor.namaSurveyor}`
   }));
 
   useEffect(() => {
@@ -83,10 +83,24 @@ const CariTotalPiutang = () => {
   };
 
   const downloadPdf = async () => {
+    const tempMarketing = await axios.post(`${tempUrl}/marketingByKode`, {
+      kodeMarketing,
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
+    const tempSurveyor = await axios.post(`${tempUrl}/surveyorByKode`, {
+      kodeSurveyor,
+      id: user._id,
+      token: user.token,
+      kodeUnitBisnis: user.unitBisnis._id,
+      kodeCabang: user.cabang._id
+    });
     const response = await axios.post(`${tempUrl}/totalPiutangs`, {
       sisaBulan,
-      kodeMarketing,
-      kodeSurveyor,
+      kodeMarketing: tempMarketing.data ? tempMarketing.data._id : null,
+      kodeSurveyor: tempSurveyor.data ? tempSurveyor.data._id : null,
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
@@ -94,8 +108,8 @@ const CariTotalPiutang = () => {
     });
     const responseForDoc = await axios.post(`${tempUrl}/totalPiutangsForDoc`, {
       sisaBulan,
-      kodeMarketing,
-      kodeSurveyor,
+      kodeMarketing: tempMarketing.data ? tempMarketing.data._id : null,
+      kodeSurveyor: tempSurveyor.data ? tempSurveyor.data._id : null,
       id: user._id,
       token: user.token,
       kodeUnitBisnis: user.unitBisnis._id,
