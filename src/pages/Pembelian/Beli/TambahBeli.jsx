@@ -54,7 +54,7 @@ const TambahBeli = () => {
   const [tanggalBeli, setTanggalBeli] = useState(`${nowDate}`);
 
   const supplierOptions = suppliers.map((supplier) => ({
-    label: `${supplier._id} - ${supplier.namaSupplier}`
+    label: `${supplier.kodeSupplier} - ${supplier.namaSupplier}`
   }));
 
   const jenisBeliOption = [{ label: "BARU" }, { label: "BEKAS" }];
@@ -109,9 +109,15 @@ const TambahBeli = () => {
     } else {
       try {
         setLoading(true);
-        alert(tanggalBeli);
-        await axios.post(`${tempUrl}/saveBeli`, {
+        let tempSupplier = await axios.post(`${tempUrl}/supplierByKode`, {
           kodeSupplier,
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
+          id: user._id,
+          token: user.token
+        });
+        await axios.post(`${tempUrl}/saveBeli`, {
+          kodeSupplier: tempSupplier.data._id,
           tanggalBeli,
           jumlahBeli,
           ppnBeli,

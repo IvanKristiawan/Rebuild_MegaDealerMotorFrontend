@@ -39,7 +39,7 @@ const UbahBeli = () => {
   const [loading, setLoading] = useState(false);
 
   const supplierOptions = suppliers.map((supplier) => ({
-    label: `${supplier._id} - ${supplier.namaSupplier}`
+    label: `${supplier.kodeSupplier} - ${supplier.namaSupplier}`
   }));
 
   const handleClose = (event, reason) => {
@@ -75,7 +75,7 @@ const UbahBeli = () => {
     setKodeBeli(pickedBeli.data.noBeli);
     setTanggalBeli(pickedBeli.data.tanggalBeli);
     setJumlahBeli(pickedBeli.data.jumlahBeli);
-    setKodeSupplier(pickedBeli.data.supplier._id);
+    setKodeSupplier(pickedBeli.data.supplier.kodeSupplier);
     setPpnBeli(pickedBeli.data.ppnBeli);
     setIsPpnBeli(pickedBeli.data.isPpnBeli);
     setPotongan(pickedBeli.data.potongan);
@@ -97,9 +97,16 @@ const UbahBeli = () => {
     } else {
       try {
         setLoading(true);
+        let tempSupplier = await axios.post(`${tempUrl}/supplierByKode`, {
+          kodeSupplier: kodeSupplier.split(" ", 1)[0],
+          kodeUnitBisnis: user.unitBisnis._id,
+          kodeCabang: user.cabang._id,
+          id: user._id,
+          token: user.token
+        });
         await axios.post(`${tempUrl}/updateBeli/${id}`, {
           tanggalBeli,
-          kodeSupplier: kodeSupplier.split(" ", 1)[0],
+          kodeSupplier: tempSupplier.data._id,
           jumlahBeli,
           potongan,
           lama,

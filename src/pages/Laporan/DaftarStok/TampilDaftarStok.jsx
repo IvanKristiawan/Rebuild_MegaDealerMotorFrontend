@@ -108,7 +108,7 @@ const TampilDaftarStok = () => {
       val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.supplier._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.supplier.kodeSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.supplier.namaSupplier
         .toUpperCase()
         .includes(searchTerm.toUpperCase()) ||

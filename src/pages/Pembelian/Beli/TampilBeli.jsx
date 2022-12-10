@@ -218,7 +218,7 @@ const TampilBeli = () => {
               InputProps={{
                 readOnly: true
               }}
-              value={`${kodeSupplier._id} - ${kodeSupplier.namaSupplier}`}
+              value={`${kodeSupplier.kodeSupplier} - ${kodeSupplier.namaSupplier}`}
             />
             <Typography sx={[labelInput, spacingTop]}>Jumlah</Typography>
             <TextField

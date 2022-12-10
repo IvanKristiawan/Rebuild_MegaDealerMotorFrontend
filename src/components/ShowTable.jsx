@@ -1608,7 +1608,7 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
                   {user.noBeli}
                 </TableCell>
                 <TableCell>
-                  {user.supplier._id} - {user.supplier.namaSupplier}
+                  {user.supplier.kodeSupplier} - {user.supplier.namaSupplier}
                 </TableCell>
                 <TableCell>{user.jumlahBeli.toLocaleString()}</TableCell>
                 <TableCell>{user.ppnBeli.toLocaleString()}</TableCell>
@@ -2044,7 +2044,7 @@ export function ShowTableDaftarStok({ currentPosts, searchTerm, tipes }) {
                 val.jenisBeli
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.supplier._id
+                val.supplier.kodeSupplier
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
                 val.supplier.namaSupplier
@@ -2076,7 +2076,7 @@ export function ShowTableDaftarStok({ currentPosts, searchTerm, tipes }) {
                 </TableCell>
                 <TableCell>{user.tanggalBeli}</TableCell>
                 <TableCell>
-                  {user.supplier._id} - {user.supplier.namaSupplier}
+                  {user.supplier.kodeSupplier} - {user.supplier.namaSupplier}
                 </TableCell>
                 <TableCell>{user.merk}</TableCell>
                 <TableCell>

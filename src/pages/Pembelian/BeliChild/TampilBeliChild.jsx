@@ -185,7 +185,7 @@ const TampilBeliChild = () => {
         )}
         <Divider sx={dividerStyle} />
         <Box sx={textFieldContainer}>
-          <Box sx={textFieldWrapper}>
+          <Box sx={[textFieldWrapper, spacingTop]}>
             <Typography sx={labelInput}>No Beli</Typography>
             <TextField
               size="small"
