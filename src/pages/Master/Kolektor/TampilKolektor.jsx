@@ -94,7 +94,6 @@ const TampilKolektor = () => {
       const allKolektors = await axios.post(`${tempUrl}/kolektors`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setKolektorsData(allKolektors.data);
@@ -112,7 +111,6 @@ const TampilKolektor = () => {
         {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         }
       );

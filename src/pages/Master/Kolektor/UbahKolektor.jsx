@@ -63,7 +63,6 @@ const UbahKolektor = () => {
         await axios.post(`${tempUrl}/updateKolektor/${id}`, {
           namaKolektor,
           teleponKolektor,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

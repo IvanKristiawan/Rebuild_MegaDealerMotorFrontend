@@ -45,7 +45,6 @@ const TambahSurveyor = () => {
     const nextKodeSurveyor = await axios.post(`${tempUrl}/surveyorsNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeSurveyor(nextKodeSurveyor.data);
@@ -66,7 +65,6 @@ const TambahSurveyor = () => {
           namaSurveyor,
           jenisSurveyor,
           teleponSurveyor,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

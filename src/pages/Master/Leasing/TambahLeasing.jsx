@@ -45,7 +45,6 @@ const TambahLeasing = () => {
     const response = await axios.post(`${tempUrl}/leasingsNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeLeasing(response.data);
@@ -67,7 +66,6 @@ const TambahLeasing = () => {
           alamatLeasing,
           teleponLeasing,
           picLeasing,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

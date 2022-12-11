@@ -93,7 +93,6 @@ const TampilMarketing = () => {
       const allMarketings = await axios.post(`${tempUrl}/marketings`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setMarketingsData(allMarketings.data);
@@ -111,7 +110,6 @@ const TampilMarketing = () => {
         {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         }
       );

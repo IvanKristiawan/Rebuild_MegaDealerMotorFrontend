@@ -99,7 +99,6 @@ const TampilLeasing = () => {
       const allLeasings = await axios.post(`${tempUrl}/leasings`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setLeasingsData(allLeasings.data);
@@ -115,7 +114,6 @@ const TampilLeasing = () => {
       const allLeasingsForDoc = await axios.post(`${tempUrl}/leasingsForDoc`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setLeasingsForDoc(allLeasingsForDoc.data);

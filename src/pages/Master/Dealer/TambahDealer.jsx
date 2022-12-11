@@ -45,7 +45,6 @@ const TambahDealer = () => {
     const nextKodeDealer = await axios.post(`${tempUrl}/dealersNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeDealer(nextKodeDealer.data);
@@ -66,7 +65,6 @@ const TambahDealer = () => {
           alamatDealer,
           teleponDealer,
           PICDealer,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

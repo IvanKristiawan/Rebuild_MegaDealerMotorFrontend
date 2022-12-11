@@ -43,7 +43,6 @@ const TambahKolektor = () => {
     const nextKodeKolektor = await axios.post(`${tempUrl}/kolektorsNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeKolektor(nextKodeKolektor.data);
@@ -62,7 +61,6 @@ const TambahKolektor = () => {
         await axios.post(`${tempUrl}/saveKolektor`, {
           namaKolektor,
           teleponKolektor,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

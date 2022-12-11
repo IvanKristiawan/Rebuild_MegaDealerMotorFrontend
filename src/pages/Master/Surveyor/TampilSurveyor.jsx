@@ -96,7 +96,6 @@ const TampilSurveyor = () => {
       const allSurveyors = await axios.post(`${tempUrl}/surveyors`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setSurveyorsData(allSurveyors.data);
@@ -114,7 +113,6 @@ const TampilSurveyor = () => {
         {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         }
       );

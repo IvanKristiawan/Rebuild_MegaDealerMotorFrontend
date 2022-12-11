@@ -68,7 +68,6 @@ const UbahSurveyor = () => {
           namaSurveyor,
           jenisSurveyor,
           teleponSurveyor,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

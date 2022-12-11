@@ -47,7 +47,6 @@ const TambahSupplier = () => {
     const nextKodeSupplier = await axios.post(`${tempUrl}/suppliersNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeSupplier(nextKodeSupplier.data);
@@ -71,7 +70,6 @@ const TambahSupplier = () => {
           teleponSupplier,
           picSupplier,
           npwpSupplier,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

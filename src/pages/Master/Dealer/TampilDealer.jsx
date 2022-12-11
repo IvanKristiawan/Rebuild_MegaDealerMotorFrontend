@@ -99,7 +99,6 @@ const TampilDealer = () => {
       const allDealers = await axios.post(`${tempUrl}/dealers`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setDealersData(allDealers.data);
@@ -115,7 +114,6 @@ const TampilDealer = () => {
       const allDealersForDoc = await axios.post(`${tempUrl}/dealersForDoc`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setDealersForDoc(allDealersForDoc.data);

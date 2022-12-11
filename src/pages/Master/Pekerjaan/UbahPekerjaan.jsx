@@ -60,7 +60,6 @@ const UbahPekerjaan = () => {
         setLoading(true);
         await axios.post(`${tempUrl}/updatePekerjaan/${id}`, {
           namaPekerjaan,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
