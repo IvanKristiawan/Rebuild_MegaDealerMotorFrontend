@@ -21,7 +21,6 @@ import SaveIcon from "@mui/icons-material/Save";
 const TambahUser = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
   const [kodeCabang, setKodeCabang] = useState("");
   const [username, setUsername] = useState("");
   const [tipeUser, setTipeUser] = useState("");
@@ -29,15 +28,10 @@ const TambahUser = () => {
   const [kodeKwitansi, setKodeKwitansi] = useState("");
   const [noTerakhir, setNoTerakhir] = useState("");
   const [password, setPassword] = useState("");
-  const [unitBisnis, setUnitBisnis] = useState([]);
   const [cabangs, setCabangs] = useState([]);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-  const unitBisnisOptions = unitBisnis.map((unitBisnis1) => ({
-    label: `${unitBisnis1._id} - ${unitBisnis1.namaUnitBisnis}`
-  }));
 
   const cabangOptions = cabangs.map((cabang) => ({
     label: `${cabang._id} - ${cabang.namaCabang}`
@@ -51,23 +45,12 @@ const TambahUser = () => {
   };
 
   useEffect(() => {
-    getUnitBisnis();
+    getCabangsData();
   }, []);
 
-  const getUnitBisnis = async () => {
-    setLoading(true);
-    const response = await axios.post(`${tempUrl}/unitBisnis`, {
-      id: user._id,
-      token: user.token
-    });
-    setUnitBisnis(response.data);
-    setLoading(false);
-  };
-
-  const getCabangsByUnitBisnis = async (kodeUnit) => {
+  const getCabangsData = async (kodeUnit) => {
     setKodeCabang("");
-    const response = await axios.post(`${tempUrl}/cabangsByUnitBisnis`, {
-      kodeUnitBisnis: kodeUnit,
+    const response = await axios.post(`${tempUrl}/cabangs`, {
       id: user._id,
       token: user.token
     });
@@ -80,21 +63,19 @@ const TambahUser = () => {
       password.length === 0 ||
       tipeUser.length === 0 ||
       periode.length === 0 ||
-      kodeUnitBisnis.length === 0 ||
       kodeCabang.length === 0;
     if (isFailedValidation) {
       setError(true);
       setOpen(!open);
     } else {
       try {
-        const response = await axios.post(`${tempUrl}/auth/register`, {
+        await axios.post(`${tempUrl}/auth/register`, {
           username,
           password,
           tipeUser,
           periode,
           kodeKwitansi,
           noTerakhir,
-          kodeUnitBisnis: kodeUnitBisnis.split(" ", 1)[0],
           kodeCabang: kodeCabang.split(" ", 1)[0],
           id: user._id,
           token: user.token
@@ -155,31 +136,6 @@ const TambahUser = () => {
               variant="outlined"
               value={periode}
               onChange={(e) => setPeriode(e.target.value.toUpperCase())}
-            />
-            <Typography sx={[labelInput, spacingTop]}>
-              Kode Unit Bisnis
-            </Typography>
-            <Autocomplete
-              size="small"
-              disablePortal
-              id="combo-box-demo"
-              options={unitBisnisOptions}
-              renderInput={(params) => (
-                <TextField
-                  size="small"
-                  error={error && kodeUnitBisnis.length === 0 && true}
-                  helperText={
-                    error &&
-                    kodeUnitBisnis.length === 0 &&
-                    "Kode Unit Bisnis harus diisi!"
-                  }
-                  {...params}
-                />
-              )}
-              onInputChange={(e, value) => {
-                setKodeUnitBisnis(value);
-                getCabangsByUnitBisnis(value.split(" -")[0]);
-              }}
             />
             <Typography sx={[labelInput, spacingTop]}>Kode Cabang</Typography>
             <Autocomplete

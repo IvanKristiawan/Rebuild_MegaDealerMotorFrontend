@@ -21,21 +21,15 @@ import EditIcon from "@mui/icons-material/Edit";
 const UbahCabang = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
   const [kodeCabang, setKodeCabang] = useState("");
   const [namaCabang, setNamaCabang] = useState("");
   const [alamatCabang, setAlamatCabang] = useState("");
   const [teleponCabang, setTeleponCabang] = useState("");
   const [picCabang, setPicCabang] = useState("");
-  const [unitBisnis, setUnitBisnis] = useState([]);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
-
-  const unitBisnisOptions = unitBisnis.map((unitBisnis1) => ({
-    label: `${unitBisnis1._id} - ${unitBisnis1.namaUnitBisnis}`
-  }));
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -45,19 +39,8 @@ const UbahCabang = () => {
   };
 
   useEffect(() => {
-    getUnitBisnis();
     getCabangById();
   }, []);
-
-  const getUnitBisnis = async () => {
-    setLoading(true);
-    const allUnitBisnis = await axios.post(`${tempUrl}/unitBisnis`, {
-      id: user._id,
-      token: user.token
-    });
-    setUnitBisnis(allUnitBisnis.data);
-    setLoading(false);
-  };
 
   const getCabangById = async () => {
     setLoading(true);
@@ -70,7 +53,6 @@ const UbahCabang = () => {
     setAlamatCabang(pickedCabang.data.alamatCabang);
     setTeleponCabang(pickedCabang.data.teleponCabang);
     setPicCabang(pickedCabang.data.picCabang);
-    setKodeUnitBisnis(pickedCabang.data.unitBisnis._id);
     setLoading(false);
   };
 
@@ -88,7 +70,6 @@ const UbahCabang = () => {
           alamatCabang,
           teleponCabang,
           picCabang,
-          kodeUnitBisnis,
           id: user._id,
           token: user.token
         });
@@ -171,31 +152,6 @@ const UbahCabang = () => {
               variant="outlined"
               value={picCabang}
               onChange={(e) => setPicCabang(e.target.value.toUpperCase())}
-            />
-            <Typography sx={[labelInput, spacingTop]}>
-              Kode Unit Bisnis
-            </Typography>
-            <Autocomplete
-              size="small"
-              disablePortal
-              id="combo-box-demo"
-              options={unitBisnisOptions}
-              renderInput={(params) => (
-                <TextField
-                  size="small"
-                  error={error && kodeUnitBisnis.length === 0 && true}
-                  helperText={
-                    error &&
-                    kodeUnitBisnis.length === 0 &&
-                    "Kode Unit Bisnis harus diisi!"
-                  }
-                  {...params}
-                />
-              )}
-              onInputChange={(e, value) =>
-                setKodeUnitBisnis(value.split(" -")[0])
-              }
-              value={{ label: kodeUnitBisnis }}
             />
           </Box>
         </Box>

@@ -45,7 +45,6 @@ const TambahKecamatan = () => {
     const allWilayahs = await axios.post(`${tempUrl}/wilayahs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setWilayahsData(allWilayahs.data);
@@ -66,7 +65,6 @@ const TambahKecamatan = () => {
           kodeWilayah,
           namaWilayah,
           namaKecamatan,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

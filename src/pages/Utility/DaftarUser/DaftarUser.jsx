@@ -41,7 +41,6 @@ const DaftarUser = () => {
   const { screenSize } = useStateContext();
 
   const [isFetchError, setIsFetchError] = useState(false);
-  const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
   const [kodeCabang, setKodeCabang] = useState("");
   const [username, setUsername] = useState("");
   const [tipeUser, setTipeUser] = useState("");
@@ -60,7 +59,6 @@ const DaftarUser = () => {
     { title: "Periode", field: "periode" },
     { title: "Kode Kwitansi", field: "kodeKwitansi" },
     { title: "No. Terakhir", field: "noTerakhir" },
-    { title: "Unit Bisnis", field: "unitBisnis" },
     { title: "Cabang", field: "cabang" }
   ];
 
@@ -90,10 +88,6 @@ const DaftarUser = () => {
       val.periode.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.kodeKwitansi.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.noTerakhir.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.unitBisnis._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.unitBisnis.namaUnitBisnis
-        .toUpperCase()
-        .includes(searchTerm.toUpperCase()) ||
       val.cabang._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.cabang.namaCabang.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
@@ -154,7 +148,6 @@ const DaftarUser = () => {
       setPeriode(response.data.periode);
       setKodeKwitansi(response.data.kodeKwitansi);
       setNoTerakhir(response.data.noTerakhir);
-      setKodeUnitBisnis(response.data.unitBisnis);
       setKodeCabang(response.data.cabang);
     }
   };
@@ -173,7 +166,6 @@ const DaftarUser = () => {
       setPeriode("");
       setKodeKwitansi("");
       setNoTerakhir("");
-      setKodeUnitBisnis("");
       setKodeCabang("");
       setLoading(false);
       navigate("/daftarUser");
@@ -338,16 +330,6 @@ const DaftarUser = () => {
                   readOnly: true
                 }}
                 value={periode}
-              />
-              <Typography sx={[labelInput, spacingTop]}>Unit Bisnis</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true
-                }}
-                value={`${kodeUnitBisnis._id} - ${kodeUnitBisnis.namaUnitBisnis}`}
               />
               <Typography sx={[labelInput, spacingTop]}>Cabang</Typography>
               <TextField

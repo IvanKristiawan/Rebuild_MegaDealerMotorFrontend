@@ -103,7 +103,6 @@ const TampilTipe = () => {
       const allTipes = await axios.post(`${tempUrl}/tipes`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setTipesData(allTipes.data);
@@ -118,7 +117,6 @@ const TampilTipe = () => {
     const allTipesForDoc = await axios.post(`${tempUrl}/tipesForDoc`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setTipesForDoc(allTipesForDoc.data);

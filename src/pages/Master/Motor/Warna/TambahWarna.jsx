@@ -58,7 +58,6 @@ const TambahWarna = () => {
           namaWarna,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         if (tempNamaWarna.data.length > 0) {
@@ -67,7 +66,6 @@ const TambahWarna = () => {
           setLoading(true);
           await axios.post(`${tempUrl}/saveWarna`, {
             namaWarna,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token

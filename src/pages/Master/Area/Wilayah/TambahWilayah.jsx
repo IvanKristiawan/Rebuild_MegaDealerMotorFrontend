@@ -42,7 +42,6 @@ const TambahWilayah = () => {
     const nextKodeWilayah = await axios.post(`${tempUrl}/wilayahNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeWilayah(nextKodeWilayah.data);
@@ -60,7 +59,6 @@ const TambahWilayah = () => {
         setLoading(true);
         await axios.post(`${tempUrl}/saveWilayah`, {
           namaWilayah,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

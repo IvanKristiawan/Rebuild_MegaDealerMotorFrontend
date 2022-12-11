@@ -83,7 +83,6 @@ const TampilWarna = () => {
       const allWarnas = await axios.post(`${tempUrl}/warnas`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setWarnasData(allWarnas.data);
@@ -98,7 +97,6 @@ const TampilWarna = () => {
     const allWarnasForDoc = await axios.post(`${tempUrl}/warnasForDoc`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setWarnasForDoc(allWarnasForDoc.data);

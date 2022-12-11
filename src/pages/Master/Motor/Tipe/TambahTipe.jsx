@@ -73,14 +73,12 @@ const TambahTipe = () => {
           noRangka,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         let tempNoMesin = await axios.post(`${tempUrl}/tipesNoMesin`, {
           noMesin,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         if (tempNoRangka.data.length > 0) {
@@ -96,7 +94,6 @@ const TambahTipe = () => {
             noMesin,
             isi,
             merk,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token

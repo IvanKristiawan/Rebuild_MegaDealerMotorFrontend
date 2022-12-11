@@ -46,7 +46,6 @@ const UbahKecamatan = () => {
     const allWilayahs = await axios.post(`${tempUrl}/wilayahs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setWilayahsData(allWilayahs.data);
@@ -80,7 +79,6 @@ const UbahKecamatan = () => {
           kodeWilayah: kodeWilayah.split(" ", 1)[0],
           namaWilayah: kodeWilayah.split("- ")[1],
           namaKecamatan,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

@@ -44,7 +44,6 @@ const TampilCabang = () => {
   const [alamatCabang, setAlamatCabang] = useState("");
   const [teleponCabang, setTeleponCabang] = useState("");
   const [picCabang, setPicCabang] = useState("");
-  const [unitBisnis, setUnitBisnis] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [cabangsData, setCabangsData] = useState([]);
   const [cabangForDoc, setCabangForDoc] = useState([]);
@@ -56,8 +55,7 @@ const TampilCabang = () => {
     { title: "Nama Cabang", field: "namaCabang" },
     { title: "Alamat", field: "alamatCabang" },
     { title: "Telepon", field: "teleponCabang" },
-    { title: "PIC", field: "picCabang" },
-    { title: "Unit Bisnis", field: "unitBisnis" }
+    { title: "PIC", field: "picCabang" }
   ];
 
   const [loading, setLoading] = useState(false);
@@ -75,11 +73,7 @@ const TampilCabang = () => {
       val.namaCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.alamatCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.teleponCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.picCabang.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.unitBisnis._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.unitBisnis.namaUnitBisnis
-        .toUpperCase()
-        .includes(searchTerm.toUpperCase())
+      val.picCabang.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
     }
@@ -135,7 +129,6 @@ const TampilCabang = () => {
       setAlamatCabang(pickedCabang.data.alamatCabang);
       setTeleponCabang(pickedCabang.data.teleponCabang);
       setPicCabang(pickedCabang.data.picCabang);
-      setUnitBisnis(pickedCabang.data.unitBisnis);
     }
   };
 
@@ -151,7 +144,6 @@ const TampilCabang = () => {
       setAlamatCabang("");
       setTeleponCabang("");
       setPicCabang("");
-      setUnitBisnis("");
       setLoading(false);
       navigate("/cabang");
     } catch (error) {
@@ -292,16 +284,6 @@ const TampilCabang = () => {
                   readOnly: true
                 }}
                 value={picCabang}
-              />
-              <Typography sx={[labelInput, spacingTop]}>Unit Bisnis</Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="filled"
-                InputProps={{
-                  readOnly: true
-                }}
-                value={`${unitBisnis._id} - ${unitBisnis.namaUnitBisnis}`}
               />
             </Box>
           </Box>

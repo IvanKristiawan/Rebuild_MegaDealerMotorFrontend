@@ -96,7 +96,6 @@ const TampilKecamatan = () => {
       const allKecamatans = await axios.post(`${tempUrl}/kecamatans`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setKecamatansData(allKecamatans.data);
@@ -113,7 +112,6 @@ const TampilKecamatan = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
