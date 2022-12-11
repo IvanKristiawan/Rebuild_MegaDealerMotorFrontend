@@ -1,4 +1,4 @@
-export const namaSoftware = "PISoft";
+export const namaSoftware = "HelpTech";
 export const namaProgram = "MEGA";
 export const namaPerusahaan = "MEGA MOTOR";
 export const lokasiPerusahaan = "Jl. A. Yani III, Meral";
