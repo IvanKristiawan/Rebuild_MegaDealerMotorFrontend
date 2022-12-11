@@ -61,7 +61,6 @@ const UbahJenisCOA = () => {
         setLoading(true);
         await axios.post(`${tempUrl}/updateJenisCOA/${id}`, {
           namaJenisCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

@@ -76,7 +76,6 @@ const UbahCOA = () => {
     const allSubGroupCOAs = await axios.post(`${tempUrl}/subGroupCOAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSubGroupCOAsData(allSubGroupCOAs.data);
@@ -88,7 +87,6 @@ const UbahCOA = () => {
     const allGroupCOAs = await axios.post(`${tempUrl}/groupCOAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setGroupCOAsData(allGroupCOAs.data);
@@ -100,7 +98,6 @@ const UbahCOA = () => {
     const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setJenisCOAsData(allJenisCOAs.data);
@@ -141,21 +138,18 @@ const UbahCOA = () => {
         setLoading(true);
         let tempJenisCOA = await axios.post(`${tempUrl}/jenisCOAByKode`, {
           kodeJenisCOA: kodeJenisCOA.split(" ", 1)[0],
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });
         let tempGroupCOA = await axios.post(`${tempUrl}/groupCOAByKode`, {
           kodeGroupCOA: kodeGroupCOA.split(" ", 1)[0],
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });
         let tempSubGroupCOA = await axios.post(`${tempUrl}/subGroupCOAByKode`, {
           kodeSubGroupCOA: kodeSubGroupCOA.split(" ", 1)[0],
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -169,7 +163,6 @@ const UbahCOA = () => {
           jenisCOA: tempJenisCOA.data._id,
           jenisSaldo,
           kasBank,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

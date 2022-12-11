@@ -96,7 +96,6 @@ const TampilSubGroupCOA = () => {
       const allSubGroupCOAs = await axios.post(`${tempUrl}/subGroupCOAs`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setSubGroupCOAsData(allSubGroupCOAs.data);
@@ -114,7 +113,6 @@ const TampilSubGroupCOA = () => {
         {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         }
       );

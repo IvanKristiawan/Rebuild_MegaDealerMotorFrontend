@@ -47,7 +47,6 @@ const UbahSubGroupCOA = () => {
     const allGroupCOAs = await axios.post(`${tempUrl}/groupCOAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setGroupCOAsData(allGroupCOAs.data);
@@ -81,7 +80,6 @@ const UbahSubGroupCOA = () => {
           kodeGroupCOA: kodeGroupCOA.split(" ", 1)[0],
           namaGroupCOA: kodeGroupCOA.split("- ")[1],
           namaSubGroupCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

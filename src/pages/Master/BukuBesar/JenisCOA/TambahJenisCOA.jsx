@@ -43,7 +43,6 @@ const TambahJenisCOA = () => {
     const nextKodeJenisCOA = await axios.post(`${tempUrl}/jenisCOAsNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeJenisCOA(nextKodeJenisCOA.data);
@@ -61,7 +60,6 @@ const TambahJenisCOA = () => {
         setLoading(true);
         await axios.post(`${tempUrl}/saveJenisCOA`, {
           namaJenisCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

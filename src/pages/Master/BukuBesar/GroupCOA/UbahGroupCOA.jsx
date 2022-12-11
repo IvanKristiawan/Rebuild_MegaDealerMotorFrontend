@@ -47,7 +47,6 @@ const UbahGroupCOA = () => {
     const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setJenisCOAsData(allJenisCOAs.data);
@@ -81,7 +80,6 @@ const UbahGroupCOA = () => {
           kodeJenisCOA: kodeJenisCOA.split(" ", 1)[0],
           namaJenisCOA: kodeJenisCOA.split("- ")[1],
           namaGroupCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

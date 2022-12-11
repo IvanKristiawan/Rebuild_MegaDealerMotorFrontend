@@ -74,7 +74,6 @@ const TambahCOA = () => {
       kodeSubGroupCOA: tempKodeSubGroupCOA,
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeCOA(nextKodeCOA.data);
@@ -85,7 +84,6 @@ const TambahCOA = () => {
     const allSubGroupCOAs = await axios.post(`${tempUrl}/subGroupCOAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSubGroupCOAsData(allSubGroupCOAs.data);
@@ -97,7 +95,6 @@ const TambahCOA = () => {
     const allGroupCOAs = await axios.post(`${tempUrl}/groupCOAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setGroupCOAsData(allGroupCOAs.data);
@@ -109,7 +106,6 @@ const TambahCOA = () => {
     const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setJenisCOAsData(allJenisCOAs.data);
@@ -133,21 +129,18 @@ const TambahCOA = () => {
       try {
         let tempJenisCOA = await axios.post(`${tempUrl}/jenisCOAByKode`, {
           kodeJenisCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });
         let tempGroupCOA = await axios.post(`${tempUrl}/groupCOAByKode`, {
           kodeGroupCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
         });
         let tempSubGroupCOA = await axios.post(`${tempUrl}/subGroupCOAByKode`, {
           kodeSubGroupCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -162,7 +155,6 @@ const TambahCOA = () => {
           jenisCOA: tempJenisCOA.data._id,
           jenisSaldo,
           kasBank,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
