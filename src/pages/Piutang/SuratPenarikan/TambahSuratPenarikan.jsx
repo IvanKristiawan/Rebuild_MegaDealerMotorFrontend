@@ -193,6 +193,12 @@ const TambahSuratPenarikan = () => {
 
   const saveSt = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation =
       noSt.length === 0 ||
       tglSt.length === 0 ||
@@ -228,9 +234,12 @@ const TambahSuratPenarikan = () => {
           jmlBlnTelat,
           totalDenda,
           biayaTarik,
+          tglInput: current_date,
+          jamInput: current_time,
+          userInput: user.username,
+          kodeCabang: user.cabang._id,
           id: user._id,
-          token: user.token,
-          kodeCabang: user.cabang._id
+          token: user.token
         });
         setLoading(false);
         navigate("/suratPenarikan");

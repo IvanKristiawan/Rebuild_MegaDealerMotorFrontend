@@ -172,6 +172,12 @@ const TambahSuratPemberitahuan = () => {
 
   const saveSp = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation =
       noJual.length === 0 || kodeKolektor.length === 0 || tglSp.length === 0;
     if (isFailedValidation) {
@@ -212,9 +218,12 @@ const TambahSuratPemberitahuan = () => {
             spKe,
             kodeKolektor: tempKolektor.data._id,
             idJual: response.data._id,
+            tglInput: current_date,
+            jamInput: current_time,
+            userInput: user.username,
+            kodeCabang: user.cabang._id,
             id: user._id,
-            token: user.token,
-            kodeCabang: user.cabang._id
+            token: user.token
           });
           setLoading(false);
           navigate("/suratPemberitahuan");

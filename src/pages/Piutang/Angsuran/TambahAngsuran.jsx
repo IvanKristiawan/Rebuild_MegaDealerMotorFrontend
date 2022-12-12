@@ -324,6 +324,12 @@ const TambahAngsuran = () => {
 
   const saveAngsuran = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation =
       noJual.length === 0 ||
       tglBayar.length === 0 ||
@@ -368,6 +374,9 @@ const TambahAngsuran = () => {
           totalBayar,
           bayar,
           userInput: user.username,
+          tglUpdate: current_date,
+          jamUpdate: current_time,
+          userUpdate: user.username,
           id: user._id,
           token: user.token
         });

@@ -272,6 +272,12 @@ const TambahJualBaru = () => {
 
   const saveJual = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let tempDateAng = tglAng.split("-")[2];
     if (tempDateAng > 28) {
       alert(`Tanggal Angsuran I tidak boleh lebih dari 28!`);
@@ -351,6 +357,9 @@ const TambahJualBaru = () => {
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
               angPerBulan,
+              tglInput: current_date,
+              jamInput: current_time,
+              userInput: user.username,
               kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token
@@ -359,9 +368,12 @@ const TambahJualBaru = () => {
             let tempPenerimaan = await axios.post(`${tempUrl}/savePenerimaan`, {
               tenor,
               noJual,
-              kodeCabang: user.cabang._id,
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
+              tglInput: current_date,
+              jamInput: current_time,
+              userInput: user.username,
+              kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token
             });
@@ -409,6 +421,9 @@ const TambahJualBaru = () => {
               angBunga: angPerBulan - sisaPiutang / tenor,
               userInput: user.username,
               kodeAngsuran: tempAngsuran.data._id,
+              tglInput: current_date,
+              jamInput: current_time,
+              userInput: user.username,
               kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token
@@ -457,6 +472,9 @@ const TambahJualBaru = () => {
               userInput: user.username,
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
+              tglInput: current_date,
+              jamInput: current_time,
+              userInput: user.username,
               kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token

@@ -64,6 +64,12 @@ const TambahRegister = () => {
 
   const saveRegister = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation =
       namaRegister.length === 0 ||
       almRegister.length === 0 ||
@@ -93,6 +99,9 @@ const TambahRegister = () => {
           namaRefRegister,
           almRefRegister,
           tlpRefRegister,
+          tglInput: current_date,
+          jamInput: current_time,
+          userInput: user.username,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

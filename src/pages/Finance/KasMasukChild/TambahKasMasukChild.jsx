@@ -118,6 +118,12 @@ const TambahKasMasukChild = () => {
 
   const saveKasMasukChild = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation = kodeCOA.length === 0 || jumlah.length === 0;
     if (isFailedValidation) {
       setError(true);
@@ -150,6 +156,9 @@ const TambahKasMasukChild = () => {
           COA: tempCOA.data._id,
           keterangan,
           jumlah,
+          tglInput: current_date,
+          jamInput: current_time,
+          userInput: user.username,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
