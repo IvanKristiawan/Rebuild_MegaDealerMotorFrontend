@@ -82,8 +82,7 @@ const TampilWarna = () => {
     try {
       const allWarnas = await axios.post(`${tempUrl}/warnas`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setWarnasData(allWarnas.data);
     } catch (err) {
@@ -96,8 +95,7 @@ const TampilWarna = () => {
     setLoading(true);
     const allWarnasForDoc = await axios.post(`${tempUrl}/warnasForDoc`, {
       id: user._id,
-      token: user.token,
-      kodeCabang: user.cabang._id
+      token: user.token
     });
     setWarnasForDoc(allWarnasForDoc.data);
     setLoading(false);

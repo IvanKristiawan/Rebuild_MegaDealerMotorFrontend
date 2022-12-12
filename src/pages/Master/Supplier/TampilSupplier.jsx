@@ -104,8 +104,7 @@ const TampilSupplier = () => {
     try {
       const allSuppliers = await axios.post(`${tempUrl}/suppliers`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setSuppliersData(allSuppliers.data);
     } catch (err) {
@@ -121,8 +120,7 @@ const TampilSupplier = () => {
         `${tempUrl}/suppliersForDoc`,
         {
           id: user._id,
-          token: user.token,
-          kodeCabang: user.cabang._id
+          token: user.token
         }
       );
       setSuppliersForDoc(allSuppliersForDoc.data);

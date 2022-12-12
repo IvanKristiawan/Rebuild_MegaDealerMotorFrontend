@@ -89,8 +89,7 @@ const TampilPekerjaan = () => {
     try {
       const allPekerjaans = await axios.post(`${tempUrl}/pekerjaans`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setPekerjaansData(allPekerjaans.data);
     } catch (err) {
@@ -106,8 +105,7 @@ const TampilPekerjaan = () => {
         `${tempUrl}/pekerjaansForDoc`,
         {
           id: user._id,
-          token: user.token,
-          kodeCabang: user.cabang._id
+          token: user.token
         }
       );
       setPekerjaansForDoc(allPekerjaansForDoc.data);

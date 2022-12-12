@@ -102,8 +102,7 @@ const TampilTipe = () => {
     try {
       const allTipes = await axios.post(`${tempUrl}/tipes`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setTipesData(allTipes.data);
     } catch (err) {
@@ -116,8 +115,7 @@ const TampilTipe = () => {
     setLoading(true);
     const allTipesForDoc = await axios.post(`${tempUrl}/tipesForDoc`, {
       id: user._id,
-      token: user.token,
-      kodeCabang: user.cabang._id
+      token: user.token
     });
     setTipesForDoc(allTipesForDoc.data);
     setLoading(false);

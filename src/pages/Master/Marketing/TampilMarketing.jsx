@@ -92,8 +92,7 @@ const TampilMarketing = () => {
     try {
       const allMarketings = await axios.post(`${tempUrl}/marketings`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setMarketingsData(allMarketings.data);
     } catch (err) {
@@ -109,8 +108,7 @@ const TampilMarketing = () => {
         `${tempUrl}/marketingsForDoc`,
         {
           id: user._id,
-          token: user.token,
-          kodeCabang: user.cabang._id
+          token: user.token
         }
       );
       setMarketingsForDoc(allMarketingsForDoc.data);

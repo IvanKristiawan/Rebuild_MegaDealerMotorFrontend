@@ -98,8 +98,7 @@ const TampilDealer = () => {
     try {
       const allDealers = await axios.post(`${tempUrl}/dealers`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setDealersData(allDealers.data);
     } catch (err) {
@@ -113,8 +112,7 @@ const TampilDealer = () => {
     try {
       const allDealersForDoc = await axios.post(`${tempUrl}/dealersForDoc`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setDealersForDoc(allDealersForDoc.data);
     } catch (err) {

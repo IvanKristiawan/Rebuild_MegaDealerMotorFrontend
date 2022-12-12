@@ -90,8 +90,7 @@ const TampilJenisCOA = () => {
     try {
       const allJenisCOAs = await axios.post(`${tempUrl}/jenisCOAs`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setJenisCOAsData(allJenisCOAs.data);
     } catch (err) {
@@ -107,8 +106,7 @@ const TampilJenisCOA = () => {
         `${tempUrl}/jenisCOAsForDoc`,
         {
           id: user._id,
-          token: user.token,
-          kodeCabang: user.cabang._id
+          token: user.token
         }
       );
       setJenisCOAsDataForDoc(allJenisCOAsForDoc.data);

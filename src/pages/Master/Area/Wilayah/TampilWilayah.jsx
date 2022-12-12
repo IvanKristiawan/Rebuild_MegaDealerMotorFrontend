@@ -89,8 +89,7 @@ const TampilWilayah = () => {
     try {
       const allWilayahs = await axios.post(`${tempUrl}/wilayahs`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setWilayahsData(allWilayahs.data);
     } catch (err) {
@@ -104,8 +103,7 @@ const TampilWilayah = () => {
     try {
       const allWilayahsForDoc = await axios.post(`${tempUrl}/wilayahsForDoc`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setWilayahsDataForDoc(allWilayahsForDoc.data);
     } catch (err) {

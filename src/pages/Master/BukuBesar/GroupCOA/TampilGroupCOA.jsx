@@ -96,8 +96,7 @@ const TampilGroupCOA = () => {
     try {
       const allGroupCOAs = await axios.post(`${tempUrl}/groupCOAs`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setGroupCOAsData(allGroupCOAs.data);
     } catch (err) {
@@ -113,8 +112,7 @@ const TampilGroupCOA = () => {
         `${tempUrl}/groupCOAsForDoc`,
         {
           id: user._id,
-          token: user.token,
-          kodeCabang: user.cabang._id
+          token: user.token
         }
       );
       setGroupCOAsDataForDoc(allGroupCOAsForDoc.data);

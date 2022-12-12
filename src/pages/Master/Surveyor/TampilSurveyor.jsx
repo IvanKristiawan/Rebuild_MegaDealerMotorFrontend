@@ -95,8 +95,7 @@ const TampilSurveyor = () => {
     try {
       const allSurveyors = await axios.post(`${tempUrl}/surveyors`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setSurveyorsData(allSurveyors.data);
     } catch (err) {
@@ -112,8 +111,7 @@ const TampilSurveyor = () => {
         `${tempUrl}/surveyorsForDoc`,
         {
           id: user._id,
-          token: user.token,
-          kodeCabang: user.cabang._id
+          token: user.token
         }
       );
       setSurveyorsForDoc(allSurveyorsForDoc.data);

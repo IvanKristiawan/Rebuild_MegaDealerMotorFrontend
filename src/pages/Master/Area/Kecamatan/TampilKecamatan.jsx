@@ -95,8 +95,7 @@ const TampilKecamatan = () => {
     try {
       const allKecamatans = await axios.post(`${tempUrl}/kecamatans`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setKecamatansData(allKecamatans.data);
     } catch (err) {
@@ -111,8 +110,7 @@ const TampilKecamatan = () => {
       `${tempUrl}/kecamatansForDoc`,
       {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       }
     );
     setKecamatansForDoc(allKecamatansForDoc.data);

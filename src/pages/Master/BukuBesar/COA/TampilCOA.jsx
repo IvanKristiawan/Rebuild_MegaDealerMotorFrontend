@@ -105,8 +105,7 @@ const TampilCOA = () => {
     try {
       const allCOAs = await axios.post(`${tempUrl}/COAsForDoc`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setCOAsData(allCOAs.data);
     } catch (err) {
@@ -120,8 +119,7 @@ const TampilCOA = () => {
     try {
       const allCOAsForDoc = await axios.post(`${tempUrl}/COAsForDocNoId`, {
         id: user._id,
-        token: user.token,
-        kodeCabang: user.cabang._id
+        token: user.token
       });
       setCOAsForDoc(allCOAsForDoc.data);
     } catch (err) {
