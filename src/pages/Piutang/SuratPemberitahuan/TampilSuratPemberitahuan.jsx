@@ -100,7 +100,6 @@ const TampilSuratPemberitahuan = () => {
       const allSps = await axios.post(`${tempUrl}/sps`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setSpsData(allSps.data);
@@ -150,13 +149,11 @@ const TampilSuratPemberitahuan = () => {
         noJual,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       await axios.post(`${tempUrl}/updateJual/${findJualByNoJual.data._id}`, {
         spKe: findJualByNoJual.data.spKe - 1,
         tglSpTerakhir: "",
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token

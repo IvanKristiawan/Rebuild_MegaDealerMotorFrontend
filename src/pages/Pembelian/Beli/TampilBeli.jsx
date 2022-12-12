@@ -82,7 +82,6 @@ const TampilBeli = () => {
       setIsPost(response.data.isPost);
       const response2 = await axios.post(`${tempUrl}/daftarStoksByNoBeli`, {
         noBeli: response.data.noBeli,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token

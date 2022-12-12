@@ -59,7 +59,6 @@ const UbahBeli = () => {
     const allSuppliers = await axios.post(`${tempUrl}/suppliers`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSuppliers(allSuppliers.data);
@@ -99,7 +98,6 @@ const UbahBeli = () => {
         setLoading(true);
         let tempSupplier = await axios.post(`${tempUrl}/supplierByKode`, {
           kodeSupplier: kodeSupplier.split(" ", 1)[0],
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -113,7 +111,6 @@ const UbahBeli = () => {
           jenisBeli,
           jatuhTempo,
           ppnBeli,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

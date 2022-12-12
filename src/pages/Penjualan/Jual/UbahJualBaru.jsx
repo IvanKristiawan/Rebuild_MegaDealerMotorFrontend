@@ -182,7 +182,6 @@ const UbahJualBaru = () => {
         noRangka,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -202,7 +201,6 @@ const UbahJualBaru = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -215,7 +213,6 @@ const UbahJualBaru = () => {
     const allRegisters = await axios.post(`${tempUrl}/registers`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setRegisters(allRegisters.data);
@@ -227,7 +224,6 @@ const UbahJualBaru = () => {
     const allMarketings = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setMarketings(allMarketings.data);
@@ -239,7 +235,6 @@ const UbahJualBaru = () => {
     const allSurveyors = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSurveyors(allSurveyors.data);
@@ -251,7 +246,6 @@ const UbahJualBaru = () => {
     const allPekerjaans = await axios.post(`${tempUrl}/pekerjaans`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setPekerjaans(allPekerjaans.data);
@@ -263,7 +257,6 @@ const UbahJualBaru = () => {
     const allKecamatans = await axios.post(`${tempUrl}/kecamatans`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKecamatans(allKecamatans.data);
@@ -275,7 +268,6 @@ const UbahJualBaru = () => {
     const allLeasing = await axios.post(`${tempUrl}/leasings`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setLeasings(allLeasing.data);
@@ -287,7 +279,6 @@ const UbahJualBaru = () => {
       const response = await axios.post(`${tempUrl}/juals/${id}`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       // Data Register/Pembeli
@@ -367,42 +358,36 @@ const UbahJualBaru = () => {
           kodeMarketing: kodeMarketing.split(" -", 1)[0],
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         const tempSurveyor = await axios.post(`${tempUrl}/surveyorByKode`, {
           kodeSurveyor: kodeSurveyor.split(" -", 1)[0],
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         const tempPekerjaan = await axios.post(`${tempUrl}/pekerjaanByKode`, {
           kodePekerjaan: kodePekerjaan.split(" -", 1)[0],
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         const tempKecamatan = await axios.post(`${tempUrl}/kecamatanByKode`, {
           kodeKecamatan: kodeKecamatan.split(" -", 1)[0],
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         const tempLeasing = await axios.post(`${tempUrl}/leasingByKode`, {
           kodeLeasing: kodeLeasing.split(" -", 1)[0],
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
           noRangka,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         if (tempNoRangka !== noRangka) {
@@ -410,7 +395,6 @@ const UbahJualBaru = () => {
             noRangka: tempNoRangka,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           // Update Stok
@@ -424,7 +408,6 @@ const UbahJualBaru = () => {
             noRangka,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           // Update Stok
@@ -473,7 +456,6 @@ const UbahJualBaru = () => {
           angBunga,
           angModal: sisaPiutang / tenor,
           angBunga: angPerBulan - sisaPiutang / tenor,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

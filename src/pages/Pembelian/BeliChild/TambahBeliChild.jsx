@@ -84,7 +84,6 @@ const TambahBeliChild = () => {
   const getTipes = async () => {
     setLoading(true);
     const allTipes = await axios.post(`${tempUrl}/tipes`, {
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
@@ -96,7 +95,6 @@ const TambahBeliChild = () => {
   const getTipe = async (idTipe) => {
     const allTipesByKode = await axios.post(`${tempUrl}/tipesByKode`, {
       kodeTipe: idTipe,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
@@ -111,7 +109,6 @@ const TambahBeliChild = () => {
   const getTipeBeli = async () => {
     setLoading(true);
     const allBelis = await axios.post(`${tempUrl}/belis/${id}`, {
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
@@ -125,7 +122,6 @@ const TambahBeliChild = () => {
   const getWarnas = async () => {
     setLoading(true);
     const allWarnas = await axios.post(`${tempUrl}/warnas`, {
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
@@ -137,7 +133,6 @@ const TambahBeliChild = () => {
   const getBelis = async () => {
     setLoading(true);
     const pickedBeli = await axios.post(`${tempUrl}/belis/${id}`, {
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
@@ -157,14 +152,12 @@ const TambahBeliChild = () => {
     }
     // Get Beli
     const response = await axios.post(`${tempUrl}/belis/${id}`, {
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       id: user._id,
       token: user.token
     });
     // Get Tipe/Merk
     const getTipe = await axios.post(`${tempUrl}/tipesByKode`, {
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id,
       kodeTipe,
       id: user._id,
@@ -185,7 +178,6 @@ const TambahBeliChild = () => {
           setLoading(true);
           // Get Beli
           const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
@@ -207,7 +199,6 @@ const TambahBeliChild = () => {
             jenisBeli: jenisABeli,
             hargaSatuan,
             ppnABeli,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
@@ -216,7 +207,6 @@ const TambahBeliChild = () => {
           await axios.post(`${tempUrl}/updateBeli/${id}`, {
             jumlahBeli:
               parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
@@ -244,7 +234,6 @@ const TambahBeliChild = () => {
           setLoading(true);
           // Get Beli
           const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
@@ -266,7 +255,6 @@ const TambahBeliChild = () => {
             jenisBeli: jenisABeli,
             hargaSatuan,
             ppnABeli,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
@@ -275,7 +263,6 @@ const TambahBeliChild = () => {
           await axios.post(`${tempUrl}/updateBeli/${id}`, {
             jumlahBeli:
               parseInt(getBeli.data.jumlahBeli) + parseInt(hargaSatuan),
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token

@@ -108,7 +108,9 @@ const TampilDaftarStok = () => {
       val.nopol.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaStnk.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jenisBeli.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.supplier.kodeSupplier.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.supplier.kodeSupplier
+        .toUpperCase()
+        .includes(searchTerm.toUpperCase()) ||
       val.supplier.namaSupplier
         .toUpperCase()
         .includes(searchTerm.toUpperCase()) ||
@@ -149,7 +151,6 @@ const TampilDaftarStok = () => {
     const allTipesMainInfo = await axios.post(`${tempUrl}/tipesMainInfo`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setTipes(allTipesMainInfo.data);
@@ -164,7 +165,6 @@ const TampilDaftarStok = () => {
         response = await axios.post(`${tempUrl}/daftarStoksRekapTerjual`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         break;
@@ -172,7 +172,6 @@ const TampilDaftarStok = () => {
         response = await axios.post(`${tempUrl}/daftarStoksRekapBlmTerjual`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         break;
@@ -180,7 +179,6 @@ const TampilDaftarStok = () => {
         response = await axios.post(`${tempUrl}/daftarStoksRekap`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
     }
@@ -196,7 +194,6 @@ const TampilDaftarStok = () => {
         response = await axios.post(`${tempUrl}/daftarStoksTerjual`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         setDaftarStoksData(response.data);
@@ -205,7 +202,6 @@ const TampilDaftarStok = () => {
         response = await axios.post(`${tempUrl}/daftarStoksBelumTerjual`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         setDaftarStoksData(response.data);
@@ -214,7 +210,6 @@ const TampilDaftarStok = () => {
         response = await axios.post(`${tempUrl}/daftarStoks`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         setDaftarStoksData(response.data);
@@ -227,7 +222,6 @@ const TampilDaftarStok = () => {
     const daftarStoksLength = await axios.post(`${tempUrl}/daftarStoksLength`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setDaftarStoksLength(daftarStoksLength.data);
@@ -242,7 +236,6 @@ const TampilDaftarStok = () => {
         response = await axios.post(`${tempUrl}/daftarStoksTerjualForDoc`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         break;
@@ -252,7 +245,6 @@ const TampilDaftarStok = () => {
           {
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           }
         );
@@ -261,7 +253,6 @@ const TampilDaftarStok = () => {
         response = await axios.post(`${tempUrl}/daftarStoksForDoc`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
     }

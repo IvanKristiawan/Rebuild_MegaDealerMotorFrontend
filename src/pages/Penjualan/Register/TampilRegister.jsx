@@ -114,7 +114,6 @@ const TampilRegister = () => {
       const allRegisters = await axios.post(`${tempUrl}/registers`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setRegistersData(allRegisters.data);
@@ -129,7 +128,6 @@ const TampilRegister = () => {
     const allRegisterForDoc = await axios.post(`${tempUrl}/registersForDoc`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setRegistersForDoc(allRegisterForDoc.data);

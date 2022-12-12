@@ -178,7 +178,6 @@ const TambahJualBekas = () => {
         nopol,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -199,7 +198,6 @@ const TambahJualBekas = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -212,7 +210,6 @@ const TambahJualBekas = () => {
     const allRegisters = await axios.post(`${tempUrl}/registers`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setRegisters(allRegisters.data);
@@ -224,7 +221,6 @@ const TambahJualBekas = () => {
     const allMarketings = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setMarketings(allMarketings.data);
@@ -236,7 +232,6 @@ const TambahJualBekas = () => {
     const allSurveyors = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSurveyors(allSurveyors.data);
@@ -248,7 +243,6 @@ const TambahJualBekas = () => {
     const allPekerjaans = await axios.post(`${tempUrl}/pekerjaans`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setPekerjaans(allPekerjaans.data);
@@ -260,7 +254,6 @@ const TambahJualBekas = () => {
     const allKecamatans = await axios.post(`${tempUrl}/kecamatans`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKecamatans(allKecamatans.data);
@@ -272,7 +265,6 @@ const TambahJualBekas = () => {
     const allLeasings = await axios.post(`${tempUrl}/leasings`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setLeasings(allLeasings.data);
@@ -313,42 +305,36 @@ const TambahJualBekas = () => {
             kodeMarketing,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           const tempSurveyor = await axios.post(`${tempUrl}/surveyorByKode`, {
             kodeSurveyor,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           const tempPekerjaan = await axios.post(`${tempUrl}/pekerjaanByKode`, {
             kodePekerjaan,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           const tempKecamatan = await axios.post(`${tempUrl}/kecamatanByKode`, {
             kodeKecamatan,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           const tempLeasing = await axios.post(`${tempUrl}/leasingByKode`, {
             kodeLeasing,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           const tempStok = await axios.post(`${tempUrl}/daftarStoksByNopol`, {
             nopol,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           // Update Stok
@@ -367,7 +353,6 @@ const TambahJualBekas = () => {
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
               angPerBulan,
-              kodeUnitBisnis: user.unitBisnis._id,
               kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token
@@ -376,7 +361,6 @@ const TambahJualBekas = () => {
             let tempPenerimaan = await axios.post(`${tempUrl}/savePenerimaan`, {
               tenor,
               noJual,
-              kodeUnitBisnis: user.unitBisnis._id,
               kodeCabang: user.cabang._id,
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
@@ -425,7 +409,6 @@ const TambahJualBekas = () => {
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
               kodeAngsuran: tempAngsuran.data._id,
-              kodeUnitBisnis: user.unitBisnis._id,
               kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token
@@ -472,7 +455,6 @@ const TambahJualBekas = () => {
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
               userInput: user.username,
-              kodeUnitBisnis: user.unitBisnis._id,
               kodeCabang: user.cabang._id,
               id: user._id,
               token: user.token

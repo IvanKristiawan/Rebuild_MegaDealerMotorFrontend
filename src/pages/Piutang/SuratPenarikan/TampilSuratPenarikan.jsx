@@ -94,7 +94,6 @@ const TampilSuratPenarikan = () => {
       const allSts = await axios.post(`${tempUrl}/sts`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setStsData(allSts.data);

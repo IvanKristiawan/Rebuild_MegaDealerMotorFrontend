@@ -35,8 +35,15 @@ const TampilDaftarBeli = () => {
       val.noBeli.includes(searchTerm) ||
       val.tanggalBeli.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.jumlahBeli.toString().includes(searchTerm) ||
+      val.lama.toString().toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.ppnBeli.toString().toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.supplier._id.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.jenisBeli
+        .toString()
+        .toUpperCase()
+        .includes(searchTerm.toUpperCase()) ||
+      val.supplier.kodeSupplier
+        .toUpperCase()
+        .includes(searchTerm.toUpperCase()) ||
       val.supplier.namaSupplier.toUpperCase().includes(searchTerm.toUpperCase())
     ) {
       return val;
@@ -62,7 +69,6 @@ const TampilDaftarBeli = () => {
     const allSuppliers = await axios.post(`${tempUrl}/suppliersMainInfo`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSuppliers(allSuppliers.data);
@@ -75,7 +81,6 @@ const TampilDaftarBeli = () => {
       const allBelis = await axios.post(`${tempUrl}/belis`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setBelisData(allBelis.data);

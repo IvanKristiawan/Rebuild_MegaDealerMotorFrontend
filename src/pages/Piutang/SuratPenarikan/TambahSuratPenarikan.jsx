@@ -160,7 +160,6 @@ const TambahSuratPenarikan = () => {
     const nextKodeSt = await axios.post(`${tempUrl}/stsNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setNoSt(nextKodeSt.data);
@@ -172,7 +171,6 @@ const TambahSuratPenarikan = () => {
     const allKolektors = await axios.post(`${tempUrl}/kolektors`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKolektors(allKolektors.data);
@@ -186,7 +184,6 @@ const TambahSuratPenarikan = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -211,7 +208,6 @@ const TambahSuratPenarikan = () => {
           kodeKolektor,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         // Find Jual
@@ -219,7 +215,6 @@ const TambahSuratPenarikan = () => {
           noJual,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         // Update Surat Penarikan
@@ -235,7 +230,6 @@ const TambahSuratPenarikan = () => {
           biayaTarik,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         setLoading(false);

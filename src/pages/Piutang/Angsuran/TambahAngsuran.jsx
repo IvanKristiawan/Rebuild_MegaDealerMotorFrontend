@@ -184,7 +184,6 @@ const TambahAngsuran = () => {
     const allKolektors = await axios.post(`${tempUrl}/kolektors`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKolektors(allKolektors.data);
@@ -198,7 +197,6 @@ const TambahAngsuran = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -341,7 +339,6 @@ const TambahAngsuran = () => {
           kodeKolektor,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         // Update No Kwitansi User

@@ -150,7 +150,6 @@ const TambahSuratPemberitahuan = () => {
     const allKolektors = await axios.post(`${tempUrl}/kolektors`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKolektors(allKolektors.data);
@@ -164,7 +163,6 @@ const TambahSuratPemberitahuan = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -191,7 +189,6 @@ const TambahSuratPemberitahuan = () => {
             kodeKolektor,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           // Find Jual
@@ -199,13 +196,11 @@ const TambahSuratPemberitahuan = () => {
             noJual,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           await axios.post(`${tempUrl}/updateJual/${response.data._id}`, {
             spKe,
             tglSpTerakhir: tglSp,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
@@ -219,7 +214,6 @@ const TambahSuratPemberitahuan = () => {
             idJual: response.data._id,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           });
           setLoading(false);

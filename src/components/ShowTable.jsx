@@ -1560,7 +1560,7 @@ export function ShowTableDaftarBeli({ currentPosts, searchTerm }) {
                 val.jatuhTempo
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
-                val.supplier._id
+                val.supplier.kodeSupplier
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
                 val.supplier.namaSupplier
@@ -1818,7 +1818,7 @@ export function ShowTableBeli({ id, currentPosts, nomorNota }) {
               <TableCell>{aBeli.nopol}</TableCell>
               <TableCell>{aBeli.namaStnk}</TableCell>
               <TableCell>{aBeli.tglStnk}</TableCell>
-              <TableCell>{aBeli.jenisABeli}</TableCell>
+              <TableCell>{aBeli.jenisBeli}</TableCell>
               <TableCell>{aBeli.hargaSatuan.toLocaleString()}</TableCell>
               <TableCell>{aBeli.ppnABeli.toLocaleString()}</TableCell>
               <TableCell>{aBeli.tanggalJual}</TableCell>

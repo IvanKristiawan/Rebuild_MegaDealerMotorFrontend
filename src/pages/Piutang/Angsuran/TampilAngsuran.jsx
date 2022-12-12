@@ -112,7 +112,6 @@ const TampilAngsuran = () => {
         noJual: id,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -136,7 +135,6 @@ const TampilAngsuran = () => {
         noJual: id,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -152,7 +150,6 @@ const TampilAngsuran = () => {
         noJual: id,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -166,7 +163,6 @@ const TampilAngsuran = () => {
         noJual: id,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       if (response.data.tglAng.length !== 0) {

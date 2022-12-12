@@ -124,12 +124,10 @@ const TampilAngsuranChild = () => {
         noJual: id,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       await axios.post(`${tempUrl}/updateJual/${response.data._id}`, {
         tglMdTerakhir: mdTerakhir,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token

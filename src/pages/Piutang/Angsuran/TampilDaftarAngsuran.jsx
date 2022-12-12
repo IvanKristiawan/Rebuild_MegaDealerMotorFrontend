@@ -64,7 +64,6 @@ const TampilDaftarAngsuran = () => {
       const allJuals = await axios.post(`${tempUrl}/jualsForDaftarAngsuran`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setJualsData(allJuals.data);

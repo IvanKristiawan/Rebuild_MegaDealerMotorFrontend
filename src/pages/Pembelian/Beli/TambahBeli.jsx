@@ -76,7 +76,6 @@ const TambahBeli = () => {
     const nextKodeBeli = await axios.post(`${tempUrl}/belisNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeBeli(nextKodeBeli.data);
@@ -88,7 +87,6 @@ const TambahBeli = () => {
     const allSuppliers = await axios.post(`${tempUrl}/suppliers`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSuppliers(allSuppliers.data);
@@ -111,7 +109,6 @@ const TambahBeli = () => {
         setLoading(true);
         let tempSupplier = await axios.post(`${tempUrl}/supplierByKode`, {
           kodeSupplier,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -125,7 +122,6 @@ const TambahBeli = () => {
           lama,
           jenisBeli,
           jatuhTempo,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

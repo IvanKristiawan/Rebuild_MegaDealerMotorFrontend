@@ -56,7 +56,6 @@ const TambahRegister = () => {
     const nextKodeRegister = await axios.post(`${tempUrl}/registersNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setKodeRegister(nextKodeRegister.data);
@@ -94,7 +93,6 @@ const TambahRegister = () => {
           namaRefRegister,
           almRefRegister,
           tlpRefRegister,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

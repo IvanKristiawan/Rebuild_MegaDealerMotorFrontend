@@ -81,7 +81,6 @@ const TampilBeliChild = () => {
       setIsPost(response.data.isPost);
       const findTipe = await axios.post(`${tempUrl}/tipesByKode`, {
         kodeTipe: response.data.tipe,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token
@@ -95,7 +94,6 @@ const TampilBeliChild = () => {
       setLoading(true);
       // Get Beli
       const getBeli = await axios.post(`${tempUrl}/belis/${id}`, {
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token
@@ -103,7 +101,6 @@ const TampilBeliChild = () => {
       // Update Beli
       await axios.post(`${tempUrl}/updateBeli/${id}`, {
         jumlahBeli: parseInt(getBeli.data.jumlahBeli) - parseInt(hargaSatuan),
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token
@@ -184,8 +181,8 @@ const TampilBeliChild = () => {
           </Box>
         )}
         <Divider sx={dividerStyle} />
-        <Box sx={textFieldContainer}>
-          <Box sx={[textFieldWrapper, spacingTop]}>
+        <Box sx={[textFieldContainer, spacingTop]}>
+          <Box sx={textFieldWrapper}>
             <Typography sx={labelInput}>No Beli</Typography>
             <TextField
               size="small"

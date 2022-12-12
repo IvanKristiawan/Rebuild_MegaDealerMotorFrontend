@@ -160,7 +160,6 @@ const TampilJual = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -173,7 +172,6 @@ const TampilJual = () => {
     const allTipesMainInfo = await axios.post(`${tempUrl}/tipesMainInfo`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setTipes(allTipesMainInfo.data);
@@ -186,7 +184,6 @@ const TampilJual = () => {
       const allJuals = await axios.post(`${tempUrl}/juals`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setJualsData(allJuals.data);
@@ -201,7 +198,6 @@ const TampilJual = () => {
     const allJualsForTable = await axios.post(`${tempUrl}/jualsForTable`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setJualsForTable(allJualsForTable.data);
@@ -213,7 +209,6 @@ const TampilJual = () => {
     const allJualsForDoc = await axios.post(`${tempUrl}/jualsForDoc`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setJualsForDoc(allJualsForDoc.data);

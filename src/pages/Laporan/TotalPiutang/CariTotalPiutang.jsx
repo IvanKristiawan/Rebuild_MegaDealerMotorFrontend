@@ -63,7 +63,6 @@ const CariTotalPiutang = () => {
     const allMarketings = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setMarketings(allMarketings.data);
@@ -75,7 +74,6 @@ const CariTotalPiutang = () => {
     const allSurveyors = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSurveyors(allSurveyors.data);
@@ -87,14 +85,12 @@ const CariTotalPiutang = () => {
       kodeMarketing,
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     const tempSurveyor = await axios.post(`${tempUrl}/surveyorByKode`, {
       kodeSurveyor,
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     const response = await axios.post(`${tempUrl}/totalPiutangs`, {
@@ -103,7 +99,6 @@ const CariTotalPiutang = () => {
       kodeSurveyor: tempSurveyor.data ? tempSurveyor.data._id : null,
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     const responseForDoc = await axios.post(`${tempUrl}/totalPiutangsForDoc`, {
@@ -112,7 +107,6 @@ const CariTotalPiutang = () => {
       kodeSurveyor: tempSurveyor.data ? tempSurveyor.data._id : null,
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
 

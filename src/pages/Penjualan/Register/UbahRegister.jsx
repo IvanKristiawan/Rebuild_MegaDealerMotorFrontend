@@ -108,7 +108,6 @@ const UbahRegister = () => {
           namaRefRegister,
           almRefRegister,
           tlpRefRegister,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
