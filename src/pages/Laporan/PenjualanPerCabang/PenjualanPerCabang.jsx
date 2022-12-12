@@ -8,9 +8,7 @@ import {
 } from "../../../constants/GeneralSetting";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { Loader } from "../../../components";
-import { Box, Typography, Button, Divider } from "@mui/material";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { Box, Typography, Button, Divider, TextField } from "@mui/material";
 import PrintIcon from "@mui/icons-material/Print";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -18,18 +16,12 @@ import "./PenjualanPerCabangStyles.css";
 
 const PenjualanPerCabang = () => {
   const { user } = useContext(AuthContext);
-  let lastday = function (y, m) {
-    return new Date(y, m + 1, 0).getDate();
-  };
-  let nowDate = new Date();
-  const [dariTgl, setDariTgl] = useState(nowDate);
-  let tempYearNow = nowDate.getFullYear();
-  let tempMonthNow = nowDate.getMonth() + 1;
-  let tempDayNow = lastday(nowDate.getFullYear(), nowDate.getMonth());
-  const [sampaiTgl, setSampaiTgl] = useState(
-    `${tempYearNow}-${tempMonthNow}-${tempDayNow}`
-  );
+  let curr = new Date();
+  let date = curr.toISOString().substring(0, 10);
+  const [dariTgl, setDariTgl] = useState(date);
+  const [sampaiTgl, setSampaiTgl] = useState(date);
 
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const downloadPdf = async () => {
@@ -116,14 +108,10 @@ const PenjualanPerCabang = () => {
     // Loop
     for (let i = 0; i < response.data.length; i++) {
       y += 8;
-      let tempDariTgl = new Date(dariTgl);
-      let tempYearDariTgl = tempDariTgl.getFullYear();
-      let tempMonthDariTgl = tempDariTgl.getMonth() + 1;
-      let tempDayDariTgl = tempDariTgl.getDate();
       getPenjualanPerCabang = await axios.post(
         `${tempUrl}/jualsForLaporanPerCabang`,
         {
-          dariTgl: `${tempYearDariTgl}-${tempMonthDariTgl}-${tempDayDariTgl}`,
+          dariTgl,
           sampaiTgl,
           id: user._id,
           token: user.token,
@@ -477,20 +465,31 @@ const PenjualanPerCabang = () => {
       </Typography>
       <Divider sx={dividerStyle} />
       <Box sx={showDataWrapper}>
-        <Typography sx={[labelInput, spacingTop]}>Periode</Typography>
-        <DatePicker
-          selected={dariTgl}
-          onChange={(date) => {
-            setDariTgl(date);
-            let tempYear = date.getFullYear();
-            let tempMonth = date.getMonth() + 1;
-            let tempDay = lastday(date.getFullYear(), date.getMonth());
-            setSampaiTgl(`${tempYear}-${tempMonth}-${tempDay}`);
-          }}
-          dateFormat="MM/yyyy"
-          showMonthYearPicker
+        <Typography sx={[labelInput, spacingTop]}>Dari Tanggal</Typography>
+        <TextField
+          type="date"
+          size="small"
+          error={error && dariTgl.length === 0 && true}
+          helperText={
+            error && dariTgl.length === 0 && "Dari Tanggal harus diisi!"
+          }
+          id="outlined-basic"
           variant="outlined"
-          style={{ border: "1px solid lightblue" }}
+          value={dariTgl}
+          onChange={(e) => setDariTgl(e.target.value)}
+        />
+        <Typography sx={[labelInput, spacingTop]}>Sampai Tanggal</Typography>
+        <TextField
+          type="date"
+          size="small"
+          error={error && sampaiTgl.length === 0 && true}
+          helperText={
+            error && sampaiTgl.length === 0 && "Sampai Tanggal harus diisi!"
+          }
+          id="outlined-basic"
+          variant="outlined"
+          value={sampaiTgl}
+          onChange={(e) => setSampaiTgl(e.target.value)}
         />
       </Box>
       <Box sx={spacingTop}>

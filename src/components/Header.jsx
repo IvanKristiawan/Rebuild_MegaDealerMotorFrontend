@@ -41,9 +41,15 @@ const Header = () => {
     <Box style={container}>
       <Box style={contained}>
         <Box sx={wrapper}>
-          <Link to="/" className="logo" style={titleStyle}>
-            {`${namaSoftware} - ${namaProgram}`}
-          </Link>
+          {user ? (
+            <Link to="/" className="logo" style={titleStyle}>
+              {`${namaSoftware} - ${namaProgram} (${user.cabang._id} - ${user.cabang.namaCabang})`}
+            </Link>
+          ) : (
+            <Link to="/" className="logo" style={titleStyle}>
+              {`${namaSoftware} - ${namaProgram}`}
+            </Link>
+          )}
         </Box>
         {user ? (
           <Stack direction="row" spacing={1} sx={containerAvatar}>
