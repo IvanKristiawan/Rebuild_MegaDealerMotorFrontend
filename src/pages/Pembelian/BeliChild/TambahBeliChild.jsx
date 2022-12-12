@@ -143,6 +143,11 @@ const TambahBeliChild = () => {
 
   const saveBeliChild = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     // Set Tgl Stnk
     if (tglStnk !== undefined) {
       var tempTanggalStnk1 = tglStnk.toString().split("-", 1)[0];
@@ -199,6 +204,9 @@ const TambahBeliChild = () => {
             jenisBeli: jenisABeli,
             hargaSatuan,
             ppnABeli,
+            tglInput: current_date,
+            jamInput: current_time,
+            userInput: user.username,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
@@ -255,6 +263,9 @@ const TambahBeliChild = () => {
             jenisBeli: jenisABeli,
             hargaSatuan,
             ppnABeli,
+            tglInput: current_date,
+            jamInput: current_time,
+            userInput: user.username,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token
