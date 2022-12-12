@@ -73,7 +73,6 @@ const CariTunggakan = () => {
     const response = await axios.post(`${tempUrl}/marketings`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setMarketings(response.data);
@@ -85,7 +84,6 @@ const CariTunggakan = () => {
     const response = await axios.post(`${tempUrl}/surveyors`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setSurveyors(response.data);
@@ -97,14 +95,12 @@ const CariTunggakan = () => {
       kodeMarketing,
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     const tempSurveyor = await axios.post(`${tempUrl}/surveyorByKode`, {
       kodeSurveyor,
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     const response = await axios.post(`${tempUrl}/jualsForTunggakan`, {
@@ -115,7 +111,6 @@ const CariTunggakan = () => {
       kodeSurveyor: tempSurveyor.data ? tempSurveyor.data._id : null,
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
 

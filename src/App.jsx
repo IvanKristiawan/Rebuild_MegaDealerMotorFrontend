@@ -101,9 +101,6 @@ import {
   TampilCabang,
   TambahCabang,
   UbahCabang,
-  TampilUnitBisnis,
-  TambahUnitBisnis,
-  UbahUnitBisnis,
   TampilLeasing,
   TambahLeasing,
   UbahLeasing,
@@ -394,13 +391,6 @@ const App = () => {
                     </Box>
                   </Link>
                   <Divider />
-                  <Link to="/unitBisnis" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<ApartmentIcon name="cabang-icon" />}>
-                        Unit Bisnis
-                      </MenuItem>
-                    </Box>
-                  </Link>
                   <Link to="/cabang" style={linkText}>
                     <Box sx={{ paddingLeft: "20px" }}>
                       <MenuItem icon={<AddHomeWorkIcon name="cabang-icon" />}>
@@ -1133,39 +1123,6 @@ const App = () => {
                     element={
                       <USERRoute>
                         <UbahCabang />
-                      </USERRoute>
-                    }
-                  />
-                  {/* Unit Bisnis */}
-                  <Route
-                    path="/unitBisnis"
-                    element={
-                      <USERRoute>
-                        <TampilUnitBisnis />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/unitBisnis/:id"
-                    element={
-                      <USERRoute>
-                        <TampilUnitBisnis />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/unitBisnis/tambahUnitBisnis"
-                    element={
-                      <USERRoute>
-                        <TambahUnitBisnis />
-                      </USERRoute>
-                    }
-                  />
-                  <Route
-                    path="/unitBisnis/:id/edit"
-                    element={
-                      <USERRoute>
-                        <UbahUnitBisnis />
                       </USERRoute>
                     }
                   />

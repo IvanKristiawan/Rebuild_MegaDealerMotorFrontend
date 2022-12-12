@@ -68,16 +68,6 @@ const ProfilUser = () => {
             }}
             value={user.periode}
           />
-          <Typography sx={[labelInput, spacingTop]}>Unit Bisnis</Typography>
-          <TextField
-            size="small"
-            id="outlined-basic"
-            variant="filled"
-            InputProps={{
-              readOnly: true
-            }}
-            value={`${user.unitBisnis._id} - ${user.unitBisnis.namaUnitBisnis}`}
-          />
           <Typography sx={[labelInput, spacingTop]}>Cabang</Typography>
           <TextField
             size="small"

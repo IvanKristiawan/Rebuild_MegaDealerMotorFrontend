@@ -47,7 +47,6 @@ const CariLapPenjualanPerTipe = () => {
         sampaiTgl,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -119,7 +118,6 @@ const CariLapPenjualanPerTipe = () => {
         sampaiTgl,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );

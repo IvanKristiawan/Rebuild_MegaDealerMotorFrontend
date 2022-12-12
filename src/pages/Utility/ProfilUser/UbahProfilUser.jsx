@@ -17,7 +17,6 @@ import { Colors } from "../../../constants/styles";
 
 const UbahProfilUser = () => {
   const { user, dispatch } = useContext(AuthContext);
-  const [kodeUnitBisnis, setKodeUnitBisnis] = useState("");
   const [kodeCabang, setKodeCabang] = useState("");
   const [username, setUsername] = useState("");
   const [tipeUser, setTipeUser] = useState("");
@@ -44,7 +43,6 @@ const UbahProfilUser = () => {
     setPeriode(response.data.periode);
     setKodeKwitansi(response.data.kodeKwitansi);
     setNoTerakhir(response.data.noTerakhir);
-    setKodeUnitBisnis(response.data.unitBisnis);
     setKodeCabang(response.data.cabang);
     setLoading(false);
   };
@@ -56,7 +54,7 @@ const UbahProfilUser = () => {
     }
     try {
       setLoading(true);
-      await axios.put(`${tempUrl}/users/${id}`, {
+      await axios.post(`${tempUrl}/users/${id}`, {
         password,
         id: user._id,
         token: user.token
@@ -116,17 +114,6 @@ const UbahProfilUser = () => {
               id="outlined-basic"
               variant="outlined"
               value={periode}
-              InputProps={{
-                readOnly: true
-              }}
-              sx={{ backgroundColor: Colors.grey400 }}
-            />
-            <Typography sx={[labelInput, spacingTop]}>Unit Bisnis</Typography>
-            <TextField
-              size="small"
-              id="outlined-basic"
-              variant="outlined"
-              value={`${kodeUnitBisnis._id} - ${kodeUnitBisnis.namaUnitBisnis}`}
               InputProps={{
                 readOnly: true
               }}

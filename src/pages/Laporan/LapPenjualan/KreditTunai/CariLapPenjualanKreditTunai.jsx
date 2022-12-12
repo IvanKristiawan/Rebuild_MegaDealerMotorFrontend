@@ -4,8 +4,7 @@ import { AuthContext } from "../../../../contexts/AuthContext";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
-  kotaPerusahaan,
-  lokasiSP
+  kotaPerusahaan
 } from "../../../../constants/GeneralSetting";
 import { tempUrl } from "../../../../contexts/ContextProvider";
 import { Loader } from "../../../../components";
@@ -39,7 +38,6 @@ const CariLapPenjualanKreditTunai = () => {
         sampaiTgl,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );

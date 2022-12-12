@@ -64,10 +64,6 @@ export { default as UbahUser } from "./Utility/DaftarUser/UbahUser";
 export { default as TampilCabang } from "./Master/Cabang/TampilCabang";
 export { default as TambahCabang } from "./Master/Cabang/TambahCabang";
 export { default as UbahCabang } from "./Master/Cabang/UbahCabang";
-// Unit Bisnis Page
-export { default as TampilUnitBisnis } from "./Master/UnitBisnis/TampilUnitBisnis";
-export { default as TambahUnitBisnis } from "./Master/UnitBisnis/TambahUnitBisnis";
-export { default as UbahUnitBisnis } from "./Master/UnitBisnis/UbahUnitBisnis";
 // Leasing Page
 export { default as TampilLeasing } from "./Master/Leasing/TampilLeasing";
 export { default as TambahLeasing } from "./Master/Leasing/TambahLeasing";

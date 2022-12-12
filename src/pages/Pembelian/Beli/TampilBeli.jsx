@@ -64,7 +64,6 @@ const TampilBeli = () => {
   const getBeliById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/belis/${id}`, {
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token

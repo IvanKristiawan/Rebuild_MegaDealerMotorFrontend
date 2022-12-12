@@ -34,10 +34,9 @@ const PenjualanPerCabang = () => {
 
   const downloadPdf = async () => {
     let getPenjualanPerCabang;
-    const response = await axios.post(`${tempUrl}/cabangsByUnitBisnis`, {
+    const response = await axios.post(`${tempUrl}/cabangs`, {
       id: user._id,
-      token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id
+      token: user.token
     });
 
     let y = 55;
@@ -128,7 +127,6 @@ const PenjualanPerCabang = () => {
           sampaiTgl,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: response.data[i]._id
         }
       );
