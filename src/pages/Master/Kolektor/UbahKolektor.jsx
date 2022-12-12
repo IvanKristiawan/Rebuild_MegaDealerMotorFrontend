@@ -53,6 +53,12 @@ const UbahKolektor = () => {
 
   const updateKolektor = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation = namaKolektor.length === 0;
     if (isFailedValidation) {
       setError(true);
@@ -63,6 +69,9 @@ const UbahKolektor = () => {
         await axios.post(`${tempUrl}/updateKolektor/${id}`, {
           namaKolektor,
           teleponKolektor,
+          tglUpdate: current_date,
+          jamUpdate: current_time,
+          userUpdate: user.username,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

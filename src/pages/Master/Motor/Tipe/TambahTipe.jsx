@@ -62,6 +62,12 @@ const TambahTipe = () => {
 
   const saveTipe = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation =
       kodeTipe.length === 0 || namaTipe.length === 0 || merk.length === 0;
     if (isFailedValidation) {
@@ -94,6 +100,9 @@ const TambahTipe = () => {
             noMesin,
             isi,
             merk,
+            tglInput: current_date,
+            jamInput: current_time,
+            userInput: user.username,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token

@@ -114,6 +114,12 @@ const TambahCOA = () => {
 
   const saveTipe = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation =
       kodeCOA.length === 0 ||
       namaCOA.length === 0 ||
@@ -155,6 +161,9 @@ const TambahCOA = () => {
           jenisCOA: tempJenisCOA.data._id,
           jenisSaldo,
           kasBank,
+          tglInput: current_date,
+          jamInput: current_time,
+          userInput: user.username,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

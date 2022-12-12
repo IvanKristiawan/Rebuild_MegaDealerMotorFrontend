@@ -52,6 +52,12 @@ const UbahMarketing = () => {
 
   const updateMarketing = async (e) => {
     e.preventDefault();
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     let isFailedValidation = namaMarketing.length === 0;
     if (isFailedValidation) {
       setError(true);
@@ -62,6 +68,9 @@ const UbahMarketing = () => {
         await axios.post(`${tempUrl}/updateMarketing/${id}`, {
           namaMarketing,
           teleponMarketing,
+          tglUpdate: current_date,
+          jamUpdate: current_time,
+          userUpdate: user.username,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
