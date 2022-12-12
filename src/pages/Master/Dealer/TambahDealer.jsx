@@ -47,7 +47,7 @@ const TambahDealer = () => {
       token: user.token,
       kodeCabang: user.cabang._id
     });
-    setKodeDealer(nextKodeDealer.data);
+    setKodeDealer(`${user.cabang._id}${nextKodeDealer.data}`);
     setLoading(false);
   };
 

@@ -47,7 +47,7 @@ const TambahSurveyor = () => {
       token: user.token,
       kodeCabang: user.cabang._id
     });
-    setKodeSurveyor(nextKodeSurveyor.data);
+    setKodeSurveyor(`${user.cabang._id}${nextKodeSurveyor.data}`);
     setLoading(false);
   };
 

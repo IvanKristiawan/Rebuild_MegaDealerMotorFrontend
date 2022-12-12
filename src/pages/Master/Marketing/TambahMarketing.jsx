@@ -48,7 +48,7 @@ const TambahMarketing = () => {
         kodeCabang: user.cabang._id
       }
     );
-    setKodeMarketing(nextKodeMarketing.data);
+    setKodeMarketing(`${user.cabang._id}${nextKodeMarketing.data}`);
     setLoading(false);
   };
 

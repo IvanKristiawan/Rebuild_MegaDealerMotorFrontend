@@ -45,7 +45,7 @@ const TambahKolektor = () => {
       token: user.token,
       kodeCabang: user.cabang._id
     });
-    setKodeKolektor(nextKodeKolektor.data);
+    setKodeKolektor(`${user.cabang._id}${nextKodeKolektor.data}`);
     setLoading(false);
   };
 
