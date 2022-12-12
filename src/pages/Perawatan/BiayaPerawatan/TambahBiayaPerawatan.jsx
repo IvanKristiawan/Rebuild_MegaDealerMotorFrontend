@@ -67,7 +67,6 @@ const TambahBiayaPerawatan = () => {
         nopol,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -88,7 +87,6 @@ const TambahBiayaPerawatan = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -103,7 +101,6 @@ const TambahBiayaPerawatan = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -128,7 +125,6 @@ const TambahBiayaPerawatan = () => {
           nopol,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         tempTotalBiayaPerawatan =
@@ -140,7 +136,6 @@ const TambahBiayaPerawatan = () => {
             totalBiayaPerawatan: tempTotalBiayaPerawatan,
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           }
         );
@@ -151,7 +146,6 @@ const TambahBiayaPerawatan = () => {
           biayaPerawatan,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         setLoading(false);

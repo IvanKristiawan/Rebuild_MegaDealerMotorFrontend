@@ -98,7 +98,6 @@ const TambahKasMasuk = () => {
     const nextKodeKasMasuk = await axios.post(`${tempUrl}/kasMasuksNextKode`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setNoBukti(nextKodeKasMasuk.data);
@@ -110,7 +109,6 @@ const TambahKasMasuk = () => {
     const allCOAs = await axios.post(`${tempUrl}/COAsKas`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setCOAsData(allCOAs.data);
@@ -128,7 +126,6 @@ const TambahKasMasuk = () => {
         setLoading(true);
         let tempCOA = await axios.post(`${tempUrl}/COAByKode`, {
           kodeCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -137,7 +134,6 @@ const TambahKasMasuk = () => {
           tglKasMasuk,
           COA: tempCOA.data._id,
           keterangan,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

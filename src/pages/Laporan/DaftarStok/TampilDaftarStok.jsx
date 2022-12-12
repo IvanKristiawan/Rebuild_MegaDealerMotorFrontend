@@ -526,7 +526,7 @@ const TampilDaftarStok = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={`${supplier._id} - ${supplier.namaSupplier}
+                value={`${supplier.kodeSupplier} - ${supplier.namaSupplier}
                 `}
               />
               <Typography sx={[labelInput, spacingTop]}>Merk</Typography>

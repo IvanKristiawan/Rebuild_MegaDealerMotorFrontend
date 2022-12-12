@@ -60,7 +60,6 @@ const TampilDaftarBankKeluar = () => {
       const allBankKeluars = await axios.post(`${tempUrl}/bankKeluars`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setBankKeluarsData(allBankKeluars.data);

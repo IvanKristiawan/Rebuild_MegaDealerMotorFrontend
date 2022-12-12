@@ -72,7 +72,6 @@ const TampilKasMasukChild = () => {
       const pickedKasMasuk = await axios.post(`${tempUrl}/kasMasuks/${id}`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       let tempJumlahKasMasuk =
@@ -81,7 +80,6 @@ const TampilKasMasukChild = () => {
         jumlah: tempJumlahKasMasuk,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       // Delete Kas Masuk

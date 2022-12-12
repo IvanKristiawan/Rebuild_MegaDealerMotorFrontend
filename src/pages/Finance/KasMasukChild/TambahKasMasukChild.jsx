@@ -98,7 +98,6 @@ const TambahKasMasukChild = () => {
     const pickedKasMasuk = await axios.post(`${tempUrl}/kasMasuks/${id}`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setNoBukti(pickedKasMasuk.data.noBukti);
@@ -111,7 +110,6 @@ const TambahKasMasukChild = () => {
     const allCOAs = await axios.post(`${tempUrl}/COAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setCOAsData(allCOAs.data);
@@ -130,7 +128,6 @@ const TambahKasMasukChild = () => {
         const pickedKasMasuk = await axios.post(`${tempUrl}/kasMasuks/${id}`, {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         let tempJumlahKasMasuk =
@@ -139,12 +136,10 @@ const TambahKasMasukChild = () => {
           jumlah: tempJumlahKasMasuk,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         let tempCOA = await axios.post(`${tempUrl}/COAByKode`, {
           kodeCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -155,7 +150,6 @@ const TambahKasMasukChild = () => {
           COA: tempCOA.data._id,
           keterangan,
           jumlah,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

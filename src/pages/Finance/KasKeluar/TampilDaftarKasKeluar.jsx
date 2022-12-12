@@ -60,7 +60,6 @@ const TampilDaftarKasKeluar = () => {
       const allKasKeluars = await axios.post(`${tempUrl}/kasKeluars`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setKasKeluarsData(allKasKeluars.data);
@@ -82,7 +81,7 @@ const TampilDaftarKasKeluar = () => {
     <Box sx={container}>
       <Typography color="#757575">Finance</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Daftar Kas keluar
+        Daftar Kas Keluar
       </Typography>
       <Box sx={buttonModifierContainer}>
         <ButtonModifier

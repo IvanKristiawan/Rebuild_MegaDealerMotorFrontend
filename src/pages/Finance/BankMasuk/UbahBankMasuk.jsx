@@ -110,7 +110,6 @@ const UbahBankMasuk = () => {
     const allCOAs = await axios.post(`${tempUrl}/COAsBank`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setCOAsData(allCOAs.data);
@@ -128,7 +127,6 @@ const UbahBankMasuk = () => {
         setLoading(true);
         let tempCOA = await axios.post(`${tempUrl}/COAByKode`, {
           kodeCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -137,7 +135,6 @@ const UbahBankMasuk = () => {
           tglBankMasuk,
           COA: tempCOA.data._id,
           keterangan,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

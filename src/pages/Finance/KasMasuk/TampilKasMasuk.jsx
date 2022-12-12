@@ -58,7 +58,6 @@ const TampilKasMasuk = () => {
   const getKasMasukById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/kasMasuks/${id}`, {
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token
@@ -70,7 +69,6 @@ const TampilKasMasuk = () => {
       setJumlah(response.data.jumlah);
       const response2 = await axios.post(`${tempUrl}/kasMasuksChildByNoBukti`, {
         noBukti: response.data.noBukti,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token

@@ -100,7 +100,6 @@ const TambahBankKeluar = () => {
       {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       }
     );
@@ -113,7 +112,6 @@ const TambahBankKeluar = () => {
     const allCOAs = await axios.post(`${tempUrl}/COAsBank`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setCOAsData(allCOAs.data);
@@ -131,7 +129,6 @@ const TambahBankKeluar = () => {
         setLoading(true);
         let tempCOA = await axios.post(`${tempUrl}/COAByKode`, {
           kodeCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -140,7 +137,6 @@ const TambahBankKeluar = () => {
           tglBankKeluar,
           COA: tempCOA.data._id,
           keterangan,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

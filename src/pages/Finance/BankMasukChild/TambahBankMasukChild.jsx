@@ -100,7 +100,6 @@ const TambahBankMasukChild = () => {
     const pickedBankMasuk = await axios.post(`${tempUrl}/bankMasuks/${id}`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setNoBukti(pickedBankMasuk.data.noBukti);
@@ -113,7 +112,6 @@ const TambahBankMasukChild = () => {
     const allCOAs = await axios.post(`${tempUrl}/COAs`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setCOAsData(allCOAs.data);
@@ -134,7 +132,6 @@ const TambahBankMasukChild = () => {
           {
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           }
         );
@@ -144,12 +141,10 @@ const TambahBankMasukChild = () => {
           jumlah: tempJumlahKasMasuk,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         let tempCOA = await axios.post(`${tempUrl}/COAByKode`, {
           kodeCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -160,7 +155,6 @@ const TambahBankMasukChild = () => {
           COA: tempCOA.data._id,
           keterangan,
           jumlah,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

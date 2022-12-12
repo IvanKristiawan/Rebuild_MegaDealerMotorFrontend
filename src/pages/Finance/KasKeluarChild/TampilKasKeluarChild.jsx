@@ -72,7 +72,6 @@ const TampilKasKeluarChild = () => {
       const pickedKasKeluar = await axios.post(`${tempUrl}/kasKeluars/${id}`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       let tempJumlahKasKeluar =
@@ -81,7 +80,6 @@ const TampilKasKeluarChild = () => {
         jumlah: tempJumlahKasKeluar,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       // Delete Kas Keluar

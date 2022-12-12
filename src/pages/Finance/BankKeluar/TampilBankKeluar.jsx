@@ -58,7 +58,6 @@ const TampilBankKeluar = () => {
   const getBankKeluarById = async () => {
     if (id) {
       const response = await axios.post(`${tempUrl}/bankKeluars/${id}`, {
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id,
         id: user._id,
         token: user.token
@@ -72,7 +71,6 @@ const TampilBankKeluar = () => {
         `${tempUrl}/bankKeluarsChildByNoBukti`,
         {
           noBukti: response.data.noBukti,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token

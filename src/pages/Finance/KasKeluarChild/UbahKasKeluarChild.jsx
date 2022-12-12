@@ -117,7 +117,6 @@ const UbahKasKeluarChild = () => {
     const allCOAs = await axios.post(`${tempUrl}/COAsKas`, {
       id: user._id,
       token: user.token,
-      kodeUnitBisnis: user.unitBisnis._id,
       kodeCabang: user.cabang._id
     });
     setCOAsData(allCOAs.data);
@@ -141,7 +140,6 @@ const UbahKasKeluarChild = () => {
           {
             id: user._id,
             token: user.token,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id
           }
         );
@@ -153,12 +151,10 @@ const UbahKasKeluarChild = () => {
           jumlah: tempJumlahKasKeluar,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         });
         let tempCOA = await axios.post(`${tempUrl}/COAByKode`, {
           kodeCOA,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id,
           id: user._id,
           token: user.token
@@ -170,7 +166,6 @@ const UbahKasKeluarChild = () => {
             COA: tempCOA.data._id,
             keterangan,
             jumlah: jumlahBaru,
-            kodeUnitBisnis: user.unitBisnis._id,
             kodeCabang: user.cabang._id,
             id: user._id,
             token: user.token

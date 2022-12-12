@@ -101,7 +101,6 @@ const TampilBiayaPerawatan = () => {
         {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         }
       );
@@ -137,7 +136,6 @@ const TampilBiayaPerawatan = () => {
         nopol,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       tempTotalBiayaPerawatan =
@@ -149,7 +147,6 @@ const TampilBiayaPerawatan = () => {
           totalBiayaPerawatan: tempTotalBiayaPerawatan,
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         }
       );

@@ -74,7 +74,6 @@ const TampilBankKeluarChild = () => {
         {
           id: user._id,
           token: user.token,
-          kodeUnitBisnis: user.unitBisnis._id,
           kodeCabang: user.cabang._id
         }
       );
@@ -84,7 +83,6 @@ const TampilBankKeluarChild = () => {
         jumlah: tempJumlahBankKeluar,
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       // Delete Kas Keluar

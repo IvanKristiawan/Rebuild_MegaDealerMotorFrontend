@@ -60,7 +60,6 @@ const TampilDaftarKasMasuk = () => {
       const allKasMasuks = await axios.post(`${tempUrl}/kasMasuks`, {
         id: user._id,
         token: user.token,
-        kodeUnitBisnis: user.unitBisnis._id,
         kodeCabang: user.cabang._id
       });
       setKasMasuksData(allKasMasuks.data);
