@@ -96,6 +96,7 @@ export { default as CariTotalPiutang } from "./Laporan/TotalPiutang/CariTotalPiu
 export { default as CariTunggakan } from "./Laporan/Tunggakan/CariTunggakan";
 export { default as CariPenerimaanKas } from "./Laporan/PenerimaanKas/CariPenerimaanKas";
 export { default as PenjualanPerCabang } from "./Laporan/PenjualanPerCabang/PenjualanPerCabang";
+export { default as RekapPenerimaan } from "./Laporan/RekapPenerimaan/RekapPenerimaan";
 // Laporan Penjualan Per Tipe
 export { default as CariLapPenjualanPerTipe } from "./Laporan/LapPenjualan/PerTipe/CariLapPenjualanPerTipe";
 // Laporan Penjualan Per Marketing

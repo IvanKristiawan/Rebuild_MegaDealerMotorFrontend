@@ -12,7 +12,6 @@ import { Box, Typography, Button, Divider, TextField } from "@mui/material";
 import PrintIcon from "@mui/icons-material/Print";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import "./PenjualanPerCabangStyles.css";
 
 const PenjualanPerCabang = () => {
   const { user } = useContext(AuthContext);

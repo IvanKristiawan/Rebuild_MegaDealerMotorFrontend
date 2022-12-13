@@ -34,7 +34,6 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import SellIcon from "@mui/icons-material/Sell";
 import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
-import ApartmentIcon from "@mui/icons-material/Apartment";
 import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import PaymentIcon from "@mui/icons-material/Payment";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
@@ -53,6 +52,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import AddchartIcon from "@mui/icons-material/Addchart";
+import SoapIcon from "@mui/icons-material/Soap";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
 import { Colors } from "./constants/styles";
 import { AuthContext } from "./contexts/AuthContext";
@@ -135,6 +135,7 @@ import {
   CariLapPenjualanPerSurveyor,
   CariLapPenjualanKreditTunai,
   PenjualanPerCabang,
+  RekapPenerimaan,
   TampilDaftarAngsuran,
   TambahAngsuran,
   TampilAngsuran,
@@ -481,6 +482,15 @@ const App = () => {
                         icon={<AddchartIcon name="penjualan-per-cabang-icon" />}
                       >
                         Penjualan/Cabang
+                      </MenuItem>
+                    </Box>
+                  </Link>
+                  <Link to="/rekapPenerimaan" style={linkText}>
+                    <Box sx={{ paddingLeft: "20px" }}>
+                      <MenuItem
+                        icon={<SoapIcon name="rekap-penerimaan-icon" />}
+                      >
+                        Rekap Penerimaan
                       </MenuItem>
                     </Box>
                   </Link>
@@ -1329,6 +1339,15 @@ const App = () => {
                     element={
                       <USERRoute>
                         <PenjualanPerCabang />
+                      </USERRoute>
+                    }
+                  />
+                  {/* Laporan Rekap Penerimaan */}
+                  <Route
+                    path="/rekapPenerimaan"
+                    element={
+                      <USERRoute>
+                        <RekapPenerimaan />
                       </USERRoute>
                     }
                   />
