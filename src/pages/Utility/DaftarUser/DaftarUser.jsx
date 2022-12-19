@@ -23,7 +23,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  Checkbox,
+  FormGroup,
+  FormControlLabel
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
@@ -47,6 +50,16 @@ const DaftarUser = () => {
   const [periode, setPeriode] = useState("");
   const [kodeKwitansi, setKodeKwitansi] = useState("");
   const [noTerakhir, setNoTerakhir] = useState("");
+
+  const [master, setMaster] = useState(false);
+  const [pembelian, setPembelian] = useState(false);
+  const [penjualan, setPenjualan] = useState(false);
+  const [laporan, setLaporan] = useState(false);
+  const [piutang, setPiutang] = useState(false);
+  const [perawatan, setPerawatan] = useState(false);
+  const [finance, setFinance] = useState(false);
+  const [utility, setUtility] = useState(false);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUser] = useState([]);
   const [usersForDoc, setUsersForDoc] = useState([]);
@@ -149,6 +162,15 @@ const DaftarUser = () => {
       setKodeKwitansi(response.data.kodeKwitansi);
       setNoTerakhir(response.data.noTerakhir);
       setKodeCabang(response.data.cabang);
+
+      setMaster(response.data.akses.master);
+      setPembelian(response.data.akses.pembelian);
+      setPenjualan(response.data.akses.penjualan);
+      setLaporan(response.data.akses.laporan);
+      setPiutang(response.data.akses.piutang);
+      setPerawatan(response.data.akses.perawatan);
+      setFinance(response.data.akses.finance);
+      setUtility(response.data.akses.utility);
     }
   };
 
@@ -366,6 +388,67 @@ const DaftarUser = () => {
             </Box>
           </Box>
           <Divider sx={dividerStyle} />
+          {user.tipeUser === "MGR" && (
+            <>
+              <Typography variant="h5" sx={[labelInput, spacingTop]}>
+                Hak Akses User
+              </Typography>
+              <Box sx={showDataContainer}>
+                <Box sx={showDataWrapper}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={master} disabled />}
+                      label="Master"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={pembelian} disabled />}
+                      label="Pembelian"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={penjualan} disabled />}
+                      label="Penjualan"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={laporan} disabled />}
+                      label="Laporan"
+                    />
+                  </FormGroup>
+                </Box>
+                <Box sx={[showDataWrapper, secondWrapper]}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={piutang} disabled />}
+                      label="Piutang"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={perawatan} disabled />}
+                      label="Perawatan"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={finance} disabled />}
+                      label="Finance"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={utility} disabled />}
+                      label="Utility"
+                    />
+                  </FormGroup>
+                </Box>
+              </Box>
+            </>
+          )}
         </>
       )}
       <Box sx={searchBarContainer}>

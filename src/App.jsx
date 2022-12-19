@@ -235,425 +235,460 @@ const App = () => {
               collapsedWidth="0px"
             >
               <Menu>
-                <SubMenu label="Master" icon={<ClassIcon name="master-icon" />}>
-                  <SubMenu label="Motor" icon={<MopedIcon name="motor-icon" />}>
-                    <Divider />
-                    <Link to="/tipe" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Tipe/Merk
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
-                    <Link to="/warna" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Warna
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
-                  </SubMenu>
-                  <SubMenu label="Area" icon={<PublicIcon name="area-icon" />}>
-                    <Divider />
-                    <Link to="/wilayah" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Wilayah
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
-                    <Link to="/kecamatan" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Kecamatan
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
-                  </SubMenu>
+                {user.akses.master === true && (
                   <SubMenu
-                    label="Buku Besar"
-                    icon={<MenuBookIcon name="buku-besar-icon" />}
+                    label="Master"
+                    icon={<ClassIcon name="master-icon" />}
                   >
-                    <Divider />
-                    <Link to="/jenisCOA" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
+                    <SubMenu
+                      label="Motor"
+                      icon={<MopedIcon name="motor-icon" />}
+                    >
+                      <Divider />
+                      <Link to="/tipe" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Tipe/Merk
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link to="/warna" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Warna
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                    </SubMenu>
+                    <SubMenu
+                      label="Area"
+                      icon={<PublicIcon name="area-icon" />}
+                    >
+                      <Divider />
+                      <Link to="/wilayah" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Wilayah
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link to="/kecamatan" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Kecamatan
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                    </SubMenu>
+                    <SubMenu
+                      label="Buku Besar"
+                      icon={<MenuBookIcon name="buku-besar-icon" />}
+                    >
+                      <Divider />
+                      <Link to="/jenisCOA" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Jenis COA
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link to="/groupCOA" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Group COA
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link to="/subGroupCOA" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Sub Group COA
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link to="/coa" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            COA
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                    </SubMenu>
+                    <Link to="/dealer" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<PersonPinIcon name="dealer-icon" />}>
+                          Dealer
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/kolektor" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<SensorOccupiedIcon name="dealer-icon" />}
                         >
-                          Jenis COA
-                        </Typography>
-                      </MenuItem>
+                          Kolektor
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/marketing" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<AddBusinessIcon name="marketing-icon" />}
+                        >
+                          Marketing
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/pekerjaan" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<EngineeringIcon name="pekerjaan-icon" />}
+                        >
+                          Pekerjaan
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/surveyor" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<HailIcon name="surveyor-icon" />}>
+                          Surveyor
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/leasing" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<CarRentalIcon name="leasing-icon" />}>
+                          Leasing
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/supplier" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<AddReactionIcon name="supplier-icon" />}
+                        >
+                          Supplier
+                        </MenuItem>
+                      </Box>
                     </Link>
                     <Divider />
-                    <Link to="/groupCOA" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Group COA
-                        </Typography>
-                      </MenuItem>
+                    <Link to="/cabang" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<AddHomeWorkIcon name="cabang-icon" />}>
+                          Cabang
+                        </MenuItem>
+                      </Box>
                     </Link>
-                    <Divider />
-                    <Link to="/subGroupCOA" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Sub Group COA
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
-                    <Link to="/coa" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          COA
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
                   </SubMenu>
-                  <Link to="/dealer" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<PersonPinIcon name="dealer-icon" />}>
-                        Dealer
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/kolektor" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<SensorOccupiedIcon name="dealer-icon" />}
-                      >
-                        Kolektor
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/marketing" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<AddBusinessIcon name="marketing-icon" />}
-                      >
-                        Marketing
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/pekerjaan" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<EngineeringIcon name="pekerjaan-icon" />}
-                      >
-                        Pekerjaan
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/surveyor" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<HailIcon name="surveyor-icon" />}>
-                        Surveyor
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/leasing" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<CarRentalIcon name="leasing-icon" />}>
-                        Leasing
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/supplier" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<AddReactionIcon name="supplier-icon" />}>
-                        Supplier
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Divider />
-                  <Link to="/cabang" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<AddHomeWorkIcon name="cabang-icon" />}>
-                        Cabang
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                </SubMenu>
+                )}
                 <Divider />
-                <SubMenu
-                  label="Pembelian"
-                  icon={<AddShoppingCartIcon name="pembelian-icon" />}
-                >
-                  <Link to="/daftarBeli" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<ShoppingBagIcon name="beli-icon" />}>
-                        Beli
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                </SubMenu>
-                <Divider />
-                <SubMenu
-                  label="Penjualan"
-                  icon={<CurrencyExchangeIcon name="penjualan-icon" />}
-                >
-                  <Link to="/register" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<AppRegistrationIcon name="register-icon" />}
-                      >
-                        Register
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/jual" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<SellIcon name="register-icon" />}>
-                        Jual
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                </SubMenu>
-                <Divider />
-                <SubMenu
-                  label="Laporan"
-                  icon={<InventoryIcon name="utility-icon" />}
-                >
-                  <Link to="/daftarStok" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<FormatListNumberedIcon name="profil-icon" />}
-                      >
-                        Daftar Stok
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/totalPiutang" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<RecentActorsIcon name="total-piutang-icon" />}
-                      >
-                        Total Piutang
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/tunggakan" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<PlaylistRemoveIcon name="tunggakan-icon" />}
-                      >
-                        Tunggakan
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/penerimaanKas" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<PaymentsIcon name="penerimaan-kas-icon" />}
-                      >
-                        Penerimaan Kas
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/penjualanPerCabang" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<AddchartIcon name="penjualan-per-cabang-icon" />}
-                      >
-                        Penjualan/Cabang
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/rekapPenerimaan" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<SoapIcon name="rekap-penerimaan-icon" />}
-                      >
-                        Rekap Penerimaan
-                      </MenuItem>
-                    </Box>
-                  </Link>
+                {user.akses.pembelian === true && (
                   <SubMenu
-                    label="Lap. Penjualan"
-                    icon={<PointOfSaleIcon name="lap-penjualan-icon" />}
+                    label="Pembelian"
+                    icon={<AddShoppingCartIcon name="pembelian-icon" />}
                   >
-                    <Divider />
-                    <Link to="/lapPenjualanPerTipe" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Per Tipe
-                        </Typography>
-                      </MenuItem>
+                    <Link to="/daftarBeli" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<ShoppingBagIcon name="beli-icon" />}>
+                          Beli
+                        </MenuItem>
+                      </Box>
                     </Link>
-                    <Divider />
-                    <Link to="/lapPenjualanPerMarketing" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Per Marketing
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
-                    <Link to="/lapPenjualanPerSurveyor" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Per Surveyor
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
-                    <Link to="/lapPenjualanKreditTunai" style={linkText}>
-                      <MenuItem>
-                        <Typography
-                          variant="body2"
-                          sx={{ paddingLeft: "70px" }}
-                        >
-                          Kredit & Tunai
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <Divider />
                   </SubMenu>
-                </SubMenu>
+                )}
                 <Divider />
-                <SubMenu
-                  label="Piutang"
-                  icon={<PriceChangeIcon name="utility-icon" />}
-                >
-                  <Link to="/daftarAngsuran" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<PaymentIcon name="profil-icon" />}>
-                        Angsuran
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/suratPemberitahuan" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<HistoryEduIcon name="sp-icon" />}>
-                        SP
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/suratPenarikan" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<CompareArrowsIcon name="sp-icon" />}>
-                        ST
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                </SubMenu>
+                {user.akses.penjualan === true && (
+                  <SubMenu
+                    label="Penjualan"
+                    icon={<CurrencyExchangeIcon name="penjualan-icon" />}
+                  >
+                    <Link to="/register" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<AppRegistrationIcon name="register-icon" />}
+                        >
+                          Register
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/jual" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<SellIcon name="register-icon" />}>
+                          Jual
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  </SubMenu>
+                )}
                 <Divider />
-                <SubMenu
-                  label="Perawatan"
-                  icon={<ConstructionIcon name="Perawatan-icon" />}
-                >
-                  <Link to="/biayaPerawatan" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<RequestQuoteIcon name="biaya-perawatan-icon" />}
-                      >
-                        Biaya Perawatan
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                </SubMenu>
+                {user.akses.laporan === true && (
+                  <SubMenu
+                    label="Laporan"
+                    icon={<InventoryIcon name="utility-icon" />}
+                  >
+                    <Link to="/daftarStok" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<FormatListNumberedIcon name="profil-icon" />}
+                        >
+                          Daftar Stok
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/totalPiutang" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<RecentActorsIcon name="total-piutang-icon" />}
+                        >
+                          Total Piutang
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/tunggakan" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<PlaylistRemoveIcon name="tunggakan-icon" />}
+                        >
+                          Tunggakan
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/penerimaanKas" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<PaymentsIcon name="penerimaan-kas-icon" />}
+                        >
+                          Penerimaan Kas
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/penjualanPerCabang" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={
+                            <AddchartIcon name="penjualan-per-cabang-icon" />
+                          }
+                        >
+                          Penjualan/Cabang
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/rekapPenerimaan" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<SoapIcon name="rekap-penerimaan-icon" />}
+                        >
+                          Rekap Penerimaan
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <SubMenu
+                      label="Lap. Penjualan"
+                      icon={<PointOfSaleIcon name="lap-penjualan-icon" />}
+                    >
+                      <Divider />
+                      <Link to="/lapPenjualanPerTipe" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Per Tipe
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link to="/lapPenjualanPerMarketing" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Per Marketing
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link to="/lapPenjualanPerSurveyor" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Per Surveyor
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                      <Link to="/lapPenjualanKreditTunai" style={linkText}>
+                        <MenuItem>
+                          <Typography
+                            variant="body2"
+                            sx={{ paddingLeft: "70px" }}
+                          >
+                            Kredit & Tunai
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                      <Divider />
+                    </SubMenu>
+                  </SubMenu>
+                )}
                 <Divider />
-                <SubMenu
-                  label="Finance"
-                  icon={<MonetizationOnIcon name="Finance-icon" />}
-                >
-                  <Link to="/daftarKasMasuk" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<AddCardIcon name="kas-masuk-icon" />}>
-                        Kas Masuk
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/daftarKasKeluar" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={<CardMembershipIcon name="kas-keluar-icon" />}
-                      >
-                        Kas Keluar
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/daftarBankMasuk" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<FileOpenIcon name="bank-masuk-icon" />}>
-                        Bank Masuk
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/daftarBankKeluar" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem
-                        icon={
-                          <IndeterminateCheckBoxIcon name="bank-keluar-icon" />
-                        }
-                      >
-                        Bank Keluar
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/posting" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<PostAddIcon name="posting-icon" />}>
-                        Posting
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                </SubMenu>
+                {user.akses.piutang === true && (
+                  <SubMenu
+                    label="Piutang"
+                    icon={<PriceChangeIcon name="utility-icon" />}
+                  >
+                    <Link to="/daftarAngsuran" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<PaymentIcon name="profil-icon" />}>
+                          Angsuran
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/suratPemberitahuan" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<HistoryEduIcon name="sp-icon" />}>
+                          SP
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/suratPenarikan" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<CompareArrowsIcon name="sp-icon" />}>
+                          ST
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  </SubMenu>
+                )}
                 <Divider />
-                <SubMenu
-                  label="Utility"
-                  icon={<ManageAccountsIcon name="utility-icon" />}
-                >
-                  <Link to="/profilUser" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<PersonSearchIcon name="profil-icon" />}>
-                        Profil User
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                  <Link to="/daftarUser" style={linkText}>
-                    <Box sx={{ paddingLeft: "20px" }}>
-                      <MenuItem icon={<ElevatorIcon name="daftar-icon" />}>
-                        Daftar User
-                      </MenuItem>
-                    </Box>
-                  </Link>
-                </SubMenu>
+                {user.akses.perawatan === true && (
+                  <SubMenu
+                    label="Perawatan"
+                    icon={<ConstructionIcon name="Perawatan-icon" />}
+                  >
+                    <Link to="/biayaPerawatan" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={
+                            <RequestQuoteIcon name="biaya-perawatan-icon" />
+                          }
+                        >
+                          Biaya Perawatan
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  </SubMenu>
+                )}
+                <Divider />
+                {user.akses.finance === true && (
+                  <SubMenu
+                    label="Finance"
+                    icon={<MonetizationOnIcon name="Finance-icon" />}
+                  >
+                    <Link to="/daftarKasMasuk" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<AddCardIcon name="kas-masuk-icon" />}>
+                          Kas Masuk
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/daftarKasKeluar" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<CardMembershipIcon name="kas-keluar-icon" />}
+                        >
+                          Kas Keluar
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/daftarBankMasuk" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<FileOpenIcon name="bank-masuk-icon" />}
+                        >
+                          Bank Masuk
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/daftarBankKeluar" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={
+                            <IndeterminateCheckBoxIcon name="bank-keluar-icon" />
+                          }
+                        >
+                          Bank Keluar
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/posting" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<PostAddIcon name="posting-icon" />}>
+                          Posting
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  </SubMenu>
+                )}
+                <Divider />
+                {user.akses.utility === true && (
+                  <SubMenu
+                    label="Utility"
+                    icon={<ManageAccountsIcon name="utility-icon" />}
+                  >
+                    <Link to="/profilUser" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<PersonSearchIcon name="profil-icon" />}
+                        >
+                          Profil User
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                    <Link to="/daftarUser" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<ElevatorIcon name="daftar-icon" />}>
+                          Daftar User
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  </SubMenu>
+                )}
                 <Divider />
               </Menu>
             </Sidebar>

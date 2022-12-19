@@ -273,6 +273,7 @@ const TambahJualBekas = () => {
 
   const saveJual = async (e) => {
     e.preventDefault();
+    let isFailedValidation;
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
@@ -283,24 +284,48 @@ const TambahJualBekas = () => {
     if (tempDateAng > 28) {
       alert(`Tanggal Angsuran I tidak boleh lebih dari 28!`);
     } else {
-      let isFailedValidation =
-        noJual.length === 0 ||
-        tglJual.length === 0 ||
-        jenisJual.length === 0 ||
-        tglInput.length === 0 ||
-        noRegister.length === 0 ||
-        kodeMarketing.length === 0 ||
-        kodeSurveyor.length === 0 ||
-        kodePekerjaan.length === 0 ||
-        kodeKecamatan.length === 0 ||
-        kodeLeasing.length === 0 ||
-        nopol.length === 0 ||
-        hargaTunai.length === 0 ||
-        uangMuka.length === 0 ||
-        sisaPiutang.length === 0 ||
-        angPerBulan.length === 0 ||
-        tenor.length === 0 ||
-        jumlahPiutang.length === 0;
+      if (jenisJual === "KREDIT") {
+        isFailedValidation =
+          noJual.length === 0 ||
+          tglJual.length === 0 ||
+          jenisJual.length === 0 ||
+          tglAng.length === 0 ||
+          tglAngAkhir.length === 0 ||
+          tglInput.length === 0 ||
+          noRegister.length === 0 ||
+          kodeMarketing.length === 0 ||
+          kodeSurveyor.length === 0 ||
+          kodePekerjaan.length === 0 ||
+          kodeKecamatan.length === 0 ||
+          kodeLeasing.length === 0 ||
+          nopol.length === 0 ||
+          hargaTunai.length === 0 ||
+          uangMuka.length === 0 ||
+          sisaPiutang.length === 0 ||
+          angPerBulan.length === 0 ||
+          tenor.length === 0 ||
+          jumlahPiutang.length === 0;
+      } else {
+        isFailedValidation =
+          noJual.length === 0 ||
+          tglJual.length === 0 ||
+          jenisJual.length === 0 ||
+          tglInput.length === 0 ||
+          noRegister.length === 0 ||
+          kodeMarketing.length === 0 ||
+          kodeSurveyor.length === 0 ||
+          kodePekerjaan.length === 0 ||
+          kodeKecamatan.length === 0 ||
+          kodeLeasing.length === 0 ||
+          nopol.length === 0 ||
+          hargaTunai.length === 0 ||
+          uangMuka.length === 0 ||
+          sisaPiutang.length === 0 ||
+          angPerBulan.length === 0 ||
+          tenor.length === 0 ||
+          jumlahPiutang.length === 0;
+      }
+
       if (isFailedValidation) {
         setError(true);
         setOpen(!open);
@@ -585,6 +610,15 @@ const TambahJualBekas = () => {
               <TextField
                 type="date"
                 size="small"
+                error={
+                  error && tglAng.length === 0 && jenisJual === "KREDIT" && true
+                }
+                helperText={
+                  error &&
+                  tglAng.length === 0 &&
+                  jenisJual === "KREDIT" &&
+                  "Tanggal Angsuran I harus diisi!"
+                }
                 id="outlined-basic"
                 variant="outlined"
                 value={tglAng}
@@ -604,6 +638,18 @@ const TambahJualBekas = () => {
               <TextField
                 type="date"
                 size="small"
+                error={
+                  error &&
+                  tglAngAkhir.length === 0 &&
+                  jenisJual === "KREDIT" &&
+                  true
+                }
+                helperText={
+                  error &&
+                  tglAngAkhir.length === 0 &&
+                  jenisJual === "KREDIT" &&
+                  "Tanggal Angsuran Akhir harus diisi!"
+                }
                 id="outlined-basic"
                 variant="outlined"
                 value={tglAngAkhir}

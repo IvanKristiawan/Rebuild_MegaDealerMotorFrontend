@@ -69,13 +69,12 @@ const Login = () => {
               })}
               error={!!errors?.username}
               helperText={errors?.username ? errors.username.message : null}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value.toUpperCase())}
             />
             <TextField
               id="outlined-basic"
               label="Password"
               variant="outlined"
-              type="password"
               autoComplete="current-password"
               sx={spacingTop}
               value={password}
@@ -84,7 +83,7 @@ const Login = () => {
               })}
               error={!!errors?.password}
               helperText={errors?.password ? errors.password.message : null}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value.toUpperCase())}
             />
           </Box>
         </Box>

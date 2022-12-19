@@ -6,6 +6,10 @@ const INITIAL_STATE = {
   error: null
 };
 
+window.onbeforeunload = function () {
+  localStorage.clear();
+};
+
 export const AuthContext = createContext(INITIAL_STATE);
 
 const AuthReducer = (state, action) => {

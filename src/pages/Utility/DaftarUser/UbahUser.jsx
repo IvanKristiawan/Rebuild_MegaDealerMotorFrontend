@@ -14,7 +14,10 @@ import {
   Snackbar,
   Alert,
   Paper,
-  Autocomplete
+  Autocomplete,
+  Checkbox,
+  FormGroup,
+  FormControlLabel
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -28,6 +31,16 @@ const UbahUser = () => {
   const [kodeKwitansi, setKodeKwitansi] = useState("");
   const [noTerakhir, setNoTerakhir] = useState("");
   const [password, setPassword] = useState("");
+
+  const [master, setMaster] = useState(false);
+  const [pembelian, setPembelian] = useState(false);
+  const [penjualan, setPenjualan] = useState(false);
+  const [laporan, setLaporan] = useState(false);
+  const [piutang, setPiutang] = useState(false);
+  const [perawatan, setPerawatan] = useState(false);
+  const [finance, setFinance] = useState(false);
+  const [utility, setUtility] = useState(false);
+
   const [cabangs, setCabangs] = useState([]);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -72,6 +85,15 @@ const UbahUser = () => {
     setKodeKwitansi(response.data.kodeKwitansi);
     setNoTerakhir(response.data.noTerakhir);
     setKodeCabang(response.data.cabang._id);
+
+    setMaster(response.data.akses.master);
+    setPembelian(response.data.akses.pembelian);
+    setPenjualan(response.data.akses.penjualan);
+    setLaporan(response.data.akses.laporan);
+    setPiutang(response.data.akses.piutang);
+    setPerawatan(response.data.akses.perawatan);
+    setFinance(response.data.akses.finance);
+    setUtility(response.data.akses.utility);
     setLoading(false);
   };
 
@@ -99,18 +121,34 @@ const UbahUser = () => {
           kodeKwitansi,
           noTerakhir,
           password,
-          kodeCabang: kodeCabang.split(" ", 1)[0],
           tipeAdmin: user.tipeUser,
+          akses: {
+            master,
+            pembelian,
+            penjualan,
+            laporan,
+            piutang,
+            perawatan,
+            finance,
+            utility
+          },
+          kodeCabang: kodeCabang.split(" ", 1)[0],
           id: user._id,
           token: user.token
         });
         setLoading(false);
+
+        if (user._id === id) {
+          dispatch({ type: "LOGOUT" });
+        }
         navigate("/daftarUser");
       } catch (error) {
         console.log(error);
       }
     }
   };
+
+  const tipeUserOption = [{ label: "MGR" }, { label: "ADM" }];
 
   if (loading) {
     return <Loader />;
@@ -139,16 +177,23 @@ const UbahUser = () => {
               onChange={(e) => setUsername(e.target.value.toUpperCase())}
             />
             <Typography sx={[labelInput, spacingTop]}>Tipe User</Typography>
-            <TextField
+            <Autocomplete
               size="small"
-              error={error && tipeUser.length === 0 && true}
-              helperText={
-                error && tipeUser.length === 0 && "Tipe User harus diisi!"
-              }
-              id="outlined-basic"
-              variant="outlined"
-              value={tipeUser}
-              onChange={(e) => setTipeUser(e.target.value.toUpperCase())}
+              disablePortal
+              id="combo-box-demo"
+              options={tipeUserOption}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && tipeUser.length === 0 && true}
+                  helperText={
+                    error && tipeUser.length === 0 && "Tipe User harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => setTipeUser(value)}
+              value={{ label: tipeUser }}
             />
             <Typography sx={[labelInput, spacingTop]}>Periode</Typography>
             <TextField
@@ -214,33 +259,101 @@ const UbahUser = () => {
               size="small"
               id="outlined-basic"
               variant="outlined"
-              type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value.toUpperCase())}
             />
             <Typography>
               *Kosongkan jika tidak ingin mengganti password
             </Typography>
           </Box>
         </Box>
-        <Box sx={spacingTop}>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={() => navigate("/daftarUser")}
-            sx={{ marginRight: 2 }}
-          >
-            {"< Kembali"}
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<EditIcon />}
-            onClick={updateUser}
-          >
-            Ubah
-          </Button>
-        </Box>
       </Paper>
+      {user.tipeUser === "MGR" && (
+        <Paper sx={contentContainer} elevation={12}>
+          <Typography variant="h5" sx={[labelInput, spacingTop]}>
+            Atur Hak Akses
+          </Typography>
+          <Box sx={showDataContainer}>
+            <Box sx={showDataWrapper}>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={master} />}
+                  label="Master"
+                  onChange={() => setMaster(!master)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={pembelian} />}
+                  label="Pembelian"
+                  onChange={() => setPembelian(!pembelian)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={penjualan} />}
+                  label="Penjualan"
+                  onChange={() => setPenjualan(!penjualan)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={laporan} />}
+                  label="Laporan"
+                  onChange={() => setLaporan(!laporan)}
+                />
+              </FormGroup>
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={piutang} />}
+                  label="Piutang"
+                  onChange={() => setPiutang(!piutang)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={perawatan} />}
+                  label="Perawatan"
+                  onChange={() => setPerawatan(!perawatan)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={finance} />}
+                  label="Finance"
+                  onChange={() => setFinance(!finance)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={utility} />}
+                  label="Utility"
+                  onChange={() => setUtility(!utility)}
+                />
+              </FormGroup>
+            </Box>
+          </Box>
+        </Paper>
+      )}
+      <Box sx={spacingTop}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => navigate("/daftarUser")}
+          sx={{ marginRight: 2 }}
+        >
+          {"< Kembali"}
+        </Button>
+        <Button
+          variant="contained"
+          startIcon={<EditIcon />}
+          onClick={updateUser}
+        >
+          Ubah
+        </Button>
+      </Box>
       <Divider sx={dividerStyle} />
       {error && (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

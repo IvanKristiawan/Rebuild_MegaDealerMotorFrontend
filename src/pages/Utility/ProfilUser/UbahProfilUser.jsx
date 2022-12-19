@@ -161,9 +161,8 @@ const UbahProfilUser = () => {
               size="small"
               id="outlined-basic"
               variant="outlined"
-              type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value.toUpperCase())}
             />
             <Typography>
               *Kosongkan jika tidak ingin mengganti password
