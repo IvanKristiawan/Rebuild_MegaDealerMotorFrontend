@@ -32,14 +32,53 @@ const TambahUser = () => {
   const [noTerakhir, setNoTerakhir] = useState("");
   const [password, setPassword] = useState("");
 
-  const [master, setMaster] = useState(false);
-  const [pembelian, setPembelian] = useState(false);
-  const [penjualan, setPenjualan] = useState(false);
-  const [laporan, setLaporan] = useState(false);
-  const [piutang, setPiutang] = useState(false);
-  const [perawatan, setPerawatan] = useState(false);
-  const [finance, setFinance] = useState(false);
-  const [utility, setUtility] = useState(false);
+  // Akses Master
+  const [motor, setMotor] = useState(false);
+  const [area, setArea] = useState(false);
+  const [bukuBesar, setBukuBesar] = useState(false);
+  const [dealer, setDealer] = useState(false);
+  const [kolektor, setKolektor] = useState(false);
+  const [marketing, setMarketing] = useState(false);
+  const [pekerjaan, setPekerjaan] = useState(false);
+  const [surveyor, setSurveyor] = useState(false);
+  const [leasing, setLeasing] = useState(false);
+  const [supplier, setSupplier] = useState(false);
+  const [cabang, setCabang] = useState(false);
+
+  // Akses Pembelian
+  const [beli, setBeli] = useState(false);
+
+  // Akses Penjualan
+  const [register, setRegister] = useState(false);
+  const [jual, setJual] = useState(false);
+
+  // Akses Laporan
+  const [daftarStok, setDaftarStok] = useState(false);
+  const [totalPiutang, setTotalPiutang] = useState(false);
+  const [tunggakan, setTunggakan] = useState(false);
+  const [penerimaanKas, setPenerimaanKas] = useState(false);
+  const [penjualanPerCabang, setPenjualanPerCabang] = useState(false);
+  const [rekapPenerimaan, setRekapPenerimaan] = useState(false);
+  const [lapPenjualan, setLapPenjualan] = useState(false);
+
+  // Akses Piutang
+  const [angsuran, setAngsuran] = useState(false);
+  const [sp, setSp] = useState(false);
+  const [st, setSt] = useState(false);
+
+  // Akses Perawatan
+  const [biayaPerawatan, setBiayaPerawatan] = useState(false);
+
+  // Akses Finance
+  const [kasMasuk, setKasMasuk] = useState(false);
+  const [kasKeluar, setKasKeluar] = useState(false);
+  const [bankMasuk, setBankMasuk] = useState(false);
+  const [bankKeluar, setBankKeluar] = useState(false);
+  const [posting, setPosting] = useState(false);
+
+  // Akses Utility
+  const [profilUser, setProfilUser] = useState(false);
+  const [daftarUser, setDaftarUser] = useState(false);
 
   const [cabangs, setCabangs] = useState([]);
   const [error, setError] = useState(false);
@@ -90,14 +129,38 @@ const TambahUser = () => {
           kodeKwitansi,
           noTerakhir,
           akses: {
-            master,
-            pembelian,
-            penjualan,
-            laporan,
-            piutang,
-            perawatan,
-            finance,
-            utility
+            motor,
+            area,
+            bukuBesar,
+            dealer,
+            kolektor,
+            marketing,
+            pekerjaan,
+            surveyor,
+            leasing,
+            supplier,
+            cabang,
+            beli,
+            register,
+            jual,
+            daftarStok,
+            totalPiutang,
+            tunggakan,
+            penerimaanKas,
+            penjualanPerCabang,
+            rekapPenerimaan,
+            lapPenjualan,
+            angsuran,
+            sp,
+            st,
+            biayaPerawatan,
+            kasMasuk,
+            kasKeluar,
+            bankMasuk,
+            bankKeluar,
+            posting,
+            profilUser,
+            daftarUser
           },
           kodeCabang: kodeCabang.split(" ", 1)[0],
           id: user._id,
@@ -235,62 +298,254 @@ const TambahUser = () => {
           </Typography>
           <Box sx={showDataContainer}>
             <Box sx={showDataWrapper}>
+              <Typography variant="p" sx={[spacingTop]}>
+                Master
+              </Typography>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={master} />}
-                  label="Master"
-                  onChange={() => setMaster(!master)}
+                  control={<Checkbox checked={motor} />}
+                  label="Motor"
+                  onChange={() => setMotor(!motor)}
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={pembelian} />}
-                  label="Pembelian"
-                  onChange={() => setPembelian(!pembelian)}
+                  control={<Checkbox checked={area} />}
+                  label="Area"
+                  onChange={() => setArea(!area)}
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={penjualan} />}
-                  label="Penjualan"
-                  onChange={() => setPenjualan(!penjualan)}
+                  control={<Checkbox checked={bukuBesar} />}
+                  label="Buku Besar"
+                  onChange={() => setBukuBesar(!bukuBesar)}
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={laporan} />}
-                  label="Laporan"
-                  onChange={() => setLaporan(!laporan)}
+                  control={<Checkbox checked={dealer} />}
+                  label="Dealer"
+                  onChange={() => setDealer(!dealer)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={kolektor} />}
+                  label="Kolektor"
+                  onChange={() => setKolektor(!kolektor)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={marketing} />}
+                  label="Marketing"
+                  onChange={() => setMarketing(!marketing)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={pekerjaan} />}
+                  label="Pekerjaan"
+                  onChange={() => setPekerjaan(!pekerjaan)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={surveyor} />}
+                  label="Surveyor"
+                  onChange={() => setSurveyor(!surveyor)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={leasing} />}
+                  label="Leasing"
+                  onChange={() => setLeasing(!leasing)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={supplier} />}
+                  label="Supplier"
+                  onChange={() => setSupplier(!supplier)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={cabang} />}
+                  label="Cabang"
+                  onChange={() => setCabang(!cabang)}
+                />
+              </FormGroup>
+              <Typography variant="p" sx={[spacingTop]}>
+                Pembelian
+              </Typography>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={beli} />}
+                  label="Beli"
+                  onChange={() => setBeli(!beli)}
+                />
+              </FormGroup>
+              <Typography variant="p" sx={[spacingTop]}>
+                Penjualan
+              </Typography>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={register} />}
+                  label="Register"
+                  onChange={() => setRegister(!register)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={jual} />}
+                  label="Jual"
+                  onChange={() => setJual(!jual)}
+                />
+              </FormGroup>
+              <Typography variant="p" sx={[spacingTop]}>
+                Laporan
+              </Typography>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={daftarStok} />}
+                  label="Daftar Stok"
+                  onChange={() => setDaftarStok(!daftarStok)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={totalPiutang} />}
+                  label="Total Piutang"
+                  onChange={() => setTotalPiutang(!totalPiutang)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={tunggakan} />}
+                  label="Tunggakan"
+                  onChange={() => setTunggakan(!tunggakan)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={penerimaanKas} />}
+                  label="Penerimaan Kas"
+                  onChange={() => setPenerimaanKas(!penerimaanKas)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={penjualanPerCabang} />}
+                  label="Penjualan/Cabang"
+                  onChange={() => setPenjualanPerCabang(!penjualanPerCabang)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={rekapPenerimaan} />}
+                  label="Rekap Penerimaan"
+                  onChange={() => setRekapPenerimaan(!rekapPenerimaan)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={lapPenjualan} />}
+                  label="Lap. Penjualan"
+                  onChange={() => setLapPenjualan(!lapPenjualan)}
                 />
               </FormGroup>
             </Box>
             <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography variant="p" sx={[spacingTop]}>
+                Piutang
+              </Typography>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={piutang} />}
-                  label="Piutang"
-                  onChange={() => setPiutang(!piutang)}
+                  control={<Checkbox checked={angsuran} />}
+                  label="Angsuran"
+                  onChange={() => setAngsuran(!angsuran)}
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={perawatan} />}
-                  label="Perawatan"
-                  onChange={() => setPerawatan(!perawatan)}
+                  control={<Checkbox checked={sp} />}
+                  label="SP"
+                  onChange={() => setSp(!sp)}
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={finance} />}
-                  label="Finance"
-                  onChange={() => setFinance(!finance)}
+                  control={<Checkbox checked={st} />}
+                  label="ST"
+                  onChange={() => setSt(!st)}
+                />
+              </FormGroup>
+              <Typography variant="p" sx={[spacingTop]}>
+                Perawatan
+              </Typography>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={biayaPerawatan} />}
+                  label="Biaya Perawatan"
+                  onChange={() => setBiayaPerawatan(!biayaPerawatan)}
+                />
+              </FormGroup>
+              <Typography variant="p" sx={[spacingTop]}>
+                Finance
+              </Typography>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={kasMasuk} />}
+                  label="Kas Masuk"
+                  onChange={() => setKasMasuk(!kasMasuk)}
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={utility} />}
-                  label="Utility"
-                  onChange={() => setUtility(!utility)}
+                  control={<Checkbox checked={kasKeluar} />}
+                  label="Kas Keluar"
+                  onChange={() => setKasKeluar(!kasKeluar)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={bankMasuk} />}
+                  label="Bank Masuk"
+                  onChange={() => setBankMasuk(!bankMasuk)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={bankKeluar} />}
+                  label="Bank Keluar"
+                  onChange={() => setBankKeluar(!bankKeluar)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={posting} />}
+                  label="Posting"
+                  onChange={() => setPosting(!posting)}
+                />
+              </FormGroup>
+              <Typography variant="p" sx={[spacingTop]}>
+                Utility
+              </Typography>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={profilUser} />}
+                  label="Profil User"
+                  onChange={() => setProfilUser(!profilUser)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={daftarUser} />}
+                  label="Daftar User"
+                  onChange={() => setDaftarUser(!daftarUser)}
                 />
               </FormGroup>
             </Box>
