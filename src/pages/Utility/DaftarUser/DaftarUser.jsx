@@ -93,7 +93,14 @@ const DaftarUser = () => {
   const [kasKeluar, setKasKeluar] = useState(false);
   const [bankMasuk, setBankMasuk] = useState(false);
   const [bankKeluar, setBankKeluar] = useState(false);
+
+  // Akses Accounting
   const [posting, setPosting] = useState(false);
+  const [unposting, setUnposting] = useState(false);
+  const [aktivitasBukuBesar, setAktivitasBukuBesar] = useState(false);
+  const [labaRugi, setLabaRugi] = useState(false);
+  const [neraca, setNeraca] = useState(false);
+  const [neracaSaldo, setNeracaSaldo] = useState(false);
 
   // Akses Utility
   const [profilUser, setProfilUser] = useState(false);
@@ -244,7 +251,14 @@ const DaftarUser = () => {
       setKasKeluar(response.data.akses.kasKeluar);
       setBankMasuk(response.data.akses.bankMasuk);
       setBankKeluar(response.data.akses.bankKeluar);
+
+      // Akses Accounting
       setPosting(response.data.akses.posting);
+      setUnposting(response.data.akses.unposting);
+      setAktivitasBukuBesar(response.data.akses.aktivitasBukuBesar);
+      setLabaRugi(response.data.akses.labaRugi);
+      setNeraca(response.data.akses.neraca);
+      setNeracaSaldo(response.data.akses.neracaSaldo);
 
       // Akses Utility
       setProfilUser(response.data.akses.profilUser);
@@ -672,10 +686,45 @@ const DaftarUser = () => {
                       label="Bank Keluar"
                     />
                   </FormGroup>
+                  <Typography variant="p" sx={[spacingTop]}>
+                    Accounting
+                  </Typography>
                   <FormGroup>
                     <FormControlLabel
                       control={<Checkbox checked={posting} disabled />}
                       label="Posting"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={unposting} disabled />}
+                      label="Unposting"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox checked={aktivitasBukuBesar} disabled />
+                      }
+                      label="Aktivitas Buku Besar"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={labaRugi} disabled />}
+                      label="Laba Rugi"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={neraca} disabled />}
+                      label="Neraca"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={neracaSaldo} disabled />}
+                      label="Neraca Saldo"
                     />
                   </FormGroup>
                   <Typography variant="p" sx={[spacingTop]}>

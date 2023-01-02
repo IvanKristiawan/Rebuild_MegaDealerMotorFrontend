@@ -12,9 +12,9 @@ import {
   Snackbar,
   Alert
 } from "@mui/material";
-import PrintIcon from "@mui/icons-material/Print";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
-const Posting = () => {
+const Unposting = () => {
   const { user } = useContext(AuthContext);
   let curr = new Date();
   let date = curr.toISOString().substring(0, 10);
@@ -34,10 +34,10 @@ const Posting = () => {
     setOpen(false);
   };
 
-  const posting = async () => {
+  const unposting = async () => {
     setLoading(true);
-    // Jurnal Posting Pembelian
-    await axios.post(`${tempUrl}/saveJurnalPostingPembelian`, {
+    // Jurnal Unposting Pembelian
+    await axios.post(`${tempUrl}/jurnalUnposting`, {
       dariTgl,
       sampaiTgl,
       id: user._id,
@@ -54,9 +54,9 @@ const Posting = () => {
 
   return (
     <Box sx={container}>
-      <Typography color="#757575">Finance</Typography>
+      <Typography color="#757575">Accounting</Typography>
       <Typography variant="h4" sx={subTitleText}>
-        Posting
+        Unposting
       </Typography>
       <Divider sx={dividerStyle} />
       <Box sx={showDataWrapper}>
@@ -90,10 +90,10 @@ const Posting = () => {
       <Box sx={spacingTop}>
         <Button
           variant="contained"
-          startIcon={<PrintIcon />}
-          onClick={() => posting()}
+          startIcon={<DeleteSweepIcon />}
+          onClick={() => unposting()}
         >
-          CETAK
+          UNPOSTING
         </Button>
       </Box>
       <Snackbar
@@ -109,14 +109,14 @@ const Posting = () => {
           variant="filled"
           sx={{ width: "100%" }}
         >
-          Jurnal berhasil diposting!
+          Jurnal berhasil diunposting!
         </Alert>
       </Snackbar>
     </Box>
   );
 };
 
-export default Posting;
+export default Unposting;
 
 const container = {
   p: 4

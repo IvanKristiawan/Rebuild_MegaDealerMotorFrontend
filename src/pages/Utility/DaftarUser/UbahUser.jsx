@@ -74,7 +74,14 @@ const UbahUser = () => {
   const [kasKeluar, setKasKeluar] = useState(false);
   const [bankMasuk, setBankMasuk] = useState(false);
   const [bankKeluar, setBankKeluar] = useState(false);
+
+  // Akses Accounting
   const [posting, setPosting] = useState(false);
+  const [unposting, setUnposting] = useState(false);
+  const [aktivitasBukuBesar, setAktivitasBukuBesar] = useState(false);
+  const [labaRugi, setLabaRugi] = useState(false);
+  const [neraca, setNeraca] = useState(false);
+  const [neracaSaldo, setNeracaSaldo] = useState(false);
 
   // Akses Utility
   const [profilUser, setProfilUser] = useState(false);
@@ -167,7 +174,14 @@ const UbahUser = () => {
     setKasKeluar(response.data.akses.kasKeluar);
     setBankMasuk(response.data.akses.bankMasuk);
     setBankKeluar(response.data.akses.bankKeluar);
+
+    // Akses Accounting
     setPosting(response.data.akses.posting);
+    setUnposting(response.data.akses.unposting);
+    setAktivitasBukuBesar(response.data.akses.aktivitasBukuBesar);
+    setLabaRugi(response.data.akses.labaRugi);
+    setNeraca(response.data.akses.neraca);
+    setNeracaSaldo(response.data.akses.neracaSaldo);
 
     // Akses Utility
     setProfilUser(response.data.akses.profilUser);
@@ -231,6 +245,11 @@ const UbahUser = () => {
             bankMasuk,
             bankKeluar,
             posting,
+            unposting,
+            aktivitasBukuBesar,
+            labaRugi,
+            neraca,
+            neracaSaldo,
             profilUser,
             daftarUser
           },
@@ -242,8 +261,10 @@ const UbahUser = () => {
 
         if (user._id === id) {
           dispatch({ type: "LOGOUT" });
+          navigate("/");
+        } else {
+          navigate("/daftarUser");
         }
-        navigate("/daftarUser");
       } catch (error) {
         console.log(error);
       }
@@ -603,11 +624,49 @@ const UbahUser = () => {
                   onChange={() => setBankKeluar(!bankKeluar)}
                 />
               </FormGroup>
+              <Typography variant="p" sx={[spacingTop]}>
+                Accounting
+              </Typography>
               <FormGroup>
                 <FormControlLabel
                   control={<Checkbox checked={posting} />}
                   label="Posting"
                   onChange={() => setPosting(!posting)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={unposting} />}
+                  label="Unposting"
+                  onChange={() => setUnposting(!unposting)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={aktivitasBukuBesar} />}
+                  label="Aktivitas Buku Besar"
+                  onChange={() => setAktivitasBukuBesar(!aktivitasBukuBesar)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={labaRugi} />}
+                  label="Laba Rugi"
+                  onChange={() => setLabaRugi(!labaRugi)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={neraca} />}
+                  label="Neraca"
+                  onChange={() => setNeraca(!neraca)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={neracaSaldo} />}
+                  label="Neraca Saldo"
+                  onChange={() => setNeracaSaldo(!neracaSaldo)}
                 />
               </FormGroup>
               <Typography variant="p" sx={[spacingTop]}>

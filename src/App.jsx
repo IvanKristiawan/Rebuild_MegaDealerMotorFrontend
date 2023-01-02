@@ -44,6 +44,7 @@ import ConstructionIcon from "@mui/icons-material/Construction";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
@@ -51,6 +52,11 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import PaymentsIcon from "@mui/icons-material/Payments";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import ApprovalIcon from "@mui/icons-material/Approval";
+import RateReviewIcon from "@mui/icons-material/RateReview";
+import MoneyOffIcon from "@mui/icons-material/MoneyOff";
+import BalanceIcon from "@mui/icons-material/Balance";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import SoapIcon from "@mui/icons-material/Soap";
 import { Divider, Box, Typography, CssBaseline, Tooltip } from "@mui/material";
@@ -174,7 +180,9 @@ import {
   TambahBankKeluarChild,
   TampilBankKeluarChild,
   UbahBankKeluarChild,
-  Posting
+  Posting,
+  Unposting,
+  AktivitasBukuBesar
 } from "./pages/index";
 
 const App = () => {
@@ -477,6 +485,56 @@ const App = () => {
     const { user } = useContext(AuthContext);
 
     if (user.akses.posting) {
+      return children;
+    }
+
+    return <Navigate to="/unauthorized" />;
+  };
+
+  const UNPOSTINGRoute = ({ children }) => {
+    const { user } = useContext(AuthContext);
+
+    if (user.akses.unposting) {
+      return children;
+    }
+
+    return <Navigate to="/unauthorized" />;
+  };
+
+  const AKTIVITASBUKUBESARRoute = ({ children }) => {
+    const { user } = useContext(AuthContext);
+
+    if (user.akses.aktivitasBukuBesar) {
+      return children;
+    }
+
+    return <Navigate to="/unauthorized" />;
+  };
+
+  const LABARUGIRoute = ({ children }) => {
+    const { user } = useContext(AuthContext);
+
+    if (user.akses.labaRugi) {
+      return children;
+    }
+
+    return <Navigate to="/unauthorized" />;
+  };
+
+  const NERACARoute = ({ children }) => {
+    const { user } = useContext(AuthContext);
+
+    if (user.akses.neraca) {
+      return children;
+    }
+
+    return <Navigate to="/unauthorized" />;
+  };
+
+  const NERACASALDORoute = ({ children }) => {
+    const { user } = useContext(AuthContext);
+
+    if (user.akses.neracaSaldo) {
       return children;
     }
 
@@ -1003,6 +1061,12 @@ const App = () => {
                       </Box>
                     </Link>
                   )}
+                </SubMenu>
+                <Divider />
+                <SubMenu
+                  label="Accounting"
+                  icon={<AccountBalanceWalletIcon name="accounting-icon" />}
+                >
                   {user.akses.posting === true && (
                     <Link to="/posting" style={linkText}>
                       <Box sx={{ paddingLeft: "20px" }}>
@@ -1012,8 +1076,60 @@ const App = () => {
                       </Box>
                     </Link>
                   )}
+                  {user.akses.unposting === true && (
+                    <Link to="/unposting" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<ApprovalIcon name="unposting-icon" />}>
+                          Unposting
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  )}
+                  {user.akses.aktivitasBukuBesar === true && (
+                    <Link to="/aktivitasBukuBesar" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={
+                            <RateReviewIcon name="aktivitasBukuBesar-icon" />
+                          }
+                        >
+                          <Typography sx={{ fontSize: "15px" }}>
+                            Aktivitas Buku Besar
+                          </Typography>
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  )}
+                  {user.akses.labaRugi === true && (
+                    <Link to="/labaRugi" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<MoneyOffIcon name="labaRugi-icon" />}>
+                          Laba Rugi
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  )}
+                  {user.akses.neraca === true && (
+                    <Link to="/neraca" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem icon={<BalanceIcon name="neraca-icon" />}>
+                          Neraca
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  )}
+                  {user.akses.neracaSaldo === true && (
+                    <Link to="/neracaSaldo" style={linkText}>
+                      <Box sx={{ paddingLeft: "20px" }}>
+                        <MenuItem
+                          icon={<AutoStoriesIcon name="neracaSaldo-icon" />}
+                        >
+                          Neraca Saldo
+                        </MenuItem>
+                      </Box>
+                    </Link>
+                  )}
                 </SubMenu>
-                <Divider />
                 <SubMenu
                   label="Utility"
                   icon={<ManageAccountsIcon name="utility-icon" />}
@@ -2166,6 +2282,24 @@ const App = () => {
                       <POSTINGRoute>
                         <Posting />
                       </POSTINGRoute>
+                    }
+                  />
+                  {/* Unposting */}
+                  <Route
+                    path="/unposting"
+                    element={
+                      <UNPOSTINGRoute>
+                        <Unposting />
+                      </UNPOSTINGRoute>
+                    }
+                  />
+                  {/* Aktivitas Buku Besar */}
+                  <Route
+                    path="/aktivitasBukuBesar"
+                    element={
+                      <AKTIVITASBUKUBESARRoute>
+                        <AktivitasBukuBesar />
+                      </AKTIVITASBUKUBESARRoute>
                     }
                   />
                   {/* Profil User */}

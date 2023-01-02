@@ -74,7 +74,14 @@ const TambahUser = () => {
   const [kasKeluar, setKasKeluar] = useState(false);
   const [bankMasuk, setBankMasuk] = useState(false);
   const [bankKeluar, setBankKeluar] = useState(false);
+
+  // Akses Accounting
   const [posting, setPosting] = useState(false);
+  const [unposting, setUnposting] = useState(false);
+  const [aktivitasBukuBesar, setAktivitasBukuBesar] = useState(false);
+  const [labaRugi, setLabaRugi] = useState(false);
+  const [neraca, setNeraca] = useState(false);
+  const [neracaSaldo, setNeracaSaldo] = useState(false);
 
   // Akses Utility
   const [profilUser, setProfilUser] = useState(false);
@@ -159,6 +166,11 @@ const TambahUser = () => {
             bankMasuk,
             bankKeluar,
             posting,
+            unposting,
+            aktivitasBukuBesar,
+            labaRugi,
+            neraca,
+            neracaSaldo,
             profilUser,
             daftarUser
           },
@@ -524,11 +536,49 @@ const TambahUser = () => {
                   onChange={() => setBankKeluar(!bankKeluar)}
                 />
               </FormGroup>
+              <Typography variant="p" sx={[spacingTop]}>
+                Accounting
+              </Typography>
               <FormGroup>
                 <FormControlLabel
                   control={<Checkbox checked={posting} />}
                   label="Posting"
                   onChange={() => setPosting(!posting)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={unposting} />}
+                  label="Unposting"
+                  onChange={() => setUnposting(!unposting)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={aktivitasBukuBesar} />}
+                  label="Aktivitas Buku Besar"
+                  onChange={() => setAktivitasBukuBesar(!aktivitasBukuBesar)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={labaRugi} />}
+                  label="Laba Rugi"
+                  onChange={() => setLabaRugi(!labaRugi)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={neraca} />}
+                  label="Neraca"
+                  onChange={() => setNeraca(!neraca)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox checked={neracaSaldo} />}
+                  label="Neraca Saldo"
+                  onChange={() => setNeracaSaldo(!neracaSaldo)}
                 />
               </FormGroup>
               <Typography variant="p" sx={[spacingTop]}>

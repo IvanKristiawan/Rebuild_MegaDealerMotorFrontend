@@ -10,3 +10,21 @@ export const dendaSetting = 1000;
 export const toleransiSetting = 3;
 export const jemputanSetting = 10000;
 export const biayaTarikSetting = 200000;
+export const refCOA = {
+  "COA PERSEDIAAN MOTOR BARU": {
+    kodeRefCOA: "IN1",
+    kodeCOA: "01"
+  },
+  "COA PERSEDIAAN MOTOR BEKAS": {
+    kodeRefCOA: "IN2",
+    kodeCOA: "02"
+  },
+  "HUTANG DAGANG": {
+    kodeRefCOA: "HD",
+    kodeCOA: "03"
+  },
+  "PPN MASUKKAN": {
+    kodeRefCOA: "PM",
+    kodeCOA: "04"
+  }
+};
