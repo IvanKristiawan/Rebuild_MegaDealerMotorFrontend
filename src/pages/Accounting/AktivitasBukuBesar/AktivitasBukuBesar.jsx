@@ -33,8 +33,8 @@ const AktivitasBukuBesar = () => {
   const [sampaiTgl, setSampaiTgl] = useState(date);
 
   // COA
-  const [coaPersediaanMotorBaru, setCoaPersediaanMotorBaru] = useState(false);
-  const [coaPersediaanMotorBekas, setCoaPersediaanMotorBekas] = useState(false);
+  const [persediaanMotorBaru, setPersediaanMotorBaru] = useState(false);
+  const [persediaanMotorBekas, setPersediaanMotorBekas] = useState(false);
   const [hutangDagang, setHutangDagang] = useState(false);
   const [ppnMasukkan, setPpnMasukkan] = useState(false);
 
@@ -65,6 +65,7 @@ const AktivitasBukuBesar = () => {
 
     let totalDebet = 0;
     let totalKredit = 0;
+    let totalSaldo = 0;
     let makeDariTgl = new Date(dariTgl);
     let makeSampaiTgl = new Date(sampaiTgl);
     let tempDariTgl =
@@ -86,7 +87,7 @@ const AktivitasBukuBesar = () => {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const doc = new jsPDF();
+    const doc = new jsPDF("p", "mm", [240, 300]);
     doc.setFontSize(9);
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 10, tempY);
     tempY += 5;
@@ -102,26 +103,29 @@ const AktivitasBukuBesar = () => {
     tempY += 5;
     doc.text(`Dari Tanggal : ${tempDariTgl} S/D : ${tempSampaiTgl}`, 10, tempY);
     tempY += 5;
-    doc.line(10, tempY, 200, tempY);
+    doc.line(10, tempY, 230, tempY);
     doc.line(30, tempY, 30, tempY + 8);
     doc.line(70, tempY, 70, tempY + 8);
     doc.line(130, tempY, 130, tempY + 8);
     doc.line(165, tempY, 165, tempY + 8);
+    doc.line(200, tempY, 200, tempY + 8);
     tempY += 5.5;
     doc.text(`Tg.`, 12, tempY);
     doc.text(`No.Bukti`, 40, tempY);
     doc.text(`Keterangan Jurnal`, 85, tempY);
     doc.text(`Debet`, 140, tempY);
     doc.text(`Kredit`, 175, tempY);
+    doc.text(`Saldo`, 210, tempY);
     tempY += 2.5;
-    doc.line(10, tempY, 200, tempY);
-    if (coaPersediaanMotorBaru === true) {
+    doc.line(10, tempY, 230, tempY);
+    if (persediaanMotorBaru === true) {
       let tempDebet = 0;
       let tempKredit = 0;
+      let tempSaldo = 0;
       tempY += 5;
       doc.setFont(undefined, "bold");
       doc.text(
-        `Account : ${refCOA["COA PERSEDIAAN MOTOR BARU"].kodeCOA} - COA PERSEDIAAN MOTOR BARU`,
+        `Account : ${refCOA["PERSEDIAAN MOTOR BARU"].kodeCOA} - PERSEDIAAN MOTOR BARU`,
         10,
         tempY
       );
@@ -149,6 +153,9 @@ const AktivitasBukuBesar = () => {
           );
           tempDebet += aktivitasBukuBesars.data["IN1"][i].jumlah;
           totalDebet += aktivitasBukuBesars.data["IN1"][i].jumlah;
+          tempSaldo += aktivitasBukuBesars.data["IN1"][i].jumlah;
+          totalSaldo += aktivitasBukuBesars.data["IN1"][i].jumlah;
+          doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
         } else {
           doc.text(
             `${aktivitasBukuBesars.data["IN1"][i].jumlah.toLocaleString()}`,
@@ -157,32 +164,37 @@ const AktivitasBukuBesar = () => {
           );
           tempKredit += aktivitasBukuBesars.data["IN1"][i].jumlah;
           totalKredit += aktivitasBukuBesars.data["IN1"][i].jumlah;
+          tempSaldo += aktivitasBukuBesars.data["IN1"][i].jumlah;
+          totalSaldo += aktivitasBukuBesars.data["IN1"][i].jumlah;
+          doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
         }
       }
       tempY += 5;
       doc.text(
-        `-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
+        `---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
         10,
         tempY
       );
       tempY += 5;
       doc.setFont(undefined, "bold");
       doc.text(
-        `SubTotal Account : ${refCOA["COA PERSEDIAAN MOTOR BARU"].kodeCOA} - COA PERSEDIAAN MOTOR BARU`,
+        `SubTotal Account : ${refCOA["PERSEDIAAN MOTOR BARU"].kodeCOA} - PERSEDIAAN MOTOR BARU`,
         10,
         tempY
       );
       doc.setFont(undefined, "normal");
       doc.text(`${tempDebet.toLocaleString()}`, 132, tempY);
       doc.text(`${tempKredit.toLocaleString()}`, 168, tempY);
+      doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
     }
-    if (coaPersediaanMotorBekas === true) {
+    if (persediaanMotorBekas === true) {
       let tempDebet = 0;
       let tempKredit = 0;
+      let tempSaldo = 0;
       tempY += 10;
       doc.setFont(undefined, "bold");
       doc.text(
-        `Account : ${refCOA["COA PERSEDIAAN MOTOR BEKAS"].kodeCOA} - COA PERSEDIAAN MOTOR BEKAS`,
+        `Account : ${refCOA["PERSEDIAAN MOTOR BEKAS"].kodeCOA} - PERSEDIAAN MOTOR BEKAS`,
         10,
         tempY
       );
@@ -210,6 +222,9 @@ const AktivitasBukuBesar = () => {
           );
           tempDebet += aktivitasBukuBesars.data["IN2"][i].jumlah;
           totalDebet += aktivitasBukuBesars.data["IN2"][i].jumlah;
+          tempSaldo += aktivitasBukuBesars.data["IN2"][i].jumlah;
+          totalSaldo += aktivitasBukuBesars.data["IN2"][i].jumlah;
+          doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
         } else {
           doc.text(
             `${aktivitasBukuBesars.data["IN2"][i].jumlah.toLocaleString()}`,
@@ -218,28 +233,33 @@ const AktivitasBukuBesar = () => {
           );
           tempKredit += aktivitasBukuBesars.data["IN2"][i].jumlah;
           totalKredit += aktivitasBukuBesars.data["IN2"][i].jumlah;
+          tempSaldo += aktivitasBukuBesars.data["IN2"][i].jumlah;
+          totalSaldo += aktivitasBukuBesars.data["IN2"][i].jumlah;
+          doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
         }
       }
       tempY += 5;
       doc.text(
-        `-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
+        `---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
         10,
         tempY
       );
       tempY += 5;
       doc.setFont(undefined, "bold");
       doc.text(
-        `SubTotal Account : ${refCOA["COA PERSEDIAAN MOTOR BEKAS"].kodeCOA} - COA PERSEDIAAN MOTOR BEKAS`,
+        `SubTotal Account : ${refCOA["PERSEDIAAN MOTOR BEKAS"].kodeCOA} - PERSEDIAAN MOTOR BEKAS`,
         10,
         tempY
       );
       doc.setFont(undefined, "normal");
       doc.text(`${tempDebet.toLocaleString()}`, 132, tempY);
       doc.text(`${tempKredit.toLocaleString()}`, 168, tempY);
+      doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
     }
     if (hutangDagang === true) {
       let tempDebet = 0;
       let tempKredit = 0;
+      let tempSaldo = 0;
       tempY += 10;
       doc.setFont(undefined, "bold");
       doc.text(
@@ -271,6 +291,9 @@ const AktivitasBukuBesar = () => {
           );
           tempDebet += aktivitasBukuBesars.data["HD"][i].jumlah;
           totalDebet += aktivitasBukuBesars.data["HD"][i].jumlah;
+          tempSaldo += aktivitasBukuBesars.data["HD"][i].jumlah;
+          totalSaldo += aktivitasBukuBesars.data["HD"][i].jumlah;
+          doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
         } else {
           doc.text(
             `${aktivitasBukuBesars.data["HD"][i].jumlah.toLocaleString()}`,
@@ -279,11 +302,14 @@ const AktivitasBukuBesar = () => {
           );
           tempKredit += aktivitasBukuBesars.data["HD"][i].jumlah;
           totalKredit += aktivitasBukuBesars.data["HD"][i].jumlah;
+          tempSaldo += aktivitasBukuBesars.data["HD"][i].jumlah;
+          totalSaldo += aktivitasBukuBesars.data["HD"][i].jumlah;
+          doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
         }
       }
       tempY += 5;
       doc.text(
-        `-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
+        `---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
         10,
         tempY
       );
@@ -297,10 +323,12 @@ const AktivitasBukuBesar = () => {
       doc.setFont(undefined, "normal");
       doc.text(`${tempDebet.toLocaleString()}`, 132, tempY);
       doc.text(`${tempKredit.toLocaleString()}`, 168, tempY);
+      doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
     }
     if (ppnMasukkan === true) {
       let tempDebet = 0;
       let tempKredit = 0;
+      let tempSaldo = 0;
       tempY += 10;
       doc.setFont(undefined, "bold");
       doc.text(
@@ -332,6 +360,9 @@ const AktivitasBukuBesar = () => {
           );
           tempDebet += aktivitasBukuBesars.data["PM"][i].jumlah;
           totalDebet += aktivitasBukuBesars.data["PM"][i].jumlah;
+          tempSaldo += aktivitasBukuBesars.data["PM"][i].jumlah;
+          totalSaldo += aktivitasBukuBesars.data["PM"][i].jumlah;
+          doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
         } else {
           doc.text(
             `${aktivitasBukuBesars.data["PM"][i].jumlah.toLocaleString()}`,
@@ -340,11 +371,14 @@ const AktivitasBukuBesar = () => {
           );
           tempKredit += aktivitasBukuBesars.data["PM"][i].jumlah;
           totalKredit += aktivitasBukuBesars.data["PM"][i].jumlah;
+          tempSaldo += aktivitasBukuBesars.data["PM"][i].jumlah;
+          totalSaldo += aktivitasBukuBesars.data["PM"][i].jumlah;
+          doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
         }
       }
       tempY += 5;
       doc.text(
-        `-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
+        `---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
         10,
         tempY
       );
@@ -358,11 +392,12 @@ const AktivitasBukuBesar = () => {
       doc.setFont(undefined, "normal");
       doc.text(`${tempDebet.toLocaleString()}`, 132, tempY);
       doc.text(`${tempKredit.toLocaleString()}`, 168, tempY);
+      doc.text(`${tempSaldo.toLocaleString()}`, 205, tempY);
     }
 
     tempY += 10;
     doc.text(
-      `-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
+      `---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------`,
       10,
       tempY
     );
@@ -372,6 +407,7 @@ const AktivitasBukuBesar = () => {
     doc.setFont(undefined, "normal");
     doc.text(`${totalDebet.toLocaleString()}`, 132, tempY);
     doc.text(`${totalKredit.toLocaleString()}`, 168, tempY);
+    doc.text(`${totalSaldo.toLocaleString()}`, 205, tempY);
 
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
@@ -425,20 +461,16 @@ const AktivitasBukuBesar = () => {
           </Typography>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox checked={coaPersediaanMotorBaru} />}
-              label="COA PERSEDIAAN MOTOR BARU"
-              onChange={() =>
-                setCoaPersediaanMotorBaru(!coaPersediaanMotorBaru)
-              }
+              control={<Checkbox checked={persediaanMotorBaru} />}
+              label="PERSEDIAAN MOTOR BARU"
+              onChange={() => setPersediaanMotorBaru(!persediaanMotorBaru)}
             />
           </FormGroup>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox checked={coaPersediaanMotorBekas} />}
-              label="COA PERSEDIAAN MOTOR BEKAS"
-              onChange={() =>
-                setCoaPersediaanMotorBekas(!coaPersediaanMotorBekas)
-              }
+              control={<Checkbox checked={persediaanMotorBekas} />}
+              label="PERSEDIAAN MOTOR BEKAS"
+              onChange={() => setPersediaanMotorBekas(!persediaanMotorBekas)}
             />
           </FormGroup>
           <FormGroup>

@@ -49,7 +49,7 @@ const UbahCOA = () => {
     label: `${subGroupCOA.kodeSubGroupCOA} - ${subGroupCOA.namaSubGroupCOA}`
   }));
 
-  const jenisSaldoOptions = [{ label: "DEBIT" }, { label: "KREDIT" }];
+  const jenisSaldoOptions = [{ label: "DEBET" }, { label: "KREDIT" }];
 
   const kasBankOptions = [
     { label: "KAS" },
