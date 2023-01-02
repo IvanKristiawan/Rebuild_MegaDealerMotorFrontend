@@ -47,12 +47,13 @@ const TampilRegister = () => {
   const [noKtpRegister, setNoKtpRegister] = useState("");
   const [almKtpRegister, setAlmKtpRegister] = useState("");
   const [noKKRegister, setNoKKRegister] = useState("");
+  const [pkjRegister, setPkjRegister] = useState("");
   const [namaPjmRegister, setNamaPjmRegister] = useState("");
   const [almPjmRegister, setAlmPjmRegister] = useState("");
   const [tlpPjmRegister, setTlpPjmRegister] = useState("");
   const [hubunganRegister, setHubunganRegister] = useState("");
   const [noKtpPjmRegister, setNoKtpPjmRegister] = useState("");
-  const [pkjRegister, setPkjRegister] = useState("");
+  const [pkjPjmRegister, setPkjPjmRegister] = useState("");
   const [namaRefRegister, setNamaRefRegister] = useState("");
   const [almRefRegister, setAlmRefRegister] = useState("");
   const [tlpRefRegister, setTlpRefRegister] = useState("");
@@ -153,6 +154,7 @@ const TampilRegister = () => {
       setTlpPjmRegister(pickedRegister.data.tlpPjmRegister);
       setHubunganRegister(pickedRegister.data.hubunganRegister);
       setNoKtpPjmRegister(pickedRegister.data.noKtpPjmRegister);
+      setPkjPjmRegister(pickedRegister.data.pkjPjmRegister);
       setPkjRegister(pickedRegister.data.pkjRegister);
       setNamaRefRegister(pickedRegister.data.namaRefRegister);
       setAlmRefRegister(pickedRegister.data.almRefRegister);
@@ -175,12 +177,13 @@ const TampilRegister = () => {
       setNoKtpRegister("");
       setAlmKtpRegister("");
       setNoKKRegister("");
+      setPkjRegister("");
       setNamaPjmRegister("");
       setAlmPjmRegister("");
       setTlpPjmRegister("");
       setHubunganRegister("");
       setNoKtpPjmRegister("");
-      setPkjRegister("");
+      setPkjPjmRegister("");
       setNamaRefRegister("");
       setAlmRefRegister("");
       setTlpRefRegister("");
@@ -366,8 +369,20 @@ const TampilRegister = () => {
                 value={noKKRegister}
               />
               <Typography sx={[labelInput, spacingTop]}>
-                Nama Penjamin
+                Pekerjaan Register
               </Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={pkjRegister}
+              />
+            </Box>
+            <Box sx={[showDataWrapper, secondWrapper]}>
+              <Typography sx={labelInput}>Nama Penjamin</Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -377,9 +392,9 @@ const TampilRegister = () => {
                 }}
                 value={namaPjmRegister}
               />
-            </Box>
-            <Box sx={[showDataWrapper, secondWrapper]}>
-              <Typography sx={labelInput}>Alamat Penjamin</Typography>
+              <Typography sx={[labelInput, spacingTop]}>
+                Alamat Penjamin
+              </Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -435,7 +450,7 @@ const TampilRegister = () => {
                 InputProps={{
                   readOnly: true
                 }}
-                value={pkjRegister}
+                value={pkjPjmRegister}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Nama Referensi

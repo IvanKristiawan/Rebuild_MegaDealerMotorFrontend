@@ -27,12 +27,13 @@ const TambahRegister = () => {
   const [noKtpRegister, setNoKtpRegister] = useState("");
   const [almKtpRegister, setAlmKtpRegister] = useState("");
   const [noKKRegister, setNoKKRegister] = useState("");
+  const [pkjRegister, setPkjRegister] = useState("");
   const [namaPjmRegister, setNamaPjmRegister] = useState("");
   const [almPjmRegister, setAlmPjmRegister] = useState("");
   const [tlpPjmRegister, setTlpPjmRegister] = useState("");
   const [hubunganRegister, setHubunganRegister] = useState("");
   const [noKtpPjmRegister, setNoKtpPjmRegister] = useState("");
-  const [pkjRegister, setPkjRegister] = useState("");
+  const [pkjPjmRegister, setPkjPjmRegister] = useState("");
   const [namaRefRegister, setNamaRefRegister] = useState("");
   const [almRefRegister, setAlmRefRegister] = useState("");
   const [tlpRefRegister, setTlpRefRegister] = useState("");
@@ -76,7 +77,8 @@ const TambahRegister = () => {
       tlpRegister.length === 0 ||
       noKtpRegister.length === 0 ||
       almKtpRegister.length === 0 ||
-      noKKRegister.length === 0;
+      noKKRegister.length === 0 ||
+      pkjRegister.length === 0;
     if (isFailedValidation) {
       setError(true);
       setOpen(!open);
@@ -90,12 +92,13 @@ const TambahRegister = () => {
           noKtpRegister,
           almKtpRegister,
           noKKRegister,
+          pkjRegister,
           namaPjmRegister,
           almPjmRegister,
           tlpPjmRegister,
           hubunganRegister,
           noKtpPjmRegister,
-          pkjRegister,
+          pkjPjmRegister,
           namaRefRegister,
           almRefRegister,
           tlpRefRegister,
@@ -218,7 +221,21 @@ const TambahRegister = () => {
               value={noKKRegister}
               onChange={(e) => setNoKKRegister(e.target.value.toUpperCase())}
             />
-            <Typography sx={[labelInput, spacingTop]}>Nama Penjamin</Typography>
+            <Typography sx={[labelInput, spacingTop]}>Pekerjaan</Typography>
+            <TextField
+              size="small"
+              error={error && pkjRegister.length === 0 && true}
+              helperText={
+                error && pkjRegister.length === 0 && "Pekerjaan harus diisi!"
+              }
+              id="outlined-basic"
+              variant="outlined"
+              value={pkjRegister}
+              onChange={(e) => setPkjRegister(e.target.value.toUpperCase())}
+            />
+          </Box>
+          <Box sx={[showDataWrapper, secondWrapper]}>
+            <Typography sx={labelInput}>Nama Penjamin</Typography>
             <TextField
               size="small"
               id="outlined-basic"
@@ -226,9 +243,9 @@ const TambahRegister = () => {
               value={namaPjmRegister}
               onChange={(e) => setNamaPjmRegister(e.target.value.toUpperCase())}
             />
-          </Box>
-          <Box sx={[showDataWrapper, secondWrapper]}>
-            <Typography sx={labelInput}>Alamat Penjamin</Typography>
+            <Typography sx={[labelInput, spacingTop]}>
+              Alamat Penjamin
+            </Typography>
             <TextField
               size="small"
               id="outlined-basic"
@@ -277,8 +294,8 @@ const TambahRegister = () => {
               size="small"
               id="outlined-basic"
               variant="outlined"
-              value={pkjRegister}
-              onChange={(e) => setPkjRegister(e.target.value.toUpperCase())}
+              value={pkjPjmRegister}
+              onChange={(e) => setPkjPjmRegister(e.target.value.toUpperCase())}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Nama Referensi

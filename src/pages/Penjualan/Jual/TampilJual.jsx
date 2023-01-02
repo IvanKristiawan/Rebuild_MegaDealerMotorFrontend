@@ -24,13 +24,19 @@ import {
   Pagination,
   Button,
   ButtonGroup,
-  Paper
+  Paper,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from "@mui/material";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
+import angkaTerbilang from "@develoka/angka-terbilang-js";
 
 const TampilJual = () => {
   const { user } = useContext(AuthContext);
@@ -94,6 +100,8 @@ const TampilJual = () => {
   const [leasings, setLeasings] = useState([]);
   const [tipes, setTipes] = useState([]);
   const [kecamatans, setKecamatans] = useState([]);
+
+  const [pilihCetak, setPilihCetak] = useState("daftarJual");
   const navigate = useNavigate();
   let isJualExist = noJual.length !== 0;
 
@@ -349,7 +357,17 @@ const TampilJual = () => {
     }
   };
 
-  const downloadPdf = () => {
+  const pilihCetakPdf = () => {
+    if (pilihCetak === "daftarJual") {
+      downloadPdfDaftarJual();
+    } else if (pilihCetak === "kwitansiUmKredit") {
+      downloadPdfCetakKwitansi();
+    } else if (pilihCetak === "suratPerjanjian") {
+      downloadPdfSuratPerjanjian();
+    }
+  };
+
+  const downloadPdfDaftarJual = () => {
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
@@ -380,6 +398,240 @@ const TampilJual = () => {
     doc.save(`daftarJual.pdf`);
   };
 
+  const downloadPdfCetakKwitansi = async () => {
+    const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
+      noRangka,
+      id: user._id,
+      token: user.token
+    });
+    let makeTglAng1 = new Date(tglAng);
+    let makeTglAngAkhir = new Date(tglAngAkhir);
+    let tempTglAng1 =
+      makeTglAng1.getDate() +
+      "-" +
+      (makeTglAng1.getMonth() + 1) +
+      "-" +
+      makeTglAng1.getFullYear();
+    let tempTglAngAkhir =
+      makeTglAngAkhir.getDate() +
+      "-" +
+      (makeTglAngAkhir.getMonth() + 1) +
+      "-" +
+      makeTglAngAkhir.getFullYear();
+    let tempX1 = 70;
+    let tempX2 = 55;
+    let tempX3 = 15;
+    let tempY = 40;
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text(`${namaRegister}`, tempX1, tempY);
+    tempY += 6.5;
+    doc.text(`${almRegister.slice(0, 45)}`, tempX1, tempY);
+    tempY += 6.5;
+    doc.text(`${angkaTerbilang(uangMuka)} rupiah`, tempX1, tempY);
+    tempY += 15;
+    doc.text(
+      `UANG MUKA 1 (satu) unit sepeda motor ${tempStok.data.merk} Tipe : ${tipe}`,
+      tempX2,
+      tempY
+    );
+    tempY += 6.5;
+    doc.text(
+      `No.Rangka : ${noRangka}.   Nomor Mesin : ${noMesin}`,
+      tempX2,
+      tempY
+    );
+    tempY += 6.5;
+    if (nopol.length > 0) {
+      // Bekas
+      doc.text(`Tahun ${tahun},  Warna : ${namaWarna}`, tempX2, tempY);
+    } else {
+      // Baru
+      doc.text(
+        `Keadaan 100% BARU, Tahun ${tahun} Warna : ${namaWarna}`,
+        tempX2,
+        tempY
+      );
+    }
+    tempY += 6.5;
+    doc.text(`CATATAN : `, tempX3, tempY);
+    tempY += 6.5;
+    doc.text(
+      `SEWA BELI ${tenor} Bulan. Pembayaran Uang Muka Rp. ${uangMuka.toLocaleString()} dan angsuran perbulan`,
+      tempX3,
+      tempY
+    );
+    tempY += 6.5;
+    doc.text(
+      `Rp. ${angPerBulan.toLocaleString()} X ${tenor}. Terhitung angsuran Ke-1 (satu) Mulai TGL.${tempTglAng1} s/d`,
+      tempX3,
+      tempY
+    );
+    tempY += 6.5;
+    doc.text(
+      `Angsuran Ke-${tenor} (${angkaTerbilang(
+        tenor
+      )} bulan) Jatuh tempo pembayarannya TGL.${tempTglAngAkhir}`,
+      tempX3,
+      tempY
+    );
+    tempY += 6.5;
+    doc.text(`Kontrak No. ${noJual}`, tempX3, tempY);
+    tempY += 6.5;
+    doc.text(`${uangMuka.toLocaleString()}`, 50, tempY);
+    doc.text(`${current_date}`, 145, tempY);
+    tempY += 30;
+    doc.text(`${namaRegister.slice(0, 30)}`, 40, tempY);
+    doc.text(`( ${user.username} )`, 140, tempY);
+    doc.save(`kwitansiUMKredit.pdf`);
+  };
+
+  const downloadPdfSuratPerjanjian = async () => {
+    const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
+      noRangka,
+      id: user._id,
+      token: user.token
+    });
+    const tempRegister = await axios.post(`${tempUrl}/registersByNo`, {
+      noRegister,
+      id: user._id,
+      token: user.token
+    });
+    let tempY = 25;
+    let makeTglAng1 = new Date(tglAng);
+    let makeTglAngAkhir = new Date(tglAngAkhir);
+    var myDays = [
+      "Minggu",
+      "Senin",
+      "Selasa",
+      "Rabu",
+      "Kamis",
+      "Jumat",
+      "Sabtu"
+    ];
+    let thisDay = myDays[makeTglAng1.getDate()];
+    let findMonth = (monthNumber) => {
+      if (monthNumber === 1) {
+        return "JANUARI";
+      } else if (monthNumber === 2) {
+        return "FEBRUARI";
+      } else if (monthNumber === 3) {
+        return "MARET";
+      } else if (monthNumber === 4) {
+        return "APRIL";
+      } else if (monthNumber === 5) {
+        return "MEI";
+      } else if (monthNumber === 6) {
+        return "JUNI";
+      } else if (monthNumber === 7) {
+        return "JULI";
+      } else if (monthNumber === 8) {
+        return "AGUSTUS";
+      } else if (monthNumber === 9) {
+        return "SEPTEMBER";
+      } else if (monthNumber === 10) {
+        return "OKTOBER";
+      } else if (monthNumber === 11) {
+        return "NOVEMBER";
+      } else if (monthNumber === 12) {
+        return "DESEMBER";
+      }
+    };
+    let monthYearTglAng1 =
+      findMonth(makeTglAng1.getMonth() + 1) + " " + makeTglAng1.getFullYear();
+    let monthYearTglAngAkhir =
+      findMonth(makeTglAngAkhir.getMonth() + 1) +
+      " " +
+      makeTglAngAkhir.getFullYear();
+    var date = new Date();
+    let tempDateName = findMonth(date.getMonth() + 1);
+    var current_date =
+      date.getDate() +
+      " " +
+      findMonth(date.getMonth() + 1) +
+      " " +
+      date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    const doc = new jsPDF();
+    doc.setFontSize(11);
+    doc.text(`${noJual}`, 95, tempY);
+    tempY += 6.5;
+    doc.text(`${current_date}`, 90, tempY);
+    tempY += 8;
+    doc.text(`${thisDay}`, 40, tempY);
+    doc.text(`${date.getDate()}`, 80, tempY);
+    doc.text(`${tempDateName}`, 120, tempY);
+    doc.text(`${date.getFullYear()}`, 160, tempY);
+    tempY += 10;
+    doc.text(`?SHERLY ARIFIN`, 50, tempY);
+    tempY += 6.5;
+    doc.text(`?DAGANG`, 50, tempY);
+    tempY += 6.5;
+    doc.text(`?JAKARTALAH YA`, 50, tempY);
+    tempY += 15;
+    doc.text(`${namaRegister}`, 50, tempY);
+    tempY += 6.5;
+    doc.text(`${tempRegister.data.pkjRegister}`, 50, tempY);
+    tempY += 6.5;
+    doc.text(`${almRegister.slice(0, 40)}`, 50, tempY);
+    tempY += 6.5;
+    doc.text(`${noKtpRegister}`, 50, tempY);
+    tempY += 15;
+    doc.text(`${tempRegister.data.namaPjmRegister}`, 50, tempY);
+    tempY += 6.5;
+    doc.text(`${tempRegister.data.pkjPjmRegister}`, 50, tempY);
+    tempY += 6.5;
+    doc.text(`${tempRegister.data.almPjmRegister.slice(0, 40)}`, 50, tempY);
+    tempY += 6.5;
+    doc.text(`${tempRegister.data.noKtpPjmRegister}`, 50, tempY);
+    tempY += 20;
+    doc.text(`${current_date}`, 65, tempY);
+    tempY += 6.5;
+    doc.text(`${tempStok.data.merk}`, 130, tempY);
+    tempY += 30;
+    doc.text(`${tempStok.data.merk}/${tipe}`, 15, tempY);
+    doc.text(`${tahun}`, 55, tempY);
+    doc.text(`${namaWarna}`, 80, tempY);
+    doc.text(`${tipe}`, 120, tempY);
+    tempY += 20;
+    doc.text(`${tempStok.data.merk}`, 135, tempY);
+    tempY += 15;
+    doc.text(
+      `${hargaTunai.toLocaleString()} ( ${angkaTerbilang(hargaTunai)} rupiah )`,
+      55,
+      tempY
+    );
+    tempY += 30;
+    doc.text(
+      `${uangMuka.toLocaleString()}          ${angkaTerbilang(
+        uangMuka
+      )} rupiah`,
+      100,
+      tempY
+    );
+    tempY += 5;
+    doc.text(`${sisaPiutang.toLocaleString()}`, 100, tempY);
+    tempY += 5;
+    doc.text(`?25`, 25, tempY);
+    doc.text(`?dua puluh lima`, 50, tempY);
+    doc.text(`${tenor}`, 125, tempY);
+    doc.text(`${angkaTerbilang(tenor)}`, 148, tempY);
+    tempY += 7;
+    doc.text(`${monthYearTglAng1}`, 78, tempY);
+    doc.text(`${monthYearTglAngAkhir}`, 160, tempY);
+    tempY += 7;
+    doc.text(`${angPerBulan.toLocaleString()}`, 110, tempY);
+    tempY += 7;
+    doc.text(`# ${angkaTerbilang(angPerBulan)} rupiah #`, 25, tempY);
+    doc.save(`SuratPerjanjianKredit.pdf`);
+  };
+
   const downloadExcel = () => {
     const workSheet = XLSX.utils.json_to_sheet(jualsData);
     const workBook = XLSX.utils.book_new();
@@ -408,7 +660,7 @@ const TampilJual = () => {
       </Typography>
       <Box sx={downloadButtons}>
         <ButtonGroup variant="outlined" color="secondary">
-          <Button startIcon={<PrintIcon />} onClick={() => downloadPdf()}>
+          <Button startIcon={<PrintIcon />} onClick={() => pilihCetakPdf()}>
             CETAK
           </Button>
           <Button startIcon={<DownloadIcon />} onClick={() => downloadExcel()}>
@@ -416,6 +668,39 @@ const TampilJual = () => {
           </Button>
         </ButtonGroup>
       </Box>
+      <Paper elevation={6} sx={pilihCetakContainer}>
+        <FormControl>
+          <FormLabel id="cetak-buttons-group-label">Pilih Cetak</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="cetak-buttons-group-label"
+            defaultValue="daftarJual"
+            value={pilihCetak}
+            onChange={(event) => setPilihCetak(event.target.value)}
+            name="radio-buttons-group"
+          >
+            <FormControlLabel
+              value="daftarJual"
+              control={<Radio />}
+              label="Daftar Jual"
+            />
+            {isJualExist && (
+              <>
+                <FormControlLabel
+                  value="kwitansiUmKredit"
+                  control={<Radio />}
+                  label="Kwitansi UM Kredit"
+                />
+                <FormControlLabel
+                  value="suratPerjanjian"
+                  control={<Radio />}
+                  label="Surat Perjanjian"
+                />
+              </>
+            )}
+          </RadioGroup>
+        </FormControl>
+      </Paper>
       <Box sx={buttonModifierContainer}>
         <ButtonModifierJual
           id={id}
@@ -1044,6 +1329,16 @@ const mainContainer = {
     xs: 4,
     md: 0
   }
+};
+
+const pilihCetakContainer = {
+  padding: 3,
+  borderRadius: "20px",
+  margin: {
+    sm: 0,
+    md: 4
+  },
+  marginTop: 2
 };
 
 const titleStyle = {

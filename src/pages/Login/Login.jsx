@@ -72,6 +72,7 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value.toUpperCase())}
             />
             <TextField
+              type="password"
               id="outlined-basic"
               label="Password"
               variant="outlined"
