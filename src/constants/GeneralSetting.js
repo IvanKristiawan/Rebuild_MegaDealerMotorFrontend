@@ -1,6 +1,6 @@
 export const namaSoftware = "HelpTech";
-export const namaProgram = "MEGA";
-export const namaPerusahaan = "MEGA MOTOR";
+export const namaProgram = "DEALER";
+export const namaPerusahaan = "DEALER MOTOR";
 export const lokasiPerusahaan = "Jl. A. Yani III, Meral";
 export const lokasiSP = "Tangerang";
 export const kotaPerusahaan = "Tg. Balai Karimun";
