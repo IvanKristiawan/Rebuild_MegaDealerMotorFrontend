@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -3055,6 +3056,106 @@ export function ShowTableBankKeluar({ id, currentPosts }) {
               <TableCell>{bankKeluarChild.jumlah.toLocaleString()}</TableCell>
             </TableRow>
           ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export function ShowTableNeracaSaldo({
+  currentPosts,
+  totalDebet,
+  totalKredit
+}) {
+  const classes = useStyles();
+  return (
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="simple table">
+        <TableHead className={classes.root}>
+          <TableRow>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kode
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Nama Rekening
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Saldo Awal
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Debet
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Kredit
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Saldo Akhir</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentPosts.map((user, index) => (
+            <TableRow
+              key={user._id}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                "&:hover": { bgcolor: Colors.grey300 },
+                cursor: "pointer"
+              }}
+            >
+              <TableCell component="th" scope="row">
+                {user.kodeCOA}
+              </TableCell>
+              <TableCell>{user.namaCOA}</TableCell>
+              <TableCell>{user.saldoAwal.toLocaleString()}</TableCell>
+              <TableCell>{user.debet.toLocaleString()}</TableCell>
+              <TableCell>{user.kredit.toLocaleString()}</TableCell>
+              <TableCell>{user.saldoAkhir.toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
+          <TableRow
+            key={"count"}
+            sx={{
+              bgcolor: Colors.grey300
+            }}
+          >
+            <TableCell component="th" scope="row"></TableCell>
+            <TableCell></TableCell>
+            <TableCell>
+              <Typography sx={{ fontWeight: 700 }}>Balance :</Typography>
+            </TableCell>
+            <TableCell>{totalDebet.toLocaleString()}</TableCell>
+            <TableCell>{totalKredit.toLocaleString()}</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+          <TableRow
+            key={"count"}
+            sx={{
+              bgcolor: Colors.grey300
+            }}
+          >
+            <TableCell component="th" scope="row"></TableCell>
+            <TableCell></TableCell>
+            <TableCell>
+              <Typography sx={{ fontWeight: 700 }}>Selisih :</Typography>
+            </TableCell>
+            <TableCell>{(totalDebet - totalKredit).toLocaleString()}</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>

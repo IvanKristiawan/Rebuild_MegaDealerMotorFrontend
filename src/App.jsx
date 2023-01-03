@@ -182,7 +182,8 @@ import {
   UbahBankKeluarChild,
   Posting,
   Unposting,
-  AktivitasBukuBesar
+  AktivitasBukuBesar,
+  NeracaSaldo
 } from "./pages/index";
 
 const App = () => {
@@ -1130,6 +1131,7 @@ const App = () => {
                     </Link>
                   )}
                 </SubMenu>
+                <Divider />
                 <SubMenu
                   label="Utility"
                   icon={<ManageAccountsIcon name="utility-icon" />}
@@ -2300,6 +2302,15 @@ const App = () => {
                       <AKTIVITASBUKUBESARRoute>
                         <AktivitasBukuBesar />
                       </AKTIVITASBUKUBESARRoute>
+                    }
+                  />
+                  {/* Neraca Saldo */}
+                  <Route
+                    path="/neracaSaldo"
+                    element={
+                      <NERACASALDORoute>
+                        <NeracaSaldo />
+                      </NERACASALDORoute>
                     }
                   />
                   {/* Profil User */}

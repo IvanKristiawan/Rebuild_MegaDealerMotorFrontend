@@ -12,18 +12,22 @@ export const jemputanSetting = 10000;
 export const biayaTarikSetting = 200000;
 export const refCOA = {
   "PERSEDIAAN MOTOR BARU": {
+    namaCOA: "PERSEDIAAN MOTOR BARU",
     kodeRefCOA: "IN1",
     kodeCOA: "01"
   },
   "PERSEDIAAN MOTOR BEKAS": {
+    namaCOA: "PERSEDIAAN MOTOR BEKAS",
     kodeRefCOA: "IN2",
     kodeCOA: "02"
   },
   "HUTANG DAGANG": {
+    namaCOA: "HUTANG DAGANG",
     kodeRefCOA: "HD",
     kodeCOA: "03"
   },
   "PPN MASUKKAN": {
+    namaCOA: "PPN MASUKKAN",
     kodeRefCOA: "PM",
     kodeCOA: "04"
   }

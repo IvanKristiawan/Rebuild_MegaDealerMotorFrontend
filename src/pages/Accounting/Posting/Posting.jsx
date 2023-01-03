@@ -36,10 +36,23 @@ const Posting = () => {
 
   const posting = async () => {
     setLoading(true);
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    var current_time =
+      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    await axios.post(`${tempUrl}/saveLastNeracaSaldo`, {
+      id: user._id,
+      token: user.token,
+      kodeCabang: user.cabang._id
+    });
     // Jurnal Posting Pembelian
     await axios.post(`${tempUrl}/saveJurnalPostingPembelian`, {
       dariTgl,
       sampaiTgl,
+      tglInput: current_date,
+      jamInput: current_time,
+      userInput: user.username,
       id: user._id,
       token: user.token,
       kodeCabang: user.cabang._id

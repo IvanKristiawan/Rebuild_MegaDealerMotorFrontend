@@ -163,3 +163,4 @@ export { default as UbahBankKeluarChild } from "./Finance/BankKeluarChild/UbahBa
 export { default as Posting } from "./Accounting/Posting/Posting";
 export { default as Unposting } from "./Accounting/Unposting/Unposting";
 export { default as AktivitasBukuBesar } from "./Accounting/AktivitasBukuBesar/AktivitasBukuBesar";
+export { default as NeracaSaldo } from "./Accounting/NeracaSaldo/NeracaSaldo";
