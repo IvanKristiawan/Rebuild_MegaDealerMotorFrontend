@@ -6,7 +6,10 @@ import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import {
   namaPerusahaan,
   lokasiPerusahaan,
-  kotaPerusahaan
+  kotaPerusahaan,
+  namaPemilik,
+  pekerjaanPemilik,
+  alamatPemilik
 } from "../../../constants/GeneralSetting";
 import { ShowTableJual } from "../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
@@ -361,9 +364,11 @@ const TampilJual = () => {
     if (pilihCetak === "daftarJual") {
       downloadPdfDaftarJual();
     } else if (pilihCetak === "kwitansiUmKredit") {
-      downloadPdfCetakKwitansi();
+      downloadPdfCetakKwitansiKredit();
     } else if (pilihCetak === "suratPerjanjian") {
       downloadPdfSuratPerjanjian();
+    } else if (pilihCetak === "kwitansiUmTunai") {
+      downloadPdfCetakKwitansiTunai();
     }
   };
 
@@ -398,7 +403,60 @@ const TampilJual = () => {
     doc.save(`daftarJual.pdf`);
   };
 
-  const downloadPdfCetakKwitansi = async () => {
+  const downloadPdfCetakKwitansiTunai = async () => {
+    const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
+      noRangka,
+      id: user._id,
+      token: user.token
+    });
+
+    var date = new Date();
+    var current_date =
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    let tempX1 = 45;
+    let tempY = 30;
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text(`${namaRegister}`, tempX1, tempY);
+    tempY += 6.5;
+    doc.text(`${almRegister.slice(0, 45)}`, tempX1, tempY);
+    tempY += 12;
+    doc.setFont(undefined, "bold");
+    doc.text(`${angkaTerbilang(uangMuka)} rupiah`, tempX1 + 15, tempY);
+    doc.setFont(undefined, "normal");
+    tempY += 12;
+    doc.text(
+      `Pembayaran 1 (satu) unit sepeda motor ${tempStok.data.merk}, Tipe : ${tipe}`,
+      tempX1,
+      tempY
+    );
+    tempY += 6.5;
+    doc.text(
+      `No.Rangka : ${noRangka}.   Nomor Mesin : ${noMesin}`,
+      tempX1,
+      tempY
+    );
+    tempY += 6.5;
+    if (nopol.length > 0) {
+      // Bekas
+      doc.text(`Tahun ${tahun},    Warna : ${namaWarna}`, tempX1, tempY);
+    } else {
+      // Baru
+      doc.text(
+        `Keadaan 100% BARU, Tahun ${tahun} Warna : ${namaWarna}`,
+        tempX1,
+        tempY
+      );
+    }
+    tempY += 45;
+    doc.text(`${uangMuka.toLocaleString()}`, tempX1 + 10, tempY);
+    doc.text(`${current_date}`, 145, tempY);
+    tempY += 35;
+    doc.text(`${namaRegister.slice(0, 30)}`, tempX1, tempY);
+    doc.save(`kwitansiUMTunai.pdf`);
+  };
+
+  const downloadPdfCetakKwitansiKredit = async () => {
     const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
       noRangka,
       id: user._id,
@@ -514,6 +572,7 @@ const TampilJual = () => {
       "Jumat",
       "Sabtu"
     ];
+    let thisDayNumber = makeTglAng1.getDate();
     let thisDay = myDays[makeTglAng1.getDate()];
     let findMonth = (monthNumber) => {
       if (monthNumber === 1) {
@@ -569,11 +628,11 @@ const TampilJual = () => {
     doc.text(`${tempDateName}`, 120, tempY);
     doc.text(`${date.getFullYear()}`, 160, tempY);
     tempY += 10;
-    doc.text(`?SHERLY ARIFIN`, 50, tempY);
+    doc.text(`${namaPemilik}`, 50, tempY);
     tempY += 6.5;
-    doc.text(`?DAGANG`, 50, tempY);
+    doc.text(`${pekerjaanPemilik}`, 50, tempY);
     tempY += 6.5;
-    doc.text(`?JAKARTALAH YA`, 50, tempY);
+    doc.text(`${alamatPemilik}`, 50, tempY);
     tempY += 15;
     doc.text(`${namaRegister}`, 50, tempY);
     tempY += 6.5;
@@ -618,8 +677,8 @@ const TampilJual = () => {
     tempY += 5;
     doc.text(`${sisaPiutang.toLocaleString()}`, 100, tempY);
     tempY += 5;
-    doc.text(`?25`, 25, tempY);
-    doc.text(`?dua puluh lima`, 50, tempY);
+    doc.text(`${thisDayNumber}`, 25, tempY);
+    doc.text(`${angkaTerbilang(thisDayNumber)}`, 50, tempY);
     doc.text(`${tenor}`, 125, tempY);
     doc.text(`${angkaTerbilang(tenor)}`, 148, tempY);
     tempY += 7;
@@ -684,7 +743,7 @@ const TampilJual = () => {
               control={<Radio />}
               label="Daftar Jual"
             />
-            {isJualExist && (
+            {isJualExist && jenisJual === "KREDIT" && (
               <>
                 <FormControlLabel
                   value="kwitansiUmKredit"
@@ -695,6 +754,15 @@ const TampilJual = () => {
                   value="suratPerjanjian"
                   control={<Radio />}
                   label="Surat Perjanjian"
+                />
+              </>
+            )}
+            {isJualExist && jenisJual === "TUNAI" && (
+              <>
+                <FormControlLabel
+                  value="kwitansiUmTunai"
+                  control={<Radio />}
+                  label="Kwitansi UM Tunai"
                 />
               </>
             )}

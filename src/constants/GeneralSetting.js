@@ -10,6 +10,9 @@ export const dendaSetting = 1000;
 export const toleransiSetting = 3;
 export const jemputanSetting = 10000;
 export const biayaTarikSetting = 200000;
+export const namaPemilik = "SHERLY ARIFIN";
+export const pekerjaanPemilik = "DAGANG";
+export const alamatPemilik = "JAKARTA";
 export const refCOA = {
   "PERSEDIAAN MOTOR BARU": {
     namaCOA: "PERSEDIAAN MOTOR BARU",
