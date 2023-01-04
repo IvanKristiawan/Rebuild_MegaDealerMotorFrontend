@@ -5,7 +5,17 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import { tempUrl } from "../../../contexts/ContextProvider";
 import { Colors } from "../../../constants/styles";
 import { Loader } from "../../../components";
-import { Box, TextField, Typography, Divider, Button } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Typography,
+  Divider,
+  Button,
+  ButtonGroup
+} from "@mui/material";
+import jsPDF from "jspdf";
+import angkaTerbilang from "@develoka/angka-terbilang-js";
+import PrintIcon from "@mui/icons-material/Print";
 import SaveIcon from "@mui/icons-material/Save";
 
 const TampilAngsuranChild = () => {
@@ -42,6 +52,15 @@ const TampilAngsuranChild = () => {
   const [st, setSt] = useState("");
   const [mdTerakhir, setMdTerakhir] = useState("");
 
+  const [namaRegister, setNamaRegister] = useState("");
+  const [almRegister, setAlmRegister] = useState("");
+  const [noRangka, setNoRangka] = useState("");
+  const [nopol, setNopol] = useState("");
+  const [tipe, setTipe] = useState("");
+  const [namaWarna, setNamaWarna] = useState("");
+  const [tenor, setTenor] = useState("");
+  const [noJual, setNoJual] = useState("");
+
   const [isDisabledMd1, setIsDisabledMd1] = useState(true);
   const [isDisabledMd2, setIsDisabledMd2] = useState(true);
   const [isDisabledMd3, setIsDisabledMd3] = useState(true);
@@ -50,6 +69,7 @@ const TampilAngsuranChild = () => {
 
   useEffect(() => {
     getAngsuranChildById();
+    getJualById();
   }, []);
 
   const getAngsuranChildById = async () => {
@@ -113,6 +133,130 @@ const TampilAngsuranChild = () => {
         setIsDisabledMd3(false);
       }
     }
+  };
+
+  const getJualById = async () => {
+    if (id) {
+      const response = await axios.post(`${tempUrl}/jualByNoJual`, {
+        noJual: id,
+        id: user._id,
+        token: user.token,
+        kodeCabang: user.cabang._id
+      });
+      // alert(response);
+      setNamaRegister(response.data.namaRegister);
+      setAlmRegister(response.data.almRegister);
+      setNoRangka(response.data.noRangka);
+      setNopol(response.data.nopol);
+      setTipe(response.data.tipe);
+      setNamaWarna(response.data.namaWarna);
+      setTenor(response.data.tenor);
+      setNoJual(response.data.noJual);
+    }
+  };
+
+  const downloadPdfCetakKwitansiAngsuran = async () => {
+    const tempStok = await axios.post(`${tempUrl}/daftarStoksByNorang`, {
+      noRangka,
+      id: user._id,
+      token: user.token
+    });
+
+    let newJatuhTempo = new Date(tglJatuhTempo);
+    let tempJatuhTempo =
+      newJatuhTempo.getDate() +
+      "-" +
+      (newJatuhTempo.getMonth() + 1) +
+      "-" +
+      newJatuhTempo.getFullYear();
+    let findMonth = (monthNumber) => {
+      if (monthNumber === 1) {
+        return "JANUARI";
+      } else if (monthNumber === 2) {
+        return "FEBRUARI";
+      } else if (monthNumber === 3) {
+        return "MARET";
+      } else if (monthNumber === 4) {
+        return "APRIL";
+      } else if (monthNumber === 5) {
+        return "MEI";
+      } else if (monthNumber === 6) {
+        return "JUNI";
+      } else if (monthNumber === 7) {
+        return "JULI";
+      } else if (monthNumber === 8) {
+        return "AGUSTUS";
+      } else if (monthNumber === 9) {
+        return "SEPTEMBER";
+      } else if (monthNumber === 10) {
+        return "OKTOBER";
+      } else if (monthNumber === 11) {
+        return "NOVEMBER";
+      } else if (monthNumber === 12) {
+        return "DESEMBER";
+      }
+    };
+    let monthJatuhTempo = findMonth(newJatuhTempo.getMonth() + 1);
+    var date = new Date();
+    var current_date =
+      date.getDate() +
+      "-" +
+      findMonth(date.getMonth() + 1) +
+      "-" +
+      date.getFullYear();
+    let tempX1 = 160;
+    let tempX2 = 60;
+    let tempY = 5;
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text(`${noKwitansi}`, tempX1, tempY);
+    tempY += 6.5;
+    doc.text(`${idAngsuran} - ${namaRegister.split(" ", 1)[0]}`, tempX1, tempY);
+    tempY += 20;
+    doc.text(`${namaRegister} / ${noJual}`, tempX2, tempY);
+    tempY += 6.5;
+    doc.text(`${almRegister}`, tempX2, tempY);
+    tempY += 12;
+    doc.setFont(undefined, "bold");
+    doc.text(`${angkaTerbilang(totalBayar)} rupiah`, tempX2, tempY);
+    doc.setFont(undefined, "normal");
+    tempY += 12;
+    doc.text(
+      `ANGSURAN SEWA BELI 1 (satu) unit sepeda motor ${tempStok.data.merk}`,
+      tempX2,
+      tempY
+    );
+    tempY += 6.5;
+    doc.text(
+      `Warna : ${namaWarna}. ${nopol} / ${noRangka} - ${tipe} `,
+      tempX2,
+      tempY
+    );
+    tempY += 6.5;
+    doc.text(
+      `Angsuran Ke-${idAngsuran} (${angkaTerbilang(
+        idAngsuran
+      )}) Dari ${tenor} (${angkaTerbilang(tenor)}).`,
+      tempX2,
+      tempY
+    );
+    tempY += 6.5;
+    doc.text(`Kontrak TGL. ${tempJatuhTempo}`, tempX2, tempY);
+    tempY += 6.5;
+    doc.text(
+      `Untuk Angsuran Bulan ${monthJatuhTempo} ${newJatuhTempo.getFullYear()}`,
+      tempX2,
+      tempY
+    );
+    tempY += 35;
+    doc.setFont(undefined, "bold");
+    doc.text(`${totalBayar.toLocaleString()}`, tempX2 + 5, tempY);
+    doc.setFont(undefined, "normal");
+    doc.text(`${current_date}`, tempX2 + 80, tempY);
+    tempY += 35;
+    doc.text(`${namaRegister}`, tempX2 - 5, tempY);
+    doc.text(`( ${user.username} )`, tempX2 + 85, tempY);
+    doc.save(`kwitansiAngsuran.pdf`);
   };
 
   const saveAngsuran = async (e) => {
@@ -186,6 +330,16 @@ const TampilAngsuranChild = () => {
         <Typography variant="h4" sx={subTitleText}>
           Angsuran Ke-
         </Typography>
+        <Box sx={downloadButtons}>
+          <ButtonGroup variant="outlined" color="secondary">
+            <Button
+              startIcon={<PrintIcon />}
+              onClick={() => downloadPdfCetakKwitansiAngsuran()}
+            >
+              CETAK KWITANSI
+            </Button>
+          </ButtonGroup>
+        </Box>
         <Divider sx={dividerStyle} />
         <Box sx={textFieldContainer}>
           <Box sx={textFieldWrapper}>
@@ -503,4 +657,11 @@ const secondWrapper = {
     md: 0,
     xs: 4
   }
+};
+
+const downloadButtons = {
+  mt: 4,
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center"
 };
