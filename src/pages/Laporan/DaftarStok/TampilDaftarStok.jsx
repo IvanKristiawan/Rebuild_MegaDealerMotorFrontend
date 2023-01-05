@@ -307,7 +307,7 @@ const TampilDaftarStok = () => {
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
-      280
+      200
     );
     for (var i = 0; i < Object.keys(daftarStoksForPdf).length; i++) {
       doc.setFontSize(10);
@@ -320,7 +320,7 @@ const TampilDaftarStok = () => {
         styles: {
           fontSize: 8
         },
-        margin: { top: 43 },
+        startY: doc.pageCount > 1 ? doc.autoTableEndPosY() + 20 : 43,
         columns: columns.map((col) => ({
           ...col,
           dataKey: col.field
@@ -379,7 +379,7 @@ const TampilDaftarStok = () => {
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
-      280
+      290
     );
     for (var i = 0; i < Object.keys(rekapStoks).length; i++) {
       doc.setFontSize(10);
@@ -392,7 +392,7 @@ const TampilDaftarStok = () => {
         styles: {
           fontSize: 8
         },
-        margin: { top: 43 },
+        startY: doc.pageCount > 1 ? doc.autoTableEndPosY() + 20 : 43,
         columns: columnsRekap.map((col) => ({ ...col, dataKey: col.field })),
         body: Object.values(rekapStoks)[i],
         headStyles: {

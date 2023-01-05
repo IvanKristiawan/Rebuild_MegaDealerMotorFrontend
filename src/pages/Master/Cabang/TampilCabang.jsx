@@ -167,11 +167,11 @@ const TampilCabang = () => {
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
-      280
+      290
     );
     doc.setFontSize(12);
     doc.autoTable({
-      margin: { top: 45 },
+      startY: doc.pageCount > 1 ? doc.autoTableEndPosY() + 20 : 45,
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
       body: cabangForDoc,
       headStyles: {

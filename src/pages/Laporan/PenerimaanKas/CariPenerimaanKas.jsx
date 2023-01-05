@@ -78,7 +78,7 @@ const CariPenerimaanKas = () => {
     doc.text(`Periode : `, 15, 40);
     doc.setFontSize(12);
     doc.autoTable({
-      margin: { top: 50 },
+      startY: doc.pageCount > 1 ? doc.autoTableEndPosY() + 20 : 50,
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
       body: response.data,
       headStyles: {

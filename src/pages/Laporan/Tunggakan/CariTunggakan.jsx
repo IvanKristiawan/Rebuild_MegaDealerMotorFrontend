@@ -140,11 +140,11 @@ const CariTunggakan = () => {
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
-      280
+      200
     );
     doc.setFontSize(12);
     doc.autoTable({
-      margin: { top: 50 },
+      startY: doc.pageCount > 1 ? doc.autoTableEndPosY() + 20 : 50,
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
       body: response.data,
       headStyles: {

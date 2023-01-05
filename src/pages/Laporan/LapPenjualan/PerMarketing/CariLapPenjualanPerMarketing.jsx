@@ -62,7 +62,7 @@ const CariLapPenjualanPerMarketing = () => {
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
-      280
+      290
     );
     doc.setFontSize(12);
     doc.text(`${namaPerusahaan} - ${kotaPerusahaan}`, 15, 10);
@@ -74,7 +74,7 @@ const CariLapPenjualanPerMarketing = () => {
     doc.text(`Periode : `, 15, 45);
     doc.setFontSize(12);
     doc.autoTable({
-      margin: { top: 50 },
+      startY: doc.pageCount > 1 ? doc.autoTableEndPosY() + 20 : 50,
       columns: columns.map((col) => ({ ...col, dataKey: col.field })),
       body: response.data,
       headStyles: {

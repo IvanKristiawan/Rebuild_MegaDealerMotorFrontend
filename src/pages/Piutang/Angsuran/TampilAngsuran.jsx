@@ -229,11 +229,11 @@ const TampilAngsuran = () => {
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
-      280
+      290
     );
     doc.setFontSize(12);
     doc.autoTable({
-      margin: { top: 80 },
+      startY: doc.pageCount > 1 ? doc.autoTableEndPosY() + 20 : 80,
       columns: columnsRekap.map((col) => ({ ...col, dataKey: col.field })),
       body: angsuranTableRekap,
       headStyles: {
@@ -281,11 +281,11 @@ const TampilAngsuran = () => {
     doc.text(
       `Dicetak Oleh: ${user.username} | Tanggal : ${current_date} | Jam : ${current_time}`,
       15,
-      280
+      200
     );
     doc.setFontSize(12);
     doc.autoTable({
-      margin: { top: 90 },
+      startY: doc.pageCount > 1 ? doc.autoTableEndPosY() + 20 : 90,
       columns: columnsRinci.map((col) => ({ ...col, dataKey: col.field })),
       body: angsuranTableRinci,
       headStyles: {
