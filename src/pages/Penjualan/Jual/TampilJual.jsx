@@ -450,7 +450,9 @@ const TampilJual = () => {
       );
     }
     tempY += 48;
+    doc.setFont(undefined, "bold");
     doc.text(`${uangMuka.toLocaleString()}`, tempX1 + 10, tempY);
+    doc.setFont(undefined, "normal");
     doc.text(`${current_date}`, 185, tempY);
     tempY += 50;
     doc.text(`${namaRegister.slice(0, 30)}`, tempX1 - 8, tempY);
@@ -545,9 +547,10 @@ const TampilJual = () => {
     );
     tempY += 6.5;
     doc.text(`Kontrak No. ${noJual}`, tempX1, tempY);
-
     tempY += 16;
+    doc.setFont(undefined, "bold");
     doc.text(`${uangMuka.toLocaleString()}`, tempX1 + 10, tempY);
+    doc.setFont(undefined, "normal");
     doc.text(`${current_date}`, 185, tempY);
     tempY += 48;
     doc.text(`${namaRegister.slice(0, 30)}`, tempX1 - 8, tempY);
