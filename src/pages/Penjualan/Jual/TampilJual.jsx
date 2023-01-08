@@ -663,9 +663,7 @@ const TampilJual = () => {
     tempY += 5;
     doc.text(`${tempStok.data.merk}`, 130, tempY);
     tempY += 24;
-    doc.setFontSize(5);
-    doc.text(`${tempStok.data.merk}/${tipe}`, 24, tempY);
-    doc.setFontSize(8);
+    doc.text(`${tempStok.data.merk}/${tipe}`, 24, tempY + 4);
     doc.text(`${tahun}`, 55, tempY);
     doc.text(`${namaWarna}`, 84, tempY);
     doc.text(`${noRangka}`, 124, tempY);
