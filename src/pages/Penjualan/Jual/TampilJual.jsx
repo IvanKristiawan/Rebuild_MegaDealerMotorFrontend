@@ -413,16 +413,17 @@ const TampilJual = () => {
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-    let tempX1 = 45;
-    let tempY = 30;
-    const doc = new jsPDF();
+    let tempX1 = 60;
+    let tempY = 48;
+    const doc = new jsPDF("l", "mm", [270, 208]);
     doc.setFontSize(12);
+    doc.text(`${noKwitansi}`, 220, 28);
     doc.text(`${namaRegister}`, tempX1, tempY);
     tempY += 5;
     doc.text(`${almRegister.slice(0, 45)}`, tempX1, tempY);
-    tempY += 12;
+    tempY += 19;
     doc.setFont(undefined, "bold");
-    doc.text(`${angkaTerbilang(uangMuka)} rupiah`, tempX1 + 15, tempY);
+    doc.text(`${angkaTerbilang(uangMuka)} rupiah`, tempX1, tempY);
     doc.setFont(undefined, "normal");
     tempY += 12;
     doc.text(
@@ -448,11 +449,11 @@ const TampilJual = () => {
         tempY
       );
     }
-    tempY += 45;
+    tempY += 48;
     doc.text(`${uangMuka.toLocaleString()}`, tempX1 + 10, tempY);
-    doc.text(`${current_date}`, 145, tempY);
-    tempY += 35;
-    doc.text(`${namaRegister.slice(0, 30)}`, tempX1, tempY);
+    doc.text(`${current_date}`, 185, tempY);
+    tempY += 50;
+    doc.text(`${namaRegister.slice(0, 30)}`, tempX1 - 8, tempY);
     doc.save(`kwitansiUMTunai.pdf`);
   };
 
