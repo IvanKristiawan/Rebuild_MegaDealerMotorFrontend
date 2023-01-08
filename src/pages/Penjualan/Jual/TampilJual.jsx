@@ -478,58 +478,61 @@ const TampilJual = () => {
       (makeTglAngAkhir.getMonth() + 1) +
       "-" +
       makeTglAngAkhir.getFullYear();
-    let tempX1 = 70;
-    let tempX2 = 55;
-    let tempX3 = 15;
-    let tempY = 40;
+    let tempX1 = 60;
+    let tempY = 48;
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const doc = new jsPDF();
+    const doc = new jsPDF("l", "mm", [270, 208]);
     doc.setFontSize(12);
+    doc.text(`${noKwitansi}`, 220, 28);
     doc.text(`${namaRegister}`, tempX1, tempY);
-    tempY += 6.5;
+    tempY += 5;
     doc.text(`${almRegister.slice(0, 45)}`, tempX1, tempY);
-    tempY += 6.5;
+    tempY += 19;
+    doc.setFont(undefined, "bold");
     doc.text(`${angkaTerbilang(uangMuka)} rupiah`, tempX1, tempY);
-    tempY += 15;
+    doc.setFont(undefined, "normal");
+    tempY += 12;
     doc.text(
       `UANG MUKA 1 (satu) unit sepeda motor ${tempStok.data.merk} Tipe : ${tipe}`,
-      tempX2,
+      tempX1,
       tempY
     );
     tempY += 6.5;
     doc.text(
       `No.Rangka : ${noRangka}.   Nomor Mesin : ${noMesin}`,
-      tempX2,
+      tempX1,
       tempY
     );
     tempY += 6.5;
     if (nopol.length > 0) {
       // Bekas
-      doc.text(`Tahun ${tahun},  Warna : ${namaWarna}`, tempX2, tempY);
+      doc.text(`Tahun ${tahun},    Warna : ${namaWarna}`, tempX1, tempY);
     } else {
       // Baru
       doc.text(
         `Keadaan 100% BARU, Tahun ${tahun} Warna : ${namaWarna}`,
-        tempX2,
+        tempX1,
         tempY
       );
     }
     tempY += 6.5;
-    doc.text(`CATATAN : `, tempX3, tempY);
+    doc.setFont(undefined, "bold");
+    doc.text(`CATATAN : `, tempX1, tempY);
+    doc.setFont(undefined, "normal");
     tempY += 6.5;
     doc.text(
       `SEWA BELI ${tenor} Bulan. Pembayaran Uang Muka Rp. ${uangMuka.toLocaleString()} dan angsuran perbulan`,
-      tempX3,
+      tempX1,
       tempY
     );
     tempY += 6.5;
     doc.text(
       `Rp. ${angPerBulan.toLocaleString()} X ${tenor}. Terhitung angsuran Ke-1 (satu) Mulai TGL.${tempTglAng1} s/d`,
-      tempX3,
+      tempX1,
       tempY
     );
     tempY += 6.5;
@@ -537,17 +540,18 @@ const TampilJual = () => {
       `Angsuran Ke-${tenor} (${angkaTerbilang(
         tenor
       )} bulan) Jatuh tempo pembayarannya TGL.${tempTglAngAkhir}`,
-      tempX3,
+      tempX1,
       tempY
     );
     tempY += 6.5;
-    doc.text(`Kontrak No. ${noJual}`, tempX3, tempY);
-    tempY += 6.5;
-    doc.text(`${uangMuka.toLocaleString()}`, 50, tempY);
-    doc.text(`${current_date}`, 145, tempY);
-    tempY += 30;
-    doc.text(`${namaRegister.slice(0, 30)}`, 40, tempY);
-    doc.text(`( ${user.username} )`, 140, tempY);
+    doc.text(`Kontrak No. ${noJual}`, tempX1, tempY);
+
+    tempY += 16;
+    doc.text(`${uangMuka.toLocaleString()}`, tempX1 + 10, tempY);
+    doc.text(`${current_date}`, 185, tempY);
+    tempY += 48;
+    doc.text(`${namaRegister.slice(0, 30)}`, tempX1 - 8, tempY);
+    doc.text(`( ${user.username} )`, 185, tempY);
     doc.save(`kwitansiUMKredit.pdf`);
   };
 
