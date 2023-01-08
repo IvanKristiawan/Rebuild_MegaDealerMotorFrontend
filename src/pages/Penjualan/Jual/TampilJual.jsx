@@ -454,6 +454,7 @@ const TampilJual = () => {
     doc.text(`${current_date}`, 185, tempY);
     tempY += 50;
     doc.text(`${namaRegister.slice(0, 30)}`, tempX1 - 8, tempY);
+    doc.text(`( ${user.username} )`, 185, tempY);
     doc.save(`kwitansiUMTunai.pdf`);
   };
 

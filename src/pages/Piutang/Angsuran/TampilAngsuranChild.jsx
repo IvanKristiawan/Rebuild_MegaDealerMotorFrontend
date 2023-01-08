@@ -204,19 +204,23 @@ const TampilAngsuranChild = () => {
       findMonth(date.getMonth() + 1) +
       "-" +
       date.getFullYear();
-    let tempX1 = 160;
+    let tempX1 = 220;
     let tempX2 = 60;
-    let tempY = 5;
-    const doc = new jsPDF();
+    let tempY = 29;
+    const doc = new jsPDF("l", "mm", [270, 208]);
     doc.setFontSize(12);
     doc.text(`${noKwitansi}`, tempX1, tempY);
-    tempY += 6.5;
-    doc.text(`${idAngsuran} - ${namaRegister.split(" ", 1)[0]}`, tempX1, tempY);
-    tempY += 20;
+    tempY += 5;
+    doc.text(
+      `${idAngsuran} - ${namaRegister.split(" ", 1)[0]}`,
+      tempX1,
+      tempY + 3
+    );
+    tempY += 15;
     doc.text(`${namaRegister} / ${noJual}`, tempX2, tempY);
     tempY += 6.5;
     doc.text(`${almRegister}`, tempX2, tempY);
-    tempY += 12;
+    tempY += 16;
     doc.setFont(undefined, "bold");
     doc.text(`${angkaTerbilang(totalBayar)} rupiah`, tempX2, tempY);
     doc.setFont(undefined, "normal");
@@ -248,14 +252,14 @@ const TampilAngsuranChild = () => {
       tempX2,
       tempY
     );
-    tempY += 35;
+    tempY += 36;
     doc.setFont(undefined, "bold");
     doc.text(`${totalBayar.toLocaleString()}`, tempX2 + 5, tempY);
     doc.setFont(undefined, "normal");
-    doc.text(`${current_date}`, tempX2 + 80, tempY);
-    tempY += 35;
-    doc.text(`${namaRegister}`, tempX2 - 5, tempY);
-    doc.text(`( ${user.username} )`, tempX2 + 85, tempY);
+    doc.text(`${current_date}`, 185, tempY);
+    tempY += 50;
+    doc.text(`${namaRegister}`, tempX2 - 8, tempY);
+    doc.text(`( ${user.username} )`, 185, tempY);
     doc.save(`kwitansiAngsuran.pdf`);
   };
 
