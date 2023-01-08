@@ -418,7 +418,7 @@ const TampilJual = () => {
     const doc = new jsPDF();
     doc.setFontSize(12);
     doc.text(`${namaRegister}`, tempX1, tempY);
-    tempY += 6.5;
+    tempY += 5;
     doc.text(`${almRegister.slice(0, 45)}`, tempX1, tempY);
     tempY += 12;
     doc.setFont(undefined, "bold");
@@ -560,7 +560,7 @@ const TampilJual = () => {
       id: user._id,
       token: user.token
     });
-    let tempY = 25;
+    let tempY = 21;
     let makeTglAng1 = new Date(tglAng);
     let makeTglAngAkhir = new Date(tglAngAkhir);
     var myDays = [
@@ -618,57 +618,60 @@ const TampilJual = () => {
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     const doc = new jsPDF();
-    doc.setFontSize(11);
-    doc.text(`${noJual}`, 95, tempY);
-    tempY += 6.5;
+    doc.setFontSize(8);
+    doc.text(`${noJual}`, 90, tempY);
+    tempY += 5;
     doc.text(`${current_date}`, 90, tempY);
-    tempY += 8;
-    doc.text(`${thisDay}`, 40, tempY);
-    doc.text(`${date.getDate()}`, 80, tempY);
-    doc.text(`${tempDateName}`, 120, tempY);
-    doc.text(`${date.getFullYear()}`, 160, tempY);
     tempY += 10;
-    doc.text(`${namaPemilik}`, 50, tempY);
-    tempY += 6.5;
-    doc.text(`${pekerjaanPemilik}`, 50, tempY);
-    tempY += 6.5;
-    doc.text(`${alamatPemilik}`, 50, tempY);
-    tempY += 15;
-    doc.text(`${namaRegister}`, 50, tempY);
-    tempY += 6.5;
-    doc.text(`${tempRegister.data.pkjRegister}`, 50, tempY);
-    tempY += 6.5;
-    doc.text(`${almRegister.slice(0, 40)}`, 50, tempY);
-    tempY += 6.5;
-    doc.text(`${noKtpRegister}`, 50, tempY);
-    tempY += 15;
-    doc.text(`${tempRegister.data.namaPjmRegister}`, 50, tempY);
-    tempY += 6.5;
-    doc.text(`${tempRegister.data.pkjPjmRegister}`, 50, tempY);
-    tempY += 6.5;
-    doc.text(`${tempRegister.data.almPjmRegister.slice(0, 40)}`, 50, tempY);
-    tempY += 6.5;
-    doc.text(`${tempRegister.data.noKtpPjmRegister}`, 50, tempY);
-    tempY += 20;
+    doc.text(`${thisDay}`, 40, tempY);
+    doc.text(`${date.getDate()}`, 85, tempY);
+    doc.text(`${tempDateName}`, 114, tempY);
+    doc.text(`${date.getFullYear()}`, 150, tempY);
+    tempY += 9;
+    doc.text(`${namaPemilik}`, 45, tempY);
+    tempY += 5;
+    doc.text(`${pekerjaanPemilik}`, 45, tempY);
+    tempY += 5;
+    doc.text(`${alamatPemilik}`, 45, tempY);
+    tempY += 13;
+    doc.text(`${namaRegister}`, 45, tempY);
+    tempY += 5;
+    doc.text(`${tempRegister.data.pkjRegister}`, 45, tempY);
+    tempY += 5;
+    doc.text(`${almRegister.slice(0, 40)}`, 45, tempY);
+    tempY += 5;
+    doc.text(`${noKtpRegister}`, 45, tempY);
+    tempY += 14;
+    doc.text(`${tempRegister.data.namaPjmRegister}`, 45, tempY);
+    tempY += 5;
+    doc.text(`${tempRegister.data.pkjPjmRegister}`, 45, tempY);
+    tempY += 5;
+    doc.text(`${tempRegister.data.almPjmRegister.slice(0, 40)}`, 45, tempY);
+    tempY += 5;
+    doc.text(`${tempRegister.data.noKtpPjmRegister}`, 45, tempY);
+    tempY += 26;
     doc.text(`${current_date}`, 65, tempY);
-    tempY += 6.5;
+    tempY += 5;
     doc.text(`${tempStok.data.merk}`, 130, tempY);
-    tempY += 30;
-    doc.text(`${tempStok.data.merk}/${tipe}`, 15, tempY);
+    tempY += 24;
+    doc.setFontSize(5);
+    doc.text(`${tempStok.data.merk}/${tipe}`, 24, tempY);
+    doc.setFontSize(8);
     doc.text(`${tahun}`, 55, tempY);
-    doc.text(`${namaWarna}`, 80, tempY);
-    doc.text(`${tipe}`, 120, tempY);
-    tempY += 20;
+    doc.text(`${namaWarna}`, 84, tempY);
+    doc.text(`${noRangka}`, 124, tempY);
+    doc.text(`${noMesin}`, 175, tempY);
+    tempY += 24;
     doc.text(`${tempStok.data.merk}`, 135, tempY);
-    tempY += 15;
+    tempY += 5;
     doc.text(
       `${hargaTunai.toLocaleString()} ( ${angkaTerbilang(hargaTunai)} rupiah )`,
-      55,
+      163,
       tempY
     );
-    tempY += 30;
+    tempY += 33;
     doc.text(
-      `${uangMuka.toLocaleString()}          ${angkaTerbilang(
+      `${uangMuka.toLocaleString()}                  ${angkaTerbilang(
         uangMuka
       )} rupiah`,
       100,
@@ -677,16 +680,16 @@ const TampilJual = () => {
     tempY += 5;
     doc.text(`${sisaPiutang.toLocaleString()}`, 100, tempY);
     tempY += 5;
-    doc.text(`${thisDayNumber}`, 25, tempY);
-    doc.text(`${angkaTerbilang(thisDayNumber)}`, 50, tempY);
+    doc.text(`${thisDayNumber}`, 22, tempY);
+    doc.text(`${angkaTerbilang(thisDayNumber)}`, 35, tempY);
     doc.text(`${tenor}`, 125, tempY);
-    doc.text(`${angkaTerbilang(tenor)}`, 148, tempY);
-    tempY += 7;
-    doc.text(`${monthYearTglAng1}`, 78, tempY);
+    doc.text(`${angkaTerbilang(tenor)}`, 160, tempY);
+    tempY += 4.5;
+    doc.text(`${monthYearTglAng1}`, 80, tempY);
     doc.text(`${monthYearTglAngAkhir}`, 160, tempY);
-    tempY += 7;
+    tempY += 5;
     doc.text(`${angPerBulan.toLocaleString()}`, 110, tempY);
-    tempY += 7;
+    tempY += 4.5;
     doc.text(`# ${angkaTerbilang(angPerBulan)} rupiah #`, 25, tempY);
     doc.save(`SuratPerjanjianKredit.pdf`);
   };
