@@ -413,31 +413,31 @@ const TampilJual = () => {
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-    let tempX1 = 60;
-    let tempY = 48;
-    const doc = new jsPDF("l", "mm", [270, 208]);
-    doc.setFontSize(12);
-    doc.text(`${noKwitansi}`, 220, 28);
+    let tempX1 = 50;
+    let tempY = 38;
+    const doc = new jsPDF();
+    doc.setFontSize(9);
+    doc.text(`${noKwitansi}`, 165, 22);
     doc.text(`${namaRegister}`, tempX1, tempY);
-    tempY += 5;
+    tempY += 4;
     doc.text(`${almRegister.slice(0, 45)}`, tempX1, tempY);
-    tempY += 19;
+    tempY += 13;
     doc.setFont(undefined, "bold");
     doc.text(`${angkaTerbilang(uangMuka)} rupiah`, tempX1, tempY);
     doc.setFont(undefined, "normal");
-    tempY += 12;
+    tempY += 9;
     doc.text(
       `Pembayaran 1 (satu) unit sepeda motor ${tempStok.data.merk}, Tipe : ${tipe}`,
       tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     doc.text(
       `No.Rangka : ${noRangka}.   Nomor Mesin : ${noMesin}`,
       tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     if (nopol.length > 0) {
       // Bekas
       doc.text(`Tahun ${tahun},    Warna : ${namaWarna}`, tempX1, tempY);
@@ -449,14 +449,14 @@ const TampilJual = () => {
         tempY
       );
     }
-    tempY += 48;
+    tempY += 34;
     doc.setFont(undefined, "bold");
     doc.text(`${uangMuka.toLocaleString()}`, tempX1 + 10, tempY);
     doc.setFont(undefined, "normal");
-    doc.text(`${current_date}`, 185, tempY);
-    tempY += 50;
+    doc.text(`${current_date}`, 140, tempY);
+    tempY += 35;
     doc.text(`${namaRegister.slice(0, 30)}`, tempX1 - 8, tempY);
-    doc.text(`( ${user.username} )`, 185, tempY);
+    doc.text(`( ${user.username} )`, 140, tempY);
     doc.save(`kwitansiUMTunai.pdf`);
   };
 
@@ -480,36 +480,36 @@ const TampilJual = () => {
       (makeTglAngAkhir.getMonth() + 1) +
       "-" +
       makeTglAngAkhir.getFullYear();
-    let tempX1 = 60;
-    let tempY = 48;
+    let tempX1 = 50;
+    let tempY = 38;
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    const doc = new jsPDF("l", "mm", [270, 208]);
-    doc.setFontSize(12);
-    doc.text(`${noKwitansi}`, 220, 28);
+    const doc = new jsPDF();
+    doc.setFontSize(9);
+    doc.text(`${noKwitansi}`, 165, 22);
     doc.text(`${namaRegister}`, tempX1, tempY);
-    tempY += 5;
+    tempY += 4;
     doc.text(`${almRegister.slice(0, 45)}`, tempX1, tempY);
-    tempY += 19;
+    tempY += 13;
     doc.setFont(undefined, "bold");
     doc.text(`${angkaTerbilang(uangMuka)} rupiah`, tempX1, tempY);
     doc.setFont(undefined, "normal");
-    tempY += 12;
+    tempY += 9;
     doc.text(
       `UANG MUKA 1 (satu) unit sepeda motor ${tempStok.data.merk} Tipe : ${tipe}`,
       tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     doc.text(
       `No.Rangka : ${noRangka}.   Nomor Mesin : ${noMesin}`,
       tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     if (nopol.length > 0) {
       // Bekas
       doc.text(`Tahun ${tahun},    Warna : ${namaWarna}`, tempX1, tempY);
@@ -521,23 +521,23 @@ const TampilJual = () => {
         tempY
       );
     }
-    tempY += 6.5;
+    tempY += 4;
     doc.setFont(undefined, "bold");
     doc.text(`CATATAN : `, tempX1, tempY);
     doc.setFont(undefined, "normal");
-    tempY += 6.5;
+    tempY += 4;
     doc.text(
       `SEWA BELI ${tenor} Bulan. Pembayaran Uang Muka Rp. ${uangMuka.toLocaleString()} dan angsuran perbulan`,
       tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     doc.text(
       `Rp. ${angPerBulan.toLocaleString()} X ${tenor}. Terhitung angsuran Ke-1 (satu) Mulai TGL.${tempTglAng1} s/d`,
       tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     doc.text(
       `Angsuran Ke-${tenor} (${angkaTerbilang(
         tenor
@@ -545,16 +545,16 @@ const TampilJual = () => {
       tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     doc.text(`Kontrak No. ${noJual}`, tempX1, tempY);
-    tempY += 16;
+    tempY += 14;
     doc.setFont(undefined, "bold");
     doc.text(`${uangMuka.toLocaleString()}`, tempX1 + 10, tempY);
     doc.setFont(undefined, "normal");
-    doc.text(`${current_date}`, 185, tempY);
-    tempY += 48;
+    doc.text(`${current_date}`, 140, tempY);
+    tempY += 35;
     doc.text(`${namaRegister.slice(0, 30)}`, tempX1 - 8, tempY);
-    doc.text(`( ${user.username} )`, 185, tempY);
+    doc.text(`( ${user.username} )`, 140, tempY);
     doc.save(`kwitansiUMKredit.pdf`);
   };
 
