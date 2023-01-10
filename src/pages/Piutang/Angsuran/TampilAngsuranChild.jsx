@@ -204,62 +204,55 @@ const TampilAngsuranChild = () => {
       findMonth(date.getMonth() + 1) +
       "-" +
       date.getFullYear();
-    let tempX1 = 220;
-    let tempX2 = 60;
-    let tempY = 29;
-    const doc = new jsPDF("l", "mm", [270, 208]);
-    doc.setFontSize(12);
-    doc.text(`${noKwitansi}`, tempX1, tempY);
-    tempY += 5;
-    doc.text(
-      `${idAngsuran} - ${namaRegister.split(" ", 1)[0]}`,
-      tempX1,
-      tempY + 3
-    );
-    tempY += 15;
-    doc.text(`${namaRegister} / ${noJual}`, tempX2, tempY);
-    tempY += 6.5;
-    doc.text(`${almRegister}`, tempX2, tempY);
-    tempY += 16;
+    let tempX1 = 50;
+    let tempY = 38;
+    const doc = new jsPDF();
+    doc.setFontSize(9);
+    doc.text(`${noKwitansi}`, 165, 20);
+    doc.text(`${idAngsuran} - ${namaRegister.split(" ", 1)[0]}`, 165, 23);
+    doc.text(`${namaRegister}`, tempX1, tempY);
+    tempY += 4;
+    doc.text(`${almRegister.slice(0, 45)}`, tempX1, tempY);
+    tempY += 13;
     doc.setFont(undefined, "bold");
-    doc.text(`${angkaTerbilang(totalBayar)} rupiah`, tempX2, tempY);
+    doc.text(`${angkaTerbilang(totalBayar)} rupiah`, tempX1, tempY);
     doc.setFont(undefined, "normal");
-    tempY += 12;
+    tempY += 9;
     doc.text(
       `ANGSURAN SEWA BELI 1 (satu) unit sepeda motor ${tempStok.data.merk}`,
-      tempX2,
+      tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     doc.text(
       `Warna : ${namaWarna}. ${nopol} / ${noRangka} - ${tipe} `,
-      tempX2,
+      tempX1,
       tempY
     );
-    tempY += 6.5;
+    tempY += 4;
     doc.text(
       `Angsuran Ke-${idAngsuran} (${angkaTerbilang(
         idAngsuran
       )}) Dari ${tenor} (${angkaTerbilang(tenor)}).`,
-      tempX2,
+      tempX1,
       tempY
     );
-    tempY += 6.5;
-    doc.text(`Kontrak TGL. ${tempJatuhTempo}`, tempX2, tempY);
-    tempY += 6.5;
+    tempY += 4;
+    doc.text(`Kontrak TGL. ${tempJatuhTempo}`, tempX1, tempY);
+    tempY += 4;
     doc.text(
       `Untuk Angsuran Bulan ${monthJatuhTempo} ${newJatuhTempo.getFullYear()}`,
-      tempX2,
+      tempX1,
       tempY
     );
-    tempY += 36;
+    tempY += 26;
     doc.setFont(undefined, "bold");
-    doc.text(`${totalBayar.toLocaleString()}`, tempX2 + 5, tempY);
+    doc.text(`${totalBayar.toLocaleString()}`, tempX1 + 10, tempY);
     doc.setFont(undefined, "normal");
-    doc.text(`${current_date}`, 185, tempY);
-    tempY += 50;
-    doc.text(`${namaRegister}`, tempX2 - 8, tempY);
-    doc.text(`( ${user.username} )`, 185, tempY);
+    doc.text(`${current_date}`, 140, tempY);
+    tempY += 35;
+    doc.text(`${namaRegister.slice(0, 30)}`, tempX1 - 8, tempY);
+    doc.text(`( ${user.username} )`, 140, tempY);
     doc.save(`kwitansiAngsuran.pdf`);
   };
 
