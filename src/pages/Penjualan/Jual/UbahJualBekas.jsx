@@ -99,7 +99,6 @@ const UbahJualBekas = () => {
   const [jenisJual, setJenisJual] = useState("");
   const [tglAng, setTglAng] = useState("");
   const [tglAngAkhir, setTglAngAkhir] = useState("");
-  const [tglInput, setTglInput] = useState("");
 
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -324,7 +323,6 @@ const UbahJualBekas = () => {
       setJenisJual(response.data.jenisJual);
       setTglAng(response.data.tglAng);
       setTglAngAkhir(response.data.tglAngAkhir);
-      setTglInput(response.data.tglInput);
     }
   };
 
@@ -340,20 +338,13 @@ const UbahJualBekas = () => {
       noJual.length === 0 ||
       tglJual.length === 0 ||
       jenisJual.length === 0 ||
-      tglInput.length === 0 ||
       noRegister.length === 0 ||
       kodeMarketing.length === 0 ||
       kodeSurveyor.length === 0 ||
       kodePekerjaan.length === 0 ||
       kodeKecamatan.length === 0 ||
       kodeLeasing.length === 0 ||
-      nopol.length === 0 ||
-      hargaTunai.length === 0 ||
-      uangMuka.length === 0 ||
-      sisaPiutang.length === 0 ||
-      angPerBulan.length === 0 ||
-      tenor.length === 0 ||
-      jumlahPiutang.length === 0;
+      nopol.length === 0;
     if (isFailedValidation) {
       setError(true);
       setOpen(!open);
@@ -443,18 +434,6 @@ const UbahJualBekas = () => {
           tipe,
           namaWarna,
           tahun,
-          hargaTunai,
-          uangMuka,
-          sisaPiutang,
-          angPerBulan,
-          tenor,
-          bunga,
-          jumlahPiutang,
-          angModal,
-          angBunga,
-          noKwitansi,
-          angModal: sisaPiutang / tenor,
-          angBunga: angPerBulan - sisaPiutang / tenor,
           tglUpdate: current_date,
           jamUpdate: current_time,
           userUpdate: user.username,
@@ -560,19 +539,6 @@ const UbahJualBekas = () => {
                 variant="outlined"
                 value={tglAngAkhir}
                 onChange={(e) => setTglAngAkhir(e.target.value.toUpperCase())}
-                InputProps={{
-                  readOnly: true
-                }}
-                sx={{ backgroundColor: Colors.grey400 }}
-              />
-              <Typography sx={[labelInput, spacingTop]}>
-                Tanggal Input
-              </Typography>
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                value={tglInput}
                 InputProps={{
                   readOnly: true
                 }}
@@ -968,11 +934,10 @@ const UbahJualBekas = () => {
                 id="outlined-basic"
                 variant="outlined"
                 value={hargaTunai}
-                onChange={(e) => {
-                  setHargaTunai(e.target.value);
-                  let tempSisaPiutang = e.target.value - uangMuka;
-                  setSisaPiutang(tempSisaPiutang);
+                InputProps={{
+                  readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Uang Muka
@@ -990,11 +955,10 @@ const UbahJualBekas = () => {
                 id="outlined-basic"
                 variant="outlined"
                 value={uangMuka}
-                onChange={(e) => {
-                  setUangMuka(e.target.value);
-                  let tempSisaPiutang = hargaTunai - e.target.value;
-                  setSisaPiutang(tempSisaPiutang);
+                InputProps={{
+                  readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Sisa Piutang
@@ -1038,11 +1002,10 @@ const UbahJualBekas = () => {
                 }
                 variant="outlined"
                 value={angPerBulan}
-                onChange={(e) => {
-                  setAngPerBulan(e.target.value);
-                  let tempJumlahPiutang = e.target.value * tenor;
-                  setJumlahPiutang(tempJumlahPiutang);
+                InputProps={{
+                  readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Tenor
@@ -1058,11 +1021,10 @@ const UbahJualBekas = () => {
                 helperText={error && tenor.length === 0 && "Tenor harus diisi!"}
                 variant="outlined"
                 value={tenor}
-                onChange={(e) => {
-                  setTenor(e.target.value);
-                  let tempJumlahPiutang = angPerBulan * e.target.value;
-                  setJumlahPiutang(tempJumlahPiutang);
+                InputProps={{
+                  readOnly: true
                 }}
+                sx={{ backgroundColor: Colors.grey400 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Total Piutang

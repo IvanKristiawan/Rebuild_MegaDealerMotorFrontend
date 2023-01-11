@@ -88,15 +88,12 @@ const TambahJualBekas = () => {
   const [tenor, setTenor] = useState("");
   const [bunga, setBunga] = useState("");
   const [jumlahPiutang, setJumlahPiutang] = useState("");
-  const [angModal, setAngModal] = useState("");
-  const [angBunga, setAngBunga] = useState("");
   const [noJual, setNoJual] = useState("");
   const [noKwitansi, setNoKwitansi] = useState(user.kodeKwitansi);
   const [tglJual, setTglJual] = useState("");
   const [jenisJual, setJenisJual] = useState("");
   const [tglAng, setTglAng] = useState("");
   const [tglAngAkhir, setTglAngAkhir] = useState("");
-  const [tglInput, setTglInput] = useState("");
 
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -160,6 +157,27 @@ const TambahJualBekas = () => {
       return val;
     }
   });
+
+  const countDateDuration = (e) => {
+    var tempDate = new Date(tglAng);
+    var final = tempDate.setMonth(
+      tempDate.getMonth() + parseInt(e.target.value)
+    );
+    var finalDate = new Date(final);
+    var calculatedDateResult =
+      finalDate.getDate().toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      }) +
+      "-" +
+      (finalDate.getMonth() + 1).toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      }) +
+      "-" +
+      finalDate.getFullYear();
+    setTglAngAkhir(calculatedDateResult);
+  };
 
   useEffect(() => {
     getStok();
@@ -279,6 +297,19 @@ const TambahJualBekas = () => {
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    var newTglAngAkhir = new Date(tglAngAkhir);
+    var tempTglAngAkhir =
+      newTglAngAkhir.getFullYear() +
+      "-" +
+      (newTglAngAkhir.getMonth() + 1).toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      }) +
+      "-" +
+      newTglAngAkhir.getDate().toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      });
 
     let tempDateAng = tglAng.split("-")[2];
     if (tempDateAng > 28) {
@@ -291,7 +322,6 @@ const TambahJualBekas = () => {
           jenisJual.length === 0 ||
           tglAng.length === 0 ||
           tglAngAkhir.length === 0 ||
-          tglInput.length === 0 ||
           noRegister.length === 0 ||
           kodeMarketing.length === 0 ||
           kodeSurveyor.length === 0 ||
@@ -310,7 +340,6 @@ const TambahJualBekas = () => {
           noJual.length === 0 ||
           tglJual.length === 0 ||
           jenisJual.length === 0 ||
-          tglInput.length === 0 ||
           noRegister.length === 0 ||
           kodeMarketing.length === 0 ||
           kodeSurveyor.length === 0 ||
@@ -440,8 +469,7 @@ const TambahJualBekas = () => {
               tanggalJual: tglJual,
               jenisJual,
               tglAng,
-              tglAngAkhir,
-              tglInput,
+              tglAngAkhir: tempTglAngAkhir,
               userInput: user.username,
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
@@ -490,8 +518,7 @@ const TambahJualBekas = () => {
               tanggalJual: tglJual,
               jenisJual,
               tglAng,
-              tglAngAkhir,
-              tglInput,
+              tglAngAkhir: tempTglAngAkhir,
               angModal: sisaPiutang / tenor,
               angBunga: angPerBulan - sisaPiutang / tenor,
               userInput: user.username,
@@ -599,7 +626,6 @@ const TambahJualBekas = () => {
                   if (value === "TUNAI") {
                     setTglAng("");
                     setTglAngAkhir("");
-                    setTglInput("");
                   }
                   setJenisJual(value);
                 }}
@@ -633,10 +659,30 @@ const TambahJualBekas = () => {
                 }}
               />
               <Typography sx={[labelInput, spacingTop]}>
+                Tenor
+                {tenor !== 0 &&
+                  !isNaN(parseInt(tenor)) &&
+                  ` : ${parseInt(tenor).toLocaleString()}`}
+              </Typography>
+              <TextField
+                type="number"
+                size="small"
+                id="outlined-basic"
+                error={error && tenor.length === 0 && true}
+                helperText={error && tenor.length === 0 && "Tenor harus diisi!"}
+                variant="outlined"
+                value={tenor}
+                onChange={(e, value) => {
+                  countDateDuration(e);
+                  setTenor(e.target.value);
+                  let tempJumlahPiutang = angPerBulan * e.target.value;
+                  setJumlahPiutang(tempJumlahPiutang);
+                }}
+              />
+              <Typography sx={[labelInput, spacingTop]}>
                 Tanggal Angsuran Akhir
               </Typography>
               <TextField
-                type="date"
                 size="small"
                 error={
                   error &&
@@ -655,26 +701,11 @@ const TambahJualBekas = () => {
                 value={tglAngAkhir}
                 onChange={(e) => setTglAngAkhir(e.target.value.toUpperCase())}
                 InputProps={{
-                  readOnly: jenisJual === "TUNAI" && true
+                  readOnly: true
                 }}
                 sx={{
-                  backgroundColor: jenisJual === "TUNAI" && Colors.grey400
+                  backgroundColor: Colors.grey400
                 }}
-              />
-              <Typography sx={[labelInput, spacingTop]}>
-                Tanggal Input
-              </Typography>
-              <TextField
-                type="date"
-                size="small"
-                error={error && tglInput.length === 0 && true}
-                helperText={
-                  error && tglInput.length === 0 && "Tanggal Input harus diisi!"
-                }
-                id="outlined-basic"
-                variant="outlined"
-                value={tglInput}
-                onChange={(e) => setTglInput(e.target.value.toUpperCase())}
               />
             </Box>
           </Box>
@@ -1160,7 +1191,8 @@ const TambahJualBekas = () => {
                 helperText={error && tenor.length === 0 && "Tenor harus diisi!"}
                 variant="outlined"
                 value={tenor}
-                onChange={(e) => {
+                onChange={(e, value) => {
+                  countDateDuration(e);
                   setTenor(e.target.value);
                   let tempJumlahPiutang = angPerBulan * e.target.value;
                   setJumlahPiutang(tempJumlahPiutang);

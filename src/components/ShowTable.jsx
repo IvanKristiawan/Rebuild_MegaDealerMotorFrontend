@@ -2095,10 +2095,20 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
               sx={{ fontWeight: "bold" }}
               className={classes.tableRightBorder}
             >
-              Tanggal
+              Tanggal Jual
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Customer</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>Leasing</TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Customer
+            </TableCell>
+            <TableCell
+              sx={{ fontWeight: "bold" }}
+              className={classes.tableRightBorder}
+            >
+              Leasing
+            </TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Tipe</TableCell>
           </TableRow>
         </TableHead>
@@ -2109,7 +2119,9 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
                 return val;
               } else if (
                 val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
-                val.tglInput.toUpperCase().includes(searchTerm.toUpperCase()) ||
+                val.tanggalJual
+                  .toUpperCase()
+                  .includes(searchTerm.toUpperCase()) ||
                 val.namaRegister
                   .toUpperCase()
                   .includes(searchTerm.toUpperCase()) ||
@@ -2143,7 +2155,7 @@ export function ShowTableJual({ currentPosts, searchTerm, leasings, tipes }) {
                 <TableCell component="th" scope="row">
                   {user.noJual}
                 </TableCell>
-                <TableCell>{user.tglInput}</TableCell>
+                <TableCell>{user.tanggalJual}</TableCell>
                 <TableCell>{user.namaRegister}</TableCell>
                 <TableCell>
                   {user.kodeLeasing.kodeLeasing} -{" "}

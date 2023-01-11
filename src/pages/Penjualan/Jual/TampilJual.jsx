@@ -128,7 +128,7 @@ const TampilJual = () => {
       return val;
     } else if (
       val.noJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
-      val.tglInput.toUpperCase().includes(searchTerm.toUpperCase()) ||
+      val.tanggalJual.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.namaRegister.toUpperCase().includes(searchTerm.toUpperCase()) ||
       val.kodeLeasing.kodeLeasing
         .toUpperCase()
