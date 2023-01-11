@@ -35,50 +35,55 @@ const Posting = () => {
   };
 
   const posting = async () => {
-    setLoading(true);
     var date = new Date();
     var current_date =
       date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     var current_time =
       date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
-    var newBulanTahun = new Date(bulanTahun);
-    var tempBulanTahun =
-      newBulanTahun.getFullYear() +
-      "-" +
-      (newBulanTahun.getMonth() + 1) +
-      "-" +
-      newBulanTahun.getDate();
-    var dariTgl = tempBulanTahun;
+    let isFailedValidation = bulanTahun.length === 0;
+    if (isFailedValidation) {
+      setError(true);
+    } else {
+      setLoading(true);
+      var newBulanTahun = new Date(bulanTahun);
+      var tempBulanTahun =
+        newBulanTahun.getFullYear() +
+        "-" +
+        (newBulanTahun.getMonth() + 1) +
+        "-" +
+        newBulanTahun.getDate();
+      var dariTgl = tempBulanTahun;
 
-    var lastday = function (y, m) {
-      return new Date(y, m, 0).getDate();
-    };
-    var sampaiTgl =
-      newBulanTahun.getFullYear() +
-      "-" +
-      (newBulanTahun.getMonth() + 1) +
-      "-" +
-      lastday(newBulanTahun.getDate(), newBulanTahun.getMonth() + 1);
+      var lastday = function (y, m) {
+        return new Date(y, m, 0).getDate();
+      };
+      var sampaiTgl =
+        newBulanTahun.getFullYear() +
+        "-" +
+        (newBulanTahun.getMonth() + 1) +
+        "-" +
+        lastday(newBulanTahun.getDate(), newBulanTahun.getMonth() + 1);
 
-    // await axios.post(`${tempUrl}/saveLastNeracaSaldo`, {
-    //   id: user._id,
-    //   token: user.token,
-    //   kodeCabang: user.cabang._id
-    // });
-    // Jurnal Posting Pembelian
-    await axios.post(`${tempUrl}/saveJurnalPostingPembelian`, {
-      dariTgl,
-      sampaiTgl,
-      tglInput: current_date,
-      jamInput: current_time,
-      userInput: user.username,
-      id: user._id,
-      token: user.token,
-      kodeCabang: user.cabang._id
-    });
-    setLoading(false);
-    setOpen(true);
+      // await axios.post(`${tempUrl}/saveLastNeracaSaldo`, {
+      //   id: user._id,
+      //   token: user.token,
+      //   kodeCabang: user.cabang._id
+      // });
+      // Jurnal Posting Pembelian
+      await axios.post(`${tempUrl}/saveJurnalPostingPembelian`, {
+        dariTgl,
+        sampaiTgl,
+        tglInput: current_date,
+        jamInput: current_time,
+        userInput: user.username,
+        id: user._id,
+        token: user.token,
+        kodeCabang: user.cabang._id
+      });
+      setLoading(false);
+      setOpen(true);
+    }
   };
 
   if (loading) {
@@ -103,7 +108,13 @@ const Posting = () => {
               setBulanTahun(newValue);
             }}
             renderInput={(params) => (
-              <TextField {...params} helperText={null} />
+              <TextField
+                {...params}
+                error={error && bulanTahun.length === 0 && true}
+                helperText={
+                  error && bulanTahun.length === 0 && "Bulan Tahun harus diisi!"
+                }
+              />
             )}
           />
         </Box>

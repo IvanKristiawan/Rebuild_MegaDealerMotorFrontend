@@ -35,36 +35,42 @@ const Unposting = () => {
   };
 
   const unposting = async () => {
-    var newBulanTahun = new Date(bulanTahun);
-    var tempBulanTahun =
-      newBulanTahun.getFullYear() +
-      "-" +
-      (newBulanTahun.getMonth() + 1) +
-      "-" +
-      newBulanTahun.getDate();
-    var dariTgl = tempBulanTahun;
+    let isFailedValidation = bulanTahun.length === 0;
+    if (isFailedValidation) {
+      setError(true);
+    } else {
+      setLoading(true);
+      var newBulanTahun = new Date(bulanTahun);
+      var tempBulanTahun =
+        newBulanTahun.getFullYear() +
+        "-" +
+        (newBulanTahun.getMonth() + 1) +
+        "-" +
+        newBulanTahun.getDate();
+      var dariTgl = tempBulanTahun;
 
-    var lastday = function (y, m) {
-      return new Date(y, m, 0).getDate();
-    };
-    var sampaiTgl =
-      newBulanTahun.getFullYear() +
-      "-" +
-      (newBulanTahun.getMonth() + 1) +
-      "-" +
-      lastday(newBulanTahun.getDate(), newBulanTahun.getMonth() + 1);
+      var lastday = function (y, m) {
+        return new Date(y, m, 0).getDate();
+      };
+      var sampaiTgl =
+        newBulanTahun.getFullYear() +
+        "-" +
+        (newBulanTahun.getMonth() + 1) +
+        "-" +
+        lastday(newBulanTahun.getDate(), newBulanTahun.getMonth() + 1);
 
-    setLoading(true);
-    // Jurnal Unposting Pembelian
-    await axios.post(`${tempUrl}/jurnalUnposting`, {
-      dariTgl,
-      sampaiTgl,
-      id: user._id,
-      token: user.token,
-      kodeCabang: user.cabang._id
-    });
-    setLoading(false);
-    setOpen(true);
+      setLoading(true);
+      // Jurnal Unposting Pembelian
+      await axios.post(`${tempUrl}/jurnalUnposting`, {
+        dariTgl,
+        sampaiTgl,
+        id: user._id,
+        token: user.token,
+        kodeCabang: user.cabang._id
+      });
+      setLoading(false);
+      setOpen(true);
+    }
   };
 
   if (loading) {
@@ -89,7 +95,13 @@ const Unposting = () => {
               setBulanTahun(newValue);
             }}
             renderInput={(params) => (
-              <TextField {...params} helperText={null} />
+              <TextField
+                {...params}
+                error={error && bulanTahun.length === 0 && true}
+                helperText={
+                  error && bulanTahun.length === 0 && "Bulan Tahun harus diisi!"
+                }
+              />
             )}
           />
         </Box>
