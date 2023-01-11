@@ -30,7 +30,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import { makeStyles } from "@mui/styles";
 import {
   dendaSetting,
-  toleransiSetting
+  toleransiSetting,
+  defaultKolektor
 } from "../../../constants/GeneralSetting";
 
 const useStyles = makeStyles({
@@ -187,6 +188,9 @@ const TambahAngsuran = () => {
       kodeCabang: user.cabang._id
     });
     setKolektors(allKolektors.data);
+    setKodeKolektor(
+      `${defaultKolektor[0].kodeKolektor} - ${defaultKolektor[0].namaKolektor}`
+    );
     setLoading(false);
   };
 
@@ -342,7 +346,7 @@ const TambahAngsuran = () => {
       try {
         setLoading(true);
         const tempKolektor = await axios.post(`${tempUrl}/kolektorByKode`, {
-          kodeKolektor,
+          kodeKolektor: kodeKolektor.split(" ", 1)[0],
           id: user._id,
           token: user.token,
           kodeCabang: user.cabang._id
@@ -884,9 +888,8 @@ const TambahAngsuran = () => {
                     {...params}
                   />
                 )}
-                onInputChange={(e, value) =>
-                  setKodeKolektor(value.split(" ", 1)[0])
-                }
+                onInputChange={(e, value) => setKodeKolektor(value)}
+                value={{ label: kodeKolektor }}
               />
               <Typography sx={[labelInput, spacingTop]}>
                 Potongan

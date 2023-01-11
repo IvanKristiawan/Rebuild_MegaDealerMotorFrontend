@@ -35,3 +35,6 @@ export const refCOA = {
     kodeCOA: "04"
   }
 };
+export const defaultKolektor = [
+  { kodeKolektor: "001001", namaKolektor: "KANTOR" }
+];
