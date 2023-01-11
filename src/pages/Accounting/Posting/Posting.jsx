@@ -71,7 +71,18 @@ const Posting = () => {
       //   kodeCabang: user.cabang._id
       // });
       // Jurnal Posting Pembelian
-      await axios.post(`${tempUrl}/saveJurnalPostingPembelian`, {
+      // await axios.post(`${tempUrl}/saveJurnalPostingPembelian`, {
+      //   dariTgl,
+      //   sampaiTgl,
+      //   tglInput: current_date,
+      //   jamInput: current_time,
+      //   userInput: user.username,
+      //   id: user._id,
+      //   token: user.token,
+      //   kodeCabang: user.cabang._id
+      // });
+      // Jurnal Posting Penjualan
+      await axios.post(`${tempUrl}/saveJurnalPostingPenjualan`, {
         dariTgl,
         sampaiTgl,
         tglInput: current_date,

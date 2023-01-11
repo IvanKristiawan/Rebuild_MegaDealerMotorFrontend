@@ -40,6 +40,8 @@ import * as XLSX from "xlsx";
 import DownloadIcon from "@mui/icons-material/Download";
 import PrintIcon from "@mui/icons-material/Print";
 import angkaTerbilang from "@develoka/angka-terbilang-js";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import EditIcon from "@mui/icons-material/Edit";
 
 const TampilJual = () => {
   const { user } = useContext(AuthContext);
@@ -95,6 +97,7 @@ const TampilJual = () => {
   const [tglAngAkhir, setTglAngAkhir] = useState("");
   const [tglInput, setTglInput] = useState("");
   const [kodeAngsuran, setKodeAngsuran] = useState("");
+  const [isPost, setIsPost] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [jualsData, setJualsData] = useState([]);
@@ -279,6 +282,7 @@ const TampilJual = () => {
       setTglAngAkhir(response.data.tglAngAkhir);
       setTglInput(response.data.tglInput);
       setKodeAngsuran(response.data.kodeAngsuran);
+      setIsPost(response.data.isPost);
     }
   };
 
@@ -779,21 +783,43 @@ const TampilJual = () => {
           </RadioGroup>
         </FormControl>
       </Paper>
-      <Box sx={buttonModifierContainer}>
-        <ButtonModifierJual
-          id={id}
-          kode={noJual}
-          tambahBaru={`/jual/tambahJualBaru`}
-          addLink={`/jual/tambahJualBekas`}
-          editLink={
-            nopol.length > 0 ? `/jual/${id}/editBekas` : `/jual/${id}/editBaru`
-          }
-          deleteUser={deleteJual}
-          nameUser={noJual}
-          addTambahText=" Bekas"
-          editable={tenor - sisaBulan === 0}
-        />
-      </Box>
+      {isPost === false ? (
+        <Box sx={buttonModifierContainer}>
+          <ButtonModifierJual
+            id={id}
+            kode={noJual}
+            tambahBaru={`/jual/tambahJualBaru`}
+            addLink={`/jual/tambahJualBekas`}
+            editLink={
+              nopol.length > 0
+                ? `/jual/${id}/editBekas`
+                : `/jual/${id}/editBaru`
+            }
+            deleteUser={deleteJual}
+            nameUser={noJual}
+            addTambahText=" Bekas"
+            editable={tenor - sisaBulan === 0}
+          />
+        </Box>
+      ) : (
+        <Box sx={buttonModifierContainer}>
+          <ButtonModifierJual
+            id={id}
+            kode={null}
+            tambahBaru={`/jual/tambahJualBaru`}
+            addLink={`/jual/tambahJualBekas`}
+            editLink={
+              nopol.length > 0
+                ? `/jual/${id}/editBekas`
+                : `/jual/${id}/editBaru`
+            }
+            deleteUser={deleteJual}
+            nameUser={noJual}
+            addTambahText=" Bekas"
+            editable={tenor - sisaBulan === 0}
+          />
+        </Box>
+      )}
       <Divider sx={dividerStyle} />
       {isJualExist && (
         <>
