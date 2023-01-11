@@ -30,6 +30,7 @@ const UbahUser = () => {
   const [periode, setPeriode] = useState("");
   const [kodeKwitansi, setKodeKwitansi] = useState("");
   const [noTerakhir, setNoTerakhir] = useState("");
+  const [coaKasir, setCoaKasir] = useState("");
   const [password, setPassword] = useState("");
 
   // Akses Master
@@ -88,6 +89,7 @@ const UbahUser = () => {
   const [daftarUser, setDaftarUser] = useState(false);
 
   const [cabangs, setCabangs] = useState([]);
+  const [coaSubTunais, setCoaSubTunais] = useState([]);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -95,6 +97,10 @@ const UbahUser = () => {
 
   const cabangOptions = cabangs.map((cabang) => ({
     label: `${cabang._id} - ${cabang.namaCabang}`
+  }));
+
+  const coaSubTunaiOptions = coaSubTunais.map((coaSubTunai) => ({
+    label: `${coaSubTunai.kodeCOA} - ${coaSubTunai.namaCOA}`
   }));
 
   const handleClose = (event, reason) => {
@@ -106,6 +112,7 @@ const UbahUser = () => {
 
   useEffect(() => {
     getCabangsData();
+    getCoaSubTunai();
     getUserById();
   }, []);
 
@@ -116,6 +123,15 @@ const UbahUser = () => {
       token: user.token
     });
     setCabangs(response.data);
+  };
+
+  const getCoaSubTunai = async (kodeUnit) => {
+    setCoaKasir("");
+    const response = await axios.post(`${tempUrl}/COAsSubKasTunai`, {
+      id: user._id,
+      token: user.token
+    });
+    setCoaSubTunais(response.data);
   };
 
   const getUserById = async () => {
@@ -130,6 +146,7 @@ const UbahUser = () => {
     setPeriode(response.data.periode);
     setKodeKwitansi(response.data.kodeKwitansi);
     setNoTerakhir(response.data.noTerakhir);
+    setCoaKasir(response.data.coaKasir);
     setKodeCabang(response.data.cabang._id);
 
     // Akses Master
@@ -196,6 +213,7 @@ const UbahUser = () => {
       tipeUser.length === 0 ||
       periode.length === 0 ||
       kodeKwitansi.length === 0 ||
+      coaKasir.length === 0 ||
       kodeCabang.length === 0;
     if (isFailedValidation) {
       setError(true);
@@ -212,6 +230,7 @@ const UbahUser = () => {
           periode,
           kodeKwitansi,
           noTerakhir,
+          coaKasir: coaKasir.split(" ", 1)[0],
           password,
           tipeAdmin: user.tipeUser,
           akses: {
@@ -374,6 +393,25 @@ const UbahUser = () => {
               variant="outlined"
               value={noTerakhir}
               onChange={(e) => setNoTerakhir(e.target.value.toUpperCase())}
+            />
+            <Typography sx={[labelInput, spacingTop]}>COA Kasir</Typography>
+            <Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              options={coaSubTunaiOptions}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  error={error && coaKasir.length === 0 && true}
+                  helperText={
+                    error && coaKasir.length === 0 && "COA Kasir harus diisi!"
+                  }
+                  {...params}
+                />
+              )}
+              onInputChange={(e, value) => setCoaKasir(value)}
+              value={coaKasir}
             />
             <Typography sx={[labelInput, spacingTop]}>
               Password (baru)

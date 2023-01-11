@@ -50,6 +50,7 @@ const DaftarUser = () => {
   const [periode, setPeriode] = useState("");
   const [kodeKwitansi, setKodeKwitansi] = useState("");
   const [noTerakhir, setNoTerakhir] = useState("");
+  const [coaKasir, setCoaKasir] = useState("");
 
   // Akses Master
   const [motor, setMotor] = useState(false);
@@ -208,6 +209,7 @@ const DaftarUser = () => {
       setKodeKwitansi(response.data.kodeKwitansi);
       setNoTerakhir(response.data.noTerakhir);
       setKodeCabang(response.data.cabang);
+      setCoaKasir(response.data.coaKasir);
 
       // Akses Master
       setMotor(response.data.akses.motor);
@@ -467,7 +469,9 @@ const DaftarUser = () => {
                 }}
                 value={kodeKwitansi}
               />
-              <Typography sx={[labelInput, spacingTop]}>No Terakhir</Typography>
+              <Typography sx={[labelInput, spacingTop]}>
+                No. Terakhir
+              </Typography>
               <TextField
                 size="small"
                 id="outlined-basic"
@@ -476,6 +480,16 @@ const DaftarUser = () => {
                   readOnly: true
                 }}
                 value={noTerakhir}
+              />
+              <Typography sx={[labelInput, spacingTop]}>COA Kasir</Typography>
+              <TextField
+                size="small"
+                id="outlined-basic"
+                variant="filled"
+                InputProps={{
+                  readOnly: true
+                }}
+                value={coaKasir}
               />
             </Box>
           </Box>
