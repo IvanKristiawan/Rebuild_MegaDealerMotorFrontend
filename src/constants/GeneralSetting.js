@@ -17,23 +17,23 @@ export const refCOA = {
   "PERSEDIAAN MOTOR BARU": {
     namaCOA: "PERSEDIAAN MOTOR BARU",
     kodeRefCOA: "IN1",
-    kodeCOA: "01"
+    kodeCOA: "10105001",
   },
   "PERSEDIAAN MOTOR BEKAS": {
     namaCOA: "PERSEDIAAN MOTOR BEKAS",
     kodeRefCOA: "IN2",
-    kodeCOA: "02"
+    kodeCOA: "10105002",
   },
   "HUTANG DAGANG": {
     namaCOA: "HUTANG DAGANG",
     kodeRefCOA: "HD",
-    kodeCOA: "03"
+    kodeCOA: "20101001",
   },
   "PPN MASUKKAN": {
-    namaCOA: "PPN MASUKKAN",
+    namaCOA: "PPN MASUKKAN", //nilai persediaan 
     kodeRefCOA: "PM",
-    kodeCOA: "04"
-  }
+    kodeCOA: "30102003",
+  },
 };
 export const defaultKolektor = [
   { kodeKolektor: "001001", namaKolektor: "KANTOR" }
