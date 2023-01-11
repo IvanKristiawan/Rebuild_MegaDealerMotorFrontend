@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { tempUrl, useStateContext } from "../../../contexts/ContextProvider";
 import { ShowTableDaftarAngsuran } from "../../../components/ShowTable";
 import { FetchErrorHandling } from "../../../components/FetchErrorHandling";
-import {
-  SearchBar,
-  Loader,
-  usePagination,
-  ButtonModifier
-} from "../../../components";
-import { Box, Typography, Divider, Pagination } from "@mui/material";
+import { SearchBar, Loader, usePagination } from "../../../components";
+import { Box, Typography, Divider, Pagination, Button } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 const TampilDaftarAngsuran = () => {
+  let navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const { screenSize } = useStateContext();
   const [isFetchError, setIsFetchError] = useState(false);
@@ -88,13 +86,18 @@ const TampilDaftarAngsuran = () => {
         Daftar Angsuran
       </Typography>
       <Box sx={buttonModifierContainer}>
-        <ButtonModifier
-          id={"/"}
-          kode={kode}
-          addLink={`/daftarAngsuran/angsuran/tambahAngsuran`}
-          editLink={`/`}
-          deleteUser={"/"}
-        />
+        <Button
+          variant="contained"
+          color="success"
+          sx={{ bgcolor: "success.light", textTransform: "none" }}
+          startIcon={<AddCircleOutlineIcon />}
+          size="small"
+          onClick={() => {
+            navigate(`/daftarAngsuran/angsuran/tambahAngsuran`);
+          }}
+        >
+          Bayar
+        </Button>
       </Box>
       <Divider sx={dividerStyle} />
       <Box sx={searchBarContainer}>
