@@ -2044,7 +2044,8 @@ export function ShowTableDaftarStok({ currentPosts, searchTerm, tipes }) {
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&:hover": { bgcolor: Colors.grey300 },
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  backgroundColor: user.tanggalJual !== "" ? "#f79892" : "white"
                 }}
                 onClick={() => {
                   navigate(`/daftarStok/${user._id}`);
