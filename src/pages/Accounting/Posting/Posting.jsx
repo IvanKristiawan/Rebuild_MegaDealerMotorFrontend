@@ -93,7 +93,29 @@ const Posting = () => {
       //   kodeCabang: user.cabang._id
       // });
       // Jurnal Posting Angsuran
-      await axios.post(`${tempUrl}/saveJurnalPostingAngsuran`, {
+      // await axios.post(`${tempUrl}/saveJurnalPostingAngsuran`, {
+      //   dariTgl,
+      //   sampaiTgl,
+      //   tglInput: current_date,
+      //   jamInput: current_time,
+      //   userInput: user.username,
+      //   id: user._id,
+      //   token: user.token,
+      //   kodeCabang: user.cabang._id
+      // });
+      // Jurnal Posting Kas Masuk
+      await axios.post(`${tempUrl}/saveJurnalPostingKasMasuk`, {
+        dariTgl,
+        sampaiTgl,
+        tglInput: current_date,
+        jamInput: current_time,
+        userInput: user.username,
+        id: user._id,
+        token: user.token,
+        kodeCabang: user.cabang._id
+      });
+      // Jurnal Posting Kas Masuk Child
+      await axios.post(`${tempUrl}/saveJurnalPostingKasMasukChild`, {
         dariTgl,
         sampaiTgl,
         tglInput: current_date,
